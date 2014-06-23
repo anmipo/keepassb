@@ -1,0 +1,35 @@
++ Entry fields copying
++ DB loading
++ Key file processing
++ DB decryption progress dialog
++ Consider compression flags
++ XML key files
++ Test different key file formats
++ Salsa20 fails on some files 
++ Processing protected fields
++ Icons
++ Add sorting by title
++ Add entry history GUI
++ Entry Timestamps
++ Group Timestamps
++ Add better UI for empty lists
++ Search function
++ Trash icon -> more DB like
++ Copy extra fields does not work
++ App cover
++ Trim search request, clear on focus
+
+Monospaced password fields
+Show-hide password
+settings menu
+Configurable clipboard timeout 
+DB lock by timeout
+Support long entry titles
+Password show toggle
+string/buffer cleanup on destroy
+Enable clearing of key file field
+Search: show group names in headers
+About screen
+BuiltForBlackberry criteria
+Processing of attached files
+V1 support

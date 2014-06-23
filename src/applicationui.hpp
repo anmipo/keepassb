@@ -1,0 +1,59 @@
+/*
+ * ApplicationUI.hpp
+ *
+ *  Created on: 8 May 2014
+ *      Author: Andrei Popleteev
+ */
+
+#ifndef ApplicationUI_HPP_
+#define ApplicationUI_HPP_
+
+#include <QObject>
+#include "db/PwDatabase.h"
+#include "util/TimedClipboard.h"
+
+namespace bb
+{
+    namespace cascades
+    {
+        class Application;
+        class LocaleHandler;
+    }
+}
+
+class QTranslator;
+
+/*!
+ * @brief Application object
+ *
+ *
+ */
+class ApplicationUI : public QObject
+{
+    Q_OBJECT
+private:
+    PwDatabaseFacade* database;
+    PwGroup* _parentGroup;
+
+    TimedClipboard clipboard;
+    QTranslator* m_pTranslator;
+    bb::cascades::LocaleHandler* m_pLocaleHandler;
+
+    void initQml(bb::cascades::Application *app);
+public:
+    ApplicationUI(bb::cascades::Application *app);
+    virtual ~ApplicationUI() { }
+
+    // copy given text to the clipboard, clear it after some time
+    Q_INVOKABLE void copyWithTimeout(const QString& text);
+    void showToast(const QString& msg);
+
+private slots:
+    void onSystemLanguageChanged();
+signals:
+    void clipboardUpdated();
+    void clipboardCleared();
+    void dbOpenError(const QString& message, const PwDatabase::Error errorCode);
+};
+
+#endif /* ApplicationUI_HPP_ */
