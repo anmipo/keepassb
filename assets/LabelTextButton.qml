@@ -3,13 +3,28 @@ import bb.cascades 1.2
 Container {
     property alias imageSource: button.imageSource
     property alias labelText: label.title
-    property alias valueText: edit.text
+    property string valueText: "hello1lIi"
     property alias inputMode: edit.inputMode
+    // sets visibility of the "show/hide password" switch  
+    property bool passwordMasking: false
+    property string passwordMaskText: "********"
     
     leftMargin: 10
     topMargin: 10
     rightMargin: 10
     bottomMargin: 10
+
+    onValueTextChanged: {
+        if (passwordMasking)
+            setEditMasked(showPasswordCheck.checked);
+    }
+    onCreationCompleted: {
+        setEditMasked(passwordMasking);
+    }
+    function setEditMasked(masked) {
+        edit.text = (masked ? passwordMaskText : valueText);        
+    }
+    
     Header {
         id: label
         title: "Label title"
@@ -23,6 +38,7 @@ Container {
             id: edit
             text: "Edit text"
             autoSize.maxLineCount: 5
+            textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Center
             layoutProperties: StackLayoutProperties {
@@ -30,6 +46,17 @@ Container {
             }
             input.flags: TextInputFlag.SpellCheckOff
             focusPolicy: FocusPolicy.None
+        }
+        ImageToggleButton {
+            id: showPasswordCheck
+            property int padding: 30
+            visible: passwordMasking
+            imageSourceDefault: "asset:///images/password_hidden.png"
+            imageSourceChecked: "asset:///images/password_visible.png"
+            checked: false
+            verticalAlignment: VerticalAlignment.Center
+            rightMargin: padding
+            onCheckedChanged: setEditMasked(!checked)
         }
         Button {
             id: button

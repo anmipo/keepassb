@@ -105,6 +105,7 @@ Page {
 //                    inputMode: TextFieldInputMode.Password
                     imageSource: "asset:///images/ic_copy_password.png"
                     valueText: data.password
+                    passwordMasking: true
                 }
                 LabelTextButton {
                     id: urlField

@@ -1,5 +1,5 @@
 1
-166
+170
 ActiveFrameCover.qml
 images/cover.png
 images/ic_attach.png
@@ -26,6 +26,8 @@ ViewEntryV4Page.qml
 ViewGroupPage.qml
 VisualStyle.bright/images/ic_empty_group.png
 VisualStyle.bright/images/ic_unlock.png
+VisualStyle.bright/images/password_hidden.png
+VisualStyle.bright/images/password_visible.png
 VisualStyle.bright/pwicons/0.png
 VisualStyle.bright/pwicons/1.png
 VisualStyle.bright/pwicons/10.png
@@ -97,6 +99,8 @@ VisualStyle.bright/pwicons/8.png
 VisualStyle.bright/pwicons/9.png
 VisualStyle.dark/images/ic_empty_group.png
 VisualStyle.dark/images/ic_unlock.png
+VisualStyle.dark/images/password_hidden.png
+VisualStyle.dark/images/password_visible.png
 VisualStyle.dark/pwicons/0.png
 VisualStyle.dark/pwicons/1.png
 VisualStyle.dark/pwicons/10.png

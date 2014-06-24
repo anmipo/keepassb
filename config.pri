@@ -45,6 +45,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ViewGroupPage.qml) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_empty_group.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_unlock.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.bright/images/password_hidden.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.bright/images/password_visible.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/pwicons/0.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/pwicons/1.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/pwicons/10.png) \
@@ -116,6 +118,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/VisualStyle.bright/pwicons/9.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/images/ic_empty_group.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/images/ic_unlock.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.dark/images/password_hidden.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.dark/images/password_visible.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/0.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/1.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/10.png) \

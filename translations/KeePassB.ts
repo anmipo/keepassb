@@ -4,7 +4,7 @@
 <context>
     <name>LabelTextButton</name>
     <message>
-        <location filename="../assets/LabelTextButton.qml" line="36"/>
+        <location filename="../assets/LabelTextButton.qml" line="63"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -164,7 +164,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="124"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="125"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -194,32 +194,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="111"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="112"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="149"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="150"/>
         <source>(to be implemented)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="135"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="136"/>
         <source>Extra fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="158"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="159"/>
         <source>Entry history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="191"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="192"/>
         <source>Last Modification Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="178"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="179"/>
         <source>Entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -229,17 +229,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="187"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="188"/>
         <source>Creation Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="195"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="196"/>
         <source>Last Access Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="199"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="200"/>
         <source>Expiry Date</source>
         <translation type="unfinished"></translation>
     </message>

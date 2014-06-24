@@ -17,7 +17,9 @@
 + Trash icon -> more DB like
 + Copy extra fields does not work
 + App cover
-+ Trim search request, clear on focus
+
+?Trim search request, clear on focus - try livecity
+optionaly - Do not search "Recycled"
 
 Monospaced password fields
 Show-hide password
