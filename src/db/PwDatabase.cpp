@@ -161,8 +161,8 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
             emit fileOpenError(tr("Cannot open key file"));
             return;
         }
-        qDebug() << "Key file found";
         keyFileData = keyFile.readAll();
+        qDebug() << "Key file read: " << (keyFileData.isEmpty() ? "empty" : "non-empty");
         keyFile.close();
     } else {
         qDebug() << "Key file not provided";
@@ -183,7 +183,7 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
 
     // Initiate the actual unlocking
     db->unlock(dbFileData, password, keyFileData);
-    qDebug() << "DB unlock started";
+    qDebug() << "DB unlock done";
 }
 
 PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData) {

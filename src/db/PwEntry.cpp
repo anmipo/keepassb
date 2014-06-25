@@ -11,7 +11,8 @@
 
 PwEntry::PwEntry() : QObject(), _uuid(), _iconId(0),
         _creationTime(), _lastModificationTime(),
-        _lastAccessTime(), _expiryTime() {
+        _lastAccessTime(), _expiryTime(),
+        _deleted(false) {
     // empty
 }
 
@@ -27,6 +28,7 @@ void PwEntry::clear() {
     _lastModificationTime.setMSecsSinceEpoch(0L);
     _lastAccessTime.setMSecsSinceEpoch(0L);
     _expiryTime.setMSecsSinceEpoch(0L);
+    _deleted = false;
 }
 
 QString PwEntry::toString() const {

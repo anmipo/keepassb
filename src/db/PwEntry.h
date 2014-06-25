@@ -11,6 +11,7 @@
 #include <QObject>
 #include <QMetaType>
 #include <QDateTime>
+#include "db/PwUuid.h"
 
 class PwEntry: public QObject {
 	Q_OBJECT
@@ -24,14 +25,16 @@ class PwEntry: public QObject {
 	Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
 	Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
 	Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
-
+    // indicates whether the entry is in Recycle Bin
+    Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
 private:
-	QByteArray _uuid;
+	PwUuid _uuid;
 	int _iconId;
     QDateTime _creationTime;
     QDateTime _lastModificationTime;
     QDateTime _lastAccessTime;
     QDateTime _expiryTime;
+    bool _deleted;
 
 public:
 	PwEntry();
@@ -40,8 +43,8 @@ public:
 	virtual void clear();
 
 	// property getters/setters
-	QByteArray getUuid() const { return _uuid; }
-	void setUuid(const QByteArray& uuid) { _uuid = uuid; }
+	PwUuid getUuid() const { return _uuid; }
+	void setUuid(const PwUuid& uuid) { _uuid = uuid; }
 	virtual int getIconId() const { return _iconId; }
 	virtual void setIconId(int iconId) { _iconId = iconId; }
     QDateTime getCreationTime() const { return _creationTime; }
@@ -52,6 +55,8 @@ public:
     void setLastAccessTime(const QDateTime& time) { _lastAccessTime = time; }
     QDateTime getExpiryTime() const { return _expiryTime; }
     void setExpiryTime(const QDateTime& time) { _expiryTime = time; }
+    bool isDeleted() const { return _deleted; }
+    void setDeleted(bool deleted) { _deleted = deleted; }
 	// pure virtual getters/setters
 	virtual QString getTitle() const = 0;
 	virtual void setTitle(const QString& title) = 0;
@@ -82,6 +87,7 @@ signals:
     void lastModificationTimeChanged(QDateTime);
     void lastAccessTimeChanged(QDateTime);
     void expiryTimeChanged(QDateTime);
+    void deletedChanged(bool);
 };
 
 Q_DECLARE_METATYPE(PwEntry*);

@@ -14,8 +14,10 @@
 #include "husha2.h"
 #include "huaes.h"
 #include <zlib.h>
+#include "db/PwUuid.h"
 
 // KeePass2 XML tag names
+const QString XML_META = QString("Meta");
 const QString XML_ROOT = QString("Root");
 const QString XML_GROUP = QString("Group");
 const QString XML_ENTRY = QString("Entry");
@@ -38,6 +40,7 @@ const QString XML_TRUE = QString("True");
 const QString XML_BINARY = QString("Binary");
 const QString XML_BINARY_ID = QString("ID");
 const QString XML_BINARY_COMPRESSED = QString("Compressed");
+const QString XML_RECYCLE_BIN_UUID = QString("RecycleBinUUID");
 
 const QString XML_TIMES = QString("Times");
 const QString XML_LAST_MODIFICATION_TIME = QString("LastModificationTime");
@@ -219,7 +222,8 @@ PwDatabaseV4::PwDatabaseV4() :
         combinedKey(SB_SHA256_DIGEST_LEN, 0),
         aesKey(SB_SHA256_DIGEST_LEN, 0),
         salsa20(),
-        binaries() {
+        binaries(),
+        recycleBinGroupUuid() {
 }
 
 PwDatabaseV4::~PwDatabaseV4() {
@@ -243,6 +247,7 @@ void PwDatabaseV4::clear() {
     header.clear();
     combinedKey.clear();
     aesKey.clear();
+    recycleBinGroupUuid.clear();
 }
 
 void PwDatabaseV4::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
@@ -571,6 +576,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     PwGroupV4* rootV4 = new PwGroupV4();
     rootV4->setParent(this);
 
+    ErrorCode err;
     QXmlStreamReader xml(xmlString);
     QStringRef tagName;
     while (!xml.atEnd() && !xml.hasError()) {
@@ -583,9 +589,15 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
                 binary->isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
                 binary->data = QByteArray::fromBase64(xml.readElementText().toLatin1());
                 binaries.insert(id, binary);
+            } else if (tagName == XML_META) {
+                err = loadXmlMetaData(xml);
+                if (err != SUCCESS)
+                    return err;
             } else if (tagName == XML_ROOT) {
                 if (xml.readNextStartElement() && (xml.name() == XML_GROUP)) {
-                    this->loadGroupFromXml(xml, *rootV4);
+                    err = loadGroupFromXml(xml, *rootV4);
+                    if (err != SUCCESS)
+                        return err;
                 } else {
                     qDebug() << "SEVERE: there is no group in the root";
                     return XML_NO_ROOT_GROUP;
@@ -602,6 +614,31 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     return SUCCESS;
 }
 
+// loads metadata of a database
+PwDatabaseV4::ErrorCode PwDatabaseV4::loadXmlMetaData(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_META);
+
+    ErrorCode err;
+    xml.readNext();
+    QString tagName = xml.name().toString();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_META == tagName))) {
+        if (xml.isStartElement()) {
+            if (XML_RECYCLE_BIN_UUID == tagName) {
+                QString recycleBinUuidBase64Str = xml.readElementText();
+                recycleBinGroupUuid = PwUuid::fromBase64(recycleBinUuidBase64Str);
+            } else {
+                // space for future extensions
+            }
+        }
+        xml.readNext();
+        tagName = xml.name().toString();
+    }
+    if (xml.hasError())
+        return XML_PARSING_ERROR;
+    else
+        return SUCCESS;
+}
+
 // loads the group and its children
 PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, PwGroupV4& group) {
     Q_ASSERT(xml.name() == XML_GROUP);
@@ -612,8 +649,11 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
     while (!xml.hasError() && !(xml.isEndElement() && (XML_GROUP == tagName))) {
         if (xml.isStartElement()) {
             if (XML_UUID == tagName) {
-                QByteArray uuidBase64 = xml.readElementText().toAscii();
-                group.setUuid(QByteArray::fromBase64(uuidBase64));
+                QString uuidBase64Str = xml.readElementText();
+                PwUuid uuid = PwUuid::fromBase64(uuidBase64Str);
+                group.setUuid(uuid);
+                if (uuid == recycleBinGroupUuid)
+                    group.setDeleted(true); // may also be set higher in call stack
             } else if (XML_ICON_ID == tagName) {
                 QString iconIdStr = xml.readElementText();
                 group.setIconId(iconIdStr.toInt(NULL));
@@ -634,6 +674,8 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
                     delete subGroup;
                     return err;
                 }
+                if (group.isDeleted())
+                    subGroup->setDeleted(true); // propagate the deleted flag recursively
                 group.addSubGroup(subGroup);
             } else if (XML_ENTRY == tagName) {
                 PwEntryV4* entry = new PwEntryV4();
@@ -642,6 +684,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
                     delete entry;
                     return err;
                 }
+                entry->setDeleted(group.isDeleted()); // propagate the deleted flag recursively
                 group.addEntry(entry);
             }
         }
@@ -668,8 +711,8 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, Pw
     while (!xml.hasError() && !(xml.isEndElement() && (XML_ENTRY == tagName))) {
         if (xml.isStartElement()) {
             if (XML_UUID == tagName) {
-                QByteArray uuidBase64 = xml.readElementText().toAscii();
-                entry.setUuid(QByteArray::fromBase64(uuidBase64));
+                QString uuidBase64Str = xml.readElementText();
+                entry.setUuid(PwUuid::fromBase64(uuidBase64Str));
             } else if (XML_ICON_ID == tagName) {
                 int iconId = xml.readElementText().toInt(&isConversionOk, 10);
                 if (isConversionOk)

@@ -135,6 +135,7 @@ private:
     QByteArray aesKey;
     Salsa20 salsa20;
     QMap<QString, PwBinaryV4*> binaries;
+    PwUuid recycleBinGroupUuid;
 
     // Combines password and key data into one key
     ErrorCode buildCombinedKey(const QString& password, const QByteArray& keyFileData, QByteArray& combinedKey);
@@ -155,6 +156,8 @@ private:
     ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.
     ErrorCode parseXml(const QString& xmlString);
+    // loads metadata of a database
+    ErrorCode loadXmlMetaData(QXmlStreamReader& xml);
     // loads a group and its children.
     ErrorCode loadGroupFromXml(QXmlStreamReader& xml, PwGroupV4& group);
     // Loads an entry.

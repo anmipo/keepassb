@@ -18,6 +18,7 @@ PwGroup::PwGroup() : bb::cascades::DataModel(), _uuid(),
 	_notes = QString::null;
 	_iconId = 0;
 	_isChildrenModified = false;
+	_deleted = false;
 }
 
 PwGroup::~PwGroup() {
@@ -39,6 +40,7 @@ void PwGroup::clear() {
     _lastAccessTime.setMSecsSinceEpoch(0L);
     _expiryTime.setMSecsSinceEpoch(0L);
     _isChildrenModified = true;
+    _deleted = false;
 }
 
 void PwGroup::addSubGroup(PwGroup* subGroup) {
@@ -117,6 +119,10 @@ QString PwGroup::itemType(const QVariantList& indexPath) {
 }
 
 void PwGroup::filterEntries(const QString& query, QList<PwEntry*> &result, bool includeSubgroups) const {
+    // ignore deleted groups
+    if (isDeleted())
+        return;
+
     if (includeSubgroups) {
         PwGroup* subGroup;
         for (int i = 0; i < _subGroups.size(); i++) {

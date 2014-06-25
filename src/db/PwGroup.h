@@ -12,6 +12,7 @@
 #include <QMetaType>
 #include <QList>
 #include <bb/cascades/DataModel>
+#include "db/PwUuid.h"
 
 class PwEntry;
 
@@ -25,8 +26,10 @@ class PwGroup : public bb::cascades::DataModel {
     Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
     Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
     Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
+    // indicates whether the group is in Recycle Bin
+    Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
 private:
-	QByteArray _uuid;
+	PwUuid _uuid;
 	int _iconId;
 	QString _name;
 	QString _notes;
@@ -34,6 +37,7 @@ private:
     QDateTime _lastModificationTime;
     QDateTime _lastAccessTime;
     QDateTime _expiryTime;
+    bool _deleted;
 
 	bool _isChildrenModified;
 	QList<PwGroup*> _subGroups;
@@ -60,7 +64,7 @@ public:
     /**
      * Finds entries which contain the query substring, and adds them to the result.
      */
-    void filterEntries(const QString& query, QList<PwEntry*> &result, bool includeSubgroups) const;
+    virtual void filterEntries(const QString& query, QList<PwEntry*> &result, bool includeSubgroups) const;
 
     // DataModel interface implementation
     Q_INVOKABLE virtual int childCount(const QVariantList& indexPath);
@@ -70,8 +74,8 @@ public:
 
     // property getters/setters
     int immediateChildCount() const { return _subGroups.count() + _entries.count(); }
-    QByteArray getUuid() const { return _uuid; }
-    void setUuid(const QByteArray& uuid) { _uuid = uuid; }
+    PwUuid getUuid() const { return _uuid; }
+    void setUuid(const PwUuid& uuid) { _uuid = uuid; }
     int getIconId() const { return _iconId; }
     void setIconId(int iconId) { _iconId = iconId; }
     QString getName() const { return _name; }
@@ -86,6 +90,8 @@ public:
     void setLastAccessTime(const QDateTime& time) { _lastAccessTime = time; }
     QDateTime getExpiryTime() const { return _expiryTime; }
     void setExpiryTime(const QDateTime& time) { _expiryTime = time; }
+    bool isDeleted() const { return _deleted; }
+    void setDeleted(bool deleted) { _deleted = deleted; }
 
     /** Returns a string representation of the instance */
     virtual QString toString() const;
@@ -100,6 +106,7 @@ signals:
     void lastModificationTimeChanged(QDateTime);
     void lastAccessTimeChanged(QDateTime);
     void expiryTimeChanged(QDateTime);
+    void deletedChanged(bool);
 };
 
 Q_DECLARE_METATYPE(PwGroup*);
