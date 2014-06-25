@@ -41,9 +41,10 @@ Page {
                 input.submitKey: SubmitKey.Search
                 input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
                 input.onSubmitted: {
+                    var query = searchField.text; 
                     searchField.visible = false;
                     searchField.text = "";
-                    database.search(searchField.text);
+                    database.search(query);
                     var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
                     var searchResultsPage = searchResultsPageComponent.createObject(null, 
                             {"searchResult": database.searchResult});
