@@ -20,7 +20,7 @@ using namespace bb::cascades;
 using namespace bb::system;
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
-        QObject(app), settings(app), clipboard(app) {
+        QObject(app), clipboard(app) {
     // prepare the localization
     m_pTranslator = new QTranslator(this);
     m_pLocaleHandler = new LocaleHandler(this);
@@ -38,6 +38,9 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // initial load
     onSystemLanguageChanged();
 
+    settings = Settings::instance();
+    settings->setParent(app);
+
     Application::instance()->setCover(new ActiveFrame());
 
     CryptoManager::instance()->init();
@@ -53,7 +56,7 @@ void ApplicationUI::initQml(bb::cascades::Application *app) {
     // to ensure the document gets destroyed properly at shut down.
     QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
     qml->setContextProperty("app", this);
-    qml->setContextProperty("appSettings", &this->settings);
+    qml->setContextProperty("appSettings", this->settings);
     qml->setContextProperty("database", this->database);
 
     // Create root object for the UI
@@ -82,5 +85,5 @@ void ApplicationUI::showToast(const QString& msg) {
 
 // copy given text to the clipboard, clear it after some time
 void ApplicationUI::copyWithTimeout(const QString& text) {
-	clipboard.insertWithTimeout(text, settings.getClipboardTimeout());
+	clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
 }

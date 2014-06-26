@@ -22,10 +22,15 @@ class Settings: public QObject {
     Q_PROPERTY(int clipboardTimeout READ getClipboardTimeout WRITE setClipboardTimeout NOTIFY clipboardTimeoutChanged)
 
 private:
+    static Settings* _instance;
     bool _searchInDeleted;
     int _clipboardTimeout;
-public:
     Settings(QObject* parent = 0);
+public:
+    /**
+     * Returns the singleton instance of Settings
+     */
+    static Settings* instance();
 
     // property accessors
     bool isSearchInDeleted() const { return _searchInDeleted; }

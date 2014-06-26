@@ -22,6 +22,15 @@ const QString KEY_SEARCH_IN_DELETED = "searchInDeleted";
 const QString KEY_CLIPBOARD_TIMEOUT = "clipboardTimeout";
 
 
+Settings* Settings::_instance;
+
+Settings* Settings::instance() {
+    if (!_instance) {
+        _instance = new Settings();
+    }
+    return _instance;
+}
+
 Settings::Settings(QObject* parent) : QObject(parent){
     // Set up the QSettings object for the application with organization and application name.
     QCoreApplication::setOrganizationName("Andrei Popleteev");

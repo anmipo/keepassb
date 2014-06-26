@@ -33,7 +33,7 @@ class ApplicationUI : public QObject
 {
     Q_OBJECT
 private:
-    Settings settings;
+    Settings* settings;
     PwDatabaseFacade* database;
     PwGroup* _parentGroup;
 
