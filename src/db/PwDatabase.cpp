@@ -11,6 +11,7 @@
 #include "db/v4/PwDatabaseV4.h"
 #include "db/PwGroup.h"
 #include "db/PwEntry.h"
+#include "util/Settings.h"
 
 // Tag names for XML-formatted key files
 const QString XML_KEYFILE = "KeyFile";
@@ -94,11 +95,11 @@ PwGroup* PwDatabase::getRootGroup() {
     return _rootGroup;
 }
 
-int PwDatabase::search(const QString& query, QList<PwEntry*> &searchResult) const {
+int PwDatabase::search(const SearchParams& params, QList<PwEntry*> &searchResult) const {
     Q_ASSERT(_rootGroup != NULL);
 
     searchResult.clear();
-    _rootGroup->filterEntries(query, searchResult, true);
+    _rootGroup->filterEntries(params, searchResult);
     return searchResult.size();
 }
 
@@ -200,9 +201,16 @@ PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData
 }
 
 Q_INVOKABLE  int PwDatabaseFacade::search(const QString& query) {
-    _searchResultDataModel.clear();
+    SearchParams params;
+    const Settings* settings = Settings::instance();
+    params.includeDeleted = settings->isSearchInDeleted();
+    params.includeSubgroups = true;
+    params.query = query.trimmed();
+
     QList<PwEntry*> searchResult;
-    int resultSize = db->search(query.trimmed(), searchResult);
+
+    _searchResultDataModel.clear();
+    int resultSize = db->search(params, searchResult);
     _searchResultDataModel.append(searchResult);
     qDebug("Found %d entries", resultSize);
     return resultSize;

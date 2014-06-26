@@ -16,6 +16,15 @@
 
 class PwEntry;
 
+/**
+ * Parameters for search/filtering
+ */
+struct SearchParams {
+    bool includeSubgroups;
+    bool includeDeleted;
+    QString query;
+};
+
 class PwGroup : public bb::cascades::DataModel {
 	Q_OBJECT
 	Q_PROPERTY(int iconId READ getIconId WRITE setIconId NOTIFY iconIdChanged)
@@ -64,7 +73,7 @@ public:
     /**
      * Finds entries which contain the query substring, and adds them to the result.
      */
-    virtual void filterEntries(const QString& query, QList<PwEntry*> &result, bool includeSubgroups) const;
+    virtual void filterEntries(const SearchParams& params, QList<PwEntry*> &result) const;
 
     // DataModel interface implementation
     Q_INVOKABLE virtual int childCount(const QVariantList& indexPath);

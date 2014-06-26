@@ -15,6 +15,8 @@
 
 class PwDatabaseFacade;
 
+class SearchParams;
+
 class PwDatabase : public QObject {
     Q_OBJECT
 protected:
@@ -44,7 +46,7 @@ public:
     /**
      * Returns the entries which contain given query text
      */
-    virtual int search(const QString& query, QList<PwEntry*> &searchResult) const;
+    virtual int search(const SearchParams& params, QList<PwEntry*> &searchResult) const;
 
     PwGroup* getRootGroup();
 

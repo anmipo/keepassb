@@ -118,23 +118,22 @@ QString PwGroup::itemType(const QVariantList& indexPath) {
     return result;
 }
 
-void PwGroup::filterEntries(const QString& query, QList<PwEntry*> &result, bool includeSubgroups) const {
-    // ignore deleted groups
-    if (isDeleted())
+void PwGroup::filterEntries(const SearchParams& params, QList<PwEntry*> &result) const {
+    if (!params.includeDeleted && isDeleted())
         return;
 
-    if (includeSubgroups) {
+    if (params.includeSubgroups) {
         PwGroup* subGroup;
         for (int i = 0; i < _subGroups.size(); i++) {
             subGroup = _subGroups.at(i);
-            subGroup->filterEntries(query, result, includeSubgroups);
+            subGroup->filterEntries(params, result);
         }
     }
 
     PwEntry* entry;
     for (int i = 0; i < _entries.size(); i++) {
         entry = _entries.at(i);
-        if (entry->matchesQuery(query)) {
+        if (entry->matchesQuery(params.query)) {
             result.append(entry);
             // this group remains the parent of the entry
         }
