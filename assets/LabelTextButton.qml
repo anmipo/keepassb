@@ -3,7 +3,7 @@ import bb.cascades 1.2
 Container {
     property alias imageSource: button.imageSource
     property alias labelText: label.title
-    property string valueText: "hello1lIi"
+    property string valueText
     property alias inputMode: edit.inputMode
     // sets visibility of the "show/hide password" switch  
     property bool passwordMasking: false
@@ -66,7 +66,7 @@ Container {
             verticalAlignment: VerticalAlignment.Top
             horizontalAlignment: HorizontalAlignment.Right
             onClicked: {
-                Qt.app.copyWithTimeout(edit.text);
+                Qt.app.copyWithTimeout(valueText);
             }
         }
     }
