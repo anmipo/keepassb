@@ -9,8 +9,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="23"/>
+        <location filename="../assets/AppSettings.qml" line="25"/>
         <source>Search in Recycle Bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="38"/>
+        <source>Clear clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="41"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="45"/>
+        <source>after 10 seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="49"/>
+        <source>after 30 seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="53"/>
+        <source>after 1 minute</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -25,17 +50,17 @@
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="148"/>
+        <location filename="../src/db/PwDatabase.cpp" line="149"/>
         <source>DB file not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="161"/>
+        <location filename="../src/db/PwDatabase.cpp" line="162"/>
         <source>Cannot open key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="174"/>
+        <location filename="../src/db/PwDatabase.cpp" line="175"/>
         <source>Unknown DB format</source>
         <translation type="unfinished"></translation>
     </message>

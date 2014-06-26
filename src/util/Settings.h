@@ -17,30 +17,39 @@ class Settings: public QObject {
      */
     Q_PROPERTY(bool searchInDeleted READ isSearchInDeleted WRITE setSearchInDeleted NOTIFY searchInDeletedChanged)
     /**
-     * Time in seconds until entries copied to clipboard are deleted from there
+     * Index of the selected "Clipboard timeout" option in the settings page.
+     * See also: getClipboardTimeoutSeconds() returns the corresponding time.
      */
-    Q_PROPERTY(int clipboardTimeout READ getClipboardTimeout WRITE setClipboardTimeout NOTIFY clipboardTimeoutChanged)
+    Q_PROPERTY(int clipboardTimeoutIndex READ getClipboardTimeoutIndex WRITE setClipboardTimeoutIndex NOTIFY clipboardTimeoutIndexChanged)
 
 private:
     static Settings* _instance;
     bool _searchInDeleted;
-    int _clipboardTimeout;
+    int _clipboardTimeoutIndex;
     Settings(QObject* parent = 0);
+
+    // Matching from index to actual timeout values
+    static const int CLIPBOARD_TIMEOUT_INDEX_TO_SECONDS[];
 public:
     /**
      * Returns the singleton instance of Settings
      */
     static Settings* instance();
 
+    /**
+     * Time in seconds until entries copied to clipboard are deleted from there
+     */
+    int getClipboardTimeoutSeconds() const;
+
     // property accessors
     bool isSearchInDeleted() const { return _searchInDeleted; }
-    int getClipboardTimeout() const { return _clipboardTimeout; }
+    int getClipboardTimeoutIndex() const { return _clipboardTimeoutIndex; }
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
-    void setClipboardTimeout(int timeout);
+    void setClipboardTimeoutIndex(int index);
 signals:
     void searchInDeletedChanged(bool);
-    void clipboardTimeoutChanged(int);
+    void clipboardTimeoutIndexChanged(int);
 };
 
 #endif /* SETTINGS_H_ */

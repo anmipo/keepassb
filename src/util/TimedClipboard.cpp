@@ -32,7 +32,9 @@ bool TimedClipboard::insertWithTimeout(const QString& text, const int timeoutSec
 	bool result = this->insert(DATA_TYPE, text.toUtf8());
 	if (result) {
 		emit inserted();
-		timer.start(timeoutSeconds * 1000);
+		if (timeoutSeconds >= 0) {
+		    timer.start(timeoutSeconds * 1000);
+		}
 	}
 	return result;
 }

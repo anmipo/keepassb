@@ -85,5 +85,5 @@ void ApplicationUI::showToast(const QString& msg) {
 
 // copy given text to the clipboard, clear it after some time
 void ApplicationUI::copyWithTimeout(const QString& text) {
-	clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
+	clipboard.insertWithTimeout(text, settings->getClipboardTimeoutSeconds());
 }
