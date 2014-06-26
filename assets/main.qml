@@ -23,7 +23,10 @@ NavigationPane {
     
     Menu.definition: MenuDefinition {
         settingsAction: SettingsActionItem {
-            onTriggered : {}
+            onTriggered : {
+                var settingsPage = settingsPageComponent.createObject();
+                naviPane.push(settingsPage);
+            }
         }
     }
    
@@ -51,6 +54,10 @@ NavigationPane {
         ComponentDefinition {
             id: viewGroupPage
             source: "ViewGroupPage.qml"
+        },
+        ComponentDefinition {
+            id: settingsPageComponent
+            source: "AppSettings.qml"
         },
         SystemToast {
             id: toast  

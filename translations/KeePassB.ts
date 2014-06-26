@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>AppSettings</name>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="5"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="23"/>
+        <source>Search in Recycle Bin</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LabelTextButton</name>
     <message>
         <location filename="../assets/LabelTextButton.qml" line="63"/>
@@ -30,29 +43,29 @@
 <context>
     <name>PwDatabaseV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="253"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="258"/>
         <source>Crypto library error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="351"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="365"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="413"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="356"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="370"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="418"/>
         <source>Cannot decrypt database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="388"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="393"/>
         <source>Error reading database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="400"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="405"/>
         <source>Error inflating database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="422"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="427"/>
         <source>Error parsing database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -60,27 +73,27 @@
 <context>
     <name>PwHeaderV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="162"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="165"/>
         <source>Wrong file signature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="164"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="167"/>
         <source>Unsupported DB file version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="166"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="169"/>
         <source>Unknown compression algorithm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="168"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="171"/>
         <source>Twofish cypher is not supported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="170"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="173"/>
         <source>Header error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -253,22 +266,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="59"/>
+        <location filename="../assets/ViewGroupPage.qml" line="60"/>
         <source>Password list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="83"/>
+        <location filename="../assets/ViewGroupPage.qml" line="84"/>
         <source>Entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="93"/>
+        <location filename="../assets/ViewGroupPage.qml" line="94"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="115"/>
+        <location filename="../assets/ViewGroupPage.qml" line="116"/>
         <source>This group is empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -276,12 +289,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="43"/>
+        <location filename="../assets/main.qml" line="46"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="46"/>
+        <location filename="../assets/main.qml" line="49"/>
         <source>Clipboard cleared</source>
         <translation type="unfinished"></translation>
     </message>

@@ -37,6 +37,7 @@ simulator {
 config_pri_assets {
     OTHER_FILES += \
         $$quote($$BASEDIR/assets/ActiveFrameCover.qml) \
+        $$quote($$BASEDIR/assets/AppSettings.qml) \
         $$quote($$BASEDIR/assets/LabelTextButton.qml) \
         $$quote($$BASEDIR/assets/ReadOnlyTextField.qml) \
         $$quote($$BASEDIR/assets/SearchResultsPage.qml) \
@@ -215,11 +216,13 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/PwDatabase.cpp) \
         $$quote($$BASEDIR/src/db/PwEntry.cpp) \
         $$quote($$BASEDIR/src/db/PwGroup.cpp) \
+        $$quote($$BASEDIR/src/db/PwUuid.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwDatabaseV4.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwEntryV4.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwGroupV4.cpp) \
         $$quote($$BASEDIR/src/main.cpp) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.cpp) \
+        $$quote($$BASEDIR/src/util/Settings.cpp) \
         $$quote($$BASEDIR/src/util/TimedClipboard.cpp)
 
     HEADERS += \
@@ -228,11 +231,12 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/PwDatabase.h) \
         $$quote($$BASEDIR/src/db/PwEntry.h) \
         $$quote($$BASEDIR/src/db/PwGroup.h) \
+        $$quote($$BASEDIR/src/db/PwUuid.h) \
         $$quote($$BASEDIR/src/db/v4/PwDatabaseV4.h) \
         $$quote($$BASEDIR/src/db/v4/PwEntryV4.h) \
         $$quote($$BASEDIR/src/db/v4/PwGroupV4.h) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.h) \
-        $$quote($$BASEDIR/src/util/AppConfig.h) \
+        $$quote($$BASEDIR/src/util/Settings.h) \
         $$quote($$BASEDIR/src/util/TimedClipboard.h)
 }
 

@@ -11,6 +11,7 @@
 #include <QObject>
 #include "db/PwDatabase.h"
 #include "util/TimedClipboard.h"
+#include "util/Settings.h"
 
 namespace bb
 {
@@ -32,6 +33,7 @@ class ApplicationUI : public QObject
 {
     Q_OBJECT
 private:
+    Settings settings;
     PwDatabaseFacade* database;
     PwGroup* _parentGroup;
 
@@ -47,7 +49,6 @@ public:
     // copy given text to the clipboard, clear it after some time
     Q_INVOKABLE void copyWithTimeout(const QString& text);
     void showToast(const QString& msg);
-
 private slots:
     void onSystemLanguageChanged();
 signals:
