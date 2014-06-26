@@ -21,7 +21,6 @@ namespace bb {
 class ActiveFrame : public bb::cascades::SceneCover {
 public:
     ActiveFrame();
-    virtual ~ActiveFrame();
 };
 
 #endif /* ACTIVEFRAME_H_ */

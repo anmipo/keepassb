@@ -18,12 +18,5 @@ ActiveFrame::ActiveFrame() : SceneCover(this) {
     QmlDocument* qml = QmlDocument::create("asset:///ActiveFrameCover.qml").parent(this);
     Container* mainContainer = qml->createRootObject<Container>();
     setContent(mainContainer);
-
-    // Initiate the update when the app moves to the background.
-    QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(update()));
-}
-
-ActiveFrame::~ActiveFrame() {
-    // nothing to do here
 }
 
