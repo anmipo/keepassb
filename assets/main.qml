@@ -28,6 +28,14 @@ NavigationPane {
                 naviPane.push(settingsPage);
             }
         }
+        helpAction: HelpActionItem {
+            title: qsTr("About") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_about.png"
+            onTriggered : {
+                var aboutPage = aboutPageComponent.createObject();
+                naviPane.push(aboutPage);
+            }
+        }
     }
    
     firstPage: UnlockDbPage {
@@ -58,6 +66,10 @@ NavigationPane {
         ComponentDefinition {
             id: settingsPageComponent
             source: "AppSettings.qml"
+        },
+        ComponentDefinition {
+            id: aboutPageComponent
+            source: "AboutPage.qml"
         },
         SystemToast {
             id: toast  

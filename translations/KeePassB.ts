@@ -2,6 +2,40 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>AboutPage</name>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="5"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="23"/>
+        <source>KeePassB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="28"/>
+        <source>Version 2.0 alpha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="38"/>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="45"/>
+        <source>Special thanks to Dominik Reichl, the author of KeePass.
+Some icons are from free samples from Linecons Icon Set (Smashing Magazine release) and GetOtherCircles.com.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="33"/>
+        <source>В©2014 Andrei Popleteev</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AppSettings</name>
     <message>
         <location filename="../assets/AppSettings.qml" line="5"/>
@@ -314,12 +348,17 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="46"/>
+        <location filename="../assets/main.qml" line="32"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="54"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="49"/>
+        <location filename="../assets/main.qml" line="57"/>
         <source>Clipboard cleared</source>
         <translation type="unfinished"></translation>
     </message>

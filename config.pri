@@ -36,6 +36,7 @@ simulator {
 
 config_pri_assets {
     OTHER_FILES += \
+        $$quote($$BASEDIR/assets/AboutPage.qml) \
         $$quote($$BASEDIR/assets/ActiveFrameCover.qml) \
         $$quote($$BASEDIR/assets/AppSettings.qml) \
         $$quote($$BASEDIR/assets/LabelTextButton.qml) \
@@ -191,6 +192,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/8.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/9.png) \
         $$quote($$BASEDIR/assets/images/cover.png) \
+        $$quote($$BASEDIR/assets/images/ic_about.png) \
         $$quote($$BASEDIR/assets/images/ic_attach.png) \
         $$quote($$BASEDIR/assets/images/ic_browse.png) \
         $$quote($$BASEDIR/assets/images/ic_copy.png) \
