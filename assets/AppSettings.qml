@@ -6,9 +6,7 @@ Page {
     }
     onCreationCompleted: {
         searchInDeleted.checked = appSettings.searchInDeleted;
-        clipboardTimeout.selectedIndex = appSettings.clipboardTimeoutIndex;
         searchInDeleted.checkedChanged.connect(appSettings.setSearchInDeleted);
-        clipboardTimeout.selectedIndexChanged.connect(appSettings.setClipboardTimeoutIndex);
     }
     Container {
         layout: StackLayout {
@@ -36,22 +34,30 @@ Page {
         DropDown {
             id: clipboardTimeout
             title: qsTr("Clear clipboard") + Retranslate.onLocaleOrLanguageChanged
-            // values of these options must be in sync with Settings::CLIPBOARD_TIMEOUT_INDEX_TO_SECONDS
+            onSelectedOptionChanged: {
+                if (selectedOption) {
+                    appSettings.clipboardTimeout = selectedOption.value;
+                }
+            }
             Option {
                 text: qsTr("Never") + Retranslate.onLocaleOrLanguageChanged
                 value: -1;
+                selected: (appSettings.clipboardTimeout == -1)
             }
             Option {
                 text: qsTr("after 10 seconds") + Retranslate.onLocaleOrLanguageChanged
                 value: 10;
+                selected: (appSettings.clipboardTimeout == 10)
             }
             Option {
                 text: qsTr("after 30 seconds") + Retranslate.onLocaleOrLanguageChanged
                 value: 30;
+                selected: (appSettings.clipboardTimeout == 30)
             }
             Option {
                 text: qsTr("after 1 minute") + Retranslate.onLocaleOrLanguageChanged
                 value: 60;
+                selected: (appSettings.clipboardTimeout == 60)
             }
         }
         DropDown {

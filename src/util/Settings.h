@@ -17,10 +17,9 @@ class Settings: public QObject {
      */
     Q_PROPERTY(bool searchInDeleted READ isSearchInDeleted WRITE setSearchInDeleted NOTIFY searchInDeletedChanged)
     /**
-     * Index of the selected "Clipboard timeout" option in the settings page.
-     * See also: getClipboardTimeoutSeconds() returns the corresponding time.
+     * Time in seconds until entries copied to clipboard are deleted from there. Negative means "never".
      */
-    Q_PROPERTY(int clipboardTimeoutIndex READ getClipboardTimeoutIndex WRITE setClipboardTimeoutIndex NOTIFY clipboardTimeoutIndexChanged)
+    Q_PROPERTY(int clipboardTimeout READ getClipboardTimeout WRITE setClipboardTimeout NOTIFY clipboardTimeoutChanged)
     /**
      * Flag indicating whether th last opened DB path should be remembered
      */
@@ -40,43 +39,37 @@ class Settings: public QObject {
 private:
     static Settings* _instance;
     bool _searchInDeleted;
-    int _clipboardTimeoutIndex;
+    int _clipboardTimeout;
     bool _trackRecentDb;
     QString _recentDbPath;
     QString _recentKeyFilePath;
     int _autoLockTimeout;
+
     Settings(QObject* parent = 0);
 
-    // Matching from index to actual timeout values
-    static const int CLIPBOARD_TIMEOUT_INDEX_TO_SECONDS[];
 public:
     /**
      * Returns the singleton instance of Settings
      */
     static Settings* instance();
 
-    /**
-     * Time in seconds until entries copied to clipboard are deleted from there
-     */
-    int getClipboardTimeoutSeconds() const;
-
     // property accessors
     bool isSearchInDeleted() const { return _searchInDeleted; }
-    int getClipboardTimeoutIndex() const { return _clipboardTimeoutIndex; }
+    int getClipboardTimeout() const { return _clipboardTimeout; }
     bool isTrackRecentDb() const { return _trackRecentDb; }
     QString getRecentDbPath() const { return _recentDbPath; }
     QString getRecentKeyFilePath() const { return _recentKeyFilePath; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
-    void setClipboardTimeoutIndex(int index);
+    void setClipboardTimeout(int timeout);
     void setTrackRecentDb(bool track);
     void setRecentDbPath(const QString& path);
     void setRecentKeyFilePath(const QString& path);
     void setAutoLockTimeout(int timeout);
 signals:
     void searchInDeletedChanged(bool);
-    void clipboardTimeoutIndexChanged(int);
+    void clipboardTimeoutChanged(int);
     void trackRecentDbChanged(bool);
     void recentDbPathChanged(QString);
     void recentKeyFilePathChanged(QString);

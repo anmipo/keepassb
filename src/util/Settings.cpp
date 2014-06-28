@@ -13,7 +13,7 @@
  * Default settings values
  */
 const bool DEFAULT_SEARCH_IN_DELETED = false;
-const int DEFAULT_CLIPBOARD_TIMEOUT_INDEX = 1;
+const int DEFAULT_CLIPBOARD_TIMEOUT = 10;
 const bool DEFAULT_TRACK_RECENT_DB = false;
 const QString DEFAULT_RECENT_DB_PATH = "";
 const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
@@ -23,14 +23,11 @@ const int DEFAULT_AUTO_LOCK_TIMEOUT = 10;
  * Keys for preferences values
  */
 const QString KEY_SEARCH_IN_DELETED = "searchInDeleted";
-const QString KEY_CLIPBOARD_TIMEOUT_INDEX = "clipboardTimeoutIndex";
+const QString KEY_CLIPBOARD_TIMEOUT = "clipboardTimeout";
 const QString KEY_TRACK_RECENT_DB = "trackRecentDb";
 const QString KEY_RECENT_DB_PATH = "recentDbPath";
 const QString KEY_RECENT_KEY_FILE_PATH = "recentKeyFilePath";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
-
-// this must be in sync with options in AppSettings.qml
-const int Settings::CLIPBOARD_TIMEOUT_INDEX_TO_SECONDS[] = {-1, 10, 30, 60};
 
 Settings* Settings::_instance;
 
@@ -50,8 +47,8 @@ Settings::Settings(QObject* parent) : QObject(parent){
     QSettings settings;
     _searchInDeleted = settings.value(
             KEY_SEARCH_IN_DELETED, DEFAULT_SEARCH_IN_DELETED).toBool();
-    _clipboardTimeoutIndex = settings.value(
-            KEY_CLIPBOARD_TIMEOUT_INDEX, DEFAULT_CLIPBOARD_TIMEOUT_INDEX).toInt();
+    _clipboardTimeout = settings.value(
+            KEY_CLIPBOARD_TIMEOUT, DEFAULT_CLIPBOARD_TIMEOUT).toInt();
     _trackRecentDb = settings.value(
             KEY_TRACK_RECENT_DB, DEFAULT_TRACK_RECENT_DB).toBool();
     _recentDbPath = settings.value(
@@ -70,18 +67,13 @@ void Settings::setSearchInDeleted(bool searchInDeleted) {
     }
 }
 
-void Settings::setClipboardTimeoutIndex(int index) {
-    if (index != _clipboardTimeoutIndex) {
-        QSettings().setValue(KEY_CLIPBOARD_TIMEOUT_INDEX, index);
-        _clipboardTimeoutIndex = index;
-        emit clipboardTimeoutIndexChanged(index);
+void Settings::setClipboardTimeout(int timeout) {
+    if (timeout != _clipboardTimeout) {
+        QSettings().setValue(KEY_CLIPBOARD_TIMEOUT, timeout);
+        _clipboardTimeout = timeout;
+        emit clipboardTimeoutChanged(timeout);
     }
 }
-
-int Settings::getClipboardTimeoutSeconds() const {
-    return CLIPBOARD_TIMEOUT_INDEX_TO_SECONDS[_clipboardTimeoutIndex];
-}
-
 
 void Settings::setTrackRecentDb(bool track) {
     if (track != _trackRecentDb) {
