@@ -17,9 +17,11 @@ Page {
     onDbFilePathChanged: {
         if (dbFilePath.length > 0) {
             dbFileField.textStyle.fontStyle = FontStyle.Default;
+            dbFileField.textStyle.textAlign = TextAlign.Default;
             dbFileField.text = prettifyFilePath(dbFilePath); // human-friendly path
         } else {
             dbFileField.textStyle.fontStyle = FontStyle.Italic;
+            dbFileField.textStyle.textAlign = TextAlign.Right;
             dbFileField.text = qsTr("Choose database")
         }
         if (rememberRecent.checked)
@@ -28,9 +30,11 @@ Page {
     onKeyFilePathChanged: {
         if (keyFilePath.length > 0) {
             keyFileField.textStyle.fontStyle = FontStyle.Default;
+            keyFileField.textStyle.textAlign = TextAlign.Default;
             keyFileField.text = prettifyFilePath(keyFilePath); // human-friendly path
         } else {
             keyFileField.textStyle.fontStyle = FontStyle.Italic;
+            keyFileField.textStyle.textAlign = TextAlign.Right;
             keyFileField.text = qsTr("Choose a key file (optional)");
         }
         if (rememberRecent.checked)
