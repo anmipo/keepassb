@@ -55,22 +55,46 @@
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="41"/>
+        <location filename="../assets/AppSettings.qml" line="66"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="45"/>
+        <location filename="../assets/AppSettings.qml" line="76"/>
         <source>after 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="49"/>
+        <location filename="../assets/AppSettings.qml" line="86"/>
         <source>after 30 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="53"/>
+        <location filename="../assets/AppSettings.qml" line="91"/>
         <source>after 1 minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="59"/>
+        <source>Lock database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="71"/>
+        <source>Immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="81"/>
+        <source>after 20 seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="96"/>
+        <source>after 5 minutes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -174,77 +198,69 @@
 <context>
     <name>UnlockDbPage</name>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="23"/>
-        <location filename="../assets/UnlockDbPage.qml" line="195"/>
+        <location filename="../assets/UnlockDbPage.qml" line="25"/>
+        <location filename="../assets/UnlockDbPage.qml" line="199"/>
         <source>Choose database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="34"/>
+        <location filename="../assets/UnlockDbPage.qml" line="38"/>
         <source>Choose a key file (optional)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="59"/>
+        <location filename="../assets/UnlockDbPage.qml" line="63"/>
         <source>KeePassB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="83"/>
+        <location filename="../assets/UnlockDbPage.qml" line="87"/>
         <source>Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="100"/>
+        <location filename="../assets/UnlockDbPage.qml" line="104"/>
         <source>Browse for database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="112"/>
+        <location filename="../assets/UnlockDbPage.qml" line="116"/>
         <source>Password and key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="123"/>
+        <location filename="../assets/UnlockDbPage.qml" line="127"/>
         <source>Enter password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="146"/>
+        <location filename="../assets/UnlockDbPage.qml" line="150"/>
         <source>Browse for key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="156"/>
+        <location filename="../assets/UnlockDbPage.qml" line="160"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="162"/>
+        <location filename="../assets/UnlockDbPage.qml" line="166"/>
         <source>Remember selected files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="204"/>
+        <location filename="../assets/UnlockDbPage.qml" line="208"/>
         <source>Choose key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="218"/>
+        <location filename="../assets/UnlockDbPage.qml" line="222"/>
         <source>Decrypting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="227"/>
+        <location filename="../assets/UnlockDbPage.qml" line="231"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UnlockDbPage2</name>
-    <message>
-        <location filename="../assets/UnlockDbPage2.qml" line="29"/>
-        <source>Key file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

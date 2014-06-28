@@ -17,6 +17,7 @@ const int DEFAULT_CLIPBOARD_TIMEOUT_INDEX = 1;
 const bool DEFAULT_TRACK_RECENT_DB = false;
 const QString DEFAULT_RECENT_DB_PATH = "";
 const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
+const int DEFAULT_AUTO_LOCK_TIMEOUT = 10;
 
 /**
  * Keys for preferences values
@@ -26,6 +27,7 @@ const QString KEY_CLIPBOARD_TIMEOUT_INDEX = "clipboardTimeoutIndex";
 const QString KEY_TRACK_RECENT_DB = "trackRecentDb";
 const QString KEY_RECENT_DB_PATH = "recentDbPath";
 const QString KEY_RECENT_KEY_FILE_PATH = "recentKeyFilePath";
+const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
 
 // this must be in sync with options in AppSettings.qml
 const int Settings::CLIPBOARD_TIMEOUT_INDEX_TO_SECONDS[] = {-1, 10, 30, 60};
@@ -56,6 +58,8 @@ Settings::Settings(QObject* parent) : QObject(parent){
             KEY_RECENT_DB_PATH, DEFAULT_RECENT_DB_PATH).toString();
     _recentKeyFilePath = settings.value(
             KEY_RECENT_KEY_FILE_PATH, DEFAULT_RECENT_KEY_FILE_PATH).toString();
+    _autoLockTimeout = settings.value(
+            KEY_AUTO_LOCK_TIMEOUT, DEFAULT_AUTO_LOCK_TIMEOUT).toInt();
 }
 
 void Settings::setSearchInDeleted(bool searchInDeleted) {
@@ -100,5 +104,13 @@ void Settings::setRecentKeyFilePath(const QString& path) {
         QSettings().setValue(KEY_RECENT_KEY_FILE_PATH, path);
         _recentKeyFilePath = path;
         emit recentKeyFilePathChanged(path);
+    }
+}
+
+void Settings::setAutoLockTimeout(int timeout) {
+    if (timeout != _autoLockTimeout) {
+        QSettings().setValue(KEY_AUTO_LOCK_TIMEOUT, timeout);
+        _autoLockTimeout = timeout;
+        emit autoLockTimeoutChanged(timeout);
     }
 }

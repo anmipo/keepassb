@@ -54,5 +54,49 @@ Page {
                 value: 60;
             }
         }
+        DropDown {
+            id: lockTimeout
+            title: qsTr("Lock database") + Retranslate.onLocaleOrLanguageChanged
+            onSelectedOptionChanged: {
+                if (selectedOption) {
+                    appSettings.autoLockTimeout = selectedOption.value;
+                }
+            }
+            Option {
+                text: qsTr("Never") + Retranslate.onLocaleOrLanguageChanged
+                value: -1
+                selected: (appSettings.autoLockTimeout == -1)
+            }
+            Option {
+                text: qsTr("Immediately") + Retranslate.onLocaleOrLanguageChanged
+                value: 0
+                selected: (appSettings.autoLockTimeout == 0)
+            }
+            Option {
+                text: qsTr("after 10 seconds") + Retranslate.onLocaleOrLanguageChanged
+                value: 10
+                selected: (appSettings.autoLockTimeout == 10)
+            }
+            Option {
+                text: qsTr("after 20 seconds") + Retranslate.onLocaleOrLanguageChanged
+                value: 20
+                selected: (appSettings.autoLockTimeout == 20)
+            }
+            Option {
+                text: qsTr("after 30 seconds") + Retranslate.onLocaleOrLanguageChanged
+                value: 30
+                selected: (appSettings.autoLockTimeout == 30)
+            }
+            Option {
+                text: qsTr("after 1 minute") + Retranslate.onLocaleOrLanguageChanged
+                value: 60
+                selected: (appSettings.autoLockTimeout == 60)
+            }
+            Option {
+                text: qsTr("after 5 minutes") + Retranslate.onLocaleOrLanguageChanged
+                value: 300
+                selected: (appSettings.autoLockTimeout == 300)
+            }
+        }
     }
 }

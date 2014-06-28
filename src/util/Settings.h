@@ -33,6 +33,10 @@ class Settings: public QObject {
      * Previously used key file path
      */
     Q_PROPERTY(QString recentKeyFilePath READ getRecentKeyFilePath WRITE setRecentKeyFilePath NOTIFY recentKeyFilePathChanged);
+    /**
+     * Time in seconds until automatic DB lock. Negative value means no timeout.
+     */
+    Q_PROPERTY(int autoLockTimeout READ getAutoLockTimeout WRITE setAutoLockTimeout NOTIFY autoLockTimeoutChanged)
 private:
     static Settings* _instance;
     bool _searchInDeleted;
@@ -40,6 +44,7 @@ private:
     bool _trackRecentDb;
     QString _recentDbPath;
     QString _recentKeyFilePath;
+    int _autoLockTimeout;
     Settings(QObject* parent = 0);
 
     // Matching from index to actual timeout values
@@ -61,18 +66,21 @@ public:
     bool isTrackRecentDb() const { return _trackRecentDb; }
     QString getRecentDbPath() const { return _recentDbPath; }
     QString getRecentKeyFilePath() const { return _recentKeyFilePath; }
+    int getAutoLockTimeout() const { return _autoLockTimeout; }
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
     void setClipboardTimeoutIndex(int index);
     void setTrackRecentDb(bool track);
     void setRecentDbPath(const QString& path);
     void setRecentKeyFilePath(const QString& path);
+    void setAutoLockTimeout(int timeout);
 signals:
     void searchInDeletedChanged(bool);
     void clipboardTimeoutIndexChanged(int);
     void trackRecentDbChanged(bool);
     void recentDbPathChanged(QString);
     void recentKeyFilePathChanged(QString);
+    void autoLockTimeoutChanged(int);
 };
 
 #endif /* SETTINGS_H_ */
