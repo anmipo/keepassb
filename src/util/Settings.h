@@ -21,11 +21,25 @@ class Settings: public QObject {
      * See also: getClipboardTimeoutSeconds() returns the corresponding time.
      */
     Q_PROPERTY(int clipboardTimeoutIndex READ getClipboardTimeoutIndex WRITE setClipboardTimeoutIndex NOTIFY clipboardTimeoutIndexChanged)
-
+    /**
+     * Flag indicating whether th last opened DB path should be remembered
+     */
+    Q_PROPERTY(bool trackRecentDb READ isTrackRecentDb WRITE setTrackRecentDb NOTIFY trackRecentDbChanged);
+    /**
+     * Previously opened database file path
+     */
+    Q_PROPERTY(QString recentDbPath READ getRecentDbPath WRITE setRecentDbPath NOTIFY recentDbPathChanged);
+    /**
+     * Previously used key file path
+     */
+    Q_PROPERTY(QString recentKeyFilePath READ getRecentKeyFilePath WRITE setRecentKeyFilePath NOTIFY recentKeyFilePathChanged);
 private:
     static Settings* _instance;
     bool _searchInDeleted;
     int _clipboardTimeoutIndex;
+    bool _trackRecentDb;
+    QString _recentDbPath;
+    QString _recentKeyFilePath;
     Settings(QObject* parent = 0);
 
     // Matching from index to actual timeout values
@@ -44,12 +58,21 @@ public:
     // property accessors
     bool isSearchInDeleted() const { return _searchInDeleted; }
     int getClipboardTimeoutIndex() const { return _clipboardTimeoutIndex; }
+    bool isTrackRecentDb() const { return _trackRecentDb; }
+    QString getRecentDbPath() const { return _recentDbPath; }
+    QString getRecentKeyFilePath() const { return _recentKeyFilePath; }
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
     void setClipboardTimeoutIndex(int index);
+    void setTrackRecentDb(bool track);
+    void setRecentDbPath(const QString& path);
+    void setRecentKeyFilePath(const QString& path);
 signals:
     void searchInDeletedChanged(bool);
     void clipboardTimeoutIndexChanged(int);
+    void trackRecentDbChanged(bool);
+    void recentDbPathChanged(QString);
+    void recentKeyFilePathChanged(QString);
 };
 
 #endif /* SETTINGS_H_ */

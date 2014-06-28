@@ -24,9 +24,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="45"/>
-        <source>Special thanks to Dominik Reichl, the author of KeePass.
-Some icons are from free samples from Linecons Icon Set (Smashing Magazine release) and GetOtherCircles.com.</source>
+        <location filename="../assets/AboutPage.qml" line="44"/>
+        <source>Thanks to Dominik Reichl, the author of KeePass.
+Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, which helped me to understand the KeePass2 format.
+Some icons are from the free samples from &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;GetOtherCircles.com&lt;/a&gt; by LuboЕЎ Volkov.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -173,58 +174,77 @@
 <context>
     <name>UnlockDbPage</name>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="43"/>
-        <source>KeePassB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="55"/>
-        <source>Database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="75"/>
-        <source>Browse for database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="86"/>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="98"/>
-        <source>Enter password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="106"/>
-        <source>Choose file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="127"/>
-        <source>Browse for key file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="160"/>
+        <location filename="../assets/UnlockDbPage.qml" line="23"/>
+        <location filename="../assets/UnlockDbPage.qml" line="195"/>
         <source>Choose database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="169"/>
+        <location filename="../assets/UnlockDbPage.qml" line="34"/>
+        <source>Choose a key file (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="59"/>
+        <source>KeePassB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="83"/>
+        <source>Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="100"/>
+        <source>Browse for database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="112"/>
+        <source>Password and key file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="123"/>
+        <source>Enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="146"/>
+        <source>Browse for key file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="156"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="162"/>
+        <source>Remember selected files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="204"/>
         <source>Choose key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="180"/>
+        <location filename="../assets/UnlockDbPage.qml" line="218"/>
         <source>Decrypting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="189"/>
+        <location filename="../assets/UnlockDbPage.qml" line="227"/>
         <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UnlockDbPage2</name>
+    <message>
+        <location filename="../assets/UnlockDbPage2.qml" line="29"/>
+        <source>Key file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -353,12 +373,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="54"/>
+        <location filename="../assets/main.qml" line="58"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="57"/>
+        <location filename="../assets/main.qml" line="61"/>
         <source>Clipboard cleared</source>
         <translation type="unfinished"></translation>
     </message>

@@ -11,14 +11,30 @@ import org.keepassb 1.0
 Page {
     // emmitted when a DB is successfully unlocked
     signal databaseUnlocked()
-    property string dbFilePath;
-    property string keyFilePath;
-        
+    property string dbFilePath: "_"
+    property string keyFilePath: "_"
+
     onDbFilePathChanged: {
-        dbFileEdit.text = prettifyFilePath(dbFilePath); // human-friendly path         
+        if (dbFilePath.length > 0) {
+            dbFileField.textStyle.fontStyle = FontStyle.Default;
+            dbFileField.text = prettifyFilePath(dbFilePath); // human-friendly path
+        } else {
+            dbFileField.textStyle.fontStyle = FontStyle.Italic;
+            dbFileField.text = qsTr("Choose database")
+        }
+        if (rememberRecent.checked)
+            appSettings.recentDbPath = dbFilePath;
     }
     onKeyFilePathChanged: {
-        keyFileEdit.text = prettifyFilePath(keyFilePath); // human-friendly path
+        if (keyFilePath.length > 0) {
+            keyFileField.textStyle.fontStyle = FontStyle.Default;
+            keyFileField.text = prettifyFilePath(keyFilePath); // human-friendly path
+        } else {
+            keyFileField.textStyle.fontStyle = FontStyle.Italic;
+            keyFileField.text = qsTr("Choose a key file (optional)");
+        }
+        if (rememberRecent.checked)
+            appSettings.recentKeyFilePath = keyFilePath;
     }
 
     function showErrorToast(message, errorCode) {
@@ -41,32 +57,41 @@ Page {
     
     titleBar: TitleBar {
         title: qsTr("KeePassB") + Retranslate.onLocaleOrLanguageChanged
+        visibility: ChromeVisibility.Default
     }
-    
+
+    function applyTrackRecentDb(track) {
+        rememberRecent.checked = track;
+        if (track) {
+            appSettings.recentDbPath = dbFilePath;
+            appSettings.recentKeyFilePath = keyFilePath;
+        } else {
+            appSettings.recentDbPath = "";
+            appSettings.recentKeyFilePath = "";
+        }
+    }
+
     Container {
         layout: DockLayout {}
         leftPadding: 10
         rightPadding: 10
-        topPadding: 10
+        topPadding: 0
         bottomPadding: 10
         Container {
             verticalAlignment: VerticalAlignment.Top
-            Label {
-                text: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
-                textStyle {
-                    base: SystemDefaults.TextStyles.PrimaryText
-                }
+            Header {
+                title: qsTr("Database")
+                bottomMargin: 5
             }
             Container {
                 layout: StackLayout {
                     orientation: LayoutOrientation.LeftToRight
                 }
-	            TextField {
-	                id: dbFileEdit
-                    //text: "/shared/documents/kpb-test.kdbx"
-                    focusPolicy: FocusPolicy.None
+	            Label {
+	                id: dbFileField
 	                horizontalAlignment: HorizontalAlignment.Fill
 	                verticalAlignment: VerticalAlignment.Center
+	                multiline: true
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1
                     }
@@ -82,45 +107,39 @@ Page {
                     }
                 }
             }
-            Label {
-                text: qsTr("Password") + Retranslate.onLocaleOrLanguageChanged
-                textStyle {
-                    base: SystemDefaults.TextStyles.PrimaryText
-                }
+
+            Header {
+                title: qsTr("Password and key file")
+                topMargin: 20
+                bottomMargin: 5
             }
             Container {
                 layout: StackLayout {
                     orientation: LayoutOrientation.LeftToRight
                 }
-                bottomMargin: 20
+                bottomMargin: 5
                 TextField {
                     id: passwordEdit
                     hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
                     inputMode: TextFieldInputMode.Password
                     rightPadding: 50
-                    text: "qwe$t"
+                    text: ""
                     input.submitKey: SubmitKey.Done
                     input.onSubmitted: openDbAction.triggered()
-                }
-                Button {
-                    accessibility.name: qsTr("Choose file") + Retranslate.onLocaleOrLanguageChanged
-                    imageSource: "asset:///images/ic_browse.png"
-                    preferredWidth: 50
-                    horizontalAlignment: HorizontalAlignment.Right
-                    verticalAlignment: VerticalAlignment.Center
-                    opacity: 0
                 }
             }
             Container {
                 layout: StackLayout {
                     orientation: LayoutOrientation.LeftToRight
                 }
-                TextField {
-                    id: keyFileEdit
-                    //text: "/shared/documents/test.dat"
-                    focusPolicy: FocusPolicy.None
+                Label {
+                    id: keyFileField
+                    multiline: true
                     horizontalAlignment: HorizontalAlignment.Fill
                     verticalAlignment: VerticalAlignment.Center
+                    layoutProperties: StackLayoutProperties {
+                        spaceQuota: 1
+                    }
                 }
                 Button {
                     imageSource: "asset:///images/ic_browse.png"
@@ -133,6 +152,23 @@ Page {
                     }
                 }
             }
+            Header {
+                title: qsTr("Options")
+                topMargin: 20
+                bottomMargin: 5
+            }
+            CheckBox {
+                id: rememberRecent
+                text: qsTr("Remember selected files")
+                checked: false
+                onCheckedChanged: {
+                    appSettings.setTrackRecentDb(checked);
+                    applyTrackRecentDb(checked);
+                }
+            }
+//            CheckBox {
+//                text: qsTr("Enable quick unlock")
+//            }
 	    }
     }
 
@@ -149,7 +185,6 @@ Page {
         database.invalidPasswordOrKey.connect(function() {
                 showErrorToast("Invalid password or key file");
             });
-        openDbAction.triggered(); //TODO remove this debug line
     }
 
     attachedObjects: [
@@ -170,6 +205,9 @@ Page {
             onFileSelected: {
                 keyFilePath = selectedFiles[0]; // actual path
             } 
+            onCanceled: {
+                keyFilePath = ""; // the only UI way (so far) to clear the key path...
+            }
         },
 		SystemToast {
 			id: dbErrorToast
@@ -183,7 +221,7 @@ Page {
             cancelButton.label: ""
 		}
     ]
-    
+
     actions: ActionItem {
         id: openDbAction
         title: qsTr("Open") + Retranslate.onLocaleOrLanguageChanged

@@ -37,11 +37,11 @@ NavigationPane {
             }
         }
     }
-   
+
     firstPage: UnlockDbPage {
         id: unlockDbPage
-        dbFilePath: "/accounts/1000/shared/documents/kpb-test-gzip-nokey-1k-ext.kdbx"
-        keyFilePath: ""
+        // dbFilePath: - set in onCreationCompleted
+        // keyFilePath: - set in onCreationCompleted
         onDatabaseUnlocked: {
             var viewGroupPage = Qt.createComponent("ViewGroupPage.qml");
             var groupPage = viewGroupPage.createObject(null, {"group": database.rootGroup});
@@ -50,6 +50,10 @@ NavigationPane {
     }
     onCreationCompleted: {
         Qt.app = app;
+        unlockDbPage.dbFilePath = appSettings.recentDbPath;
+        unlockDbPage.keyFilePath = appSettings.recentKeyFilePath;
+        unlockDbPage.applyTrackRecentDb(appSettings.trackRecentDb);
+        
         app.clipboardUpdated.connect(function() {
                 showToast(qsTr("Copied to clipboard") + Retranslate.onLocaleOrLanguageChanged)
             });
