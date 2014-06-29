@@ -17,7 +17,7 @@ class Settings: public QObject {
      */
     Q_PROPERTY(bool searchInDeleted READ isSearchInDeleted WRITE setSearchInDeleted NOTIFY searchInDeletedChanged)
     /**
-     * Time in seconds until entries copied to clipboard are deleted from there. Negative means "never".
+     * Time in millis until entries copied to clipboard are deleted from there. Negative means "never".
      */
     Q_PROPERTY(int clipboardTimeout READ getClipboardTimeout WRITE setClipboardTimeout NOTIFY clipboardTimeoutChanged)
     /**
@@ -33,7 +33,7 @@ class Settings: public QObject {
      */
     Q_PROPERTY(QString recentKeyFilePath READ getRecentKeyFilePath WRITE setRecentKeyFilePath NOTIFY recentKeyFilePathChanged);
     /**
-     * Time in seconds until automatic DB lock. Negative value means no timeout.
+     * Time in millis until automatic DB lock. Negative value means no timeout.
      */
     Q_PROPERTY(int autoLockTimeout READ getAutoLockTimeout WRITE setAutoLockTimeout NOTIFY autoLockTimeoutChanged)
 private:

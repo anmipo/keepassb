@@ -25,7 +25,7 @@ public:
 	TimedClipboard(QObject* parent);
 	virtual ~TimedClipboard();
 	// negative timeout means no timeout
-	bool insertWithTimeout(const QString& text, const int timeoutSeconds);
+	bool insertWithTimeout(const QString& text, const long timeoutMillis);
 };
 
 #endif /* TIMEDCLIPBOARD_H_ */

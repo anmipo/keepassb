@@ -46,18 +46,18 @@ Page {
             }
             Option {
                 text: qsTr("after 10 seconds") + Retranslate.onLocaleOrLanguageChanged
-                value: 10;
-                selected: (appSettings.clipboardTimeout == 10)
+                value: 10 * 1000;
+                selected: (appSettings.clipboardTimeout == 10 * 1000)
             }
             Option {
                 text: qsTr("after 30 seconds") + Retranslate.onLocaleOrLanguageChanged
-                value: 30;
-                selected: (appSettings.clipboardTimeout == 30)
+                value: 30 * 1000;
+                selected: (appSettings.clipboardTimeout == 30 * 1000)
             }
             Option {
                 text: qsTr("after 1 minute") + Retranslate.onLocaleOrLanguageChanged
-                value: 60;
-                selected: (appSettings.clipboardTimeout == 60)
+                value: 60 * 1000;
+                selected: (appSettings.clipboardTimeout == 60 * 1000)
             }
         }
         DropDown {
@@ -80,28 +80,28 @@ Page {
             }
             Option {
                 text: qsTr("after 10 seconds") + Retranslate.onLocaleOrLanguageChanged
-                value: 10
-                selected: (appSettings.autoLockTimeout == 10)
+                value: 10 * 1000
+                selected: (appSettings.autoLockTimeout == 10 * 1000)
             }
             Option {
                 text: qsTr("after 20 seconds") + Retranslate.onLocaleOrLanguageChanged
-                value: 20
-                selected: (appSettings.autoLockTimeout == 20)
+                value: 20 * 1000
+                selected: (appSettings.autoLockTimeout == 20 * 1000)
             }
             Option {
                 text: qsTr("after 30 seconds") + Retranslate.onLocaleOrLanguageChanged
-                value: 30
-                selected: (appSettings.autoLockTimeout == 30)
+                value: 30 * 1000
+                selected: (appSettings.autoLockTimeout == 30 * 1000)
             }
             Option {
                 text: qsTr("after 1 minute") + Retranslate.onLocaleOrLanguageChanged
-                value: 60
-                selected: (appSettings.autoLockTimeout == 60)
+                value: 60 * 1000
+                selected: (appSettings.autoLockTimeout == 60 * 1000)
             }
             Option {
                 text: qsTr("after 5 minutes") + Retranslate.onLocaleOrLanguageChanged
-                value: 300
-                selected: (appSettings.autoLockTimeout == 300)
+                value: 300 * 1000
+                selected: (appSettings.autoLockTimeout == 300 * 1000)
             }
         }
     }

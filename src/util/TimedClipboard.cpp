@@ -28,12 +28,12 @@ void TimedClipboard::timeout() {
 	emit cleared();
 }
 
-bool TimedClipboard::insertWithTimeout(const QString& text, const int timeoutSeconds) {
+bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMillis) {
 	bool result = this->insert(DATA_TYPE, text.toUtf8());
 	if (result) {
 		emit inserted();
-		if (timeoutSeconds >= 0) {
-		    timer.start(timeoutSeconds * 1000);
+		if (timeoutMillis >= 0) {
+		    timer.start(timeoutMillis);
 		}
 	}
 	return result;
