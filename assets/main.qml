@@ -53,6 +53,7 @@ NavigationPane {
         // dbFilePath: - set in onCreationCompleted
         // keyFilePath: - set in onCreationCompleted
         onDatabaseUnlocked: {
+            app.restartWatchdog();
             var viewGroupPage = Qt.createComponent("ViewGroupPage.qml");
             var groupPage = viewGroupPage.createObject(null, {"group": database.rootGroup});
             naviPane.push(groupPage);
@@ -72,6 +73,7 @@ NavigationPane {
             });
         database.dbLocked.connect(function() {
                 console.log("dbLocked");
+                app.stopWatchdog();
                 naviPane.navigateTo(naviPane.firstPage);
             });
     }
@@ -112,6 +114,8 @@ NavigationPane {
             if (!database.locked) {
                 database.lock();
             }
+        } else {
+            app.restartWatchdog();
         }
     }
 }
