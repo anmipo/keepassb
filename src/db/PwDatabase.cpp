@@ -31,6 +31,7 @@ PwDatabase::~PwDatabase() {
 
 void PwDatabase::lock() {
     this->clear();
+    emit dbLocked();
 	qDebug("DB locked");
 }
 
@@ -107,6 +108,7 @@ int PwDatabase::search(const SearchParams& params, QList<PwEntry*> &searchResult
 
 PwDatabaseFacade::PwDatabaseFacade() : QObject(), _searchResultDataModel() {
     db = NULL;
+    _locked = true;
     _searchResultDataModel.setParent(this);
     registerQmlTypes();
 }
@@ -125,8 +127,16 @@ void PwDatabaseFacade::registerQmlTypes() {
     qmlRegisterType<PwExtraField>("org.keepassb", 1, 0, "PwExtraField");
 }
 
+void PwDatabaseFacade::setLocked(bool locked) {
+    if (_locked != locked) {
+        _locked = locked;
+        emit lockedChanged(locked);
+    }
+}
+
 void PwDatabaseFacade::lock() {
     clear();
+    emit dbLocked();
 }
 
 void PwDatabaseFacade::clear() {
@@ -136,6 +146,16 @@ void PwDatabaseFacade::clear() {
         delete db;
         db = NULL;
     }
+}
+
+void PwDatabaseFacade::onDbLocked() {
+    setLocked(true);
+    emit dbLocked();
+}
+
+void PwDatabaseFacade::onDbUnlocked() {
+    setLocked(false);
+    emit dbUnlocked();
 }
 
 void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password, const QString &keyFilePath) {
@@ -177,14 +197,14 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     }
 
     // Setup signal forwarding
-    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlocked()), this, SIGNAL(dbUnlocked()));
+    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLocked()), this, SLOT(onDbLocked()));
+    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlocked()), this, SLOT(onDbUnlocked()));
     QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlockError(QString, int)), this, SIGNAL(dbUnlockError(QString, int)));
     QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(invalidPasswordOrKey()), this, SIGNAL(invalidPasswordOrKey()));
     QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(unlockProgressChanged(int)), this, SIGNAL(unlockProgressChanged(int)));
 
     // Initiate the actual unlocking
     db->unlock(dbFileData, password, keyFileData);
-    qDebug() << "DB unlock done";
 }
 
 PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData) {

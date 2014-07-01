@@ -1,6 +1,10 @@
 import bb.cascades 1.2
 
 Page {
+    onCreationCompleted: {
+        app.restartWatchdog();
+    }
+
     titleBar: TitleBar {
         title: qsTr("About") + Retranslate.onLocaleOrLanguageChanged
     }

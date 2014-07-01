@@ -36,8 +36,9 @@ private:
     Settings* settings;
     PwDatabaseFacade* database;
     PwGroup* _parentGroup;
-
     TimedClipboard clipboard;
+    QTimer watchdog;
+
     QTranslator* m_pTranslator;
     bb::cascades::LocaleHandler* m_pLocaleHandler;
 
@@ -51,6 +52,10 @@ public:
     void showToast(const QString& msg);
 private slots:
     void onSystemLanguageChanged();
+    void onWatchdogTimeoutChanged(int timeout);
+public slots:
+    Q_INVOKABLE void restartWatchdog();
+    Q_INVOKABLE void stopWatchdog();
 signals:
     void clipboardUpdated();
     void clipboardCleared();

@@ -20,7 +20,7 @@ using namespace bb::cascades;
 using namespace bb::system;
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
-        QObject(app), clipboard(app) {
+        QObject(app), clipboard(app), watchdog() {
     // prepare the localization
     m_pTranslator = new QTranslator(this);
     m_pLocaleHandler = new LocaleHandler(this);
@@ -47,6 +47,11 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
     database = new PwDatabaseFacade();
     database->setParent(this);
+
+    watchdog.setSingleShot(true);
+    watchdog.setInterval(settings->getAutoLockTimeout());
+    Q_ASSERT(QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int))));
+    Q_ASSERT(QObject::connect(&watchdog, SIGNAL(timeout()), database, SLOT(lock())));
 
     initQml(app);
 }
@@ -81,6 +86,16 @@ void ApplicationUI::showToast(const QString& msg) {
     toast->setPosition(SystemUiPosition::MiddleCenter);
     toast->setBody(msg);
     toast->show();
+}
+
+void ApplicationUI::onWatchdogTimeoutChanged(int timeout) {
+    watchdog.setInterval(timeout);
+}
+void ApplicationUI::restartWatchdog() {
+    watchdog.start();
+}
+void ApplicationUI::stopWatchdog() {
+    watchdog.stop();
 }
 
 // copy given text to the clipboard, clear it after some time

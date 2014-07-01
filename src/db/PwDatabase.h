@@ -40,7 +40,7 @@ public:
     virtual void unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) = 0;
     // Clears the database.
     virtual void clear();
-    // Synonym for clear();
+    // Clears and locks the database.
     virtual void lock();
 
     /**
@@ -49,8 +49,11 @@ public:
     virtual int search(const SearchParams& params, QList<PwEntry*> &searchResult) const;
 
     PwGroup* getRootGroup();
-
 signals:
+    /**
+     * Emitted once the DB has been locked.
+     */
+    void dbLocked();
     /**
      * Emitted once the DB has been successfully unlocked.
      */
@@ -87,7 +90,9 @@ class PwDatabaseFacade: public QObject {
     Q_OBJECT
     Q_PROPERTY(PwGroup* rootGroup READ getRootGroup)
     Q_PROPERTY(PwSearchResultDataModel* searchResult READ getSearchResult NOTIFY searchResultChanged)
+    Q_PROPERTY(bool locked READ isLocked NOTIFY lockedChanged);
 private:
+    bool _locked;
     PwDatabase* db;
     PwSearchResultDataModel _searchResultDataModel;
 
@@ -98,35 +103,50 @@ private:
     // Registers DB-related types for use in QML
     void registerQmlTypes();
 
+    // Clears the current DB instance and search results, if any.
+    void clear();
+
+    void setLocked(bool locked);
+private slots:
+    // called whenever the contained DB locks/unlocks
+    void onDbUnlocked();
+    void onDbLocked();
 public:
     PwDatabaseFacade();
     virtual ~PwDatabaseFacade();
+
 
     /**
      * Initiates DB unlocking.
      * The progress and the result is communicated via appropriate signal.
      */
     Q_INVOKABLE void unlock(const QString &dbFilePath, const QString &password, const QString &keyFilePath);
-    Q_INVOKABLE void lock();
-    Q_INVOKABLE void clear();
 
+    // Property getters/setters
+    bool isLocked() const { return _locked; }
+    PwGroup* getRootGroup() const { return (db ? db->getRootGroup() : NULL); }
+    PwSearchResultDataModel* getSearchResult() { return &_searchResultDataModel; }
+
+public slots:
+    /**
+     * Locks/closes the current DB instance, if any.
+     */
+    Q_INVOKABLE void lock();
     /**
      * Finds entries which contain given query text, and publishes them via searchResult property.
      * Returns the number of found entries.
      */
     Q_INVOKABLE int search(const QString& query);
 
-    // Property getters/setters
-    PwGroup* getRootGroup() const { return (db ? db->getRootGroup() : NULL); }
-    PwSearchResultDataModel* getSearchResult() { return &_searchResultDataModel; }
-
 signals:
+    void dbLocked();
     void dbUnlocked();
     void dbUnlockError(const QString& message, const int errorCode);
     void fileOpenError(const QString& message);
     void invalidPasswordOrKey();
     void unlockProgressChanged(const int progressPercent);
     void searchResultChanged();
+    void lockedChanged(bool);
 };
 
 #endif /* PWDATABASE_H_ */

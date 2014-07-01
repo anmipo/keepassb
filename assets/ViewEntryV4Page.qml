@@ -56,6 +56,7 @@ Page {
     ]
     
     function setCurrentView(viewName) {
+        app.restartWatchdog();
         var newView;
         switch (viewName) {
             case "general": newView = viewEntryGeneral; break;

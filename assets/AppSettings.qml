@@ -5,6 +5,7 @@ Page {
         title: qsTr("Settings") + Retranslate.onLocaleOrLanguageChanged
     }
     onCreationCompleted: {
+        app.restartWatchdog();
         searchInDeleted.checked = appSettings.searchInDeleted;
         searchInDeleted.checkedChanged.connect(appSettings.setSearchInDeleted);
     }

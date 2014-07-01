@@ -36,6 +36,16 @@ NavigationPane {
                 naviPane.push(aboutPage);
             }
         }
+        actions: [
+            ActionItem {
+                title: qsTr("Lock database") + Retranslate.onLocaleOrLanguageChanged
+                imageSource: "asset:///images/ic_lock.png"
+                enabled: !database.locked
+                onTriggered: {
+                    database.lock();
+                }
+            }
+        ]
     }
 
     firstPage: UnlockDbPage {
@@ -59,6 +69,10 @@ NavigationPane {
             });
         app.clipboardCleared.connect(function() {
                 showToast(qsTr("Clipboard cleared") + Retranslate.onLocaleOrLanguageChanged)
+            });
+        database.dbLocked.connect(function() {
+                console.log("dbLocked");
+                naviPane.navigateTo(naviPane.firstPage);
             });
     }
     
@@ -95,7 +109,7 @@ NavigationPane {
         console.log("Navigation top: " + page.titleBar.title);
         if (page === firstPage) {
             console.log("We are back to start");
-            if (database) {
+            if (!database.locked) {
                 database.lock();
             }
         }

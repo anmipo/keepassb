@@ -8,6 +8,10 @@ import org.keepassb 1.0
 Page {
     property PwGroupV4 group
 
+    onCreationCompleted: {
+        app.restartWatchdog();
+    }
+
     titleBar: TitleBar { }
     
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
