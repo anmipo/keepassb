@@ -44,6 +44,9 @@ Page {
                 inputMode: TextFieldInputMode.Text
                 input.submitKey: SubmitKey.Search
                 input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
+                onTextChanging: {
+                    app.restartWatchdog();
+                }
                 input.onSubmitted: {
                     var query = searchField.text; 
                     searchField.visible = false;
