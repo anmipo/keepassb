@@ -1,12 +1,11 @@
 1
-173
+175
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
 images/cover.png
 images/ic_about.png
 images/ic_attach.png
-images/ic_browse.png
 images/ic_copy.png
 images/ic_copy_link.png
 images/ic_copy_password.png
@@ -26,10 +25,11 @@ main.qml
 ReadOnlyTextField.qml
 SearchResultsPage.qml
 UnlockDbPage.qml
-UnlockDbPage2.qml
 ViewEntryV4Page.qml
 ViewGroupPage.qml
+VisualStyle.bright/images/ic_browse.png
 VisualStyle.bright/images/ic_empty_group.png
+VisualStyle.bright/images/ic_lock.png
 VisualStyle.bright/images/password_hidden.png
 VisualStyle.bright/images/password_visible.png
 VisualStyle.bright/pwicons/0.png
@@ -101,7 +101,9 @@ VisualStyle.bright/pwicons/68.png
 VisualStyle.bright/pwicons/7.png
 VisualStyle.bright/pwicons/8.png
 VisualStyle.bright/pwicons/9.png
+VisualStyle.dark/images/ic_browse.png
 VisualStyle.dark/images/ic_empty_group.png
+VisualStyle.dark/images/ic_lock.png
 VisualStyle.dark/images/password_hidden.png
 VisualStyle.dark/images/password_visible.png
 VisualStyle.dark/pwicons/0.png
