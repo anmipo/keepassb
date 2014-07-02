@@ -59,6 +59,7 @@ NavigationPane {
             naviPane.push(groupPage);
         }
     }
+          
     onCreationCompleted: {
         Qt.app = app;
         unlockDbPage.dbFilePath = appSettings.recentDbPath;
@@ -107,6 +108,13 @@ NavigationPane {
         console.log("page destroyed");
     }
 
+    onPushTransitionEnded: {
+        // auto focusing on UnlockDbPage's text field requires this weird workaround
+        if (page == unlockDbPage) {
+            unlockDbPage.focusOnPassword();
+        }
+    }
+
     onTopChanged: {
         console.log("Navigation top: " + page.titleBar.title);
         if (page === firstPage) {
@@ -114,6 +122,7 @@ NavigationPane {
             if (!database.locked) {
                 database.lock();
             }
+            unlockDbPage.focusOnPassword();
         } else {
             app.restartWatchdog();
         }

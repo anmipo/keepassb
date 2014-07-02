@@ -58,7 +58,11 @@ Page {
     function prettifyFilePath(path) {
         return path.split('/').slice(4).join('/');
     }
-    
+
+    function focusOnPassword() {
+        passwordEdit.requestFocus();
+    }   
+     
     titleBar: TitleBar {
         title: qsTr("KeePassB") + Retranslate.onLocaleOrLanguageChanged
         visibility: ChromeVisibility.Default
@@ -188,6 +192,7 @@ Page {
             });
         database.invalidPasswordOrKey.connect(function() {
                 showErrorToast("Invalid password or key file");
+                focusOnPassword();
             });
     }
 
