@@ -135,8 +135,10 @@ void PwDatabaseFacade::setLocked(bool locked) {
 }
 
 void PwDatabaseFacade::lock() {
-    clear();
-    emit dbLocked();
+    if (!isLocked()) {
+        clear();
+        emit dbLocked();
+    }
 }
 
 void PwDatabaseFacade::clear() {

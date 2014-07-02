@@ -75,7 +75,7 @@ Page {
                 selected: (appSettings.autoLockTimeout == -1)
             }
             Option {
-                text: qsTr("Immediately") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("when minimized") + Retranslate.onLocaleOrLanguageChanged
                 value: 0
                 selected: (appSettings.autoLockTimeout == 0)
             }

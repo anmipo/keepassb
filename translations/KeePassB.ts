@@ -4,34 +4,34 @@
 <context>
     <name>AboutPage</name>
     <message>
-        <location filename="../assets/AboutPage.qml" line="5"/>
+        <location filename="../assets/AboutPage.qml" line="9"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="23"/>
+        <location filename="../assets/AboutPage.qml" line="27"/>
         <source>KeePassB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="28"/>
+        <location filename="../assets/AboutPage.qml" line="32"/>
         <source>Version 2.0 alpha</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="38"/>
+        <location filename="../assets/AboutPage.qml" line="42"/>
         <source>Credits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="44"/>
+        <location filename="../assets/AboutPage.qml" line="48"/>
         <source>Thanks to Dominik Reichl, the author of KeePass.
 Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, which helped me to understand the KeePass2 format.
 Some icons are from the free samples from &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;GetOtherCircles.com&lt;/a&gt; by LuboЕЎ Volkov.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="33"/>
+        <location filename="../assets/AboutPage.qml" line="37"/>
         <source>В©2014 Andrei Popleteev</source>
         <translation type="unfinished"></translation>
     </message>
@@ -44,56 +44,56 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="25"/>
+        <location filename="../assets/AppSettings.qml" line="24"/>
         <source>Search in Recycle Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="38"/>
+        <location filename="../assets/AppSettings.qml" line="37"/>
         <source>Clear clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="41"/>
-        <location filename="../assets/AppSettings.qml" line="66"/>
+        <location filename="../assets/AppSettings.qml" line="44"/>
+        <location filename="../assets/AppSettings.qml" line="73"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="45"/>
-        <location filename="../assets/AppSettings.qml" line="76"/>
+        <location filename="../assets/AppSettings.qml" line="49"/>
+        <location filename="../assets/AppSettings.qml" line="83"/>
         <source>after 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="49"/>
-        <location filename="../assets/AppSettings.qml" line="86"/>
+        <location filename="../assets/AppSettings.qml" line="54"/>
+        <location filename="../assets/AppSettings.qml" line="93"/>
         <source>after 30 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="53"/>
-        <location filename="../assets/AppSettings.qml" line="91"/>
+        <location filename="../assets/AppSettings.qml" line="59"/>
+        <location filename="../assets/AppSettings.qml" line="98"/>
         <source>after 1 minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="59"/>
+        <location filename="../assets/AppSettings.qml" line="66"/>
         <source>Lock database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="71"/>
-        <source>Immediately</source>
+        <location filename="../assets/AppSettings.qml" line="78"/>
+        <source>when minimized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="81"/>
+        <location filename="../assets/AppSettings.qml" line="88"/>
         <source>after 20 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="96"/>
+        <location filename="../assets/AppSettings.qml" line="103"/>
         <source>after 5 minutes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,17 +109,17 @@
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="149"/>
+        <location filename="../src/db/PwDatabase.cpp" line="171"/>
         <source>DB file not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="162"/>
+        <location filename="../src/db/PwDatabase.cpp" line="184"/>
         <source>Cannot open key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="175"/>
+        <location filename="../src/db/PwDatabase.cpp" line="197"/>
         <source>Unknown DB format</source>
         <translation type="unfinished"></translation>
     </message>
@@ -185,12 +185,12 @@
 <context>
     <name>SearchResultsPage</name>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="8"/>
+        <location filename="../assets/SearchResultsPage.qml" line="12"/>
         <source>Search results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="46"/>
+        <location filename="../assets/SearchResultsPage.qml" line="50"/>
         <source>Nothing found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -272,7 +272,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="125"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="126"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -292,42 +292,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="99"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="100"/>
         <source>User name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="104"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="105"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="112"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="113"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="150"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="151"/>
         <source>(to be implemented)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="136"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="137"/>
         <source>Extra fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="159"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="160"/>
         <source>Entry history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="192"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="193"/>
         <source>Last Modification Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="179"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="180"/>
         <source>Entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -337,17 +337,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="188"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="189"/>
         <source>Creation Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="196"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="197"/>
         <source>Last Access Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="200"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="201"/>
         <source>Expiry Date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -355,28 +355,28 @@
 <context>
     <name>ViewGroupPage</name>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="16"/>
-        <location filename="../assets/ViewGroupPage.qml" line="38"/>
+        <location filename="../assets/ViewGroupPage.qml" line="20"/>
+        <location filename="../assets/ViewGroupPage.qml" line="42"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="60"/>
+        <location filename="../assets/ViewGroupPage.qml" line="67"/>
         <source>Password list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="84"/>
+        <location filename="../assets/ViewGroupPage.qml" line="91"/>
         <source>Entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="94"/>
+        <location filename="../assets/ViewGroupPage.qml" line="101"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="116"/>
+        <location filename="../assets/ViewGroupPage.qml" line="123"/>
         <source>This group is empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -389,12 +389,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="58"/>
+        <location filename="../assets/main.qml" line="41"/>
+        <source>Lock database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="69"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="61"/>
+        <location filename="../assets/main.qml" line="72"/>
         <source>Clipboard cleared</source>
         <translation type="unfinished"></translation>
     </message>
