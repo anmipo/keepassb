@@ -282,6 +282,10 @@ const QByteArray Salsa20::SIGMA = QByteArray("\x65\x78\x70\x61\x6e\x64\x20\x33\x
 
 Salsa20::Salsa20() : block(BLOCK_SIZE, 0) {
     initialized = false;
+    // The following two are initialized here only to suppres the compiler warning.
+    // The actual initialization is in init().
+    counter = 0L;
+    posInBlock = BLOCK_SIZE;
 }
 
 Salsa20::~Salsa20() {
