@@ -16,6 +16,7 @@
    limitations under the License.
 
 -->
+
 <qnx xmlns="http://www.qnx.com/schemas/application/1.0">
 
 <!-- BlackBerry 10 application descriptor file.
@@ -46,7 +47,7 @@
 
     <!-- Description, displayed in the BlackBerry 10 application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <description>KeePassB</description>
+    <description>KeePassB is a native BlackBerry 10 implementation of KeePass 2 password manager.</description>
 
     <!-- Copyright information. Optional. -->
     <copyright>©2014 Andrei Popleteev</copyright>
@@ -74,24 +75,35 @@
 
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
     <authorId>gYAAgE2X4TfqzKRifriMxvfT2wc</authorId>
-
+    
+    <icon>
+       <image>appicon.png</image>
+       <image>appicon90.png</image>
+       <image>appicon96.png</image>
+       <image>appicon110.png</image>
+       <image>appicon144.png</image>
+    </icon>
+    <category>core.media</category>
     <initialWindow>
         <autoOrients>true</autoOrients>
         <systemChrome>none</systemChrome>
     </initialWindow>
-
-    <!--  The icon for the application, which should be 114x114. -->
-    <icon>
-        <image>icon.png</image>
-    </icon>
-
-    <asset path="icon.png">icon.png</asset>
-    <asset path="assets">assets</asset>
+    
+    <!--  App icons for different screen resolutions. -->
+    
 
     <!-- Locale support -->
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
+    
+    <!-- App assets -->
+    <asset path="assets">assets</asset>
+    <asset path="appicon.png">appicon.png</asset>
+    <asset path="appicon90.png">appicon90.png</asset>
+    <asset path="appicon96.png">appicon96.png</asset>
+    <asset path="appicon110.png">appicon110.png</asset>
+    <asset path="appicon144.png">appicon144.png</asset>
 
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
