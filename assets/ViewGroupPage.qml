@@ -47,6 +47,12 @@ Page {
                 onTextChanging: {
                     app.restartWatchdog();
                 }
+                onFocusedChanged: {
+                    if (!focused) {
+                        visible = false;
+                        text = "";
+                    }
+                }
                 input.onSubmitted: {
                     var query = searchField.text; 
                     searchField.visible = false;
