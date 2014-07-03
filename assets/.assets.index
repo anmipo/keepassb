@@ -1,5 +1,5 @@
 1
-175
+174
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -19,7 +19,6 @@ images/ic_save.png
 images/ic_search.png
 images/ic_unlock.png
 images/ic_view_details.png
-images/warning.png
 LabelTextButton.qml
 main.qml
 ReadOnlyTextField.qml

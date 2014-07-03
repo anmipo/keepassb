@@ -220,7 +220,6 @@ Page {
         },
 		SystemToast {
 			id: dbErrorToast
-			icon: "asset:///images/warning.png"
 		},
 		SystemProgressDialog {
             id: unlockProgressDialog
