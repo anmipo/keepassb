@@ -33,9 +33,9 @@ Page {
             onTriggered: setCurrentView("extra")
         },
         ActionItem {
-            title: qsTr("Files") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Files (%1)").arg(data.attachmentCount) + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_attach.png"
-            enabled: false // TODO implement this
+            enabled: (data.attachmentCount > 0)
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: setCurrentView("files")
         },
@@ -147,11 +147,24 @@ Page {
         },
         Container {
             id: viewEntryFiles
-            Label {
-                text: qsTr("(to be implemented)") + Retranslate.onLocaleOrLanguageChanged
-            }
             ListView {
                 id: entryFileList
+                scrollRole: ScrollRole.Main
+                dataModel: data.getAttachmentsDataModel()
+                accessibility.name: qsTr("Attachments") + Retranslate.onLocaleOrLanguageChanged
+                listItemComponents: [
+                    ListItemComponent {
+                        StandardListItem {
+                            title: ListItemData.name
+                            description: ListItemData.size
+                        }
+                    }
+                ]
+                onTriggered: {
+                    var attachment = dataModel.data(indexPath);
+                    // TODO implement save/open dialog
+                    console.log("Attachment name=" + attachment.name + ", size: " + attachment.size);
+                }
             }
         },
         Container {

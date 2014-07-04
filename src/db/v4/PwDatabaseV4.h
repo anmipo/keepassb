@@ -90,11 +90,6 @@ public:
 
 };
 
-struct PwBinaryV4 {
-    bool isCompressed;
-    QByteArray data;
-};
-
 /**
  * Class for handling KeePass 2 databases.
  */
@@ -172,6 +167,8 @@ private:
     ErrorCode readEntryString(QXmlStreamReader& xml, PwEntryV4& entry);
     // Loads the value of a "String" field of an entry; decrypts protected values.
     ErrorCode readEntryStringValue(QXmlStreamReader& xml, QString& value);
+    // Loads an entry's binary attachment ("Binary" field of an entry).
+    ErrorCode readEntryAttachment(QXmlStreamReader& xml, PwAttachment& attachment);
 
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;

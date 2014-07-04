@@ -14,6 +14,9 @@
 #include <bb/cascades/DataModel>
 #include <bb/cascades/QListDataModel>
 
+/**
+ * Extra (string) field of a V4 database entry
+ */
 class PwExtraField: public QObject {
     Q_OBJECT
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
@@ -34,16 +37,61 @@ signals:
     void valueChanged(QString value);
 };
 
+/**
+ * Binary data as stored in DB metadata
+ */
+struct PwBinaryV4 {
+    bool isCompressed;
+    QByteArray data;
+};
+
+/**
+ * Binary attachment of a V4 database entry
+ */
+class PwAttachment: public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
+    Q_PROPERTY(int size READ getSize NOTIFY sizeChanged)
+private:
+    QString name;
+    int size;
+    PwBinaryV4* content; // should be owned by PwDatabaseV4 instance
+public:
+    PwAttachment();
+    virtual ~PwAttachment();
+
+    /**
+     * Stores attachment contents to the specified file (creates or overwrites as necessary)
+     */
+    Q_INVOKABLE bool saveContentToFile(const QString& fileName);
+
+    // property accessors
+    void setName(const QString& name);
+    void setSize(int size);
+    void setContent(PwBinaryV4* content);
+    QString getName() const { return name; }
+    int getSize() const { return size; }
+signals:
+    void nameChanged(QString);
+    void sizeChanged(int);
+};
+
+
+class PwDatabaseV4;
+
+/**
+ * Database V4 entry
+ */
 class PwEntryV4: public PwEntry {
     Q_OBJECT
-//    Q_PROPERTY(DataModel extraFieldsDataModel READ getExtraFieldsDataModel NOTIFY extraFieldsDataModelChanged);
-//    Q_PROPERTY(DataModel historyDataModel READ getHistoryDataModel NOTIFY historyDataModelChanged);
     Q_PROPERTY(int extraSize READ getExtraSize NOTIFY extraSizeChanged)
     Q_PROPERTY(int historySize READ getHistorySize NOTIFY historySizeChanged)
+    Q_PROPERTY(int attachmentCount READ getAttachmentCount NOTIFY attachmentCountChanged)
 private:
     QMap<QString, QString> fields;
     bb::cascades::QListDataModel<PwExtraField*> _extraFieldsDataModel;
     bb::cascades::QListDataModel<PwEntryV4*> _historyDataModel;
+    bb::cascades::QListDataModel<PwAttachment*> _attachmentsDataModel;
 
     bool isStandardField(const QString& name) const;
 
@@ -54,6 +102,7 @@ public:
     virtual void clear();
 
     void addHistoryEntry(PwEntryV4* historyEntry);
+    void addAttachment(PwAttachment* attachment);
 
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
@@ -65,6 +114,7 @@ public:
 
     Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel() { return &_extraFieldsDataModel; }
     Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel() { return &_historyDataModel; }
+    Q_INVOKABLE bb::cascades::DataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 
     // property accessors
     virtual QString getTitle() const;
@@ -79,15 +129,17 @@ public:
     virtual void setNotes(const QString& notes);
     int getHistorySize() { return _historyDataModel.size(); }
     int getExtraSize() { return _extraFieldsDataModel.size(); }
+    int getAttachmentCount() { return _attachmentsDataModel.size(); }
 
 signals:
-    void extraFieldsDataModelChanged();
-    void historyDataModelChanged();
+    // FIXME these signals are never emitted, clean up
     void historySizeChanged();
     void extraSizeChanged();
+    void attachmentCountChanged();
 };
 
 Q_DECLARE_METATYPE(PwExtraField*);
+Q_DECLARE_METATYPE(PwAttachment*);
 Q_DECLARE_METATYPE(PwEntryV4*);
 
 #endif /* PWENTRYV4_H_ */

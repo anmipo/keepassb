@@ -41,6 +41,7 @@ const QString XML_BINARY = QString("Binary");
 const QString XML_BINARY_ID = QString("ID");
 const QString XML_BINARY_COMPRESSED = QString("Compressed");
 const QString XML_RECYCLE_BIN_UUID = QString("RecycleBinUUID");
+const QString XML_REF = QString("Ref");
 
 const QString XML_TIMES = QString("Times");
 const QString XML_LAST_MODIFICATION_TIME = QString("LastModificationTime");
@@ -721,6 +722,11 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, Pw
                     return ICON_ID_IS_NOT_INTEGER;
             } else if (XML_STRING == tagName) {
                 err = readEntryString(xml, entry);
+            } else if (XML_BINARY == tagName) {
+                PwAttachment* attachment = new PwAttachment();
+                attachment->setParent(&entry);
+                err = readEntryAttachment(xml, *attachment);
+                entry.addAttachment(attachment);
             } else if (XML_TIMES == tagName) {
                 err = readEntryTimes(xml, entry);
             } else if (XML_HISTORY == tagName) {
@@ -868,6 +874,27 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryStringValue(QXmlStreamReader& xml
         value = xml.readElementText();
     }
 
+    return SUCCESS;
+}
+
+PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml, PwAttachment& attachment) {
+    Q_ASSERT(XML_BINARY == xml.name());
+
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_BINARY))) {
+        xml.readNext();
+        tagName = xml.name();
+        if (xml.isStartElement()) {
+            if (tagName == XML_KEY) {
+                QString fileName = xml.readElementText();
+                attachment.setName(fileName);
+            } else if (tagName == XML_VALUE) {
+                QStringRef binaryRef = xml.attributes().value(XML_REF);
+                PwBinaryV4* binary = this->binaries.value(binaryRef.toString());
+                attachment.setContent(binary);
+            }
+        }
+    }
     return SUCCESS;
 }
 

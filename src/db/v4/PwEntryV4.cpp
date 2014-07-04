@@ -26,14 +26,51 @@ PwExtraField::PwExtraField(const QString& name, const QString& value) : QObject(
 }
 
 /**************************/
+PwAttachment::PwAttachment() :
+        name(""),
+        size(0),
+        content(NULL) {
+
+}
+
+PwAttachment::~PwAttachment() {
+    // nothing to do here
+}
+
+bool PwAttachment::saveContentToFile(const QString& fileName) {
+    qDebug() << "Saving attachment to file: " << fileName;
+    // TODO implement file saving
+}
+
+void PwAttachment::setName(const QString& name) {
+    if (this->name != name) {
+        this->name = name;
+        emit nameChanged(name);
+    }
+}
+
+void PwAttachment::setSize(int size) {
+    if (this->size != size) {
+        this->size = size;
+        emit sizeChanged(size);
+    }
+}
+
+void PwAttachment::setContent(PwBinaryV4* content) {
+    // The content is managed by PwDatabaseV4
+    this->content = content;
+}
+/**************************/
 
 PwEntryV4::PwEntryV4() :
         PwEntry(),
         fields(),
         _extraFieldsDataModel(),
-        _historyDataModel() {
+        _historyDataModel(),
+        _attachmentsDataModel() {
     _extraFieldsDataModel.setParent(this);
     _historyDataModel.setParent(this);
+    _attachmentsDataModel.setParent(this);
 }
 
 PwEntryV4::~PwEntryV4() {
@@ -43,6 +80,7 @@ PwEntryV4::~PwEntryV4() {
 void PwEntryV4::clear() {
     _historyDataModel.clear();
     _extraFieldsDataModel.clear();
+    _attachmentsDataModel.clear();
     fields.clear();
 }
 
@@ -60,6 +98,10 @@ void PwEntryV4::setField(const QString& name, const QString& value) {
 
 void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
     _historyDataModel.append(historyEntry); // implicitly takes ownership
+}
+
+void PwEntryV4::addAttachment(PwAttachment* attachment) {
+    _attachmentsDataModel.append(attachment); // implicitly takes ownership
 }
 
 bool PwEntryV4::matchesQuery(const QString& query) const {
