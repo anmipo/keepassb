@@ -1,5 +1,5 @@
 1
-174
+175
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -24,6 +24,7 @@ main.qml
 ReadOnlyTextField.qml
 SearchResultsPage.qml
 UnlockDbPage.qml
+ViewEntryV4Files.qml
 ViewEntryV4Page.qml
 ViewGroupPage.qml
 VisualStyle.bright/images/ic_browse.png
