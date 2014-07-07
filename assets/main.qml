@@ -50,6 +50,7 @@ NavigationPane {
 
     firstPage: UnlockDbPage {
         id: unlockDbPage
+        objectName: "unlockDbPage"
         // dbFilePath: - set in onCreationCompleted
         // keyFilePath: - set in onCreationCompleted
         onDatabaseUnlocked: {

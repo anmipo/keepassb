@@ -76,6 +76,7 @@
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
     <authorId>gYAAgE2X4TfqzKRifriMxvfT2wc</authorId>
     
+    <!--  App icons for different screen resolutions. -->
     <icon>
        <image>appicon.png</image>
        <image>appicon90.png</image>
@@ -89,9 +90,6 @@
         <systemChrome>none</systemChrome>
     </initialWindow>
     
-    <!--  App icons for different screen resolutions. -->
-    
-
     <!-- Locale support -->
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
@@ -110,4 +108,23 @@
     <permission>access_shared</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
 
+	<!-- Invocation -->
+	<invoke-target id="org.keepassb.database.open">
+		<invoke-target-type>application</invoke-target-type>
+		<invoke-target-name>KeePassB</invoke-target-name>
+		<icon>
+			<image>appicon.png</image>
+			<image>appicon90.png</image>
+			<image>appicon96.png</image>
+			<image>appicon110.png</image>
+			<image>appicon144.png</image>
+		</icon>
+		<filter>
+			<action>bb.action.VIEW</action>
+			<action>bb.action.OPEN</action>
+			<mime-type>*</mime-type>
+			<property var="uris" value="file://"/>
+			<property var="exts" value="kdbx"/>
+		</filter>
+	</invoke-target>
 </qnx>

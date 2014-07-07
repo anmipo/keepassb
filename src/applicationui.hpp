@@ -28,6 +28,7 @@ class ApplicationUI : public QObject
 {
     Q_OBJECT
 private:
+    bb::cascades::AbstractPane* qmlRoot;
     Settings* settings;
     PwDatabaseFacade* database;
     PwGroup* _parentGroup;
@@ -55,6 +56,7 @@ private slots:
 public slots:
     Q_INVOKABLE void restartWatchdog();
     Q_INVOKABLE void stopWatchdog();
+    void onInvoke(const bb::system::InvokeRequest& request);
 signals:
     void clipboardUpdated();
     void clipboardCleared();

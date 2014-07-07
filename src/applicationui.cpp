@@ -8,7 +8,6 @@
 #include "applicationui.hpp"
 
 #include <bb/cascades/Application>
-#include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
 #include <bb/system/SystemToast>
@@ -20,11 +19,14 @@
 using namespace bb::cascades;
 using namespace bb::system;
 
+const QString OPEN_DB_ACTION = "org.keepassb.database.open";
+
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         QObject(app), clipboard(app), watchdog() {
-    // prepare the localization
+
     m_pTranslator = new QTranslator(this);
     m_pLocaleHandler = new LocaleHandler(this);
+    invokeManager = new InvokeManager(this);
 
     Q_ASSERT(QObject::connect(&clipboard, SIGNAL(inserted()), this, SIGNAL(clipboardUpdated())));
     Q_ASSERT(QObject::connect(&clipboard, SIGNAL(cleared()), this, SIGNAL(clipboardCleared())));
@@ -42,13 +44,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     settings = Settings::instance();
     settings->setParent(app);
 
-    Application::instance()->setCover(new ActiveFrame());
-    Q_ASSERT(QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())));
-
     CryptoManager::instance()->init();
 
-    invokeManager = new InvokeManager();
-    invokeManager->setParent(this);
+    Application::instance()->setCover(new ActiveFrame());
+    Q_ASSERT(QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())));
 
     database = new PwDatabaseFacade();
     database->setParent(this);
@@ -62,18 +61,33 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 }
 
 void ApplicationUI::initQml(bb::cascades::Application *app) {
-    // Create scene document from main.qml asset, the parent is set
-    // to ensure the document gets destroyed properly at shut down.
-    QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
+    QmlDocument* qml = QmlDocument::create("asset:///main.qml").parent(this);
     qml->setContextProperty("app", this);
     qml->setContextProperty("appSettings", this->settings);
     qml->setContextProperty("database", this->database);
 
     // Create root object for the UI
-    AbstractPane *root = qml->createRootObject<AbstractPane>();
+    qmlRoot = qml->createRootObject<AbstractPane>();
 
     // Set created root object as the application scene
-    app->setScene(root);
+    app->setScene(qmlRoot);
+}
+
+// Handles invocation from other apps.
+// Expects a database path in request URI.
+void ApplicationUI::onInvoke(const InvokeRequest& request) {
+    QUrl uri = request.uri();
+
+    if (uri.isEmpty())
+        return;
+
+    QString filePath = uri.toLocalFile();
+    qDebug() << "filePath: " << filePath;
+    if (!filePath.isEmpty()) {
+        // write the invocation path to the "Database path" property of the "Unlock DB" page
+        QObject* unlockDbPage = qmlRoot->findChild<QObject*>("unlockDbPage");
+        QDeclarativeProperty(unlockDbPage, "dbFilePath").write(filePath);
+    }
 }
 
 void ApplicationUI::onSystemLanguageChanged() {

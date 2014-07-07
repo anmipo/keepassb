@@ -30,7 +30,13 @@ Q_DECL_EXPORT int main(int argc, char **argv)
 
     // Create the Application UI object, this is where the main.qml file
     // is loaded and the application scene is set.
-    new ApplicationUI(&app);
+    ApplicationUI* appUi = new ApplicationUI(&app);
+
+    bb::system::InvokeManager invokeManager;
+    bool res = QObject::connect(
+            &invokeManager, SIGNAL(invoked(const bb::system::InvokeRequest&)),
+            appUi, SLOT(onInvoke(const bb::system::InvokeRequest&)));
+    Q_ASSERT(res);
 
     // Enter the application main event loop.
     return Application::exec();

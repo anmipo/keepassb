@@ -43,6 +43,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ReadOnlyTextField.qml) \
         $$quote($$BASEDIR/assets/SearchResultsPage.qml) \
         $$quote($$BASEDIR/assets/UnlockDbPage.qml) \
+        $$quote($$BASEDIR/assets/ViewEntryV4Files.qml) \
         $$quote($$BASEDIR/assets/ViewEntryV4Page.qml) \
         $$quote($$BASEDIR/assets/ViewGroupPage.qml) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_browse.png) \

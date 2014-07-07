@@ -98,6 +98,14 @@
     </message>
 </context>
 <context>
+    <name>ApplicationUI</name>
+    <message>
+        <location filename="../src/applicationui.cpp" line="149"/>
+        <source>Invoke failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LabelTextButton</name>
     <message>
         <location filename="../assets/LabelTextButton.qml" line="63"/>
@@ -269,112 +277,120 @@
     </message>
 </context>
 <context>
-    <name>ViewEntryV4Page</name>
+    <name>ViewEntryV4Files</name>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="24"/>
-        <source>General</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="128"/>
-        <source>Notes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="31"/>
-        <source>Extras (%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="38"/>
-        <source>Files (%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="52"/>
-        <source>Timestamps</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="102"/>
-        <source>User name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="107"/>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="115"/>
-        <source>URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="139"/>
-        <source>Extra fields</source>
+        <location filename="../assets/ViewEntryV4Files.qml" line="14"/>
+        <source>Attachments</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryV4Page.qml" line="163"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="19"/>
         <source>%n byte(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="178"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="35"/>
         <source>Save attached file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="185"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="44"/>
         <source>File saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="187"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="47"/>
         <source>Could not save file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="203"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="58"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ViewEntryV4Page</name>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="23"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="142"/>
+        <source>Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="30"/>
+        <source>Extras (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="37"/>
+        <source>Files (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="51"/>
+        <source>Timestamps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="116"/>
+        <source>User name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="121"/>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="129"/>
+        <source>URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="153"/>
+        <source>Extra fields</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="167"/>
         <source>Entry history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="236"/>
-        <source>Last Modification Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="223"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="187"/>
         <source>Entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="45"/>
-        <source>History (%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="158"/>
-        <source>Attachments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="232"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="196"/>
         <source>Creation Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="240"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="200"/>
+        <source>Last Modification Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="204"/>
         <source>Last Access Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="244"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="208"/>
         <source>Expiry Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="44"/>
+        <source>History (%1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -420,12 +436,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="70"/>
+        <location filename="../assets/main.qml" line="71"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="73"/>
+        <location filename="../assets/main.qml" line="74"/>
         <source>Clipboard cleared</source>
         <translation type="unfinished"></translation>
     </message>

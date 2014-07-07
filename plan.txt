@@ -17,21 +17,38 @@
 + Trash icon -> more DB like
 + Copy extra fields does not work
 + App cover
++ Trim search request, clear on focus
++ Monospaced password fields
++ Show-hide password
++ optionaly - Do not search "Recycled"
++ settings menu
++ Configurable clipboard timeout
++ About screen - write license credits
++ New unlock screen UI (clearing of key file field)
++ fix ic_browse on bright theme
++ make lock menu work
++ DB lock by timeout
++ Lock timeout "Immediately" -> "when minimized"
++ unlock: focus on password entry field
++ cancel search when loose focus
++ make different-density app icon
++ Processing of attached files
++ decompress/un-base64 entry's attachments on entry view
++ saving/opening attached files
++ make KeePassB an invocation target for .kdbx files
 
-?Trim search request, clear on focus - try livecity
-optionaly - Do not search "Recycled"
+search as you type dialog
+Quick unlock based on N (configurable) last characters - test with passwords shorter than N
+disable QML debugging
+check for missing qsTr and retranslate()
+clear clipboard only if it was not changed by other apps
+Q_ASSERT does not work in release
 
-Monospaced password fields
-Show-hide password
-settings menu
-Configurable clipboard timeout 
-DB lock by timeout
-Support long entry titles
-Password show toggle
-string/buffer cleanup on destroy
-Enable clearing of key file field
-Search: show group names in headers
-About screen
-BuiltForBlackberry criteria
-Processing of attached files
+Later:
+fix scrolling for timestamp fields
 V1 support
+Support long entry titles
+hub notification for clipboard?
+Search: show group names in headers
+string/buffer cleanup on destroy
+BuiltForBlackberry criteria
