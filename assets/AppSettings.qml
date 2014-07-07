@@ -44,7 +44,7 @@ Page {
             Option {
                 text: qsTr("After 2 minutes") + Retranslate.onLocaleOrLanguageChanged
                 value: 2 * 60 * 1000
-                selected: (appSettings.autoLockTimeout == 60 * 1000)
+                selected: (appSettings.autoLockTimeout == 120 * 1000)
             }
             Option {
                 text: qsTr("After 5 minutes") + Retranslate.onLocaleOrLanguageChanged
