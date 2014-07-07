@@ -10,6 +10,7 @@
 #include <bb/cascades/Application>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
+#include <bb/cascades/QmlDocument>
 #include <bb/system/SystemToast>
 #include <bb/system/InvokeManager>
 #include "db/PwDatabase.h"
@@ -28,15 +29,17 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     m_pLocaleHandler = new LocaleHandler(this);
     invokeManager = new InvokeManager(this);
 
-    Q_ASSERT(QObject::connect(&clipboard, SIGNAL(inserted()), this, SIGNAL(clipboardUpdated())));
-    Q_ASSERT(QObject::connect(&clipboard, SIGNAL(cleared()), this, SIGNAL(clipboardCleared())));
-
-    bool res = QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged()));
-    // This is only available in Debug builds
-    Q_ASSERT(res);
-    // Since the variable is not used in the app, this is added to avoid a
-    // compiler warning
+    bool res;
+    // Since the variable is not used in the app, this is added to avoid a compiler warning
     Q_UNUSED(res);
+
+    res = QObject::connect(&clipboard, SIGNAL(inserted()), this, SIGNAL(clipboardUpdated()));
+    Q_ASSERT(res);
+    res = QObject::connect(&clipboard, SIGNAL(cleared()), this, SIGNAL(clipboardCleared()));
+    Q_ASSERT(res);
+
+    res = QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged()));
+    Q_ASSERT(res);
 
     // initial load
     onSystemLanguageChanged();
@@ -47,15 +50,18 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     CryptoManager::instance()->init();
 
     Application::instance()->setCover(new ActiveFrame());
-    Q_ASSERT(QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())));
+    res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail()));
+    Q_ASSERT(res);
 
     database = new PwDatabaseFacade();
     database->setParent(this);
 
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
-    Q_ASSERT(QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int))));
-    Q_ASSERT(QObject::connect(&watchdog, SIGNAL(timeout()), database, SLOT(lock())));
+    res = QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int)));
+    Q_ASSERT(res);
+    res = QObject::connect(&watchdog, SIGNAL(timeout()), database, SLOT(lock()));
+    Q_ASSERT(res);
 
     initQml(app);
 }
