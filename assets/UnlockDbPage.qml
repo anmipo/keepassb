@@ -88,7 +88,7 @@ Page {
         Container {
             verticalAlignment: VerticalAlignment.Top
             Header {
-                title: qsTr("Database")
+                title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
                 bottomMargin: 5
             }
             Container {
@@ -117,7 +117,7 @@ Page {
             }
 
             Header {
-                title: qsTr("Password and key file")
+                title: qsTr("Password and key file") + Retranslate.onLocaleOrLanguageChanged
                 topMargin: 20
                 bottomMargin: 5
             }
@@ -131,7 +131,7 @@ Page {
                     hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
                     inputMode: TextFieldInputMode.Password
                     rightPadding: 50
-                    text: ""
+                    text: "qwe$t"
                     input.submitKey: SubmitKey.Done
                     input.onSubmitted: openDbAction.triggered()
                 }
@@ -161,13 +161,13 @@ Page {
                 }
             }
             Header {
-                title: qsTr("Options")
+                title: qsTr("Options") + Retranslate.onLocaleOrLanguageChanged
                 topMargin: 20
                 bottomMargin: 5
             }
             CheckBox {
                 id: rememberRecent
-                text: qsTr("Remember selected files")
+                text: qsTr("Remember selected files") + Retranslate.onLocaleOrLanguageChanged
                 checked: false
                 onCheckedChanged: {
                     appSettings.setTrackRecentDb(checked);
@@ -191,7 +191,7 @@ Page {
                 unlockProgressDialog.progress = progress;
             });
         database.invalidPasswordOrKey.connect(function() {
-                showErrorToast("Invalid password or key file");
+                showErrorToast(qsTr("Invalid password or key file") + Retranslate.onLocaleOrLanguageChanged);
                 focusOnPassword();
             });
     }
