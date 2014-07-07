@@ -226,7 +226,8 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/main.cpp) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.cpp) \
         $$quote($$BASEDIR/src/util/Settings.cpp) \
-        $$quote($$BASEDIR/src/util/TimedClipboard.cpp)
+        $$quote($$BASEDIR/src/util/TimedClipboard.cpp) \
+        $$quote($$BASEDIR/src/util/Util.cpp)
 
     HEADERS += \
         $$quote($$BASEDIR/src/applicationui.hpp) \
@@ -240,7 +241,8 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/v4/PwGroupV4.h) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.h) \
         $$quote($$BASEDIR/src/util/Settings.h) \
-        $$quote($$BASEDIR/src/util/TimedClipboard.h)
+        $$quote($$BASEDIR/src/util/TimedClipboard.h) \
+        $$quote($$BASEDIR/src/util/Util.h)
 }
 
 INCLUDEPATH += $$quote($$BASEDIR/src/db/v4) \

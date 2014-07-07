@@ -13,8 +13,8 @@
 #include "sbreturn.h"
 #include "husha2.h"
 #include "huaes.h"
-#include <zlib.h>
 #include "db/PwUuid.h"
+#include "util/Util.h"
 
 // KeePass2 XML tag names
 const QString XML_META = QString("Meta");
@@ -400,10 +400,10 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     QByteArray xmlData;
     if (header.isCompressed()) {
         /* Inflate GZip data to XML */
-        err = inflateGZipData(blocksData, xmlData);
-        if (err != SUCCESS) {
-            qDebug() << "Error inflating database" << err;
-            emit dbUnlockError(tr("Error inflating database"), err);
+        Util::ErrorCode inflateErr = Util::inflateGZipData(blocksData, xmlData);
+        if (inflateErr != Util::SUCCESS) {
+            qDebug() << "Error inflating database";
+            emit dbUnlockError(tr("Error inflating database"), inflateErr);
             return false;
         }
     } else {
@@ -515,59 +515,6 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
     return SUCCESS;
 }
 
-/**
- * Unpacks GZip data.
- * This method is derived from http://stackoverflow.com/questions/13679592/gzip-in-blackberry-10
- */
-PwDatabaseV4::ErrorCode PwDatabaseV4::inflateGZipData(const QByteArray& gzipData, QByteArray& outData) {
-    if (gzipData.size() <= 4) {
-        qDebug() << "inflateGZipData: Input data is too short";
-        return GZIP_DATA_TOO_SHORT;
-    }
-
-    int err;
-    z_stream strm;
-    static const int CHUNK_SIZE = 1024;
-    char out[CHUNK_SIZE];
-
-    // allocate inflate state
-    strm.zalloc = Z_NULL;
-    strm.zfree = Z_NULL;
-    strm.opaque = Z_NULL;
-    strm.avail_in = gzipData.size();
-    strm.next_in = (Bytef*)(gzipData.data());
-
-    err = inflateInit2(&strm, 16 + MAX_WBITS); // gzip decoding
-    if (err != Z_OK) {
-        qDebug() << "inflateGZipData: inflateInit2 error " << err;
-        return GZIP_INIT_FAIL;
-    }
-
-    // run inflate()
-    do {
-        strm.avail_out = CHUNK_SIZE;
-        strm.next_out = (Bytef*)(out);
-
-        err = inflate(&strm, Z_NO_FLUSH);
-        Q_ASSERT(err != Z_STREAM_ERROR);  // state not clobbered
-
-        switch (err) {
-        case Z_NEED_DICT:
-            err = Z_DATA_ERROR;     // and fall through
-            /* no break */
-        case Z_DATA_ERROR:
-        case Z_MEM_ERROR:
-            (void)inflateEnd(&strm);
-            qDebug() << "inflateGZipData: inflate error " << err;
-            return GZIP_INFLATE_ERROR;
-        }
-        outData.append(out, CHUNK_SIZE - strm.avail_out);
-    } while (strm.avail_out == 0);
-    // clean up and return
-    inflateEnd(&strm);
-    return SUCCESS;
-}
-
 PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     if (_rootGroup) {
         delete _rootGroup;
@@ -583,14 +530,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     while (!xml.atEnd() && !xml.hasError()) {
         if (xml.readNextStartElement()) {
             tagName = xml.name();
-            if (tagName == XML_BINARY) {
-                PwBinaryV4* binary = new PwBinaryV4();
-                QXmlStreamAttributes attrs = xml.attributes();
-                QString id = attrs.value(XML_BINARY_ID).toString();
-                binary->isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
-                binary->data = QByteArray::fromBase64(xml.readElementText().toLatin1());
-                binaries.insert(id, binary);
-            } else if (tagName == XML_META) {
+            if (tagName == XML_META) {
                 err = loadXmlMetaData(xml);
                 if (err != SUCCESS)
                     return err;
@@ -627,6 +567,13 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadXmlMetaData(QXmlStreamReader& xml) {
             if (XML_RECYCLE_BIN_UUID == tagName) {
                 QString recycleBinUuidBase64Str = xml.readElementText();
                 recycleBinGroupUuid = PwUuid::fromBase64(recycleBinUuidBase64Str);
+            } else if (tagName == XML_BINARY) {
+                PwBinaryV4* binary = new PwBinaryV4();
+                QXmlStreamAttributes attrs = xml.attributes();
+                QString id = attrs.value(XML_BINARY_ID).toString();
+                binary->isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
+                binary->data = QByteArray::fromBase64(xml.readElementText().toLatin1());
+                binaries.insert(id, binary);
             } else {
                 // space for future extensions
             }
@@ -889,8 +836,11 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml,
                 QString fileName = xml.readElementText();
                 attachment.setName(fileName);
             } else if (tagName == XML_VALUE) {
-                QStringRef binaryRef = xml.attributes().value(XML_REF);
-                PwBinaryV4* binary = this->binaries.value(binaryRef.toString());
+                QString binaryRef = xml.attributes().value(XML_REF).toString();
+                PwBinaryV4* binary = this->binaries.value(binaryRef);
+                if (!binary) {
+                    return INVALID_ATTACHMENT_REFERENCE;
+                }
                 attachment.setContent(binary);
             }
         }

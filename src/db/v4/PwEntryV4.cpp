@@ -6,6 +6,7 @@
  */
 
 #include "db/v4/PwEntryV4.h"
+#include "util/Util.h"
 
 // Standard entry fields
 const static QString TITLE = "Title";
@@ -39,26 +40,61 @@ PwAttachment::~PwAttachment() {
 
 bool PwAttachment::saveContentToFile(const QString& fileName) {
     qDebug() << "Saving attachment to file: " << fileName;
-    // TODO implement file saving
+
+    if (!inflateData())
+        return false;
+
+    QFile outFile(fileName);
+    if (!outFile.open(QIODevice::WriteOnly)) {
+        qDebug() << "Cannot open file for writing: " << fileName;
+        return false;
+    }
+    qint64 size = outFile.write(content->data);
+    if (size != content->data.size()) {
+        qDebug("%d bytes written out of %d total", (int)size, content->data.size());
+        return false;
+    }
+    outFile.close();
+    return true;
 }
 
-void PwAttachment::setName(const QString& name) {
+;void PwAttachment::setName(const QString& name) {
     if (this->name != name) {
         this->name = name;
         emit nameChanged(name);
     }
 }
 
-void PwAttachment::setSize(int size) {
-    if (this->size != size) {
-        this->size = size;
-        emit sizeChanged(size);
-    }
-}
-
 void PwAttachment::setContent(PwBinaryV4* content) {
     // The content is managed by PwDatabaseV4
     this->content = content;
+    emit sizeChanged(content->data.size());
+}
+
+int PwAttachment::getSize() {
+    if (content->isCompressed) {
+        bool inflateOk = inflateData();
+        if (!inflateOk)
+            return -1;
+    }
+    return content->data.size();
+}
+
+bool PwAttachment::inflateData() {
+    if (content->isCompressed) {
+        QByteArray unpackedData;
+        Util::ErrorCode err = Util::inflateGZipData(content->data, unpackedData);
+        if (err != Util::SUCCESS) {
+            qDebug() << "Attachment inflate error" << err;
+            return false;
+        }
+        content->data = unpackedData;
+        content->isCompressed = false;
+        qDebug() << "Data unpacked";
+    } else {
+        qDebug() << "Data not compressed, no need to inflate";
+    }
+    return true;
 }
 /**************************/
 

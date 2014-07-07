@@ -113,15 +113,13 @@ public:
         WRONG_BLOCK_ID,
         BLOCK_HASH_NON_ZERO,
         BLOCK_HASH_MISMATCH,
-        GZIP_DATA_TOO_SHORT,
-        GZIP_INIT_FAIL,
-        GZIP_INFLATE_ERROR,
         XML_PARSING_ERROR,
         XML_TIMES_PARSING_ERROR,
         XML_NO_ROOT_GROUP,
         GROUP_LOADING_ERROR,
         ICON_ID_IS_NOT_INTEGER,
-        XML_STRING_VALUE_PARSING_ERROR
+        XML_STRING_VALUE_PARSING_ERROR,
+        INVALID_ATTACHMENT_REFERENCE
     };
 
 private:
@@ -145,8 +143,6 @@ private:
     ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
     // Extracts data blocks from the decrypted data stream, verifying hashes.
     ErrorCode readBlocks(QDataStream& inputStream, QByteArray& gzipData);
-    // Unpacks GZip data.
-    ErrorCode inflateGZipData(const QByteArray& gzipData, QByteArray& outData);
     // Configures Salsa20 instance for reading protected values
     ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.

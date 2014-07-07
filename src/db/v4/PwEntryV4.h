@@ -56,6 +56,12 @@ private:
     QString name;
     int size;
     PwBinaryV4* content; // should be owned by PwDatabaseV4 instance
+
+    /**
+     * Unpacks content.data if it is compressed.
+     * Returns true if successful.
+     */
+    bool inflateData();
 public:
     PwAttachment();
     virtual ~PwAttachment();
@@ -70,7 +76,7 @@ public:
     void setSize(int size);
     void setContent(PwBinaryV4* content);
     QString getName() const { return name; }
-    int getSize() const { return size; }
+    int getSize();
 signals:
     void nameChanged(QString);
     void sizeChanged(int);
