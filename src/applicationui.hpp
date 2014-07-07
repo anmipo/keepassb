@@ -9,20 +9,15 @@
 #define ApplicationUI_HPP_
 
 #include <QObject>
+#include <bb/cascades/Application>
+#include <bb/cascades/LocaleHandler>
+#include <bb/system/InvokeManager>
 #include "db/PwDatabase.h"
 #include "util/TimedClipboard.h"
 #include "util/Settings.h"
 
-namespace bb
-{
-    namespace cascades
-    {
-        class Application;
-        class LocaleHandler;
-    }
-}
-
 class QTranslator;
+
 
 /*!
  * @brief Application object
@@ -36,6 +31,7 @@ private:
     Settings* settings;
     PwDatabaseFacade* database;
     PwGroup* _parentGroup;
+    bb::system::InvokeManager* invokeManager;
     TimedClipboard clipboard;
     QTimer watchdog;
 
@@ -50,6 +46,8 @@ public:
     // copy given text to the clipboard, clear it after some time
     Q_INVOKABLE void copyWithTimeout(const QString& text);
     void showToast(const QString& msg);
+    // opens given file with a suitable third-party app
+    Q_INVOKABLE void invokeFile(const QString& uri);
 private slots:
     void onSystemLanguageChanged();
     void onWatchdogTimeoutChanged(int timeout);

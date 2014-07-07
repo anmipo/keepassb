@@ -12,6 +12,7 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
 #include <bb/system/SystemToast>
+#include <bb/system/InvokeManager>
 #include "db/PwDatabase.h"
 #include "crypto/CryptoManager.h"
 #include "ui/ActiveFrame.h"
@@ -45,6 +46,9 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     Q_ASSERT(QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())));
 
     CryptoManager::instance()->init();
+
+    invokeManager = new InvokeManager();
+    invokeManager->setParent(this);
 
     database = new PwDatabaseFacade();
     database->setParent(this);
@@ -119,4 +123,17 @@ void ApplicationUI::stopWatchdog() {
 // copy given text to the clipboard, clear it after some time
 void ApplicationUI::copyWithTimeout(const QString& text) {
 	clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
+}
+
+void ApplicationUI::invokeFile(const QString& uri) {
+    InvokeRequest request;
+    request.setUri(uri);
+    request.setAction("bb.action.OPEN");
+    const InvokeTargetReply* reply = invokeManager->invoke(request);
+    if (reply) {
+        qDebug() << "invoke ok";
+    } else {
+        qDebug() << "invoke failed";
+        showToast(tr("Invoke failed"));
+    }
 }

@@ -5,7 +5,6 @@
 import bb.cascades 1.2
 import bb.device 1.2
 import bb.system 1.2
-import bb.cascades.pickers 1.0
 import org.keepassb 1.0
 
 Page {
@@ -60,12 +59,23 @@ Page {
     function setCurrentView(viewName) {
         app.restartWatchdog();
         var newView;
+        var newViewComponent;
         switch (viewName) {
-            case "general": newView = viewEntryGeneral; break;
-            case "extra":   newView = viewEntryExtra;   break;
-            case "files":   newView = viewEntryFiles;   break;
-            case "timestamps": newView = viewEntryTimestamps; break;
-            case "history":   newView = viewEntryHistory;   break;
+            case "general": 
+                newView = viewEntryGeneral; 
+                break;
+            case "extra":   
+                newView = viewEntryExtra; 
+                break;
+            case "files":   
+                newView = viewEntryFilesComponent.createObject();
+                break;
+            case "timestamps": 
+                newView = viewEntryTimestamps;
+                break;
+            case "history":   
+                newView = viewEntryHistory;   
+                break;
             default:
                 console.log("WARN: unknown option");
                 return;
@@ -93,6 +103,10 @@ Page {
         }
     }
     attachedObjects: [
+        ComponentDefinition {
+            id: viewEntryFilesComponent
+            source: "ViewEntryV4Files.qml"
+        },
         ScrollView {
             id: viewEntryGeneral
             scrollRole: ScrollRole.Main
@@ -146,56 +160,6 @@ Page {
                     }
                 ]
             }
-        },
-        Container {
-            id: viewEntryFiles
-            property PwAttachment selectedAttachment
-            ListView {
-                
-                id: entryFileList
-                scrollRole: ScrollRole.Main
-                dataModel: data.getAttachmentsDataModel()
-                accessibility.name: qsTr("Attachments") + Retranslate.onLocaleOrLanguageChanged
-                listItemComponents: [
-                    ListItemComponent {
-                        StandardListItem {
-                            title: ListItemData.name
-                            description: qsTr("%n byte(s)", "", ListItemData.size) + Retranslate.onLocaleOrLanguageChanged
-                        }
-                    }
-                ]
-                onTriggered: {
-                    var attachment = dataModel.data(indexPath);
-                    viewEntryFiles.selectedAttachment = attachment;
-                    console.log("Attachment name=" + attachment.name + ", size: " + attachment.size);
-                    saveAttachmentFilePicker.defaultSaveFileNames = [attachment.name];
-                    saveAttachmentFilePicker.open();
-                }
-            }
-            attachedObjects: [
-                FilePicker {
-                    id: saveAttachmentFilePicker
-                    title: qsTr("Save attached file") + Retranslate.onLocaleOrLanguageChanged
-                    mode: FilePickerMode.Saver
-                    type: FileType.Other
-                    allowOverwrite: true
-                    onFileSelected: {
-                        var success = viewEntryFiles.selectedAttachment.saveContentToFile(selectedFiles[0]); // actual path
-                        if (success) {
-                            infoToast.body = qsTr("File saved")
-                        } else {
-                            infoToast.body = qsTr("Could not save file")
-                        }
-                        infoToast.show();
-                    } 
-                    onCanceled: {
-                        // ignore this
-                    }
-                },
-                SystemToast {
-                    id: infoToast
-                }
-            ]
         },
         Container {
             id: viewEntryHistory
