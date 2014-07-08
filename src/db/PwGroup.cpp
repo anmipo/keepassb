@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QStringBuilder>
 #include <bb/cascades/ItemGrouping>
+#include "util/Settings.h"
 
 PwGroup::PwGroup() : bb::cascades::DataModel(), _uuid(),
         _creationTime(), _lastModificationTime(),
@@ -19,6 +20,9 @@ PwGroup::PwGroup() : bb::cascades::DataModel(), _uuid(),
 	_iconId = 0;
 	_isChildrenModified = false;
 	_deleted = false;
+
+	bool res = QObject::connect(Settings::instance(), SIGNAL(alphaSortingChanged(bool)), this, SLOT(sortChildren()));
+	Q_ASSERT(res);
 }
 
 PwGroup::~PwGroup() {
@@ -64,8 +68,10 @@ bool PwGroup::lessThan(const PwGroup* g1, const PwGroup* g2) {
 }
 
 void PwGroup::sortChildren() {
-    qStableSort(_subGroups.begin(), _subGroups.end(), PwGroup::lessThan);
-    qStableSort(_entries.begin(), _entries.end(), PwEntry::lessThan);
+    if (Settings::instance()->isAlphaSorting()) {
+        qStableSort(_subGroups.begin(), _subGroups.end(), PwGroup::lessThan);
+        qStableSort(_entries.begin(), _entries.end(), PwEntry::lessThan);
+    }
     _isChildrenModified = false;
 }
 

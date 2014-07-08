@@ -6,6 +6,7 @@
  */
 
 #include "util/Settings.h"
+#include <bb/cascades/Application>
 #include <QCoreApplication>
 #include <QSettings>
 
@@ -18,6 +19,7 @@ const bool DEFAULT_TRACK_RECENT_DB = false;
 const QString DEFAULT_RECENT_DB_PATH = "";
 const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
+const bool DEFAULT_ALPHA_SORTING = false;
 
 /**
  * Keys for preferences values
@@ -28,6 +30,7 @@ const QString KEY_TRACK_RECENT_DB = "trackRecentDb";
 const QString KEY_RECENT_DB_PATH = "recentDbPath";
 const QString KEY_RECENT_KEY_FILE_PATH = "recentKeyFilePath";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
+const QString KEY_ALPHA_SORTING = "alphaSorting";
 
 Settings* Settings::_instance;
 
@@ -39,6 +42,8 @@ Settings* Settings::instance() {
 }
 
 Settings::Settings(QObject* parent) : QObject(parent){
+    qmlRegisterUncreatableType<Settings>("org.keepassb", 1, 0, "Settings", "Settings is a singleton with a private constructor");
+
     // Set up the QSettings object for the application with organization and application name.
     QCoreApplication::setOrganizationName("Andrei Popleteev");
     QCoreApplication::setOrganizationDomain("keepassb.org");
@@ -57,6 +62,8 @@ Settings::Settings(QObject* parent) : QObject(parent){
             KEY_RECENT_KEY_FILE_PATH, DEFAULT_RECENT_KEY_FILE_PATH).toString();
     _autoLockTimeout = settings.value(
             KEY_AUTO_LOCK_TIMEOUT, DEFAULT_AUTO_LOCK_TIMEOUT).toInt();
+    _alphaSorting = settings.value(
+            KEY_ALPHA_SORTING, DEFAULT_ALPHA_SORTING).toBool();
 }
 
 void Settings::setSearchInDeleted(bool searchInDeleted) {
@@ -104,5 +111,13 @@ void Settings::setAutoLockTimeout(int timeout) {
         QSettings().setValue(KEY_AUTO_LOCK_TIMEOUT, timeout);
         _autoLockTimeout = timeout;
         emit autoLockTimeoutChanged(timeout);
+    }
+}
+
+void Settings::setAlphaSorting(bool alphaSorting) {
+    if (alphaSorting != _alphaSorting) {
+        QSettings().setValue(KEY_ALPHA_SORTING, alphaSorting);
+        _alphaSorting = alphaSorting;
+        emit alphaSortingChanged(alphaSorting);
     }
 }

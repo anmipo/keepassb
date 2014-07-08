@@ -52,9 +52,9 @@ private:
 	QList<PwGroup*> _subGroups;
 	QList<PwEntry*> _entries;
 
-protected:
+protected slots:
 	/**
-	 * Sorts subgroups and entries alphabetically
+	 * Sorts subgroups and entries accoring to the settings
 	 */
 	virtual void sortChildren();
 public:

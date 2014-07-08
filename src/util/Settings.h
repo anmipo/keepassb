@@ -10,6 +10,7 @@
 #ifndef SETTINGS_H_
 #define SETTINGS_H_
 
+
 class Settings: public QObject {
     Q_OBJECT
     /**
@@ -36,6 +37,11 @@ class Settings: public QObject {
      * Time in millis until automatic DB lock. Negative value means no timeout.
      */
     Q_PROPERTY(int autoLockTimeout READ getAutoLockTimeout WRITE setAutoLockTimeout NOTIFY autoLockTimeoutChanged)
+    /**
+     * Use alphabetical sorting in group lists
+     */
+    Q_PROPERTY(bool alphaSorting READ isAlphaSorting WRITE setAlphaSorting NOTIFY alphaSortingChanged)
+
 private:
     static Settings* _instance;
     bool _searchInDeleted;
@@ -44,6 +50,7 @@ private:
     QString _recentDbPath;
     QString _recentKeyFilePath;
     int _autoLockTimeout;
+    bool _alphaSorting;
 
     Settings(QObject* parent = 0);
 
@@ -60,6 +67,7 @@ public:
     QString getRecentDbPath() const { return _recentDbPath; }
     QString getRecentKeyFilePath() const { return _recentKeyFilePath; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
+    bool isAlphaSorting() const { return _alphaSorting; }
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
     void setClipboardTimeout(int timeout);
@@ -67,6 +75,7 @@ public slots:
     void setRecentDbPath(const QString& path);
     void setRecentKeyFilePath(const QString& path);
     void setAutoLockTimeout(int timeout);
+    void setAlphaSorting(bool alphaSorting);
 signals:
     void searchInDeletedChanged(bool);
     void clipboardTimeoutChanged(int);
@@ -74,6 +83,7 @@ signals:
     void recentDbPathChanged(QString);
     void recentKeyFilePathChanged(QString);
     void autoLockTimeoutChanged(int);
+    void alphaSortingChanged(bool);
 };
 
 #endif /* SETTINGS_H_ */

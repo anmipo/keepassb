@@ -1,4 +1,5 @@
 import bb.cascades 1.2
+import org.keepassb 1.0
 
 Page {
     titleBar: TitleBar {
@@ -89,6 +90,36 @@ Page {
                 value: -1;
                 selected: (appSettings.clipboardTimeout == -1)
             }
+        }
+        Divider { }
+        Label {
+            text: qsTr("Sort lists") + Retranslate.onLocaleOrLanguageChanged
+            textStyle.base: SystemDefaults.TextStyles.PrimaryText
+        }
+        DropDown {
+            id: alphaSorting
+            onSelectedOptionChanged: {
+                if (selectedOption) {
+                    appSettings.alphaSorting = selectedOption.value;
+                }
+            }
+            Option {
+                text: qsTr("No sorting") + Retranslate.onLocaleOrLanguageChanged
+                value: false
+                selected: !appSettings.alphaSorting
+            }
+            Option {
+                text: qsTr("Alphabetically") + Retranslate.onLocaleOrLanguageChanged
+                value: true
+                selected: appSettings.alphaSorting
+            }
+        }
+        Label {
+            id: alphaSortingNotice
+            text: qsTr("Sorting order changes will be applied the next time you open a database.") + Retranslate.onLocaleOrLanguageChanged
+            visible: !database.locked
+            textStyle.base: SystemDefaults.TextStyles.SubtitleText
+            multiline: true
         }
         Divider { }
         Container {
