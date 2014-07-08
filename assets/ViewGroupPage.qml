@@ -38,9 +38,14 @@ Page {
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
             TextField {
+                // Upon submit, TextField first gets onFocusChanged and then onSubmitted.
+                // This property stores the query text between these events.
+                property string searchQuery 
+                
                 id: searchField
                 hintText: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
                 visible: false
+                clearButtonVisible: true; 
                 inputMode: TextFieldInputMode.Text
                 input.submitKey: SubmitKey.Search
                 input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
@@ -49,15 +54,15 @@ Page {
                 }
                 onFocusedChanged: {
                     if (!focused) {
+                        searchQuery = text;
                         visible = false;
                         text = "";
                     }
                 }
                 input.onSubmitted: {
-                    var query = searchField.text; 
                     searchField.visible = false;
                     searchField.text = "";
-                    database.search(query);
+                    database.search(searchQuery);
                     var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
                     var searchResultsPage = searchResultsPageComponent.createObject(null, 
                             {"searchResult": database.searchResult});
