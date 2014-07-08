@@ -36,16 +36,21 @@
 + decompress/un-base64 entry's attachments on entry view
 + saving/opening attached files
 + make KeePassB an invocation target for .kdbx files
++ connecting slots should not depend on Q_ASSERT side-effects 
++ clear clipboard only if it was not changed by other apps
++ search does not filter?
++ list sort order setting
 
-search as you type dialog
-Quick unlock based on N (configurable) last characters - test with passwords shorter than N
-disable QML debugging
 check for missing qsTr and retranslate()
-clear clipboard only if it was not changed by other apps
-Q_ASSERT does not work in release
+remove debug password
+Quick unlock based on N (configurable) last characters - test wit h passwords shorter than N
+search as you type dialog
 
 Later:
+
+different group/entry styling in list
 fix scrolling for timestamp fields
+apply sorting without DB reopen
 V1 support
 Support long entry titles
 hub notification for clipboard?
