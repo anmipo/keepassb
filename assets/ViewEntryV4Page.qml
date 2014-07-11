@@ -32,6 +32,16 @@ Page {
                     layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                 }
             }
+            
+            expandableArea.indicatorVisibility: (data.title.length > 30) ? TitleBarExpandableAreaIndicatorVisibility.Visible : TitleBarExpandableAreaIndicatorVisibility.Hidden
+            expandableArea.toggleArea: TitleBarExpandableAreaToggleArea.EntireTitleBar
+            expandableArea.content: TextArea {
+                editable: false
+                text: data.title
+                textFormat: TextFormat.Plain
+                backgroundVisible: false
+                autoSize.maxLineCount: 3
+            }
         }
     }
 
