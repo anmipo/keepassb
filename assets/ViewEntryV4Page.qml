@@ -49,7 +49,7 @@ Page {
         },
         ActionItem {
             title: qsTr("Timestamps") + Retranslate.onLocaleOrLanguageChanged
-            imageSource: "asset:///pwicons/39.png" //TODO make a dedicated icon
+            imageSource: "asset:///pwicons/ic_timestamp.png"
 //            enabled: (currentView != "timestamps")
             ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: setCurrentView("timestamps")
