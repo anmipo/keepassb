@@ -13,9 +13,26 @@ Page {
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     
     titleBar: TitleBar { 
-        title: data.title
         visibility: ChromeVisibility.Overlay
         scrollBehavior: TitleBarScrollBehavior.NonSticky
+        kind: TitleBarKind.FreeForm
+        kindProperties: FreeFormTitleBarKindProperties {
+            Container {
+                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                leftPadding: 10
+                rightPadding: 10
+                ImageView {
+                    imageSource: "asset:///pwicons/" + data.iconId + ".png"
+                    verticalAlignment: VerticalAlignment.Center
+                }
+                Label {
+                    text: data.title
+                    textStyle.base: SystemDefaults.TextStyles.TitleText
+                    verticalAlignment: VerticalAlignment.Center
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                }
+            }
+        }
     }
 
     actions: [

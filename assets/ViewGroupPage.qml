@@ -12,7 +12,27 @@ Page {
         app.restartWatchdog();
     }
 
-    titleBar: TitleBar { }
+    titleBar: TitleBar {
+        kind: TitleBarKind.FreeForm
+        kindProperties: FreeFormTitleBarKindProperties {
+            Container {
+                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                leftPadding: 10
+                rightPadding: 10
+                ImageView {
+                    imageSource: "asset:///pwicons/" + group.iconId + ".png"
+                    verticalAlignment: VerticalAlignment.Center
+                }
+                Label {
+                    id: titleLabel
+                    text: titleBar.title
+                    textStyle.base: SystemDefaults.TextStyles.TitleText
+                    verticalAlignment: VerticalAlignment.Center
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                }
+            }
+        }
+    }
     
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     actions: [
