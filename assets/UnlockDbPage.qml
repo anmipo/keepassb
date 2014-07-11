@@ -130,7 +130,7 @@ Page {
                     hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
                     inputMode: TextFieldInputMode.Password
                     rightPadding: 50
-                    text: "qwe$t"
+                    text: ""
                     input.submitKey: SubmitKey.Done
                     input.onSubmitted: openDbAction.triggered()
                 }

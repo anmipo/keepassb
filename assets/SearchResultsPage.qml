@@ -19,9 +19,7 @@ Page {
             visible: searchResult.hasChildren([])
             dataModel: searchResult
             onTriggered: {
-                console.log("indexPath: " + indexPath)
                 var entry = searchResult.data(indexPath);
-                console.log("entry: " + entry)
                 var viewEntryPageComponent = Qt.createComponent("ViewEntryV4Page.qml");
                 var viewEntryPage = viewEntryPageComponent.createObject(null, {"data": entry});
                 naviPane.push(viewEntryPage);

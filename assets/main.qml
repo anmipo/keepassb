@@ -74,7 +74,6 @@ NavigationPane {
                 showToast(qsTr("Clipboard cleared") + Retranslate.onLocaleOrLanguageChanged)
             });
         database.dbLocked.connect(function() {
-                console.log("dbLocked");
                 app.stopWatchdog();
                 naviPane.navigateTo(naviPane.firstPage);
             });
@@ -104,9 +103,7 @@ NavigationPane {
     }
 
     onPopTransitionEnded: {
-        console.log("onPopTransitionEnded");
         page.destroy();
-        console.log("page destroyed");
     }
 
     onPushTransitionEnded: {
@@ -117,9 +114,7 @@ NavigationPane {
     }
 
     onTopChanged: {
-        console.log("Navigation top: " + page.titleBar.title);
         if (page === firstPage) {
-            console.log("We are back to start");
             if (!database.locked) {
                 database.lock();
             }

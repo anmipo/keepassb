@@ -126,14 +126,6 @@
     </message>
 </context>
 <context>
-    <name>LabelTextButton</name>
-    <message>
-        <location filename="../assets/LabelTextButton.qml" line="63"/>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PwDatabaseFacade</name>
     <message>
         <location filename="../src/db/PwDatabase.cpp" line="172"/>
@@ -217,7 +209,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="50"/>
+        <location filename="../assets/SearchResultsPage.qml" line="48"/>
         <source>Nothing found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -226,7 +218,7 @@
     <name>UnlockDbPage</name>
     <message>
         <location filename="../assets/UnlockDbPage.qml" line="25"/>
-        <location filename="../assets/UnlockDbPage.qml" line="204"/>
+        <location filename="../assets/UnlockDbPage.qml" line="202"/>
         <source>Choose database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,87 +238,72 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="108"/>
-        <source>Browse for database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="120"/>
+        <location filename="../assets/UnlockDbPage.qml" line="119"/>
         <source>Password and key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="131"/>
+        <location filename="../assets/UnlockDbPage.qml" line="130"/>
         <source>Enter password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="154"/>
-        <source>Browse for key file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="164"/>
+        <location filename="../assets/UnlockDbPage.qml" line="162"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="170"/>
+        <location filename="../assets/UnlockDbPage.qml" line="168"/>
         <source>Remember selected files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="194"/>
+        <location filename="../assets/UnlockDbPage.qml" line="192"/>
         <source>Invalid password or key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="213"/>
+        <location filename="../assets/UnlockDbPage.qml" line="211"/>
         <source>Choose key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="226"/>
+        <location filename="../assets/UnlockDbPage.qml" line="224"/>
         <source>Decrypting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="235"/>
+        <location filename="../assets/UnlockDbPage.qml" line="233"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ViewEntryV4Files</name>
-    <message>
-        <location filename="../assets/ViewEntryV4Files.qml" line="14"/>
-        <source>Attachments</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryV4Files.qml" line="19"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="18"/>
         <source>%n byte(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Files.qml" line="35"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="33"/>
         <source>Save attached file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Files.qml" line="44"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="41"/>
         <source>File saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Files.qml" line="47"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="44"/>
         <source>Could not save file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Files.qml" line="58"/>
+        <location filename="../assets/ViewEntryV4Files.qml" line="55"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -339,7 +316,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="142"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="139"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -369,42 +346,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="129"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="128"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="153"/>
-        <source>Extra fields</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="167"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="163"/>
         <source>Entry history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="187"/>
-        <source>Entry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="196"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="191"/>
         <source>Creation Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="200"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="195"/>
         <source>Last Modification Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="204"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="199"/>
         <source>Last Access Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="208"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="203"/>
         <source>Expiry Date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -423,22 +390,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="78"/>
-        <source>Password list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewGroupPage.qml" line="102"/>
-        <source>Entry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewGroupPage.qml" line="112"/>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewGroupPage.qml" line="134"/>
+        <location filename="../assets/ViewGroupPage.qml" line="131"/>
         <source>This group is empty</source>
         <translation type="unfinished"></translation>
     </message>

@@ -22,7 +22,6 @@ Container {
         onTriggered: {
             var attachment = dataModel.data(indexPath);
             selectedAttachment = attachment;
-            console.log("Attachment name=" + attachment.name + ", size: " + attachment.size);
             saveAttachmentFilePicker.defaultSaveFileNames = [attachment.name];
             saveAttachmentFilePicker.open();
         }
@@ -37,7 +36,6 @@ Container {
             allowOverwrite: true
             onFileSelected: {
                 savedFileName = selectedFiles[0]; // full path
-                console.log("savedFileName" + savedFileName);
                 var success = selectedAttachment.saveContentToFile(savedFileName); 
                 if (success) {
                     infoToast.body = qsTr("File saved")

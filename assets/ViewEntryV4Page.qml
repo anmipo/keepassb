@@ -119,7 +119,6 @@ Page {
                 LabelTextButton {
                     id: passwordField
                     labelText: qsTr("Password") + Retranslate.onLocaleOrLanguageChanged
-//                    inputMode: TextFieldInputMode.Password
                     imageSource: "asset:///images/ic_copy_password.png"
                     valueText: data.password
                     passwordMasking: true
@@ -137,8 +136,6 @@ Page {
                 }
                 LabelTextButton {
                     id: notesText
-                    //editable: false
-                    //text: data.notes
                     labelText: qsTr("Notes") + Retranslate.onLocaleOrLanguageChanged
                     valueText: data.notes
                 }
