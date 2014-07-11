@@ -11,7 +11,6 @@ Container {
         id: entryFileList
         scrollRole: ScrollRole.Main
         dataModel: data.getAttachmentsDataModel()
-        accessibility.name: qsTr("Attachments") + Retranslate.onLocaleOrLanguageChanged
         listItemComponents: [
             ListItemComponent {
                 StandardListItem {

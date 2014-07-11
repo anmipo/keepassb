@@ -75,7 +75,6 @@ Page {
                 dataModel: group
                 visible: !group.isEmpty() 
                 scrollRole: ScrollRole.Main
-                accessibility.name: qsTr("Password list") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
                     var itemType = group.itemType(indexPath);
                     var item = group.data(indexPath);
@@ -99,7 +98,6 @@ Page {
                             description: ListItemData.userName
                             imageSpaceReserved: true
                             imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
-                            accessibility.name: qsTr("Entry") + Retranslate.onLocaleOrLanguageChanged + ListItemData.title
                         }
                     },
                     ListItemComponent {
@@ -109,7 +107,6 @@ Page {
                             status: "(" + ListItemData.childCount + ")"
                             imageSpaceReserved: true
                             imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
-                            accessibility.name: qsTr("Group") + Retranslate.onLocaleOrLanguageChanged + ListItemData.name
                         }
                     },
                     ListItemComponent {

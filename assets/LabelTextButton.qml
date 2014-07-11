@@ -60,7 +60,6 @@ Container {
         }
         Button {
             id: button
-            accessibility.name: qsTr("Copy") + Retranslate.onLocaleOrLanguageChanged 
             imageSource: "asset:///images/ic_copy.png"
             preferredWidth: 50
             verticalAlignment: VerticalAlignment.Top

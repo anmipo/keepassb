@@ -105,7 +105,6 @@ Page {
                     }
 	            }
                 Button {
-                    accessibility.name: qsTr("Browse for database") + Retranslate.onLocaleOrLanguageChanged
                     imageSource: "asset:///images/ic_browse.png"
                     preferredWidth: 50
 	                verticalAlignment: VerticalAlignment.Center
@@ -151,7 +150,6 @@ Page {
                 }
                 Button {
                     imageSource: "asset:///images/ic_browse.png"
-                    accessibility.name: qsTr("Browse for key file") + Retranslate.onLocaleOrLanguageChanged
                     preferredWidth: 50
                     horizontalAlignment: HorizontalAlignment.Right
                     verticalAlignment: VerticalAlignment.Center

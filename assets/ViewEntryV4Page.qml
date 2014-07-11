@@ -150,7 +150,6 @@ Page {
                 id: entryExtraList
                 scrollRole: ScrollRole.Main
                 dataModel: data.getExtraFieldsDataModel()
-                accessibility.name: qsTr("Extra fields") + Retranslate.onLocaleOrLanguageChanged
                 listItemComponents: [
                     ListItemComponent {
                         LabelTextButton {
@@ -184,7 +183,6 @@ Page {
                             description: ListItemData.lastModificationTime.toString()
                             imageSpaceReserved: true
                             imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
-                            accessibility.name: qsTr("Entry") + Retranslate.onLocaleOrLanguageChanged + ListItemData.title
                         }
                     }
                 ]
