@@ -66,7 +66,7 @@ Page {
         },
         ActionItem {
             title: qsTr("Timestamps") + Retranslate.onLocaleOrLanguageChanged
-            imageSource: "asset:///pwicons/ic_timestamp.png"
+            imageSource: "asset:///images/ic_timestamp.png"
 //            enabled: (currentView != "timestamps")
             ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: setCurrentView("timestamps")
