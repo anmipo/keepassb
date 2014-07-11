@@ -124,9 +124,10 @@ void ApplicationUI::showToast(const QString& msg) {
 
 void ApplicationUI::onWatchdogTimeoutChanged(int timeout) {
     /*
-     * Zero timeout is a special case, means "lock DB when app minimized"
+     * Zero timeout is a special case, means "lock DB when app minimized".
+     * Negative is "never lock".
      */
-    if (timeout == 0) {
+    if (timeout <= 0) {
         stopWatchdog();
     } else {
         watchdog.setInterval(timeout);
@@ -134,8 +135,11 @@ void ApplicationUI::onWatchdogTimeoutChanged(int timeout) {
 }
 
 void ApplicationUI::restartWatchdog() {
-    watchdog.start();
+    // Zero timeout means lock when minimized; negative is "never" -- so we ignore the watchdog timeout
+    if (settings->getAutoLockTimeout() > 0)
+        watchdog.start();
 }
+
 void ApplicationUI::stopWatchdog() {
     watchdog.stop();
 }
