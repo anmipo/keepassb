@@ -33,13 +33,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // Since the variable is not used in the app, this is added to avoid a compiler warning
     Q_UNUSED(res);
 
-    res = QObject::connect(&clipboard, SIGNAL(inserted()), this, SIGNAL(clipboardUpdated()));
-    Q_ASSERT(res);
-    res = QObject::connect(&clipboard, SIGNAL(cleared()), this, SIGNAL(clipboardCleared()));
-    Q_ASSERT(res);
+    res = QObject::connect(&clipboard, SIGNAL(inserted()), this, SIGNAL(clipboardUpdated())); Q_ASSERT(res);
+    res = QObject::connect(&clipboard, SIGNAL(cleared()), this, SIGNAL(clipboardCleared())); Q_ASSERT(res);
 
-    res = QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged()));
-    Q_ASSERT(res);
+    res = QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged())); Q_ASSERT(res);
 
     // initial load
     onSystemLanguageChanged();
@@ -50,18 +47,17 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     CryptoManager::instance()->init();
 
     Application::instance()->setCover(new ActiveFrame());
-    res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail()));
-    Q_ASSERT(res);
+    res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
 
     database = new PwDatabaseFacade();
     database->setParent(this);
 
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
-    res = QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int)));
-    Q_ASSERT(res);
-    res = QObject::connect(&watchdog, SIGNAL(timeout()), database, SLOT(lock()));
-    Q_ASSERT(res);
+    res = QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int))); Q_ASSERT(res);
+    res = QObject::connect(&watchdog, SIGNAL(timeout()), database, SLOT(lock())); Q_ASSERT(res);
+
+    res = QObject::connect(database, SIGNAL(dbLocked()), &clipboard, SLOT(clear())); Q_ASSERT(res);
 
     initQml(app);
 }

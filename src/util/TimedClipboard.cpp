@@ -20,16 +20,24 @@ TimedClipboard::TimedClipboard(QObject* parent) :
 
 TimedClipboard::~TimedClipboard() {
 	timer.stop();
+	clear();
 }
 
 void TimedClipboard::timeout() {
-	if (content == this->value(DATA_TYPE)) {
+    timer.stop();
+    clear();
+}
+
+bool TimedClipboard::clear() {
+    if (content == this->value(DATA_TYPE)) {
         qDebug("Clipboard cleared by timeout");
-	    this->remove(DATA_TYPE);
-	    emit cleared();
-	} else {
+        this->remove(DATA_TYPE);
+        emit cleared();
+        return true;
+    } else {
         qDebug("Clipboard NOT cleared by timeout - different content");
-	}
+        return false;
+    }
 }
 
 bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMillis) {

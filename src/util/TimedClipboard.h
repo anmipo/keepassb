@@ -19,14 +19,21 @@ private:
 	QTimer timer;
 public slots:
 	void timeout();
-signals:
-	void cleared();
-	void inserted();
 public:
 	TimedClipboard(QObject* parent);
 	virtual ~TimedClipboard();
 	// negative timeout means no timeout
 	bool insertWithTimeout(const QString& text, const long timeoutMillis);
+public slots:
+    /**
+     * Removes the previously inserted content from the clipboard,
+     * leaving any other content intact.
+     * Returns true if something was removed.
+     */
+    bool clear();
+signals:
+    void cleared();
+    void inserted();
 };
 
 #endif /* TIMEDCLIPBOARD_H_ */
