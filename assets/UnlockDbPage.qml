@@ -114,10 +114,19 @@ Page {
                     }
                 }
             }
+            CheckBox {
+                id: rememberRecent
+                text: qsTr("Use this as my default database") + Retranslate.onLocaleOrLanguageChanged
+                checked: false
+                onCheckedChanged: {
+                    appSettings.setTrackRecentDb(checked);
+                    applyTrackRecentDb(checked);
+                }
+            }
 
             Header {
                 title: qsTr("Password and key file") + Retranslate.onLocaleOrLanguageChanged
-                topMargin: 20
+                topMargin: 50
                 bottomMargin: 5
             }
             Container {
@@ -158,20 +167,6 @@ Page {
                     }
                 }
             }
-            Header {
-                title: qsTr("Options") + Retranslate.onLocaleOrLanguageChanged
-                topMargin: 20
-                bottomMargin: 5
-            }
-            CheckBox {
-                id: rememberRecent
-                text: qsTr("Remember selected files") + Retranslate.onLocaleOrLanguageChanged
-                checked: false
-                onCheckedChanged: {
-                    appSettings.setTrackRecentDb(checked);
-                    applyTrackRecentDb(checked);
-                }
-            }
 //            CheckBox {
 //                text: qsTr("Enable quick unlock")
 //            }
@@ -190,7 +185,6 @@ Page {
             });
         database.invalidPasswordOrKey.connect(function() {
                 showErrorToast(qsTr("Invalid password or key file") + Retranslate.onLocaleOrLanguageChanged);
-                focusOnPassword();
             });
     }
 
