@@ -43,7 +43,7 @@ Page {
         }
     }
     
-    actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+    actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Default
     actions: [
         ActionItem {
             title: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
