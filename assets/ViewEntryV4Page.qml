@@ -146,14 +146,14 @@ Page {
                 LabelTextButton {
                     id: passwordField
                     labelText: qsTr("Password") + Retranslate.onLocaleOrLanguageChanged
-                    imageSource: "asset:///images/ic_copy_password.png"
+                    imageSource: "asset:///images/ic_copy.png"
                     valueText: data.password
                     passwordMasking: true
                 }
                 LabelTextButton {
                     id: urlField
                     labelText: qsTr("URL") + Retranslate.onLocaleOrLanguageChanged
-                    imageSource: "asset:///images/ic_copy_link.png"
+                    imageSource: "asset:///images/ic_copy.png"
                     valueText: data.url
                     gestureHandlers: TapHandler {
                         onTapped: {
