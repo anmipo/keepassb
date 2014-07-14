@@ -15,7 +15,7 @@
  */
 const bool DEFAULT_SEARCH_IN_DELETED = false;
 const int DEFAULT_CLIPBOARD_TIMEOUT = 10 * 1000;
-const bool DEFAULT_TRACK_RECENT_DB = false;
+const bool DEFAULT_TRACK_RECENT_DB = true;
 const QString DEFAULT_RECENT_DB_PATH = "";
 const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
