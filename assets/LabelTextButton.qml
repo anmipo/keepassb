@@ -64,6 +64,7 @@ Container {
             preferredWidth: 50
             verticalAlignment: VerticalAlignment.Top
             horizontalAlignment: HorizontalAlignment.Right
+            enabled: (edit.text.length > 0)
             onClicked: {
                 Qt.app.copyWithTimeout(valueText);
             }
