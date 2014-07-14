@@ -103,8 +103,14 @@ Page {
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1
                     }
+                    onTouch: {
+                        if (event.isUp()) {
+                            browseDbButton.clicked();
+                        }
+                    }
 	            }
                 Button {
+                    id: browseDbButton
                     imageSource: "asset:///images/ic_browse.png"
                     preferredWidth: 50
 	                verticalAlignment: VerticalAlignment.Center
@@ -156,8 +162,14 @@ Page {
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1
                     }
+                    onTouch: {
+                        if (event.isUp()) {
+                            browseKeyFileButton.clicked();
+                        }
+                    }
                 }
                 Button {
+                    id: browseKeyFileButton
                     imageSource: "asset:///images/ic_browse.png"
                     preferredWidth: 50
                     horizontalAlignment: HorizontalAlignment.Right
