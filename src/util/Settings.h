@@ -60,6 +60,17 @@ private:
     Settings(QObject* parent = 0);
 
 public:
+    enum EntryListDetail {
+        ENTRY_DETAIL_NONE      = 0,
+        ENTRY_DETAIL_USER_NAME = 1,
+        ENTRY_DETAIL_PASSWORD  = 2,
+        ENTRY_DETAIL_URL       = 4,
+        ENTRY_DETAIL_NOTES     = 8,
+        ENTRY_DETAIL_LAST_MODIFIED_TIME = 16
+        // eventual additions should be powers of 2: 2, 4, 8, ...
+    };
+    Q_ENUMS(EntryListDetail);
+
     /**
      * Returns the singleton instance of Settings
      */

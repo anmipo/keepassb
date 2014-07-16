@@ -135,6 +135,26 @@ Page {
                     value: 1
                     selected: appSettings.entryListDetail == 1
                 }
+                Option {
+                    text: qsTr("Password") + Retranslate.onLocaleOrLanguageChanged
+                    value: 2
+                    selected: appSettings.entryListDetail == 2
+                }
+                Option {
+                    text: qsTr("URL") + Retranslate.onLocaleOrLanguageChanged
+                    value: 4
+                    selected: appSettings.entryListDetail == 4
+                }
+                Option {
+                    text: qsTr("Notes") + Retranslate.onLocaleOrLanguageChanged
+                    value: 8
+                    selected: appSettings.entryListDetail == 8
+                }
+                Option {
+                    text: qsTr("Last modified time") + Retranslate.onLocaleOrLanguageChanged
+                    value: 16
+                    selected: appSettings.entryListDetail == 16
+                }
             }
             DropDown {
                 id: alphaSorting

@@ -1,8 +1,9 @@
 1
-174
+175
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
+common.js
 images/cover.png
 images/ic_about.png
 images/ic_attach.png

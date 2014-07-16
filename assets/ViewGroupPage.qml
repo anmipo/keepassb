@@ -4,6 +4,7 @@
 
 import bb.cascades 1.2
 import org.keepassb 1.0
+import "common.js" as Common
 
 Page {
     property PwGroupV4 group
@@ -99,8 +100,6 @@ Page {
                 }
             }
             ListView {
-                property int entryDetail: appSettings.entryListDetail
-
                 id: groupList
                 objectName: "groupList"
                 dataModel: group
@@ -126,13 +125,7 @@ Page {
                         type: "entry"
                         StandardListItem {
                             title: ListItemData.title
-                            description: {
-                                if (ListItem.view.entryDetail == 1) {
-                                    return ListItemData.userName;
-                                } else {
-                                    return "";
-                                }
-                            }
+                            description: Common.getEntryDescription(ListItemData)
                             imageSpaceReserved: true
                             imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                         }

@@ -1,5 +1,6 @@
 import bb.cascades 1.2
 import org.keepassb 1.0
+import "common.js" as Common
 
 Page {
     property PwSearchResultDataModel searchResult
@@ -14,8 +15,6 @@ Page {
 
         layout: DockLayout { }
         ListView {
-            property int entryDetail: appSettings.entryListDetail
-
             id: listView
             visible: searchResult.hasChildren([])
             dataModel: searchResult
@@ -29,13 +28,7 @@ Page {
                 ListItemComponent {
                     StandardListItem {
                         title: ListItemData.title
-                        description: {
-                            if (ListItem.view.entryDetail == 1) {
-                                return ListItemData.userName;
-                            } else {
-                                return "";
-                            }
-                        }
+                        description: Common.getEntryDescription(ListItemData)
                         imageSpaceReserved: true
                         imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                     }

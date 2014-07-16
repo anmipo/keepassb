@@ -44,90 +44,125 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="21"/>
-        <source>Lock database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="32"/>
-        <source>When minimized</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="37"/>
-        <location filename="../assets/AppSettings.qml" line="80"/>
-        <source>After 30 seconds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="42"/>
-        <location filename="../assets/AppSettings.qml" line="85"/>
-        <source>After 1 minute</source>
+        <location filename="../assets/AppSettings.qml" line="22"/>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="47"/>
+        <source>Timeouts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="51"/>
+        <source>Lock database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="58"/>
+        <source>When minimized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="63"/>
+        <location filename="../assets/AppSettings.qml" line="102"/>
+        <source>After 30 seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="68"/>
+        <location filename="../assets/AppSettings.qml" line="107"/>
+        <source>After 1 minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="73"/>
         <source>After 2 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="52"/>
+        <location filename="../assets/AppSettings.qml" line="78"/>
         <source>After 5 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="57"/>
-        <location filename="../assets/AppSettings.qml" line="90"/>
+        <location filename="../assets/AppSettings.qml" line="83"/>
+        <location filename="../assets/AppSettings.qml" line="112"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="64"/>
+        <location filename="../assets/AppSettings.qml" line="90"/>
         <source>Clear clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="75"/>
+        <location filename="../assets/AppSettings.qml" line="97"/>
         <source>After 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="97"/>
+        <location filename="../assets/AppSettings.qml" line="118"/>
+        <source>Lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="139"/>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="144"/>
+        <source>URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="149"/>
+        <source>Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="154"/>
+        <source>Last modified time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="161"/>
         <source>Sort lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="108"/>
+        <location filename="../assets/AppSettings.qml" line="168"/>
         <source>No sorting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="113"/>
+        <location filename="../assets/AppSettings.qml" line="173"/>
         <source>Alphabetically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="120"/>
-        <source>Sorting order changes will be applied the next time you open a database.</source>
+        <location filename="../assets/AppSettings.qml" line="180"/>
+        <source>Changes will take effect after restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="127"/>
+        <location filename="../assets/AppSettings.qml" line="122"/>
         <source>Entry list details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="138"/>
+        <location filename="../assets/AppSettings.qml" line="129"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="143"/>
+        <location filename="../assets/AppSettings.qml" line="134"/>
         <source>User name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="157"/>
+        <location filename="../assets/AppSettings.qml" line="34"/>
         <source>Search in Recycle Bin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -135,7 +170,7 @@
 <context>
     <name>ApplicationUI</name>
     <message>
-        <location filename="../src/applicationui.cpp" line="158"/>
+        <location filename="../src/applicationui.cpp" line="157"/>
         <source>Invoke failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,7 +254,7 @@
 <context>
     <name>SearchResultsPage</name>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="12"/>
+        <location filename="../assets/SearchResultsPage.qml" line="9"/>
         <source>Search results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -346,47 +381,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="143"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="146"/>
         <source>User name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="148"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="151"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="155"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="158"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="166"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="169"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="190"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="193"/>
         <source>Entry history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="218"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="221"/>
         <source>Creation Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="222"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="225"/>
         <source>Last Modification Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="226"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="229"/>
         <source>Last Access Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="230"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="233"/>
         <source>Expiry Date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -394,13 +429,13 @@
 <context>
     <name>ViewGroupPage</name>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="49"/>
-        <location filename="../assets/ViewGroupPage.qml" line="75"/>
+        <location filename="../assets/ViewGroupPage.qml" line="46"/>
+        <location filename="../assets/ViewGroupPage.qml" line="76"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="167"/>
+        <location filename="../assets/ViewGroupPage.qml" line="161"/>
         <source>This group is empty</source>
         <translation type="unfinished"></translation>
     </message>

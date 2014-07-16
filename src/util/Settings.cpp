@@ -10,11 +10,6 @@
 #include <QCoreApplication>
 #include <QSettings>
 
-enum EntryListDetail {
-    ENTRY_DETAIL_NONE = 0,
-    ENTRY_DETAIL_USER_NAME = 1
-    // eventual additions should be powers of 2: 2, 4, 8, ...
-};
 
 /**
  * Default settings values
@@ -26,7 +21,7 @@ const QString DEFAULT_RECENT_DB_PATH = "";
 const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
 const bool DEFAULT_ALPHA_SORTING = false;
-const int DEFAULT_ENTRY_LIST_DETAIL = ENTRY_DETAIL_USER_NAME;
+const int DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
 
 /**
  * Keys for preferences values
