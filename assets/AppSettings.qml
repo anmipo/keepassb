@@ -18,12 +18,37 @@ Page {
             }
             leftPadding: 10
             rightPadding: 10
-            Label {
-                text: qsTr("Lock database") + Retranslate.onLocaleOrLanguageChanged
-                textStyle.base: SystemDefaults.TextStyles.PrimaryText
+            Header {
+                title: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
+            }
+            Container {
+                topMargin: 10
+                bottomMargin: 10
+                layout: StackLayout { 
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                horizontalAlignment: HorizontalAlignment.Fill
+                Label {
+                    horizontalAlignment: HorizontalAlignment.Left
+                    verticalAlignment: VerticalAlignment.Center
+                    text: qsTr("Search in Recycle Bin") + Retranslate.onLocaleOrLanguageChanged
+                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                    layoutProperties: StackLayoutProperties {
+                        spaceQuota: 1
+                    }
+                }
+                ToggleButton {
+                    id: searchInDeleted
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Top
+                }
+            }
+            Header {
+                title: qsTr("Timeouts") + Retranslate.onLocaleOrLanguageChanged
             }
             DropDown {
                 id: lockTimeout
+                title: qsTr("Lock database") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.autoLockTimeout = selectedOption.value;
@@ -60,13 +85,9 @@ Page {
                     selected: (appSettings.autoLockTimeout == -1)
                 }
             }
-            Divider { }
-            Label {
-                text: qsTr("Clear clipboard") + Retranslate.onLocaleOrLanguageChanged
-                textStyle.base: SystemDefaults.TextStyles.PrimaryText
-            }
             DropDown {
                 id: clipboardTimeout
+                title: qsTr("Clear clipboard") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.clipboardTimeout = selectedOption.value;
@@ -93,13 +114,31 @@ Page {
                     selected: (appSettings.clipboardTimeout == -1)
                 }
             }
-            Divider { }
-            Label {
-                text: qsTr("Sort lists") + Retranslate.onLocaleOrLanguageChanged
-                textStyle.base: SystemDefaults.TextStyles.PrimaryText
+            Header {
+                title: qsTr("Lists") + Retranslate.onLocaleOrLanguageChanged
+            }
+            DropDown {
+                id: entryListDetails
+                title: qsTr("Entry list details") + Retranslate.onLocaleOrLanguageChanged
+                onSelectedOptionChanged: {
+                    if (selectedOption) {
+                        appSettings.entryListDetail = selectedOption.value;
+                    }
+                }
+                Option {
+                    text: qsTr("None") + Retranslate.onLocaleOrLanguageChanged
+                    value: 0
+                    selected: appSettings.entryListDetail == 0
+                }
+                Option {
+                    text: qsTr("User name") + Retranslate.onLocaleOrLanguageChanged
+                    value: 1
+                    selected: appSettings.entryListDetail == 1
+                }
             }
             DropDown {
                 id: alphaSorting
+                title: qsTr("Sort lists") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.alphaSorting = selectedOption.value;
@@ -118,54 +157,10 @@ Page {
             }
             Label {
                 id: alphaSortingNotice
-                text: qsTr("Sorting order changes will be applied the next time you open a database.") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("Changes will take effect after restart.") + Retranslate.onLocaleOrLanguageChanged
                 visible: !database.locked
                 textStyle.base: SystemDefaults.TextStyles.SubtitleText
                 multiline: true
-            }
-            Divider { }
-            Label {
-                text: qsTr("Entry list details") + Retranslate.onLocaleOrLanguageChanged
-                textStyle.base: SystemDefaults.TextStyles.PrimaryText
-            }
-            DropDown {
-                id: entryListDetails
-                onSelectedOptionChanged: {
-                    if (selectedOption) {
-                        appSettings.entryListDetail = selectedOption.value;
-                    }
-                }
-                Option {
-                    text: qsTr("None") + Retranslate.onLocaleOrLanguageChanged
-                    value: 0
-                    selected: appSettings.entryListDetail == 0
-                }
-                Option {
-                    text: qsTr("User name") + Retranslate.onLocaleOrLanguageChanged
-                    value: 1
-                    selected: appSettings.entryListDetail == 1
-                }
-            }
-            Divider { }
-            Container {
-                layout: StackLayout { 
-                    orientation: LayoutOrientation.LeftToRight
-                }
-                horizontalAlignment: HorizontalAlignment.Fill
-                Label {
-                    horizontalAlignment: HorizontalAlignment.Left
-                    verticalAlignment: VerticalAlignment.Center
-                    text: qsTr("Search in Recycle Bin") + Retranslate.onLocaleOrLanguageChanged
-                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
-                }
-                ToggleButton {
-                    id: searchInDeleted
-                    horizontalAlignment: HorizontalAlignment.Right
-                    verticalAlignment: VerticalAlignment.Top
-                }
             }
             Divider { }
         }
