@@ -1,5 +1,5 @@
 1
-175
+174
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -7,8 +7,6 @@ images/cover.png
 images/ic_about.png
 images/ic_attach.png
 images/ic_copy.png
-images/ic_copy_link.png
-images/ic_copy_password.png
 images/ic_done.png
 images/ic_edit.png
 images/ic_entry.png
@@ -17,6 +15,7 @@ images/ic_notes.png
 images/ic_rename.png
 images/ic_save.png
 images/ic_search.png
+images/ic_timestamp.png
 images/ic_unlock.png
 images/ic_view_details.png
 LabelTextButton.qml

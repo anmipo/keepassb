@@ -10,6 +10,12 @@
 #include <QCoreApplication>
 #include <QSettings>
 
+enum EntryListDetail {
+    ENTRY_DETAIL_NONE = 0,
+    ENTRY_DETAIL_USER_NAME = 1
+    // eventual additions should be powers of 2: 2, 4, 8, ...
+};
+
 /**
  * Default settings values
  */
@@ -20,6 +26,7 @@ const QString DEFAULT_RECENT_DB_PATH = "";
 const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
 const bool DEFAULT_ALPHA_SORTING = false;
+const int DEFAULT_ENTRY_LIST_DETAIL = ENTRY_DETAIL_USER_NAME;
 
 /**
  * Keys for preferences values
@@ -31,6 +38,7 @@ const QString KEY_RECENT_DB_PATH = "recentDbPath";
 const QString KEY_RECENT_KEY_FILE_PATH = "recentKeyFilePath";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
 const QString KEY_ALPHA_SORTING = "alphaSorting";
+const QString KEY_ENTRY_LIST_DETAIL = "entryListDetail";
 
 Settings* Settings::_instance;
 
@@ -64,6 +72,8 @@ Settings::Settings(QObject* parent) : QObject(parent){
             KEY_AUTO_LOCK_TIMEOUT, DEFAULT_AUTO_LOCK_TIMEOUT).toInt();
     _alphaSorting = settings.value(
             KEY_ALPHA_SORTING, DEFAULT_ALPHA_SORTING).toBool();
+    _entryListDetail = settings.value(
+            KEY_ENTRY_LIST_DETAIL, DEFAULT_ENTRY_LIST_DETAIL).toInt();
 }
 
 void Settings::setSearchInDeleted(bool searchInDeleted) {
@@ -119,5 +129,13 @@ void Settings::setAlphaSorting(bool alphaSorting) {
         QSettings().setValue(KEY_ALPHA_SORTING, alphaSorting);
         _alphaSorting = alphaSorting;
         emit alphaSortingChanged(alphaSorting);
+    }
+}
+
+void Settings::setEntryListDetail(int fieldType) {
+    if (fieldType != _entryListDetail) {
+        QSettings().setValue(KEY_ENTRY_LIST_DETAIL, fieldType);
+        _entryListDetail = fieldType;
+        emit entryListDetailChanged(fieldType);
     }
 }

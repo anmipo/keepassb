@@ -122,6 +122,29 @@ Page {
             multiline: true
         }
         Divider { }
+        Label {
+            text: qsTr("Entry list details") + Retranslate.onLocaleOrLanguageChanged
+            textStyle.base: SystemDefaults.TextStyles.PrimaryText
+        }
+        DropDown {
+            id: entryListDetails
+            onSelectedOptionChanged: {
+                if (selectedOption) {
+                    appSettings.entryListDetail = selectedOption.value;
+                }
+            }
+            Option {
+                text: qsTr("None") + Retranslate.onLocaleOrLanguageChanged
+                value: 0
+                selected: appSettings.entryListDetail == 0
+            }
+            Option {
+                text: qsTr("User name") + Retranslate.onLocaleOrLanguageChanged
+                value: 1
+                selected: appSettings.entryListDetail == 1
+            }
+        }
+        Divider { }
         Container {
             layout: StackLayout { 
                 orientation: LayoutOrientation.LeftToRight

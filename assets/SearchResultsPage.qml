@@ -15,6 +15,8 @@ Page {
     Container {
         layout: DockLayout { }
         ListView {
+            property int entryDetail: appSettings.entryListDetail
+
             id: listView
             visible: searchResult.hasChildren([])
             dataModel: searchResult
@@ -28,7 +30,13 @@ Page {
                 ListItemComponent {
                     StandardListItem {
                         title: ListItemData.title
-                        description: ListItemData.userName
+                        description: {
+                            if (ListItem.view.entryDetail == 1) {
+                                return ListItemData.userName;
+                            } else {
+                                return "";
+                            }
+                        }
                         imageSpaceReserved: true
                         imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                     }

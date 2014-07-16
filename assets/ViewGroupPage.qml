@@ -99,6 +99,8 @@ Page {
                 }
             }
             ListView {
+                property int entryDetail: appSettings.entryListDetail
+
                 id: groupList
                 objectName: "groupList"
                 dataModel: group
@@ -124,7 +126,13 @@ Page {
                         type: "entry"
                         StandardListItem {
                             title: ListItemData.title
-                            description: ListItemData.userName
+                            description: {
+                                if (ListItem.view.entryDetail == 1) {
+                                    return ListItemData.userName;
+                                } else {
+                                    return "";
+                                }
+                            }
                             imageSpaceReserved: true
                             imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                         }

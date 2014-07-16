@@ -44,75 +44,90 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="20"/>
+        <location filename="../assets/AppSettings.qml" line="21"/>
         <source>Lock database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="31"/>
+        <location filename="../assets/AppSettings.qml" line="32"/>
         <source>When minimized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="36"/>
-        <location filename="../assets/AppSettings.qml" line="79"/>
+        <location filename="../assets/AppSettings.qml" line="37"/>
+        <location filename="../assets/AppSettings.qml" line="80"/>
         <source>After 30 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="41"/>
-        <location filename="../assets/AppSettings.qml" line="84"/>
+        <location filename="../assets/AppSettings.qml" line="42"/>
+        <location filename="../assets/AppSettings.qml" line="85"/>
         <source>After 1 minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="46"/>
+        <location filename="../assets/AppSettings.qml" line="47"/>
         <source>After 2 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="51"/>
+        <location filename="../assets/AppSettings.qml" line="52"/>
         <source>After 5 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="56"/>
-        <location filename="../assets/AppSettings.qml" line="89"/>
+        <location filename="../assets/AppSettings.qml" line="57"/>
+        <location filename="../assets/AppSettings.qml" line="90"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="63"/>
+        <location filename="../assets/AppSettings.qml" line="64"/>
         <source>Clear clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="74"/>
+        <location filename="../assets/AppSettings.qml" line="75"/>
         <source>After 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="96"/>
+        <location filename="../assets/AppSettings.qml" line="97"/>
         <source>Sort lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="107"/>
+        <location filename="../assets/AppSettings.qml" line="108"/>
         <source>No sorting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="112"/>
+        <location filename="../assets/AppSettings.qml" line="113"/>
         <source>Alphabetically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="119"/>
+        <location filename="../assets/AppSettings.qml" line="120"/>
         <source>Sorting order changes will be applied the next time you open a database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="133"/>
+        <location filename="../assets/AppSettings.qml" line="127"/>
+        <source>Entry list details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="138"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="143"/>
+        <source>User name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="157"/>
         <source>Search in Recycle Bin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -218,7 +233,7 @@
     <name>UnlockDbPage</name>
     <message>
         <location filename="../assets/UnlockDbPage.qml" line="25"/>
-        <location filename="../assets/UnlockDbPage.qml" line="196"/>
+        <location filename="../assets/UnlockDbPage.qml" line="208"/>
         <source>Choose database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,37 +253,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="119"/>
+        <location filename="../assets/UnlockDbPage.qml" line="125"/>
         <source>Use this as my default database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="128"/>
+        <location filename="../assets/UnlockDbPage.qml" line="134"/>
         <source>Password and key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="139"/>
+        <location filename="../assets/UnlockDbPage.qml" line="145"/>
         <source>Enter password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="187"/>
+        <location filename="../assets/UnlockDbPage.qml" line="199"/>
         <source>Invalid password or key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="205"/>
+        <location filename="../assets/UnlockDbPage.qml" line="217"/>
         <source>Choose key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="218"/>
+        <location filename="../assets/UnlockDbPage.qml" line="230"/>
         <source>Decrypting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="227"/>
+        <location filename="../assets/UnlockDbPage.qml" line="239"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -385,7 +400,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="160"/>
+        <location filename="../assets/ViewGroupPage.qml" line="167"/>
         <source>This group is empty</source>
         <translation type="unfinished"></translation>
     </message>

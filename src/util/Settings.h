@@ -41,6 +41,10 @@ class Settings: public QObject {
      * Use alphabetical sorting in group lists
      */
     Q_PROPERTY(bool alphaSorting READ isAlphaSorting WRITE setAlphaSorting NOTIFY alphaSortingChanged)
+    /**
+     * Type of entry field to show in the description of an entry item in group list
+     */
+    Q_PROPERTY(int entryListDetail READ getEntryListDetail WRITE setEntryListDetail NOTIFY entryListDetailChanged)
 
 private:
     static Settings* _instance;
@@ -51,6 +55,7 @@ private:
     QString _recentKeyFilePath;
     int _autoLockTimeout;
     bool _alphaSorting;
+    int _entryListDetail;
 
     Settings(QObject* parent = 0);
 
@@ -68,6 +73,7 @@ public:
     QString getRecentKeyFilePath() const { return _recentKeyFilePath; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
     bool isAlphaSorting() const { return _alphaSorting; }
+    int getEntryListDetail() const { return _entryListDetail; }
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
     void setClipboardTimeout(int timeout);
@@ -76,6 +82,7 @@ public slots:
     void setRecentKeyFilePath(const QString& path);
     void setAutoLockTimeout(int timeout);
     void setAlphaSorting(bool alphaSorting);
+    void setEntryListDetail(int fieldType);
 signals:
     void searchInDeletedChanged(bool);
     void clipboardTimeoutChanged(int);
@@ -84,6 +91,7 @@ signals:
     void recentKeyFilePathChanged(QString);
     void autoLockTimeoutChanged(int);
     void alphaSortingChanged(bool);
+    void entryListDetailChanged(int);
 };
 
 #endif /* SETTINGS_H_ */
