@@ -13,7 +13,7 @@
 const QString TimedClipboard::DATA_TYPE = "text/plain";
 
 TimedClipboard::TimedClipboard(QObject* parent) :
-		bb::system::Clipboard(parent), timer(parent), content() {
+		bb::system::Clipboard(parent), timer(parent), content(), modified(false) {
 	timer.setSingleShot(true);
 	QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(timeout()));
 }
@@ -29,7 +29,7 @@ void TimedClipboard::timeout() {
 }
 
 bool TimedClipboard::clear() {
-    if (content == this->value(DATA_TYPE)) {
+    if (modified && (content == this->value(DATA_TYPE))) {
         qDebug("Clipboard cleared by timeout");
         this->remove(DATA_TYPE);
         emit cleared();
@@ -42,6 +42,7 @@ bool TimedClipboard::clear() {
 
 bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMillis) {
     content = text.toUtf8();
+    modified = true;
 	bool result = this->insert(DATA_TYPE, content);
 	if (result) {
 		emit inserted();
