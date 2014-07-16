@@ -6,16 +6,16 @@ Page {
         title: qsTr("Settings") + Retranslate.onLocaleOrLanguageChanged
     }
     onCreationCompleted: {
-        app.restartWatchdog();
         searchInDeleted.checked = appSettings.searchInDeleted;
         searchInDeleted.checkedChanged.connect(appSettings.setSearchInDeleted);
     }
     ScrollView {
         scrollRole: ScrollRole.Main
         Container {
-            layout: StackLayout {
-                orientation: LayoutOrientation.TopToBottom
+            onTouchCapture: {
+                app.restartWatchdog();
             }
+            layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
             leftPadding: 10
             rightPadding: 10
             Header {

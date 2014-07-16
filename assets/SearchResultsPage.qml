@@ -4,15 +4,14 @@ import org.keepassb 1.0
 Page {
     property PwSearchResultDataModel searchResult
     
-    onCreationCompleted: {
-        app.restartWatchdog();
-    }
-    
     titleBar: TitleBar {
         title: qsTr("Search results") + Retranslate.onLocaleOrLanguageChanged 
     }
-
     Container {
+        onTouchCapture: {
+            app.restartWatchdog();
+        }
+
         layout: DockLayout { }
         ListView {
             property int entryDetail: appSettings.entryListDetail

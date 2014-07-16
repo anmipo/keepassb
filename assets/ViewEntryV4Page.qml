@@ -84,7 +84,6 @@ Page {
     ]
     
     function setCurrentView(viewName) {
-        app.restartWatchdog();
         var newView;
         var newViewComponent;
         switch (viewName) {
@@ -120,6 +119,10 @@ Page {
     }
 
     Container {
+        onTouchCapture: {
+            app.restartWatchdog();
+        }
+
         leftPadding: 10
         rightPadding: 10
         topPadding: 10
