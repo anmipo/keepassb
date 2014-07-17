@@ -10,11 +10,14 @@
 #include <QDebug>
 #include <QStringBuilder>
 #include <bb/cascades/ItemGrouping>
+#include <bb/cascades/DataModel>
 #include "util/Settings.h"
 
 PwGroup::PwGroup() : bb::cascades::DataModel(), _uuid(),
         _creationTime(), _lastModificationTime(),
-        _lastAccessTime(), _expiryTime() {
+        _lastAccessTime(), _expiryTime(),
+        _subGroups(), _entries(),
+        sortedGroups(), sortedEntries() {
 	_name = QString::null;
 	_notes = QString::null;
 	_iconId = 0;
@@ -35,8 +38,10 @@ void PwGroup::clear() {
     _iconId = 0;
     _name.clear();
     _notes.clear();
+    sortedGroups.clear();
 	qDeleteAll(_subGroups);
 	_subGroups.clear();
+	sortedEntries.clear();
 	qDeleteAll(_entries);
 	_entries.clear();
     _creationTime.setMSecsSinceEpoch(0L);
@@ -68,10 +73,13 @@ bool PwGroup::lessThan(const PwGroup* g1, const PwGroup* g2) {
 }
 
 void PwGroup::sortChildren() {
+    sortedEntries = _entries;
+    sortedGroups = _subGroups;
     if (Settings::instance()->isAlphaSorting()) {
-        qStableSort(_subGroups.begin(), _subGroups.end(), PwGroup::lessThan);
-        qStableSort(_entries.begin(), _entries.end(), PwEntry::lessThan);
+        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::lessThan);
+        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::lessThan);
     }
+    emit itemsChanged(bb::cascades::DataModelChangeType::Update, QSharedPointer<IndexMapper>());
     _isChildrenModified = false;
 }
 
@@ -86,11 +94,11 @@ QVariant PwGroup::data(const QVariantList& indexPath) {
         res = res.fromValue(this);
     } else if (indexPath.length() == 1) {
         int i = indexPath.first().toInt(NULL);
-        if (i < _subGroups.count()) {
-            PwGroup* subgroup = _subGroups.at(i);
+        if (i < sortedGroups.count()) {
+            PwGroup* subgroup = sortedGroups.at(i);
             res = res.fromValue(subgroup);
         } else {
-            PwEntry* entry = _entries.at(i - _subGroups.count());
+            PwEntry* entry = sortedEntries.at(i - sortedGroups.count());
             res = res.fromValue(entry);
         }
     } else {
@@ -100,24 +108,36 @@ QVariant PwGroup::data(const QVariantList& indexPath) {
 }
 
 int PwGroup::childCount(const QVariantList& indexPath) {
+    if (_isChildrenModified) {
+        sortChildren();
+    }
+
     int result = 0;
     if (indexPath.length() == 0) {
-        result = _subGroups.count() + _entries.count();
+        result = sortedGroups.count() + sortedEntries.count();
     }
     return result;
 }
 bool PwGroup::hasChildren(const QVariantList& indexPath) {
+    if (_isChildrenModified) {
+        sortChildren();
+    }
+
     bool result = (indexPath.length() == 0) &&
-            (!_subGroups.isEmpty() || !_entries.isEmpty());
+            (!sortedGroups.isEmpty() || !sortedEntries.isEmpty());
     return result;
 }
 QString PwGroup::itemType(const QVariantList& indexPath) {
+    if (_isChildrenModified) {
+        sortChildren();
+    }
+
     QString result;
     if (indexPath.length() == 0) {
         result = "group";
     } else if (indexPath.length() == 1) {
         int i = indexPath.first().toInt(NULL);
-        result = (i < _subGroups.count()) ? "group" : "entry";
+        result = (i < sortedGroups.count()) ? "group" : "entry";
     } else {
         result = "none";
     }

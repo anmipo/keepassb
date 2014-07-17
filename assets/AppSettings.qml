@@ -175,13 +175,6 @@ Page {
                     selected: appSettings.alphaSorting
                 }
             }
-            Label {
-                id: alphaSortingNotice
-                text: qsTr("Changes will take effect after restart.") + Retranslate.onLocaleOrLanguageChanged
-                visible: !database.locked
-                textStyle.base: SystemDefaults.TextStyles.SubtitleText
-                multiline: true
-            }
             Divider { }
         }
     }

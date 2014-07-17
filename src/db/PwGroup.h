@@ -49,8 +49,8 @@ private:
     bool _deleted;
 
 	bool _isChildrenModified;
-	QList<PwGroup*> _subGroups;
-	QList<PwEntry*> _entries;
+	QList<PwGroup*> _subGroups, sortedGroups;
+	QList<PwEntry*> _entries, sortedEntries;
 
 protected slots:
 	/**

@@ -430,12 +430,12 @@
     <name>ViewGroupPage</name>
     <message>
         <location filename="../assets/ViewGroupPage.qml" line="46"/>
-        <location filename="../assets/ViewGroupPage.qml" line="76"/>
+        <location filename="../assets/ViewGroupPage.qml" line="82"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="161"/>
+        <location filename="../assets/ViewGroupPage.qml" line="167"/>
         <source>This group is empty</source>
         <translation type="unfinished"></translation>
     </message>
