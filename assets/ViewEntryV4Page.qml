@@ -22,12 +22,13 @@ Page {
                 leftPadding: 10
                 rightPadding: 10
                 ImageView {
-                    imageSource: "asset:///pwicons/" + data.iconId + ".png"
+                    imageSource: "asset:///pwicons-dark/" + data.iconId + ".png"
                     verticalAlignment: VerticalAlignment.Center
                 }
                 Label {
                     text: data.title
                     textStyle.base: SystemDefaults.TextStyles.TitleText
+                    textStyle.color: Color.White
                     verticalAlignment: VerticalAlignment.Center
                     layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                 }
@@ -48,7 +49,7 @@ Page {
     actions: [
         ActionItem {
             title: qsTr("General") + Retranslate.onLocaleOrLanguageChanged
-            imageSource: "asset:///pwicons/0.png" //TODO make a dedicated icon
+            imageSource: "asset:///images/ic_entry_general.png"
 //            enabled: (currentView != "general")
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: setCurrentView("general")

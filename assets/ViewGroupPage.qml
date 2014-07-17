@@ -17,13 +17,14 @@ Page {
                 leftPadding: 10
                 rightPadding: 10
                 ImageView {
-                    imageSource: "asset:///pwicons/" + group.iconId + ".png"
+                    imageSource: "asset:///pwicons-dark/" + group.iconId + ".png"
                     verticalAlignment: VerticalAlignment.Center
                 }
                 Label {
                     id: titleLabel
                     text: titleBar.title
                     textStyle.base: SystemDefaults.TextStyles.TitleText
+                    textStyle.color: Color.White
                     verticalAlignment: VerticalAlignment.Center
                     layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                 }
