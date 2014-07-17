@@ -135,7 +135,8 @@ Page {
                     ListItemComponent {
                         type: "group"
                         StandardListItem {
-                            title: ListItemData.name
+                            title: "<b>" + ListItemData.name + "</b>"
+                            textFormat: TextFormat.Html
                             status: "(" + ListItemData.childCount + ")"
                             imageSpaceReserved: true
                             imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
