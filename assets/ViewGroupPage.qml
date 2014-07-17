@@ -76,10 +76,11 @@ Page {
                 id: searchField
                 hintText: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
                 visible: false
-                clearButtonVisible: true; 
+                clearButtonVisible: true 
                 inputMode: TextFieldInputMode.Text
                 input.submitKey: SubmitKey.Search
                 input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
+                horizontalAlignment: HorizontalAlignment.Fill
                 onTextChanging: {
                     app.restartWatchdog();
                 }
