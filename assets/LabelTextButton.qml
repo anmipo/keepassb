@@ -46,6 +46,11 @@ Container {
             }
             input.flags: TextInputFlag.SpellCheckOff
             focusPolicy: FocusPolicy.None
+            onTouch: {
+                if ((event.touchType == TouchType.Up) && passwordMasking) {
+                    showPasswordCheck.checked = !showPasswordCheck.checked; 
+                }
+            }
         }
         ImageToggleButton {
             id: showPasswordCheck
