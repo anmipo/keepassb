@@ -6,7 +6,10 @@ import org.keepassb 1.0
 Container {
     property PwAttachment selectedAttachment
     property string savedFileName
-    
+
+    Header {
+        title: qsTr("Attachments") + Retranslate.onLocaleOrLanguageChanged
+    }    
     ListView {
         id: entryFileList
         scrollRole: ScrollRole.Main
