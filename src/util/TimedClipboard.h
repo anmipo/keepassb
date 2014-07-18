@@ -15,9 +15,9 @@ class TimedClipboard : public bb::system::Clipboard {
 	Q_OBJECT
 private:
 	static const QString DATA_TYPE; // MIME type of clipboard data we work with
-	bool modified;
-	QByteArray content;
 	QTimer timer;
+	QByteArray content;
+	bool modified;
 public slots:
 	void timeout();
 public:

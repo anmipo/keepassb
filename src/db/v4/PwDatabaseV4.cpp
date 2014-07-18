@@ -559,7 +559,6 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
 PwDatabaseV4::ErrorCode PwDatabaseV4::loadXmlMetaData(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_META);
 
-    ErrorCode err;
     xml.readNext();
     QString tagName = xml.name().toString();
     while (!xml.hasError() && !(xml.isEndElement() && (XML_META == tagName))) {
