@@ -63,6 +63,8 @@ public:
 
 	virtual void clear();
 
+    Q_INVOKABLE PwGroup* getParentGroup() const { return reinterpret_cast<PwGroup*>(this->parent()); }
+
 	void addSubGroup(PwGroup* subGroup);
 	QList<PwGroup*> getSubGroups() const { return _subGroups; }
 

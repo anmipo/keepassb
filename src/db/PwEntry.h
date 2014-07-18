@@ -12,6 +12,7 @@
 #include <QMetaType>
 #include <QDateTime>
 #include "db/PwUuid.h"
+#include "db/PwGroup.h"
 
 class PwEntry: public QObject {
 	Q_OBJECT
@@ -41,6 +42,8 @@ public:
 	virtual ~PwEntry();
 
 	virtual void clear();
+
+    Q_INVOKABLE PwGroup* getParentGroup() const { return reinterpret_cast<PwGroup*>(this->parent()); }
 
 	// property getters/setters
 	PwUuid getUuid() const { return _uuid; }

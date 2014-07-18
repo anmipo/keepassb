@@ -28,7 +28,8 @@ Page {
                 ListItemComponent {
                     StandardListItem {
                         title: ListItemData.title
-                        description: Common.getEntryDescription(ListItemData)
+                        //description: Common.getEntryDescription(ListItemData)
+                        description: qsTr("Group: ") + ListItemData.getParentGroup().name
                         imageSpaceReserved: true
                         imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                     }

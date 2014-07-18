@@ -8,6 +8,7 @@
 #include "PwEntry.h"
 #include <QDebug>
 #include <QDateTime>
+#include <QList>
 
 PwEntry::PwEntry() : QObject(), _uuid(), _iconId(0),
         _creationTime(), _lastModificationTime(),
