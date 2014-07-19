@@ -26,3 +26,24 @@ function getEntryDescription(entry) {
             return "";
     }
 }
+
+/**
+ * Returns localized text describing the given quick unlock type.
+ * @param quickUnlockType
+ */
+function getQuickUnlockTypeDescription(quickUnlockType) {
+    switch (quickUnlockType) {
+    case Settings.QUICK_UNLOCK_FIRST_3:
+        return qsTr("First 3 symbols of the password");
+    case Settings.QUICK_UNLOCK_FIRST_4:
+        return qsTr("First 4 symbols of the password");
+    case Settings.QUICK_UNLOCK_FIRST_5:
+    	return qsTr("First 5 symbols of the password");
+    case Settings.QUICK_UNLOCK_LAST_3:
+    	return qsTr("Last 3 symbols of the password");
+    case Settings.QUICK_UNLOCK_LAST_4:
+    	return qsTr("Last 4 symbols of the password");
+    case Settings.QUICK_UNLOCK_LAST_5:
+    	return qsTr("Last 5 symbols of the password");
+    }
+}

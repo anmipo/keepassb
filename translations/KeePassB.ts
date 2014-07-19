@@ -44,161 +44,131 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="22"/>
+        <location filename="../assets/AppSettings.qml" line="196"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="34"/>
+        <location filename="../assets/AppSettings.qml" line="208"/>
         <source>Search in Recycle Bin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="47"/>
+        <location filename="../assets/AppSettings.qml" line="22"/>
         <source>Timeouts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="51"/>
+        <location filename="../assets/AppSettings.qml" line="26"/>
         <source>Lock database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="58"/>
+        <location filename="../assets/AppSettings.qml" line="33"/>
         <source>When minimized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="63"/>
-        <location filename="../assets/AppSettings.qml" line="102"/>
+        <location filename="../assets/AppSettings.qml" line="38"/>
+        <location filename="../assets/AppSettings.qml" line="77"/>
         <source>After 30 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="68"/>
-        <location filename="../assets/AppSettings.qml" line="107"/>
+        <location filename="../assets/AppSettings.qml" line="43"/>
+        <location filename="../assets/AppSettings.qml" line="82"/>
         <source>After 1 minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="73"/>
+        <location filename="../assets/AppSettings.qml" line="48"/>
         <source>After 2 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="78"/>
+        <location filename="../assets/AppSettings.qml" line="53"/>
         <source>After 5 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="83"/>
-        <location filename="../assets/AppSettings.qml" line="112"/>
+        <location filename="../assets/AppSettings.qml" line="58"/>
+        <location filename="../assets/AppSettings.qml" line="87"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="90"/>
+        <location filename="../assets/AppSettings.qml" line="65"/>
         <source>Clear clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="97"/>
+        <location filename="../assets/AppSettings.qml" line="72"/>
         <source>After 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="118"/>
+        <location filename="../assets/AppSettings.qml" line="93"/>
+        <source>Quick Unlock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="102"/>
+        <source>Quick password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="135"/>
         <source>Lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="122"/>
+        <location filename="../assets/AppSettings.qml" line="139"/>
         <source>Entry list details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="129"/>
+        <location filename="../assets/AppSettings.qml" line="146"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="134"/>
+        <location filename="../assets/AppSettings.qml" line="151"/>
         <source>User name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="139"/>
+        <location filename="../assets/AppSettings.qml" line="156"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="144"/>
+        <location filename="../assets/AppSettings.qml" line="161"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="149"/>
+        <location filename="../assets/AppSettings.qml" line="166"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="154"/>
+        <location filename="../assets/AppSettings.qml" line="171"/>
         <source>Last modified time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="161"/>
+        <location filename="../assets/AppSettings.qml" line="178"/>
         <source>Sort lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="168"/>
+        <location filename="../assets/AppSettings.qml" line="185"/>
         <source>No sorting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="173"/>
-        <source>Alphabetically</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="179"/>
-        <source>Quick unlock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="188"/>
-        <source>Quick Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AppSettings.qml" line="190"/>
-        <source>First 3 symbols of the password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="195"/>
-        <source>First 4 symbols of the password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="200"/>
-        <source>First 5 symbols of the password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="205"/>
-        <source>Last 3 symbols of the password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="210"/>
-        <source>Last 4 symbols of the password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="215"/>
-        <source>Last 5 symbols of the password</source>
+        <source>Alphabetically</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -289,52 +259,17 @@
 <context>
     <name>QuickUnlockPage</name>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="16"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="17"/>
         <source>Quick unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="19"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="20"/>
         <source>Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="32"/>
-        <source>Lock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="47"/>
-        <source>Enter first three symbols of your password to unlock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="49"/>
-        <source>Enter first four symbols of your password to unlock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="51"/>
-        <source>Enter first five symbols of your password to unlock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="53"/>
-        <source>Enter last three symbols of your password to unlock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="55"/>
-        <source>Enter last four symbols of your password to unlock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="57"/>
-        <source>Enter last five symbols of your password to unlock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="72"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="50"/>
         <source>Wrong unlock code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -540,6 +475,39 @@
     <message>
         <location filename="../assets/ViewGroupPage.qml" line="164"/>
         <source>This group is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>common</name>
+    <message>
+        <location filename="../assets/common.js" line="37"/>
+        <source>First 3 symbols of the password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/common.js" line="39"/>
+        <source>First 4 symbols of the password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/common.js" line="41"/>
+        <source>First 5 symbols of the password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/common.js" line="43"/>
+        <source>Last 3 symbols of the password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/common.js" line="45"/>
+        <source>Last 4 symbols of the password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/common.js" line="47"/>
+        <source>Last 5 symbols of the password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

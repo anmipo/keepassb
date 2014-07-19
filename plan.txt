@@ -57,8 +57,8 @@
 + Fix search field width
 + different group/entry styling in list
 + add header to entry atachments
++ Quick unlock based on part of the password - test with passwords shorter than N
 
-Quick unlock based on part of the password - test with passwords shorter than N
 toast hidden by keyboard on z10 -- fixed in 10.2? 
 test with non-ASCII passwords
 
@@ -72,7 +72,6 @@ larger eye icon for Z10? --- yes!
 Later:
 
 search as you type dialog
-Option: lock app when phone locked
 OTP support
 hub notification for clipboard?
 Search: show group names in headers

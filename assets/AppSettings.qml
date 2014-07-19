@@ -1,6 +1,6 @@
 import bb.cascades 1.2
 import org.keepassb 1.0
-
+import "common.js" as Common
 Page {
     titleBar: TitleBar {
         title: qsTr("Settings") + Retranslate.onLocaleOrLanguageChanged
@@ -18,31 +18,6 @@ Page {
             layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
             leftPadding: 10
             rightPadding: 10
-            Header {
-                title: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
-            }
-            Container {
-                topMargin: 10
-                bottomMargin: 10
-                layout: StackLayout { 
-                    orientation: LayoutOrientation.LeftToRight
-                }
-                horizontalAlignment: HorizontalAlignment.Fill
-                Label {
-                    horizontalAlignment: HorizontalAlignment.Left
-                    verticalAlignment: VerticalAlignment.Center
-                    text: qsTr("Search in Recycle Bin") + Retranslate.onLocaleOrLanguageChanged
-                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
-                }
-                ToggleButton {
-                    id: searchInDeleted
-                    horizontalAlignment: HorizontalAlignment.Right
-                    verticalAlignment: VerticalAlignment.Top
-                }
-            }
             Header {
                 title: qsTr("Timeouts") + Retranslate.onLocaleOrLanguageChanged
             }
@@ -115,6 +90,48 @@ Page {
                 }
             }
             Header {
+                title: qsTr("Quick Unlock") + Retranslate.onLocaleOrLanguageChanged
+            }
+            DropDown {
+                id: quickUnlockType
+                onSelectedOptionChanged: {
+                    if (selectedOption) {
+                        appSettings.quickUnlockType = selectedOption.value;
+                    }
+                }
+                title: qsTr("Quick password") + Retranslate.onLocaleOrLanguageChanged
+                Option {
+                    text: Common.getQuickUnlockTypeDescription(Settings.QUICK_UNLOCK_FIRST_3) + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_FIRST_3
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_3)
+                }
+                Option {
+                    text: Common.getQuickUnlockTypeDescription(Settings.QUICK_UNLOCK_FIRST_4) + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_FIRST_4
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_4)
+                }
+                Option {
+                    text: Common.getQuickUnlockTypeDescription(Settings.QUICK_UNLOCK_FIRST_5) + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_FIRST_5
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_5)
+                }
+                Option {
+                    text: Common.getQuickUnlockTypeDescription(Settings.QUICK_UNLOCK_LAST_3) + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_LAST_3
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_3)
+                }
+                Option {
+                    text: Common.getQuickUnlockTypeDescription(Settings.QUICK_UNLOCK_LAST_4) + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_LAST_4
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_4)
+                }
+                Option {
+                    text: Common.getQuickUnlockTypeDescription(Settings.QUICK_UNLOCK_LAST_5) + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_LAST_5
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_5)
+                }
+            }
+            Header {
                 title: qsTr("Lists") + Retranslate.onLocaleOrLanguageChanged
             }
             DropDown {
@@ -176,45 +193,28 @@ Page {
                 }
             }
             Header {
-                title: qsTr("Quick unlock") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
             }
-            DropDown {
-                id: quickUnlockType
-                onSelectedOptionChanged: {
-                    if (selectedOption) {
-                        appSettings.quickUnlockType = selectedOption.value;
+            Container {
+                topMargin: 10
+                bottomMargin: 10
+                layout: StackLayout { 
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                horizontalAlignment: HorizontalAlignment.Fill
+                Label {
+                    horizontalAlignment: HorizontalAlignment.Left
+                    verticalAlignment: VerticalAlignment.Center
+                    text: qsTr("Search in Recycle Bin") + Retranslate.onLocaleOrLanguageChanged
+                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                    layoutProperties: StackLayoutProperties {
+                        spaceQuota: 1
                     }
                 }
-                title: qsTr("Quick Password") + Retranslate.onLocaleOrLanguageChanged
-                Option {
-                    text: qsTr("First 3 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
-                    value: Settings.QUICK_UNLOCK_FIRST_3
-                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_3)
-                }
-                Option {
-                    text: qsTr("First 4 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
-                    value: Settings.QUICK_UNLOCK_FIRST_4
-                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_4)
-                }
-                Option {
-                    text: qsTr("First 5 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
-                    value: Settings.QUICK_UNLOCK_FIRST_5
-                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_5)
-                }
-                Option {
-                    text: qsTr("Last 3 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
-                    value: Settings.QUICK_UNLOCK_LAST_3
-                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_3)
-                }
-                Option {
-                    text: qsTr("Last 4 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
-                    value: Settings.QUICK_UNLOCK_LAST_4
-                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_4)
-                }
-                Option {
-                    text: qsTr("Last 5 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
-                    value: Settings.QUICK_UNLOCK_LAST_5
-                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_5)
+                ToggleButton {
+                    id: searchInDeleted
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Top
                 }
             }
             Divider { }

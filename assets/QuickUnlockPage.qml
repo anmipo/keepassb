@@ -1,6 +1,7 @@
 import bb.cascades 1.2
 import bb.system 1.2
 import org.keepassb 1.0
+import "common.js" as Common
 
 Sheet {
     id: quickUnlockSheet
@@ -28,39 +29,16 @@ Sheet {
                     }
                 }
             }
-            dismissAction: ActionItem {
-                title: qsTr("Lock") + Retranslate.onLocaleOrLanguageChanged
-                onTriggered: {
-                    quickPassEdit.text = "";
-                    database.lock();
-                }
-            }
             visibility: ChromeVisibility.Visible
         }
         Container {
+            topPadding: 10
             leftPadding: 10
             rightPadding: 10
-            Label {
-                text: {
-                    switch (appSettings.quickUnlockType) {
-                        case Settings.QUICK_UNLOCK_FIRST_3:
-                            return qsTr("Enter first three symbols of your password to unlock:");
-                        case Settings.QUICK_UNLOCK_FIRST_4:
-                            return qsTr("Enter first four symbols of your password to unlock:");
-                        case Settings.QUICK_UNLOCK_FIRST_5:
-                            return qsTr("Enter first five symbols of your password to unlock:");
-                        case Settings.QUICK_UNLOCK_LAST_3:
-                            return qsTr("Enter last three symbols of your password to unlock:");
-                        case Settings.QUICK_UNLOCK_LAST_4:
-                            return qsTr("Enter last four symbols of your password to unlock:");
-                        case Settings.QUICK_UNLOCK_LAST_5:
-                            return qsTr("Enter last five symbols of your password to unlock:");
-                    }
-                }
-                multiline: true
-            }
             TextField {
                 id: quickPassEdit
+                hintText: Common.getQuickUnlockTypeDescription(appSettings.quickUnlockType) + Retranslate.onLocaleOrLanguageChanged
+                horizontalAlignment: HorizontalAlignment.Fill
                 inputMode: TextFieldInputMode.Password
                 input.onSubmitted: unlockAction.triggered();
                 input.submitKey: SubmitKey.EnterKey
