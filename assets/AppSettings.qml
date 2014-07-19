@@ -175,6 +175,48 @@ Page {
                     selected: appSettings.alphaSorting
                 }
             }
+            Header {
+                title: qsTr("Quick unlock") + Retranslate.onLocaleOrLanguageChanged
+            }
+            DropDown {
+                id: quickUnlockType
+                onSelectedOptionChanged: {
+                    if (selectedOption) {
+                        appSettings.quickUnlockType = selectedOption.value;
+                    }
+                }
+                title: qsTr("Quick Password") + Retranslate.onLocaleOrLanguageChanged
+                Option {
+                    text: qsTr("First 3 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_FIRST_3
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_3)
+                }
+                Option {
+                    text: qsTr("First 4 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_FIRST_4
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_4)
+                }
+                Option {
+                    text: qsTr("First 5 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_FIRST_5
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_FIRST_5)
+                }
+                Option {
+                    text: qsTr("Last 3 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_LAST_3
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_3)
+                }
+                Option {
+                    text: qsTr("Last 4 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_LAST_4
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_4)
+                }
+                Option {
+                    text: qsTr("Last 5 symbols of the password") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.QUICK_UNLOCK_LAST_5
+                    selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_5)
+                }
+            }
             Divider { }
         }
     }

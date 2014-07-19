@@ -22,6 +22,8 @@ const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
 const bool DEFAULT_ALPHA_SORTING = false;
 const int DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
+const bool DEFAULT_QUICK_UNLOCK_ENABLED = false;
+const int DEFAULT_QUICK_UNLOCK_TYPE = Settings::QUICK_UNLOCK_FIRST_4;
 
 /**
  * Keys for preferences values
@@ -34,6 +36,8 @@ const QString KEY_RECENT_KEY_FILE_PATH = "recentKeyFilePath";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
 const QString KEY_ALPHA_SORTING = "alphaSorting";
 const QString KEY_ENTRY_LIST_DETAIL = "entryListDetail";
+const QString KEY_QUICK_UNLOCK_ENABLED = "quickUnlockEnabled";
+const QString KEY_QUICK_UNLOCK_TYPE = "quickUnlockType";
 
 Settings* Settings::_instance;
 
@@ -45,7 +49,10 @@ Settings* Settings::instance() {
 }
 
 Settings::Settings(QObject* parent) : QObject(parent){
-    qmlRegisterUncreatableType<Settings>("org.keepassb", 1, 0, "Settings", "Settings is a singleton with a private constructor");
+    // This should have been qmlRegisterUncreatableType(), but then
+    // contained enums would not be accessible from QML.
+    // So I had to make the constructor public and register type as creatable....
+    qmlRegisterType<Settings>("org.keepassb", 1, 0, "Settings");
 
     // Set up the QSettings object for the application with organization and application name.
     QCoreApplication::setOrganizationName("Andrei Popleteev");
@@ -67,8 +74,12 @@ Settings::Settings(QObject* parent) : QObject(parent){
             KEY_AUTO_LOCK_TIMEOUT, DEFAULT_AUTO_LOCK_TIMEOUT).toInt();
     _alphaSorting = settings.value(
             KEY_ALPHA_SORTING, DEFAULT_ALPHA_SORTING).toBool();
-    _entryListDetail = settings.value(
+    _entryListDetail = (EntryListDetail)settings.value(
             KEY_ENTRY_LIST_DETAIL, DEFAULT_ENTRY_LIST_DETAIL).toInt();
+    _quickUnlockEnabled = settings.value(
+            KEY_QUICK_UNLOCK_ENABLED, DEFAULT_QUICK_UNLOCK_ENABLED).toBool();
+    _quickUnlockType = (QuickUnlockType) settings.value(
+            KEY_QUICK_UNLOCK_TYPE, DEFAULT_QUICK_UNLOCK_TYPE).toInt();
 }
 
 void Settings::setSearchInDeleted(bool searchInDeleted) {
@@ -127,10 +138,26 @@ void Settings::setAlphaSorting(bool alphaSorting) {
     }
 }
 
-void Settings::setEntryListDetail(int fieldType) {
-    if (fieldType != _entryListDetail) {
-        QSettings().setValue(KEY_ENTRY_LIST_DETAIL, fieldType);
-        _entryListDetail = fieldType;
-        emit entryListDetailChanged(fieldType);
+void Settings::setEntryListDetail(EntryListDetail detail) {
+    if (detail != _entryListDetail) {
+        QSettings().setValue(KEY_ENTRY_LIST_DETAIL, detail);
+        _entryListDetail = detail;
+        emit entryListDetailChanged(detail);
+    }
+}
+
+void Settings::setQuickUnlockEnabled(bool enabled) {
+    if (enabled != _quickUnlockEnabled) {
+        QSettings().setValue(KEY_QUICK_UNLOCK_ENABLED, enabled);
+        _quickUnlockEnabled = enabled;
+        emit quickUnlockEnabledChanged(enabled);
+    }
+}
+
+void Settings::setQuickUnlockType(Settings::QuickUnlockType type) {
+    if (type != _quickUnlockType) {
+        QSettings().setValue(KEY_QUICK_UNLOCK_TYPE, type);
+        _quickUnlockType = type;
+        emit quickUnlockTypeChanged(type);
     }
 }

@@ -35,6 +35,7 @@ private:
     bb::system::InvokeManager* invokeManager;
     TimedClipboard clipboard;
     QTimer watchdog;
+    QByteArray quickPassHash;
 
     QTranslator* m_pTranslator;
     bb::cascades::LocaleHandler* m_pLocaleHandler;
@@ -49,6 +50,11 @@ public:
     void showToast(const QString& msg);
     // opens given file with a suitable third-party app
     Q_INVOKABLE void invokeFile(const QString& uri);
+
+    // Checks whether quick unlock code matches
+    Q_INVOKABLE bool quickUnlock(const QString& quickCode);
+    // Remembers the necessary info for quick unlock
+    Q_INVOKABLE void prepareQuickUnlock(const QString& fullPassword);
 private slots:
     void onSystemLanguageChanged();
     void onWatchdogTimeoutChanged(int timeout);
@@ -57,10 +63,13 @@ public slots:
     Q_INVOKABLE void restartWatchdog();
     Q_INVOKABLE void stopWatchdog();
     void onInvoke(const bb::system::InvokeRequest& request);
+    Q_INVOKABLE void lock();
 signals:
     void clipboardUpdated();
     void clipboardCleared();
     void dbOpenError(const QString& message, const PwDatabase::Error errorCode);
+    // emitted when the app enters the quick-lock state
+    void appLocked();
 };
 
 #endif /* ApplicationUI_HPP_ */

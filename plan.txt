@@ -40,20 +40,42 @@
 + clear clipboard only if it was not changed by other apps
 + search does not filter?
 + list sort order setting
++ icons in list titles
++ check for missing qsTr and retranslate()
++ Support long entry titles
++ clean clipboard on exit and DB lock 
++ disable copying of empty fields
++ Use this file next time, on by defailt
++ copy icons must be the same
++ do not hide action bar on z10+
++ "Clipboard cleared" toast when password is empty
++ put settings content into a scrollview
++ watchdog reset on touch
++ copy buttons copy strange things (bug in Remember: message body has its own clipboard)
++ configurable entry list descriptions
++ dynamic re-sort of lists (remember the original order in PwGroup)
++ Fix search field width
++ different group/entry styling in list
++ add header to entry atachments
 
-check for missing qsTr and retranslate()
-remove debug password
-Quick unlock based on N (configurable) last characters - test wit h passwords shorter than N
-search as you type dialog
+Quick unlock based on part of the password - test with passwords shorter than N
+toast hidden by keyboard on z10 -- fixed in 10.2? 
+test with non-ASCII passwords
+
+Bright theme:
++ dark icons for bright theme
++ white titles for blue headers
++ replace entry-general action bar icon with a dedicated white-only one
++ brighter action icons for bright theme
+larger eye icon for Z10? --- yes!
 
 Later:
 
-different group/entry styling in list
-fix scrolling for timestamp fields
-apply sorting without DB reopen
-V1 support
-Support long entry titles
+search as you type dialog
+Option: lock app when phone locked
+OTP support
 hub notification for clipboard?
 Search: show group names in headers
 string/buffer cleanup on destroy
 BuiltForBlackberry criteria
+V1 support

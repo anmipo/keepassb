@@ -10,7 +10,6 @@
 #ifndef SETTINGS_H_
 #define SETTINGS_H_
 
-
 class Settings: public QObject {
     Q_OBJECT
     /**
@@ -44,7 +43,35 @@ class Settings: public QObject {
     /**
      * Type of entry field to show in the description of an entry item in group list
      */
-    Q_PROPERTY(int entryListDetail READ getEntryListDetail WRITE setEntryListDetail NOTIFY entryListDetailChanged)
+    Q_PROPERTY(EntryListDetail entryListDetail READ getEntryListDetail WRITE setEntryListDetail NOTIFY entryListDetailChanged)
+    /**
+     * Last state of the "Enable quick unlock" checkbox
+     */
+    Q_PROPERTY(bool quickUnlockEnabled READ isQuickUnlockEnabled WRITE setQuickUnlockEnabled NOTIFY quickUnlockEnabledChanged)
+    /**
+     * Type of quick unlock password, specifying which part of the full password is used and its size
+     */
+    Q_PROPERTY(QuickUnlockType quickUnlockType READ getQuickUnlockType WRITE setQuickUnlockType NOTIFY quickUnlockTypeChanged)
+public:
+    enum EntryListDetail {
+        ENTRY_DETAIL_NONE      = 0x00,
+        ENTRY_DETAIL_USER_NAME = 0x01,
+        ENTRY_DETAIL_PASSWORD  = 0x02,
+        ENTRY_DETAIL_URL       = 0x04,
+        ENTRY_DETAIL_NOTES     = 0x08,
+        ENTRY_DETAIL_LAST_MODIFIED_TIME = 0x10
+        // eventual additions should be powers of 2: 2, 4, 8, ...
+    };
+    Q_ENUMS(EntryListDetail);
+    enum QuickUnlockType {
+        QUICK_UNLOCK_FIRST_3   = 0x03,
+        QUICK_UNLOCK_FIRST_4   = 0x04,
+        QUICK_UNLOCK_FIRST_5   = 0x05,
+        QUICK_UNLOCK_LAST_3    = 0x13,
+        QUICK_UNLOCK_LAST_4    = 0x14,
+        QUICK_UNLOCK_LAST_5    = 0x15
+    };
+    Q_ENUMS(QuickUnlockType);
 
 private:
     static Settings* _instance;
@@ -55,21 +82,16 @@ private:
     QString _recentKeyFilePath;
     int _autoLockTimeout;
     bool _alphaSorting;
-    int _entryListDetail;
+    EntryListDetail _entryListDetail;
+    bool _quickUnlockEnabled;
+    QuickUnlockType _quickUnlockType;
 
-    Settings(QObject* parent = 0);
 
 public:
-    enum EntryListDetail {
-        ENTRY_DETAIL_NONE      = 0,
-        ENTRY_DETAIL_USER_NAME = 1,
-        ENTRY_DETAIL_PASSWORD  = 2,
-        ENTRY_DETAIL_URL       = 4,
-        ENTRY_DETAIL_NOTES     = 8,
-        ENTRY_DETAIL_LAST_MODIFIED_TIME = 16
-        // eventual additions should be powers of 2: 2, 4, 8, ...
-    };
-    Q_ENUMS(EntryListDetail);
+    /**
+     * This constructor should be private, but enums of uncreatable types are not available from QML.
+     */
+    Settings(QObject* parent = 0);
 
     /**
      * Returns the singleton instance of Settings
@@ -84,7 +106,9 @@ public:
     QString getRecentKeyFilePath() const { return _recentKeyFilePath; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
     bool isAlphaSorting() const { return _alphaSorting; }
-    int getEntryListDetail() const { return _entryListDetail; }
+    EntryListDetail getEntryListDetail() const { return _entryListDetail; }
+    bool isQuickUnlockEnabled() const { return _quickUnlockEnabled; }
+    QuickUnlockType getQuickUnlockType() const { return _quickUnlockType; }
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
     void setClipboardTimeout(int timeout);
@@ -93,7 +117,9 @@ public slots:
     void setRecentKeyFilePath(const QString& path);
     void setAutoLockTimeout(int timeout);
     void setAlphaSorting(bool alphaSorting);
-    void setEntryListDetail(int fieldType);
+    void setEntryListDetail(EntryListDetail detail);
+    void setQuickUnlockEnabled(bool enabled);
+    void setQuickUnlockType(QuickUnlockType type);
 signals:
     void searchInDeletedChanged(bool);
     void clipboardTimeoutChanged(int);
@@ -102,7 +128,9 @@ signals:
     void recentKeyFilePathChanged(QString);
     void autoLockTimeoutChanged(int);
     void alphaSortingChanged(bool);
-    void entryListDetailChanged(int);
+    void entryListDetailChanged(EntryListDetail);
+    void quickUnlockEnabledChanged(bool);
+    void quickUnlockTypeChanged(QuickUnlockType);
 };
 
 #endif /* SETTINGS_H_ */

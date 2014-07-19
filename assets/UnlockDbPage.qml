@@ -146,7 +146,7 @@ Page {
                     inputMode: TextFieldInputMode.Password
                     rightPadding: 50
                     text: ""
-                    input.submitKey: SubmitKey.Done
+                    input.submitKey: SubmitKey.EnterKey
                     input.onSubmitted: openDbAction.triggered()
                 }
             }
@@ -179,9 +179,14 @@ Page {
                     }
                 }
             }
-//            CheckBox {
-//                text: qsTr("Enable quick unlock")
-//            }
+            CheckBox {
+                id: enableQuickUnlock
+                text: qsTr("Enable quick unlock") + Retranslate.onLocaleOrLanguageChanged
+                checked: appSettings.quickUnlockEnabled
+                onCheckedChanged: {
+                    appSettings.quickUnlockEnabled = checked;
+                }
+            }
 	    }
     }
 
@@ -244,6 +249,9 @@ Page {
     	    passwordEdit.text = "";
             unlockProgressDialog.progress = 0;
             unlockProgressDialog.show();
+            if (appSettings.quickUnlockEnabled) {
+                app.prepareQuickUnlock(password);
+            }
             database.unlock(dbFilePath, password, keyFilePath);
     	}
     }

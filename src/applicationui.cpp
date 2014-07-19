@@ -23,7 +23,7 @@ using namespace bb::system;
 const QString OPEN_DB_ACTION = "org.keepassb.database.open";
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
-        QObject(app), clipboard(app), watchdog() {
+        QObject(app), clipboard(app), watchdog(), quickPassHash() {
 
     m_pTranslator = new QTranslator(this);
     m_pLocaleHandler = new LocaleHandler(this);
@@ -55,9 +55,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
     res = QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int))); Q_ASSERT(res);
-    res = QObject::connect(&watchdog, SIGNAL(timeout()), database, SLOT(lock())); Q_ASSERT(res);
+    res = QObject::connect(&watchdog, SIGNAL(timeout()), this, SLOT(lock())); Q_ASSERT(res);
 
     res = QObject::connect(database, SIGNAL(dbLocked()), &clipboard, SLOT(clear())); Q_ASSERT(res);
+    res = QObject::connect(this, SIGNAL(appLocked()), &clipboard, SLOT(clear())); Q_ASSERT(res);
 
     initQml(app);
 }
@@ -107,7 +108,7 @@ void ApplicationUI::onThumbnail() {
 
     // zero timeout means lock when minimized
     if (!database->isLocked() && settings->getAutoLockTimeout() == 0) {
-        database->lock();
+        lock();
     }
 }
 
@@ -156,4 +157,64 @@ void ApplicationUI::invokeFile(const QString& uri) {
         qDebug() << "invoke failed";
         showToast(tr("Invoke failed"));
     }
+}
+
+void ApplicationUI::lock() {
+    if (settings->isQuickUnlockEnabled()) {
+        emit appLocked();
+    } else {
+        quickPassHash.clear();
+        database->lock();
+    }
+}
+
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+void ApplicationUI::prepareQuickUnlock(const QString& fullPassword) {
+    // implement this
+    int len = fullPassword.length();
+
+    QString quickPass;
+    switch (settings->getQuickUnlockType()) {
+    case Settings::QUICK_UNLOCK_FIRST_3:
+        quickPass = fullPassword.left(min(3, len));
+        break;
+    case Settings::QUICK_UNLOCK_FIRST_4:
+        quickPass = fullPassword.left(min(4, len));
+        break;
+    case Settings::QUICK_UNLOCK_FIRST_5:
+        quickPass = fullPassword.left(min(5, len));
+        break;
+    case Settings::QUICK_UNLOCK_LAST_3:
+        quickPass = fullPassword.right(min(3, len));
+        break;
+    case Settings::QUICK_UNLOCK_LAST_4:
+        quickPass = fullPassword.right(min(4, len));
+        break;
+    case Settings::QUICK_UNLOCK_LAST_5:
+        quickPass = fullPassword.right(min(5, len));
+        break;
+    default:
+        qDebug() << "Unknown quick unlock type: " << settings->getQuickUnlockType();
+    }
+    int err = CryptoManager::instance()->sha256(quickPass.toUtf8(), quickPassHash);
+    if (err != SB_SUCCESS) {
+        qDebug() << "Prepare quick unlock: hashing error " << err;
+        // log it, but do not bother the user
+    }
+}
+
+bool ApplicationUI::quickUnlock(const QString& quickPass) {
+    if (quickPass.length() == 0)
+        return false;
+
+    QByteArray candidateHash;
+    int err = CryptoManager::instance()->sha256(quickPass.toUtf8(), candidateHash);
+    if (err != SB_SUCCESS) {
+        qDebug() << "Quick unlock: hashing error " << err;
+        return false;
+    }
+    return (candidateHash == quickPassHash);
 }

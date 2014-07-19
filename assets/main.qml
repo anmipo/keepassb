@@ -38,11 +38,11 @@ NavigationPane {
         }
         actions: [
             ActionItem {
-                title: qsTr("Lock database") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Lock") + Retranslate.onLocaleOrLanguageChanged
                 imageSource: "asset:///images/ic_lock.png"
                 enabled: !database.locked
                 onTriggered: {
-                    database.lock();
+                    app.lock();
                 }
             }
         ]
@@ -76,6 +76,12 @@ NavigationPane {
         database.dbLocked.connect(function() {
                 app.stopWatchdog();
                 naviPane.navigateTo(naviPane.firstPage);
+                quickUnlockPage.close();
+            });
+        app.appLocked.connect(function() {
+                app.stopWatchdog();
+                quickUnlockPage.open();
+                quickUnlockPage.autoFocus();                
             });
     }
     
@@ -91,6 +97,9 @@ NavigationPane {
         ComponentDefinition {
             id: aboutPageComponent
             source: "AboutPage.qml"
+        },
+        QuickUnlockPage {
+            id: quickUnlockPage
         },
         SystemToast {
             id: toast  
