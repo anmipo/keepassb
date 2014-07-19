@@ -16,13 +16,14 @@
 PwGroup::PwGroup() : bb::cascades::DataModel(), _uuid(),
         _creationTime(), _lastModificationTime(),
         _lastAccessTime(), _expiryTime(),
-        _subGroups(), _entries(),
-        sortedGroups(), sortedEntries() {
+        _subGroups(), sortedGroups(),
+        _entries(), sortedEntries() {
 	_name = QString::null;
 	_notes = QString::null;
 	_iconId = 0;
 	_isChildrenModified = false;
 	_deleted = false;
+	_parentGroup = NULL;
 
 	bool res = QObject::connect(Settings::instance(), SIGNAL(alphaSortingChanged(bool)), this, SLOT(sortChildren()));
 	Q_ASSERT(res);
@@ -53,17 +54,23 @@ void PwGroup::clear() {
 }
 
 void PwGroup::addSubGroup(PwGroup* subGroup) {
+    Q_ASSERT(subGroup);
+
 	if (!subGroup->parent()) {
 		subGroup->setParent(this);
 	}
+	subGroup->setParentGroup(this);
 	_subGroups.append(subGroup);
 	_isChildrenModified = true;
 }
 
 void PwGroup::addEntry(PwEntry* entry) {
+    Q_ASSERT(entry);
+
     if (!entry->parent()) {
         entry->setParent(this);
     }
+    entry->setParentGroup(this);
 	_entries.append(entry);
 	_isChildrenModified = true;
 }
@@ -168,4 +175,73 @@ void PwGroup::filterEntries(const SearchParams& params, QList<PwEntry*> &result)
 
 QString PwGroup::toString() const {
     return "PwGroup[" + _name + "]";
+}
+
+void PwGroup::setUuid(const PwUuid& uuid) {
+    if (uuid != _uuid) {
+        _uuid = uuid;
+        emit uuidChanged(uuid);
+    }
+}
+void PwGroup::setIconId(int iconId) {
+    if (iconId != _iconId) {
+        _iconId = iconId;
+        emit iconIdChanged(iconId);
+    }
+}
+
+void PwGroup::setName(const QString& name) {
+    if (name != _name) {
+        _name = name;
+        emit nameChanged(name);
+    }
+}
+
+void PwGroup::setNotes(const QString& notes) {
+    if (notes != _notes) {
+        _notes = notes;
+        emit notesChanged(notes);
+    }
+}
+
+void PwGroup::setCreationTime(const QDateTime& time) {
+    if (time != _creationTime) {
+        _creationTime = time;
+        emit creationTimeChanged(time);
+    }
+}
+
+void PwGroup::setLastModificationTime(const QDateTime& time) {
+    if (time != _lastModificationTime) {
+        _lastModificationTime = time;
+        emit lastModificationTimeChanged(time);
+    }
+}
+
+void PwGroup::setLastAccessTime(const QDateTime& time) {
+    if (time != _lastAccessTime) {
+        _lastAccessTime = time;
+        emit lastAccessTimeChanged(time);
+    }
+}
+
+void PwGroup::setExpiryTime(const QDateTime& time) {
+    if (time != _expiryTime) {
+        _expiryTime = time;
+        emit expiryTimeChanged(time);
+    }
+}
+
+void PwGroup::setDeleted(bool deleted) {
+    if (deleted != _deleted) {
+        _deleted = deleted;
+        emit deletedChanged(deleted);
+    }
+}
+
+void PwGroup::setParentGroup(PwGroup* parentGroup) {
+    if (parentGroup != _parentGroup) {
+        _parentGroup = parentGroup;
+        emit parentGroupChanged(parentGroup);
+    }
 }

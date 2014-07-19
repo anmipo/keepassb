@@ -23,9 +23,8 @@ public:
     // returns a new instance of PwUuid with the ID specified by a Base64 string
     static PwUuid fromBase64(const QString& base64);
 
-    virtual bool equals(const PwUuid& another) const;
-
-    inline bool operator==(const PwUuid& another) { return (this->bytes == another.bytes); }
+    inline bool operator==(const PwUuid& another) const { return (this->bytes == another.bytes); }
+    inline bool operator!=(const PwUuid& another) const { return !operator==(another); }
 };
 
 #endif /* PWUUID_H_ */

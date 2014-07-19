@@ -37,6 +37,7 @@ class PwGroup : public bb::cascades::DataModel {
     Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
     // indicates whether the group is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
+    Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
 private:
 	PwUuid _uuid;
 	int _iconId;
@@ -51,6 +52,7 @@ private:
 	bool _isChildrenModified;
 	QList<PwGroup*> _subGroups, sortedGroups;
 	QList<PwEntry*> _entries, sortedEntries;
+	PwGroup* _parentGroup;
 
 protected slots:
 	/**
@@ -62,8 +64,6 @@ public:
 	virtual ~PwGroup();
 
 	virtual void clear();
-
-    Q_INVOKABLE PwGroup* getParentGroup() const { return reinterpret_cast<PwGroup*>(this->parent()); }
 
 	void addSubGroup(PwGroup* subGroup);
 	QList<PwGroup*> getSubGroups() const { return _subGroups; }
@@ -86,29 +86,32 @@ public:
     // property getters/setters
     int immediateChildCount() const { return _subGroups.count() + _entries.count(); }
     PwUuid getUuid() const { return _uuid; }
-    void setUuid(const PwUuid& uuid) { _uuid = uuid; }
+    void setUuid(const PwUuid& uuid);
     int getIconId() const { return _iconId; }
-    void setIconId(int iconId) { _iconId = iconId; }
+    void setIconId(int iconId);
     QString getName() const { return _name; }
-    void setName(const QString& name) { _name = name; }
+    void setName(const QString& name);
     QString getNotes() const { return _notes; }
-    void setNotes(const QString& notes) { _notes = notes; }
+    void setNotes(const QString& notes);
     QDateTime getCreationTime() const { return _creationTime; }
-    void setCreationTime(const QDateTime& time) { _creationTime = time; }
+    void setCreationTime(const QDateTime& time);
     QDateTime getLastModificationTime() const { return _lastModificationTime; }
-    void setLastModificationTime(const QDateTime& time) { _lastModificationTime = time; }
+    void setLastModificationTime(const QDateTime& time);
     QDateTime getLastAccessTime() const { return _lastAccessTime; }
-    void setLastAccessTime(const QDateTime& time) { _lastAccessTime = time; }
+    void setLastAccessTime(const QDateTime& time);
     QDateTime getExpiryTime() const { return _expiryTime; }
-    void setExpiryTime(const QDateTime& time) { _expiryTime = time; }
+    void setExpiryTime(const QDateTime& time);
     bool isDeleted() const { return _deleted; }
-    void setDeleted(bool deleted) { _deleted = deleted; }
+    void setDeleted(bool deleted);
+    PwGroup* getParentGroup() const { return _parentGroup; }
+    void setParentGroup(PwGroup* parentGroup);
 
     /** Returns a string representation of the instance */
     virtual QString toString() const;
     /** Comparator for sorting */
     static bool lessThan(const PwGroup* g1, const PwGroup* g2);
 signals:
+    void uuidChanged(PwUuid);
     void iconIdChanged(int);
     void nameChanged(QString);
     void notesChanged(QString);
@@ -118,6 +121,7 @@ signals:
     void lastAccessTimeChanged(QDateTime);
     void expiryTimeChanged(QDateTime);
     void deletedChanged(bool);
+    void parentGroupChanged(PwGroup*);
 };
 
 Q_DECLARE_METATYPE(PwGroup*);

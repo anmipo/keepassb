@@ -29,7 +29,7 @@ Page {
                     StandardListItem {
                         title: ListItemData.title
                         //description: Common.getEntryDescription(ListItemData)
-                        description: qsTr("Group: ") + ListItemData.getParentGroup().name
+                        description: qsTr("Group: ") + ListItemData.parentGroup.name
                         imageSpaceReserved: true
                         imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                     }

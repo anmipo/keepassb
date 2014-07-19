@@ -28,6 +28,7 @@ class PwEntry: public QObject {
 	Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
     // indicates whether the entry is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
+    Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
 private:
 	PwUuid _uuid;
 	int _iconId;
@@ -36,6 +37,7 @@ private:
     QDateTime _lastAccessTime;
     QDateTime _expiryTime;
     bool _deleted;
+    PwGroup* _parentGroup;
 
 public:
 	PwEntry();
@@ -43,23 +45,24 @@ public:
 
 	virtual void clear();
 
-    Q_INVOKABLE PwGroup* getParentGroup() const { return reinterpret_cast<PwGroup*>(this->parent()); }
 
 	// property getters/setters
 	PwUuid getUuid() const { return _uuid; }
-	void setUuid(const PwUuid& uuid) { _uuid = uuid; }
+	void setUuid(const PwUuid& uuid);
 	virtual int getIconId() const { return _iconId; }
-	virtual void setIconId(int iconId) { _iconId = iconId; }
+	virtual void setIconId(int iconId);
     QDateTime getCreationTime() const { return _creationTime; }
-    void setCreationTime(const QDateTime& time) { _creationTime = time; }
+    void setCreationTime(const QDateTime& time);
     QDateTime getLastModificationTime() const { return _lastModificationTime; }
-    void setLastModificationTime(const QDateTime& time) { _lastModificationTime = time; }
+    void setLastModificationTime(const QDateTime& time);
     QDateTime getLastAccessTime() const { return _lastAccessTime; }
-    void setLastAccessTime(const QDateTime& time) { _lastAccessTime = time; }
+    void setLastAccessTime(const QDateTime& time);
     QDateTime getExpiryTime() const { return _expiryTime; }
-    void setExpiryTime(const QDateTime& time) { _expiryTime = time; }
+    void setExpiryTime(const QDateTime& time);
     bool isDeleted() const { return _deleted; }
-    void setDeleted(bool deleted) { _deleted = deleted; }
+    void setDeleted(bool deleted);
+    PwGroup* getParentGroup() const { return _parentGroup; }
+    void setParentGroup(PwGroup* parentGroup);
 	// pure virtual getters/setters
 	virtual QString getTitle() const = 0;
 	virtual void setTitle(const QString& title) = 0;
@@ -80,6 +83,7 @@ public:
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const = 0;
 signals:
+    void uuidChanged(PwUuid);
     void titleChanged(QString);
     void iconIdChanged(int);
     void userNameChanged(QString);
@@ -91,6 +95,7 @@ signals:
     void lastAccessTimeChanged(QDateTime);
     void expiryTimeChanged(QDateTime);
     void deletedChanged(bool);
+    void parentGroupChanged(PwGroup*);
 };
 
 Q_DECLARE_METATYPE(PwEntry*);

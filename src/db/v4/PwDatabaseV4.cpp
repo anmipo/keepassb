@@ -522,7 +522,8 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     }
 
     PwGroupV4* rootV4 = new PwGroupV4();
-    rootV4->setParent(this);
+    rootV4->setParent(this); // parent in Qt terms, the object responsible for clean up
+    rootV4->setParentGroup(NULL); // parent in app terms, the group containing this one
 
     ErrorCode err;
     QXmlStreamReader xml(xmlString);

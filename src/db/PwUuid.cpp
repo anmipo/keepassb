@@ -29,7 +29,3 @@ PwUuid PwUuid::fromBase64(const QString& base64) {
     PwUuid uuid(QByteArray::fromBase64(base64.toLatin1()));
     return uuid;
 }
-
-bool PwUuid::equals(const PwUuid& another) const {
-    return (this->bytes == another.bytes);
-}
