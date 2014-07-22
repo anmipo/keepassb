@@ -14,33 +14,6 @@ Page {
     property string dbFilePath: "_"
     property string keyFilePath: "_"
 
-    onDbFilePathChanged: {
-        if (dbFilePath.length > 0) {
-            dbFileField.textStyle.fontStyle = FontStyle.Default;
-            dbFileField.textStyle.textAlign = TextAlign.Default;
-            dbFileField.text = prettifyFilePath(dbFilePath); // human-friendly path
-        } else {
-            dbFileField.textStyle.fontStyle = FontStyle.Italic;
-            dbFileField.textStyle.textAlign = TextAlign.Right;
-            dbFileField.text = qsTr("Choose database")
-        }
-        if (rememberRecent.checked)
-            appSettings.recentDbPath = dbFilePath;
-    }
-    onKeyFilePathChanged: {
-        if (keyFilePath.length > 0) {
-            keyFileField.textStyle.fontStyle = FontStyle.Default;
-            keyFileField.textStyle.textAlign = TextAlign.Default;
-            keyFileField.text = prettifyFilePath(keyFilePath); // human-friendly path
-        } else {
-            keyFileField.textStyle.fontStyle = FontStyle.Italic;
-            keyFileField.textStyle.textAlign = TextAlign.Right;
-            keyFileField.text = qsTr("Choose a key file (optional)");
-        }
-        if (rememberRecent.checked)
-            appSettings.recentKeyFilePath = keyFilePath;
-    }
-
     function showErrorToast(message, errorCode) {
         unlockProgressDialog.cancel();
         if (errorCode)
@@ -58,153 +31,151 @@ Page {
     function prettifyFilePath(path) {
         return path.split('/').slice(4).join('/');
     }
-
+    
     function focusOnPassword() {
         passwordEdit.requestFocus();
     }   
-     
-    titleBar: TitleBar {
-        title: qsTr("KeePassB") + Retranslate.onLocaleOrLanguageChanged
-        visibility: ChromeVisibility.Default
-    }
 
-    function applyTrackRecentDb(track) {
-        rememberRecent.checked = track;
-        if (track) {
-            appSettings.recentDbPath = dbFilePath;
-            appSettings.recentKeyFilePath = keyFilePath;
-        } else {
-            appSettings.recentDbPath = "";
-            appSettings.recentKeyFilePath = "";
+    /**
+     * Creates an Option of the given DropDown; 
+     * deletes the previous option with the same value, if any.
+     */
+    function createUniqueOption(fullPath, dropdown) {
+        // First, remove any already existing options with this path
+        var existingIndex = -1;
+        var options = dropdown.options;
+        for (var i = 0; i < dropdown.count(); i++) {
+            if (options[i].value == fullPath) {
+                existingIndex = i;
+                break;
+            } 
         }
+        if (existingIndex >= 0)
+            dropdown.remove(dropdown.options[existingIndex]);
+    
+        var option = newOptionComponent.createObject();
+        option.value = fullPath;
+        option.text = prettifyFilePath(fullPath);
+        return option;
     }
-
-    Container {
-        layout: DockLayout {}
-        leftPadding: 10
-        rightPadding: 10
-        topPadding: 0
-        bottomPadding: 10
-        Container {
-            verticalAlignment: VerticalAlignment.Top
-            Header {
-                title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
-                bottomMargin: 5
-            }
-            Container {
-                layout: StackLayout {
-                    orientation: LayoutOrientation.LeftToRight
-                }
-	            Label {
-	                id: dbFileField
-	                horizontalAlignment: HorizontalAlignment.Fill
-	                verticalAlignment: VerticalAlignment.Center
-	                multiline: true
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
-                    onTouch: {
-                        if (event.isUp()) {
-                            browseDbButton.clicked();
-                        }
-                    }
-	            }
-                Button {
-                    id: browseDbButton
-                    imageSource: "asset:///images/ic_browse.png"
-                    preferredWidth: 50
-	                verticalAlignment: VerticalAlignment.Center
-                    horizontalAlignment: HorizontalAlignment.Right
-                    onClicked: {
-                        dbFilePicker.open()
-                    }
-                }
-            }
-            CheckBox {
-                id: rememberRecent
-                text: qsTr("Use this as my default database") + Retranslate.onLocaleOrLanguageChanged
-                checked: false
-                onCheckedChanged: {
-                    appSettings.setTrackRecentDb(checked);
-                    applyTrackRecentDb(checked);
-                }
-            }
-
-            Header {
-                title: qsTr("Password and key file") + Retranslate.onLocaleOrLanguageChanged
-                topMargin: 50
-                bottomMargin: 5
-            }
-            Container {
-                layout: StackLayout {
-                    orientation: LayoutOrientation.LeftToRight
-                }
-                bottomMargin: 5
-                TextField {
-                    id: passwordEdit
-                    hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
-                    inputMode: TextFieldInputMode.Password
-                    rightPadding: 50
-                    text: ""
-                    input.submitKey: SubmitKey.EnterKey
-                    input.onSubmitted: openDbAction.triggered()
-                }
-            }
-            Container {
-                layout: StackLayout {
-                    orientation: LayoutOrientation.LeftToRight
-                }
-                Label {
-                    id: keyFileField
-                    multiline: true
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    verticalAlignment: VerticalAlignment.Center
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
-                    onTouch: {
-                        if (event.isUp()) {
-                            browseKeyFileButton.clicked();
-                        }
-                    }
-                }
-                Button {
-                    id: browseKeyFileButton
-                    imageSource: "asset:///images/ic_browse.png"
-                    preferredWidth: 50
-                    horizontalAlignment: HorizontalAlignment.Right
-                    verticalAlignment: VerticalAlignment.Center
-                    onClicked: {
-                        keyFilePicker.open();
-                    }
-                }
-            }
-            CheckBox {
-                id: enableQuickUnlock
-                text: qsTr("Enable quick unlock") + Retranslate.onLocaleOrLanguageChanged
-                checked: appSettings.quickUnlockEnabled
-                onCheckedChanged: {
-                    appSettings.quickUnlockEnabled = checked;
-                }
-            }
-	    }
+    
+    function addDatabaseOption(fullPath) {
+        var option = createUniqueOption(fullPath, dbDropDown);
+        dbDropDown.insert(0, option); // adds to the top 
     }
-
+    
+    function addKeyOption(fullPath) {
+        var option = createUniqueOption(fullPath, keyDropDown);
+        // The first option should always be "None", so insert after it
+        keyDropDown.insert(1, option);
+    }
+    
+    function loadRecentItems() {
+        //TODO
+    }
+    
     onCreationCompleted: {
         database.fileOpenError.connect(showErrorToast);
         database.dbUnlockError.connect(showErrorToast);
         database.dbUnlocked.connect(function() {
-                unlockProgressDialog.cancel();
-                databaseUnlocked();
-            });
+            unlockProgressDialog.cancel();
+            databaseUnlocked();
+        });
         database.unlockProgressChanged.connect(function(progress) {
-                unlockProgressDialog.progress = progress;
-            });
+            unlockProgressDialog.progress = progress;
+        });
         database.invalidPasswordOrKey.connect(function() {
-                showErrorToast(qsTr("Invalid password or key file") + Retranslate.onLocaleOrLanguageChanged);
-            });
+            showErrorToast(qsTr("Invalid password or key file") + Retranslate.onLocaleOrLanguageChanged);
+        });
+        loadRecentItems();
+        dbDropDown.selectedIndex = 0;
+        keyDropDown.selectedIndex = 0; // TODO load the corresponding one
     }
-
+    
+    titleBar: TitleBar {
+        title: qsTr("KeePassB") + Retranslate.onLocaleOrLanguageChanged
+        visibility: ChromeVisibility.Visible
+    }
+    
+    Container {
+        topPadding: 10
+        leftPadding: 10
+        rightPadding: 10
+        bottomPadding: 10
+        DropDown {
+            id: dbDropDown
+            title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
+            onSelectedOptionChanged: {
+                if (selectedOption == dbBrowseOption) {
+                    dbFilePicker.open();
+                } else {
+                    dbFilePath = selectedOption.value
+                    console.log("dbFilePath: " + dbFilePath);
+                }
+            }
+            options: [
+                Option {
+                    text: prettifyFilePath(value)  // TODO
+                    value: "/accounts/1000/shared/documents/RecentDB1.kdbx"
+                },
+                Option {
+                    id: dbBrowseOption
+                    text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
+                    imageSource: "asset:///images/ic_browse.png"
+                },
+                Option {
+                    id: dbDemoOption
+                    // TODO hide this after first non-demo file open
+                    text: qsTr("Demo database") + Retranslate.onLocaleOrLanguageChanged
+                    imageSource: "asset:///pwicons/13.png"
+                }
+            ]
+        }
+        DropDown {
+            id: keyDropDown
+            title: qsTr("Key file") + Retranslate.onLocaleOrLanguageChanged
+            onSelectedOptionChanged: {
+                if (selectedOption == keyBrowseOption) {
+                    keyFilePicker.open();
+                } else {
+                    keyFilePath = selectedOption.value;
+                    console.log("keyFilePath: " + keyFilePath);
+                }
+            }
+            options: [
+                Option {
+                    id: keyNoneOption
+                    text: qsTr("(none)") + Retranslate.onLocaleOrLanguageChanged
+                    value: ""
+                },
+//                Option {
+//                    text: prettifyFilePath(value) 
+//                    value: "/accounts/1000/shared/documents/Recent.key"
+//                },
+                Option {
+                    id: keyBrowseOption
+                    text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
+                    imageSource: "asset:///images/ic_browse.png"
+                }
+            ]
+        }
+        TextField {
+            id: passwordEdit
+            hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
+            inputMode: TextFieldInputMode.Password
+            text: ""
+            input.submitKey: SubmitKey.EnterKey
+            input.onSubmitted: openDbAction.triggered()
+        }
+        CheckBox {
+            id: enableQuickUnlock
+            text: qsTr("Enable quick unlock") + Retranslate.onLocaleOrLanguageChanged
+            checked: appSettings.quickUnlockEnabled
+            onCheckedChanged: {
+                appSettings.quickUnlockEnabled = checked;
+            }
+        }
+    }
     attachedObjects: [
         FilePicker {
             id: dbFilePicker
@@ -212,7 +183,11 @@ Page {
             type: FileType.Other
             title: qsTr("Choose database") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
-                dbFilePath = selectedFiles[0]; // actual path
+                addDatabaseOption(selectedFiles[0]); // actual path
+                dbDropDown.selectedIndex = 0;
+            }
+            onCanceled: {
+                dbDropDown.selectedIndex = -1; // no option selected
             }
         },
         FilePicker {
@@ -221,38 +196,45 @@ Page {
             type: FileType.Other
             title: qsTr("Choose key file") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
-                keyFilePath = selectedFiles[0]; // actual path
-            } 
+                addKeyOption(selectedFiles[0]); // actual path
+                keyDropDown.selectedIndex = 1; // the first one is "None"
+            }
             onCanceled: {
-                keyFilePath = ""; // the only UI way (so far) to clear the key path...
+                // do nothing, keep the previous option
             }
         },
-		SystemToast {
-			id: dbErrorToast
-		},
-		SystemProgressDialog {
+        SystemToast {
+            id: dbErrorToast
+        },
+        SystemProgressDialog {
             id: unlockProgressDialog
             title: qsTr("Decrypting...") + Retranslate.onLocaleOrLanguageChanged
             autoUpdateEnabled: true
             confirmButton.label: ""
             cancelButton.label: ""
-		}
+        },
+        ComponentDefinition {
+            id: newOptionComponent
+            Option {}
+        }
     ]
-
-    actions: ActionItem {
-        id: openDbAction
-        title: qsTr("Open") + Retranslate.onLocaleOrLanguageChanged
-    	imageSource: "asset:///images/ic_unlock.png"
-    	ActionBar.placement: ActionBarPlacement.OnBar
-    	onTriggered: {
-    	    var password = passwordEdit.text;
-    	    passwordEdit.text = "";
-            unlockProgressDialog.progress = 0;
-            unlockProgressDialog.show();
-            if (appSettings.quickUnlockEnabled) {
-                app.prepareQuickUnlock(password);
+    
+    actions: [
+        ActionItem {
+            id: openDbAction
+            title: qsTr("Open") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_unlock.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                var password = passwordEdit.text;
+                passwordEdit.text = "";
+                unlockProgressDialog.progress = 0;
+                unlockProgressDialog.show();
+                if (appSettings.quickUnlockEnabled) {
+                    app.prepareQuickUnlock(password);
+                }
+                database.unlock(dbFilePath, password, keyFilePath);
             }
-            database.unlock(dbFilePath, password, keyFilePath);
-    	}
-    }
+        }
+    ]
 }

@@ -65,7 +65,6 @@ NavigationPane {
         Qt.app = app;
         unlockDbPage.dbFilePath = appSettings.recentDbPath;
         unlockDbPage.keyFilePath = appSettings.recentKeyFilePath;
-        unlockDbPage.applyTrackRecentDb(appSettings.trackRecentDb);
         
         app.clipboardUpdated.connect(function() {
                 showToast(qsTr("Copied to clipboard") + Retranslate.onLocaleOrLanguageChanged)
