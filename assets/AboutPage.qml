@@ -5,19 +5,36 @@ Page {
         app.restartWatchdog();
     }
 
-    titleBar: TitleBar {
-        title: qsTr("About") + Retranslate.onLocaleOrLanguageChanged
-    }
+    actions: [
+        ActionItem {
+            title: qsTr("Contact Developer") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_email.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                invokeSendEmail.trigger("bb.action.SENDEMAIL");
+            }
+            attachedObjects: [
+                Invocation {
+                    id: invokeSendEmail
+                    query {
+                        uri: "mailto:blackberry@popleteev.com?subject=KeePassB%202"
+                        invokeActionId: "bb.action.SENDEMAIL"
+                        invokeTargetId: "sys.pim.uib.email.hybridcomposer"
+                    }
+                }
+            ]
+        }
+    ]
     Container {
         layout: DockLayout { }
         ScrollView {
-            verticalAlignment: VerticalAlignment.Center
+            verticalAlignment: VerticalAlignment.Top
             scrollRole: ScrollRole.Main
             Container {
                 horizontalAlignment: HorizontalAlignment.Fill
                 leftPadding:   20
                 rightPadding:  20
-                topPadding:    20
+                topPadding:    50
                 bottomPadding: 20
                 ImageView {
                     imageSource: "asset:///images/cover.png"
@@ -29,7 +46,7 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("Version 2.0 alpha") + Retranslate.onLocaleOrLanguageChanged // TODO update version
+                    text: qsTr("Version 2.0 beta") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }
@@ -38,14 +55,17 @@ Page {
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }
+                Divider {
+                    topMargin: 30
+                    bottomMargin: 30
+                }
                 Label{
                     text: qsTr("Credits") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.TitleText
-                    topMargin: 50
                     horizontalAlignment: HorizontalAlignment.Left
                 }
                 Label{
-                    text: qsTr("Thanks to Dominik Reichl, the author of KeePass.\n\rThanks to Nam T. Nguyen for <a href='https://bitbucket.org/namn/browsepass/'>BrowsePass</a>, which helped me to understand the KeePass2 format.\n\rSome icons are from the free samples from <a href='http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/'>Linecons Icon Set</a> (Smashing Magazine release) and <a href='http://getothercircles.com'>GetOtherCircles.com</a> by Luboš Volkov.") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Thanks to Dominik Reichl for <a href='http://keepass.info'>KeePass</a>.\nThanks to Nam T. Nguyen for <a href='https://bitbucket.org/namn/browsepass/'>BrowsePass</a>, a nice JavaScript-based KeePass&nbsp;2 port.\n\rSome icons are based on free samples of the <a href='http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/'>Linecons Icon Set</a> (free Smashing Magazine release) and <a href='http://getothercircles.com'>The OtherCircles</a> icon set by Luboš Volkov.") + Retranslate.onLocaleOrLanguageChanged
                     multiline: true
                     textFormat: TextFormat.Html
                     textStyle.base: SystemDefaults.TextStyles.BodyText
