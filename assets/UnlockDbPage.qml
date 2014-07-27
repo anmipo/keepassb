@@ -99,10 +99,6 @@ Page {
         database.dbUnlockError.connect(showErrorToast);
         database.dbUnlocked.connect(function() {
             unlockProgressDialog.cancel();
-            if (dbFilePath != dbDemoOption.value) {
-                appSettings.addRecentFiles(dbFilePath, keyFilePath);
-                loadRecentItems(); // to rearrange items
-            }
             databaseUnlocked();
         });
         database.unlockProgressChanged.connect(function(progress) {
@@ -258,14 +254,20 @@ Page {
             imageSource: "asset:///images/ic_unlock.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
-                var password = demoMode ? "demo" : passwordEdit.text;
-                passwordEdit.text = "";
-                unlockProgressDialog.progress = 0;
-                unlockProgressDialog.show();
-                if (appSettings.quickUnlockEnabled) {
-                    app.prepareQuickUnlock(password);
+                if (demoMode) {
+                    var password = "demo";
+                } else {
+                    var password = passwordEdit.text;
+                    if (appSettings.quickUnlockEnabled) {
+                        app.prepareQuickUnlock(password);
+                    }
+                    unlockProgressDialog.progress = 0;
+                    unlockProgressDialog.show();
+                    appSettings.addRecentFiles(dbFilePath, keyFilePath);
                 }
+                passwordEdit.text = "";
                 database.unlock(dbFilePath, password, keyFilePath);
+                loadRecentItems(); // to rearrange items
             }
         }
     ]
