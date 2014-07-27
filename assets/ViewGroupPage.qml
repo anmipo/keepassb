@@ -41,6 +41,12 @@ Page {
         }
     }
     
+    function cancelSearch() {
+        searchField.searchQuery = searchField.text;
+        searchContainer.visible = false;
+        searchField.text = "";
+    }
+    
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Default
     actions: [
         ActionItem {
@@ -48,7 +54,7 @@ Page {
             imageSource: "asset:///images/ic_search.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
-                searchField.visible = true;
+                searchContainer.visible = true;
                 searchField.requestFocus();
             }
         }
@@ -65,47 +71,63 @@ Page {
         
         layout: DockLayout { }
         Container {
-            layout: StackLayout { }
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
-            TextField {
-                // Upon submit, TextField first gets onFocusChanged and then onSubmitted.
-                // This property stores the query text between these events.
-                property string searchQuery 
-                
-                id: searchField
-                hintText: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
+            Container {  // search field
+                id: searchContainer
                 visible: false
-                clearButtonVisible: true 
-                inputMode: TextFieldInputMode.Text
-                input.submitKey: SubmitKey.Search
-                input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
+                leftPadding: 10
+                rightPadding: 10
+                topPadding: 10
+                bottomPadding: 10
                 horizontalAlignment: HorizontalAlignment.Fill
-                onTextChanging: {
-                    app.restartWatchdog();
+                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                ImageView {
+                    imageSource: "asset:///images/ic_search.png"
+                    horizontalAlignment: HorizontalAlignment.Left
                 }
-                onFocusedChanged: {
-                    if (!focused) {
-                        searchQuery = text;
-                        visible = false;
-                        text = "";
+                TextField {
+                    // Upon submit, TextField first gets onFocusChanged and then onSubmitted.
+                    // This property stores the query text between these events.
+                    property string searchQuery 
+                    
+                    id: searchField
+                    hintText: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                    clearButtonVisible: true 
+                    inputMode: TextFieldInputMode.Text
+                    input.submitKey: SubmitKey.Search
+                    input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
+                    onTextChanging: {
+                        app.restartWatchdog();
+                    }
+                    input.onSubmitted: {
+                        searchContainer.visible = false;
+                        searchField.text = "";
+                        database.search(searchQuery);
+                        var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
+                        var searchResultsPage = searchResultsPageComponent.createObject(null, 
+                                {"searchResult": database.searchResult});
+                        naviPane.push(searchResultsPage);
                     }
                 }
-                input.onSubmitted: {
-                    searchField.visible = false;
-                    searchField.text = "";
-                    database.search(searchQuery);
-                    var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
-                    var searchResultsPage = searchResultsPageComponent.createObject(null, 
-                            {"searchResult": database.searchResult});
-                    naviPane.push(searchResultsPage);
+                Button {
+                    text: qsTr("Cancel") + Retranslate.onLocaleOrLanguageChanged
+                    horizontalAlignment: HorizontalAlignment.Right
+                    preferredWidth: 50
+                    onClicked: {
+                        searchField.text = "";
+                        searchContainer.visible = false;
+                    }
                 }
             }
             ListView {
                 id: groupList
                 objectName: "groupList"
                 dataModel: group
-                visible: !group.isEmpty() 
+                visible: !group.isEmpty()
+                horizontalAlignment: HorizontalAlignment.Right
                 scrollRole: ScrollRole.Main
                 onTriggered: {
                     var itemType = group.itemType(indexPath);
@@ -121,6 +143,7 @@ Page {
                     } else {
                         console.log("WARN: unknown item type");
                     }
+                    cancelSearch();
                 }
                 listItemComponents: [
                     ListItemComponent {
