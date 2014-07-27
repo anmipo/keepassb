@@ -30,7 +30,6 @@ PwGroup::PwGroup() : bb::cascades::DataModel(), _uuid(),
 }
 
 PwGroup::~PwGroup() {
-	qDebug() << "deleting group: " << _name;
 	clear();
 }
 

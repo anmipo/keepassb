@@ -18,7 +18,6 @@ PwEntry::PwEntry() : QObject(), _uuid(), _iconId(0),
 }
 
 PwEntry::~PwEntry() {
-    qDebug() << "deleting entry";
     clear();
 }
 
