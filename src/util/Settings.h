@@ -10,6 +10,8 @@
 #ifndef SETTINGS_H_
 #define SETTINGS_H_
 
+#include <QStringList>
+
 class Settings: public QObject {
     Q_OBJECT
     /**
@@ -24,14 +26,6 @@ class Settings: public QObject {
      * Flag indicating whether th last opened DB path should be remembered
      */
     Q_PROPERTY(bool trackRecentDb READ isTrackRecentDb WRITE setTrackRecentDb NOTIFY trackRecentDbChanged);
-    /**
-     * Previously opened database file path
-     */
-    Q_PROPERTY(QString recentDbPath READ getRecentDbPath WRITE setRecentDbPath NOTIFY recentDbPathChanged);
-    /**
-     * Previously used key file path
-     */
-    Q_PROPERTY(QString recentKeyFilePath READ getRecentKeyFilePath WRITE setRecentKeyFilePath NOTIFY recentKeyFilePathChanged);
     /**
      * Time in millis until automatic DB lock. Negative value means no timeout.
      */
@@ -78,15 +72,16 @@ private:
     bool _searchInDeleted;
     int _clipboardTimeout;
     bool _trackRecentDb;
-    QString _recentDbPath;
-    QString _recentKeyFilePath;
     int _autoLockTimeout;
     bool _alphaSorting;
     EntryListDetail _entryListDetail;
     bool _quickUnlockEnabled;
     QuickUnlockType _quickUnlockType;
+    QStringList _recentFiles;
+    QMap<QString, QString> _recentDbToKey;
 
-
+    void loadRecentFiles();
+    void saveRecentFiles();
 public:
     /**
      * This constructor should be private, but enums of uncreatable types are not available from QML.
@@ -102,19 +97,31 @@ public:
     bool isSearchInDeleted() const { return _searchInDeleted; }
     int getClipboardTimeout() const { return _clipboardTimeout; }
     bool isTrackRecentDb() const { return _trackRecentDb; }
-    QString getRecentDbPath() const { return _recentDbPath; }
-    QString getRecentKeyFilePath() const { return _recentKeyFilePath; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
     bool isAlphaSorting() const { return _alphaSorting; }
     EntryListDetail getEntryListDetail() const { return _entryListDetail; }
     bool isQuickUnlockEnabled() const { return _quickUnlockEnabled; }
     QuickUnlockType getQuickUnlockType() const { return _quickUnlockType; }
+
+    /**
+     * Adds paths to the top of the recent files list
+     */
+    Q_INVOKABLE void addRecentFiles(const QString& dbFile, const QString& keyFile);
+    /**
+     * Returns a list of recent database-key paths.
+     * Each list item contains both paths separated by "|" (pipe)
+     */
+    Q_INVOKABLE QStringList getRecentFiles() const;
+    /**
+     * Returns the key file path last used for the given database;
+     * or empty string if no such file found.
+     */
+    Q_INVOKABLE QString getKeyFileForDatabase(const QString& dbFile) const;
+
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
     void setClipboardTimeout(int timeout);
     void setTrackRecentDb(bool track);
-    void setRecentDbPath(const QString& path);
-    void setRecentKeyFilePath(const QString& path);
     void setAutoLockTimeout(int timeout);
     void setAlphaSorting(bool alphaSorting);
     void setEntryListDetail(EntryListDetail detail);
@@ -124,8 +131,6 @@ signals:
     void searchInDeletedChanged(bool);
     void clipboardTimeoutChanged(int);
     void trackRecentDbChanged(bool);
-    void recentDbPathChanged(QString);
-    void recentKeyFilePathChanged(QString);
     void autoLockTimeoutChanged(int);
     void alphaSortingChanged(bool);
     void entryListDetailChanged(EntryListDetail);

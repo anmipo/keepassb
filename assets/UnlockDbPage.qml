@@ -13,7 +13,9 @@ Page {
     signal databaseUnlocked()
     property string dbFilePath: "_"
     property string keyFilePath: "_"
-
+    // true when "Demo database" is selected
+    property bool demoMode: true
+    
     function showErrorToast(message, errorCode) {
         unlockProgressDialog.cancel();
         if (errorCode)
@@ -71,7 +73,25 @@ Page {
     }
     
     function loadRecentItems() {
-        //TODO
+        var items = appSettings.getRecentFiles();
+        for (var i = items.length - 1; i >= 0; i--) {
+            var paths = items[i].split("|");
+            addDatabaseOption(paths[0]);
+            addKeyOption(paths[1]);
+        }
+        dbDropDown.selectedIndex = 0;
+        // keyDropDown will be selected automagically
+    }
+    
+    function selectKeyOptionByFilename(keyfile) {
+        var index = 0;
+        for (var i = 1; i < keyDropDown.count(); i++) {
+            if (keyDropDown.options[i].value == keyfile) {
+                index = i;
+                break;
+            }
+        }
+        keyDropDown.selectedIndex = index;
     }
     
     onCreationCompleted: {
@@ -79,6 +99,10 @@ Page {
         database.dbUnlockError.connect(showErrorToast);
         database.dbUnlocked.connect(function() {
             unlockProgressDialog.cancel();
+            if (dbFilePath != dbDemoOption.value) {
+                appSettings.addRecentFiles(dbFilePath, keyFilePath);
+                loadRecentItems(); // to rearrange items
+            }
             databaseUnlocked();
         });
         database.unlockProgressChanged.connect(function(progress) {
@@ -88,8 +112,6 @@ Page {
             showErrorToast(qsTr("Invalid password or key file") + Retranslate.onLocaleOrLanguageChanged);
         });
         loadRecentItems();
-        dbDropDown.selectedIndex = 0;
-        keyDropDown.selectedIndex = 0; // TODO load the corresponding one
     }
     
     titleBar: TitleBar {
@@ -106,40 +128,51 @@ Page {
             id: dbDropDown
             title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
             onSelectedOptionChanged: {
+                if (!selectedOption) 
+                    return;
+
                 if (selectedOption == dbBrowseOption) {
                     dbFilePicker.open();
-                } else {
+                } else if (selectedOption == dbDemoOption) {
+                    demoMode = true;
                     dbFilePath = selectedOption.value
-                    console.log("dbFilePath: " + dbFilePath);
+                    console.log("Using demo DB");
+                    selectKeyOptionByFilename(""); // no key file needed
+                } else {
+                    demoMode = false;
+                    dbFilePath = selectedOption.value
+                    var keyfile = appSettings.getKeyFileForDatabase(dbFilePath);
+                    selectKeyOptionByFilename(keyfile);
                 }
             }
             options: [
-                Option {
-                    text: prettifyFilePath(value)  // TODO
-                    value: "/accounts/1000/shared/documents/RecentDB1.kdbx"
-                },
-                Option {
-                    id: dbBrowseOption
-                    text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
-                    imageSource: "asset:///images/ic_browse.png"
-                },
                 Option {
                     id: dbDemoOption
                     // TODO hide this after first non-demo file open
                     text: qsTr("Demo database") + Retranslate.onLocaleOrLanguageChanged
                     imageSource: "asset:///pwicons/13.png"
+                    value: "app/native/assets/demo.kdbx"
+                },
+                Option {
+                    id: dbBrowseOption
+                    text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
+                    imageSource: "asset:///images/ic_browse.png"
+                    value: "_browse_"
                 }
             ]
         }
         DropDown {
             id: keyDropDown
             title: qsTr("Key file") + Retranslate.onLocaleOrLanguageChanged
+            visible: !demoMode
             onSelectedOptionChanged: {
+                if (!selectedOption) 
+                    return;
+                 
                 if (selectedOption == keyBrowseOption) {
                     keyFilePicker.open();
                 } else {
                     keyFilePath = selectedOption.value;
-                    console.log("keyFilePath: " + keyFilePath);
                 }
             }
             options: [
@@ -148,19 +181,17 @@ Page {
                     text: qsTr("(none)") + Retranslate.onLocaleOrLanguageChanged
                     value: ""
                 },
-//                Option {
-//                    text: prettifyFilePath(value) 
-//                    value: "/accounts/1000/shared/documents/Recent.key"
-//                },
                 Option {
                     id: keyBrowseOption
                     text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
                     imageSource: "asset:///images/ic_browse.png"
+                    value: "_browse_"
                 }
             ]
         }
         TextField {
             id: passwordEdit
+            visible: !demoMode
             hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
             inputMode: TextFieldInputMode.Password
             text: ""
@@ -169,6 +200,7 @@ Page {
         }
         CheckBox {
             id: enableQuickUnlock
+            visible: !demoMode
             text: qsTr("Enable quick unlock") + Retranslate.onLocaleOrLanguageChanged
             checked: appSettings.quickUnlockEnabled
             onCheckedChanged: {
@@ -226,7 +258,7 @@ Page {
             imageSource: "asset:///images/ic_unlock.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
-                var password = passwordEdit.text;
+                var password = demoMode ? "demo" : passwordEdit.text;
                 passwordEdit.text = "";
                 unlockProgressDialog.progress = 0;
                 unlockProgressDialog.show();

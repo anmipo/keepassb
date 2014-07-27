@@ -17,8 +17,6 @@
 const bool DEFAULT_SEARCH_IN_DELETED = false;
 const int DEFAULT_CLIPBOARD_TIMEOUT = 10 * 1000;
 const bool DEFAULT_TRACK_RECENT_DB = true;
-const QString DEFAULT_RECENT_DB_PATH = "";
-const QString DEFAULT_RECENT_KEY_FILE_PATH = "";
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
 const bool DEFAULT_ALPHA_SORTING = false;
 const int DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
@@ -31,13 +29,16 @@ const int DEFAULT_QUICK_UNLOCK_TYPE = Settings::QUICK_UNLOCK_FIRST_4;
 const QString KEY_SEARCH_IN_DELETED = "searchInDeleted";
 const QString KEY_CLIPBOARD_TIMEOUT = "clipboardTimeout";
 const QString KEY_TRACK_RECENT_DB = "trackRecentDb";
-const QString KEY_RECENT_DB_PATH = "recentDbPath";
-const QString KEY_RECENT_KEY_FILE_PATH = "recentKeyFilePath";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
 const QString KEY_ALPHA_SORTING = "alphaSorting";
 const QString KEY_ENTRY_LIST_DETAIL = "entryListDetail";
 const QString KEY_QUICK_UNLOCK_ENABLED = "quickUnlockEnabled";
 const QString KEY_QUICK_UNLOCK_TYPE = "quickUnlockType";
+const QString KEY_RECENT_FILES_COUNT = "recentFiles/count";
+const QString KEY_RECENT_FILES_ITEM = "recentFiles/item%1";
+
+const QString RECENT_ITEMS_SEPARATOR = "|";
+const int MAX_RECENT_ITEMS_COUNT = 5;
 
 Settings* Settings::_instance;
 
@@ -48,7 +49,8 @@ Settings* Settings::instance() {
     return _instance;
 }
 
-Settings::Settings(QObject* parent) : QObject(parent){
+Settings::Settings(QObject* parent) : QObject(parent) {
+
     // This should have been qmlRegisterUncreatableType(), but then
     // contained enums would not be accessible from QML.
     // So I had to make the constructor public and register type as creatable....
@@ -66,10 +68,6 @@ Settings::Settings(QObject* parent) : QObject(parent){
             KEY_CLIPBOARD_TIMEOUT, DEFAULT_CLIPBOARD_TIMEOUT).toInt();
     _trackRecentDb = settings.value(
             KEY_TRACK_RECENT_DB, DEFAULT_TRACK_RECENT_DB).toBool();
-    _recentDbPath = settings.value(
-            KEY_RECENT_DB_PATH, DEFAULT_RECENT_DB_PATH).toString();
-    _recentKeyFilePath = settings.value(
-            KEY_RECENT_KEY_FILE_PATH, DEFAULT_RECENT_KEY_FILE_PATH).toString();
     _autoLockTimeout = settings.value(
             KEY_AUTO_LOCK_TIMEOUT, DEFAULT_AUTO_LOCK_TIMEOUT).toInt();
     _alphaSorting = settings.value(
@@ -80,6 +78,60 @@ Settings::Settings(QObject* parent) : QObject(parent){
             KEY_QUICK_UNLOCK_ENABLED, DEFAULT_QUICK_UNLOCK_ENABLED).toBool();
     _quickUnlockType = (QuickUnlockType) settings.value(
             KEY_QUICK_UNLOCK_TYPE, DEFAULT_QUICK_UNLOCK_TYPE).toInt();
+    loadRecentFiles();
+}
+
+void Settings::loadRecentFiles() {
+    QSettings settings;
+
+    _recentFiles.clear();
+    _recentDbToKey.clear();
+    int count = settings.value(KEY_RECENT_FILES_COUNT, 0).toInt();
+    for (int i = 0; i < count; i++) {
+        QString recentItem = settings.value(KEY_RECENT_FILES_ITEM.arg(i)).toString();
+        QStringList parts = recentItem.split(RECENT_ITEMS_SEPARATOR);
+        _recentFiles.append(parts[0]);
+        _recentDbToKey.insert(parts[0], parts[1]);
+    }
+}
+
+void Settings::saveRecentFiles() {
+    QSettings settings;
+    int count = _recentFiles.size();
+    if (count > MAX_RECENT_ITEMS_COUNT)
+        count = MAX_RECENT_ITEMS_COUNT;
+    settings.setValue(KEY_RECENT_FILES_COUNT, count);
+
+    for (int i = 0; i < count; i++) {
+        QString dbFile = _recentFiles.at(i);
+        QString keyFile = _recentDbToKey.value(dbFile, "");
+        settings.setValue(KEY_RECENT_FILES_ITEM.arg(i), dbFile + RECENT_ITEMS_SEPARATOR + keyFile);
+    }
+}
+
+void Settings::addRecentFiles(const QString& dbFile, const QString& keyFile) {
+    _recentFiles.removeOne(dbFile); // to avoid duplicates
+    _recentFiles.insert(0, dbFile);
+    _recentDbToKey.insert(dbFile, keyFile);
+    saveRecentFiles();
+}
+
+QStringList Settings::getRecentFiles() const {
+    QStringList res;
+    for (int i = 0 ; i < _recentFiles.size(); i++) {
+        QString dbFile = _recentFiles.at(i);
+        QString keyFile = _recentDbToKey.value(dbFile, "");
+        res.append(dbFile + RECENT_ITEMS_SEPARATOR + keyFile);
+    }
+    return res;
+}
+
+QString Settings::getKeyFileForDatabase(const QString& dbFile) const {
+    if (_recentDbToKey.contains(dbFile)) {
+        return _recentDbToKey.value(dbFile);
+    } else {
+        return "";
+    }
 }
 
 void Settings::setSearchInDeleted(bool searchInDeleted) {
@@ -103,22 +155,6 @@ void Settings::setTrackRecentDb(bool track) {
         QSettings().setValue(KEY_TRACK_RECENT_DB, track);
         _trackRecentDb = track;
         emit trackRecentDbChanged(track);
-    }
-}
-
-void Settings::setRecentDbPath(const QString& path) {
-    if (path != _recentDbPath) {
-        QSettings().setValue(KEY_RECENT_DB_PATH, path);
-        _recentDbPath = path;
-        emit recentDbPathChanged(path);
-    }
-}
-
-void Settings::setRecentKeyFilePath(const QString& path) {
-    if (path != _recentKeyFilePath) {
-        QSettings().setValue(KEY_RECENT_KEY_FILE_PATH, path);
-        _recentKeyFilePath = path;
-        emit recentKeyFilePathChanged(path);
     }
 }
 

@@ -51,8 +51,6 @@ NavigationPane {
     firstPage: UnlockDbPage {
         id: unlockDbPage
         objectName: "unlockDbPage"
-        // dbFilePath: - set in onCreationCompleted
-        // keyFilePath: - set in onCreationCompleted
         onDatabaseUnlocked: {
             app.restartWatchdog();
             var viewGroupPage = Qt.createComponent("ViewGroupPage.qml");
@@ -62,9 +60,7 @@ NavigationPane {
     }
           
     onCreationCompleted: {
-        Qt.app = app;
-        unlockDbPage.dbFilePath = appSettings.recentDbPath;
-        unlockDbPage.keyFilePath = appSettings.recentKeyFilePath;
+        Qt.app = app; // a hack to make 'app' available from ListItemComponent
         
         app.clipboardUpdated.connect(function() {
                 showToast(qsTr("Copied to clipboard") + Retranslate.onLocaleOrLanguageChanged)
