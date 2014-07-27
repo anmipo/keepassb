@@ -60,6 +60,15 @@ Page {
         }
     ]
     
+    paneProperties: NavigationPaneProperties {
+        backButton: ActionItem {
+            imageSource: (!!group.parentGroup ? undefined : "asset:///images/ic_lock.png")
+            onTriggered: {
+                naviPane.pop();
+            }
+        } 
+    }
+    
 	onGroupChanged: {
         titleBar.title = group.name;
     }
