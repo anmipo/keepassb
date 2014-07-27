@@ -76,8 +76,12 @@ Page {
         var items = appSettings.getRecentFiles();
         for (var i = items.length - 1; i >= 0; i--) {
             var paths = items[i].split("|");
-            addDatabaseOption(paths[0]);
-            addKeyOption(paths[1]);
+            var dbFile = paths[0];
+            var keyFile = paths[1];
+            addDatabaseOption(dbFile);
+            // empty keyFile a ignored, since there is a dedicated "(none)" option 
+            if (keyFile != "")
+                addKeyOption(keyFile);
         }
         dbDropDown.selectedIndex = 0;
         // keyDropDown will be selected automagically
