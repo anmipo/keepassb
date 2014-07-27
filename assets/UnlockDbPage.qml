@@ -114,93 +114,108 @@ Page {
         title: qsTr("KeePassB") + Retranslate.onLocaleOrLanguageChanged
         visibility: ChromeVisibility.Visible
     }
-    
-    Container {
-        topPadding: 10
-        leftPadding: 10
-        rightPadding: 10
-        bottomPadding: 10
-        DropDown {
-            id: dbDropDown
-            title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
-            onSelectedOptionChanged: {
-                if (!selectedOption) 
-                    return;
 
-                if (selectedOption == dbBrowseOption) {
-                    dbFilePicker.open();
-                } else if (selectedOption == dbDemoOption) {
-                    demoMode = true;
-                    dbFilePath = selectedOption.value
-                    console.log("Using demo DB");
-                    selectKeyOptionByFilename(""); // no key file needed
-                } else {
-                    demoMode = false;
-                    dbFilePath = selectedOption.value
-                    var keyfile = appSettings.getKeyFileForDatabase(dbFilePath);
-                    selectKeyOptionByFilename(keyfile);
+    Container {
+        layout: DockLayout {}
+        Container {
+            verticalAlignment: VerticalAlignment.Center
+            horizontalAlignment: HorizontalAlignment.Fill    
+            topPadding: 10
+            leftPadding: 10
+            rightPadding: 10
+            bottomPadding: 10
+            DropDown {
+                id: dbDropDown
+                title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
+                onSelectedOptionChanged: {
+                    if (!selectedOption) 
+                        return;
+    
+                    if (selectedOption == dbBrowseOption) {
+                        dbFilePicker.open();
+                    } else if (selectedOption == dbDemoOption) {
+                        demoMode = true;
+                        dbFilePath = selectedOption.value
+                        console.log("Using demo DB");
+                        selectKeyOptionByFilename(""); // no key file needed
+                    } else {
+                        demoMode = false;
+                        dbFilePath = selectedOption.value
+                        var keyfile = appSettings.getKeyFileForDatabase(dbFilePath);
+                        selectKeyOptionByFilename(keyfile);
+                    }
+                }
+                options: [
+                    Option {
+                        id: dbDemoOption
+                        // TODO hide this after first non-demo file open
+                        text: qsTr("Demo database") + Retranslate.onLocaleOrLanguageChanged
+                        imageSource: "asset:///pwicons/13.png"
+                        value: "app/native/assets/demo.kdbx"
+                    },
+                    Option {
+                        id: dbBrowseOption
+                        text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
+                        imageSource: "asset:///images/ic_browse.png"
+                        value: "_browse_"
+                    }
+                ]
+            }
+            DropDown {
+                id: keyDropDown
+                title: qsTr("Key file") + Retranslate.onLocaleOrLanguageChanged
+                topMargin: 20
+                visible: !demoMode
+                onSelectedOptionChanged: {
+                    if (!selectedOption) 
+                        return;
+                     
+                    if (selectedOption == keyBrowseOption) {
+                        keyFilePicker.open();
+                    } else {
+                        keyFilePath = selectedOption.value;
+                    }
+                }
+                options: [
+                    Option {
+                        id: keyNoneOption
+                        text: qsTr("(none)") + Retranslate.onLocaleOrLanguageChanged
+                        value: ""
+                    },
+                    Option {
+                        id: keyBrowseOption
+                        text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
+                        imageSource: "asset:///images/ic_browse.png"
+                        value: "_browse_"
+                    }
+                ]
+            }
+            TextField {
+                id: passwordEdit
+                topMargin: 20
+                visible: !demoMode
+                hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
+                inputMode: TextFieldInputMode.Password
+                text: ""
+                input.submitKey: SubmitKey.EnterKey
+                input.onSubmitted: openDbAction.triggered()
+            }
+            CheckBox {
+                id: enableQuickUnlock
+                topMargin: 20
+                visible: !demoMode
+                text: qsTr("Enable quick unlock") + Retranslate.onLocaleOrLanguageChanged
+                checked: appSettings.quickUnlockEnabled
+                onCheckedChanged: {
+                    appSettings.quickUnlockEnabled = checked;
                 }
             }
-            options: [
-                Option {
-                    id: dbDemoOption
-                    // TODO hide this after first non-demo file open
-                    text: qsTr("Demo database") + Retranslate.onLocaleOrLanguageChanged
-                    imageSource: "asset:///pwicons/13.png"
-                    value: "app/native/assets/demo.kdbx"
-                },
-                Option {
-                    id: dbBrowseOption
-                    text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
-                    imageSource: "asset:///images/ic_browse.png"
-                    value: "_browse_"
-                }
-            ]
-        }
-        DropDown {
-            id: keyDropDown
-            title: qsTr("Key file") + Retranslate.onLocaleOrLanguageChanged
-            visible: !demoMode
-            onSelectedOptionChanged: {
-                if (!selectedOption) 
-                    return;
-                 
-                if (selectedOption == keyBrowseOption) {
-                    keyFilePicker.open();
-                } else {
-                    keyFilePath = selectedOption.value;
-                }
-            }
-            options: [
-                Option {
-                    id: keyNoneOption
-                    text: qsTr("(none)") + Retranslate.onLocaleOrLanguageChanged
-                    value: ""
-                },
-                Option {
-                    id: keyBrowseOption
-                    text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
-                    imageSource: "asset:///images/ic_browse.png"
-                    value: "_browse_"
-                }
-            ]
-        }
-        TextField {
-            id: passwordEdit
-            visible: !demoMode
-            hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
-            inputMode: TextFieldInputMode.Password
-            text: ""
-            input.submitKey: SubmitKey.EnterKey
-            input.onSubmitted: openDbAction.triggered()
-        }
-        CheckBox {
-            id: enableQuickUnlock
-            visible: !demoMode
-            text: qsTr("Enable quick unlock") + Retranslate.onLocaleOrLanguageChanged
-            checked: appSettings.quickUnlockEnabled
-            onCheckedChanged: {
-                appSettings.quickUnlockEnabled = checked;
+            Label {
+                visible: demoMode
+                topMargin: 20
+                verticalAlignment: VerticalAlignment.Center
+                text: qsTr("Demo option enables you to test KeePassB without importing a real database.\nTo continue, tap the lock symbol below.") + Retranslate.onLocaleOrLanguageChanged
+                multiline: true
             }
         }
     }
