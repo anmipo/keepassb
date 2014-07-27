@@ -42,8 +42,8 @@ Page {
     }
     
     function cancelSearch() {
-        searchField.searchQuery = searchField.text;
         searchContainer.visible = false;
+        searchField.searchQuery = searchField.text;
         searchField.text = "";
     }
     
@@ -113,6 +113,7 @@ Page {
                     }
                     input.onSubmitted: {
                         searchContainer.visible = false;
+                        searchQuery = searchField.text;
                         searchField.text = "";
                         database.search(searchQuery);
                         var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
