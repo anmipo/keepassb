@@ -270,6 +270,7 @@ Page {
             onTriggered: {
                 if (demoMode) {
                     var password = "demo";
+                    enableQuickUnlock.checked = false;
                 } else {
                     var password = passwordEdit.text;
                     if (appSettings.quickUnlockEnabled) {

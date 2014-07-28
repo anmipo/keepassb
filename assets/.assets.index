@@ -1,14 +1,16 @@
 1
-246
+249
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
 common.js
+demo.kdbx
 images/cover.png
 images/ic_about.png
 images/ic_attach.png
 images/ic_done.png
 images/ic_edit.png
+images/ic_email.png
 images/ic_entry.png
 images/ic_entry_general.png
 images/ic_history.png
@@ -91,7 +93,8 @@ pwicons-dark/68.png
 pwicons-dark/7.png
 pwicons-dark/8.png
 pwicons-dark/9.png
-pwicons-dark/_
+pwicons-dark/_readme
+QuickUnlockPage.qml
 ReadOnlyTextField.qml
 SearchResultsPage.qml
 UnlockDbPage.qml
