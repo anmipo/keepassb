@@ -1,0 +1,45 @@
+KeePassB 2 (native beta)
+Native KeePass v2 password manager
+
+KeePassB 2 is a native BlackBerry 10 version of the multi-platform KeePass password manager.
+
+KeePass is a free open source password manager, which helps you to manage your passwords in a secure way. You can put all your passwords in one database, which is locked with one master key or a key file. So you only have to remember one single master password or select the key file to unlock the whole database. The databases are encrypted using the best and most secure encryption algorithms currently known.
+
+
+FEATURES:
+- Native BlackBerry 10 interface
+- View KeePass v2 .kdbx files, including advanced features of .kdbx format:
+    - Custom string fields
+    - File attachments
+    - History of entry changes
+- Easy copying of all fields
+- Lighting-fast search
+- Flexible settings
+- Quick unlock 
+- Automatic database lock on timeout
+- Integration with Dropbox, Box and other system-wide services
+
+
+CURRENT LIMITATIONS:
+- KeePass v1 (kdb) databases are not supported.
+- Saving databases is not supported yet.
+If you really need any of this, please contact the developer.
+
+
+VERSIONS: 
+While the early KeePassB version was a modified Android port, KeePassB 2 is a native application built from the ground up.
+
+
+DISCLAIMER:
+While every effort has been made to ensure reliable and error-free functionality of the application, this is a work in progress and you use it at your own risk. If you find a bug, please report it to the developer before leaving negative review.
+
+A more formal disclaimer for the enterprise folks:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Keywords:
+keepass, password, manager, kdb, kdbx, vault, kipass, keypass, keepassberry
+
+Changelog:
+v2.0 beta
+- First native release
