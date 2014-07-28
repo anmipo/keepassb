@@ -74,6 +74,11 @@ Page {
                     selected: (appSettings.clipboardTimeout == 10 * 1000)
                 }
                 Option {
+                    text: qsTr("After 20 seconds") + Retranslate.onLocaleOrLanguageChanged
+                    value: 20 * 1000;
+                    selected: (appSettings.clipboardTimeout == 20 * 1000)
+                }
+                Option {
                     text: qsTr("After 30 seconds") + Retranslate.onLocaleOrLanguageChanged
                     value: 30 * 1000;
                     selected: (appSettings.clipboardTimeout == 30 * 1000)

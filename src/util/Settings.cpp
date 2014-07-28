@@ -15,7 +15,7 @@
  * Default settings values
  */
 const bool DEFAULT_SEARCH_IN_DELETED = false;
-const int DEFAULT_CLIPBOARD_TIMEOUT = 10 * 1000;
+const int DEFAULT_CLIPBOARD_TIMEOUT = 30 * 1000;
 const bool DEFAULT_TRACK_RECENT_DB = true;
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
 const bool DEFAULT_ALPHA_SORTING = false;
