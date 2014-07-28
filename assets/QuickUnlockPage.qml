@@ -12,36 +12,50 @@ Sheet {
         quickPassEdit.requestFocus()
     }
 
+    function tryQuickUnlock() {
+        var pass = quickPassEdit.text;
+        quickPassEdit.text = "";
+        if (app.quickUnlock(pass)) {
+            quickUnlockSheet.close();
+        } else {
+            wrongCodeToast.show();
+            database.lock();
+        }
+    }
+    
     Page {
         titleBar: TitleBar {
-            title: qsTr("Quick unlock") + Retranslate.onLocaleOrLanguageChanged
-            acceptAction: ActionItem {
-                id: unlockAction
-                title: qsTr("Unlock") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Quick Unlock") + Retranslate.onLocaleOrLanguageChanged
+            dismissAction: ActionItem {
+                title: qsTr("Cancel") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
-                    var pass = quickPassEdit.text;
                     quickPassEdit.text = "";
-                    if (app.quickUnlock(pass)) {
-                        quickUnlockSheet.close();
-                    } else {
-                        wrongCodeToast.show();
-                        database.lock();
-                    }
+                    database.lock();
                 }
             }
             visibility: ChromeVisibility.Visible
         }
         Container {
-            topPadding: 10
+            topPadding: 20
             leftPadding: 10
             rightPadding: 10
+            Label {
+                text: qsTr("Enter quick password:") + Retranslate.onLocaleOrLanguageChanged
+                textStyle.base: SystemDefaults.TextStyles.BodyText
+            }
             TextField {
                 id: quickPassEdit
                 hintText: Common.getQuickUnlockTypeDescription(appSettings.quickUnlockType) + Retranslate.onLocaleOrLanguageChanged
                 horizontalAlignment: HorizontalAlignment.Fill
                 inputMode: TextFieldInputMode.Password
-                input.onSubmitted: unlockAction.triggered();
+                input.onSubmitted: tryQuickUnlock()
                 input.submitKey: SubmitKey.EnterKey
+            }
+            Button {
+                topMargin: 20
+                text: qsTr("Unlock") + Retranslate.onLocaleOrLanguageChanged
+                onClicked: tryQuickUnlock()
+                horizontalAlignment: HorizontalAlignment.Fill
             }
         }
         attachedObjects: [
