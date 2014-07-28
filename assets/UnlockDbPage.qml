@@ -114,11 +114,6 @@ Page {
         loadRecentItems();
     }
     
-    titleBar: TitleBar {
-        title: qsTr("KeePassB") + Retranslate.onLocaleOrLanguageChanged
-        visibility: ChromeVisibility.Visible
-    }
-
     Container {
         layout: DockLayout {}
         Container {
