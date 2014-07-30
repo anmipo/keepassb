@@ -39,6 +39,14 @@ Page {
     }   
 
     /**
+     * Puts given DB path into dropdown options and selects it.
+     */
+    function chooseDatabaseFile(dbFilePath) {
+        addDatabaseOption(dbFilePath); // actual path
+        dbDropDown.selectedIndex = 0;
+    }
+    
+    /**
      * Creates an Option of the given DropDown; 
      * deletes the previous option with the same value, if any.
      */
@@ -99,6 +107,7 @@ Page {
     }
     
     onCreationCompleted: {
+        app.invokedWithDatabase.connect(chooseDatabaseFile);
         database.fileOpenError.connect(showErrorToast);
         database.dbUnlockError.connect(showErrorToast);
         database.dbUnlocked.connect(function() {
@@ -225,8 +234,7 @@ Page {
             type: FileType.Other
             title: qsTr("Choose database") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
-                addDatabaseOption(selectedFiles[0]); // actual path
-                dbDropDown.selectedIndex = 0;
+                chooseDatabaseFile(selectedFiles[0]);
             }
             onCanceled: {
                 dbDropDown.selectedIndex = -1; // no option selected

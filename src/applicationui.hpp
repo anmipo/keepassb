@@ -70,6 +70,8 @@ signals:
     void dbOpenError(const QString& message, const PwDatabase::Error errorCode);
     // emitted when the app enters the quick-lock state
     void appLocked();
+    // emitted when the app has been invoked with a valid DB file path
+    void invokedWithDatabase(const QString& dbFilePath);
 };
 
 #endif /* ApplicationUI_HPP_ */

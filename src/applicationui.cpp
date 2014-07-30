@@ -87,9 +87,7 @@ void ApplicationUI::onInvoke(const InvokeRequest& request) {
     QString filePath = uri.toLocalFile();
     qDebug() << "filePath: " << filePath;
     if (!filePath.isEmpty()) {
-        // write the invocation path to the "Database path" property of the "Unlock DB" page
-        QObject* unlockDbPage = qmlRoot->findChild<QObject*>("unlockDbPage");
-        QDeclarativeProperty(unlockDbPage, "dbFilePath").write(filePath);
+        emit invokedWithDatabase(filePath);
     }
 }
 
