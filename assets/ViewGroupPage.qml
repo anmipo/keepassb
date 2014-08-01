@@ -62,7 +62,7 @@ Page {
     
     paneProperties: NavigationPaneProperties {
         backButton: ActionItem {
-            imageSource: (!!group.parentGroup ? undefined : "asset:///images/ic_lock.png")
+            id: backButton
             onTriggered: {
                 naviPane.pop();
             }
@@ -71,6 +71,10 @@ Page {
     
 	onGroupChanged: {
         titleBar.title = group.name;
+        if (!group.parentGroup) {
+            backButton.imageSource = "asset:///images/ic_lock.png";
+            backButton.title = qsTr("Lock");
+        } 
     }
     
     Container {
