@@ -133,20 +133,25 @@ Page {
             rightPadding: 10
             bottomPadding: 10
             DropDown {
+                property int lastSelectedIndex: -1
+
                 id: dbDropDown
                 title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (!selectedOption) 
                         return;
-    
+
                     if (selectedOption == dbBrowseOption) {
+                        // lastSelectedIndex should not change here
                         dbFilePicker.open();
                     } else if (selectedOption == dbDemoOption) {
+                        lastSelectedIndex = selectedIndex; 
                         demoMode = true;
                         dbFilePath = selectedOption.value
                         console.log("Using demo DB");
                         selectKeyOptionByFilename(""); // no key file needed
                     } else {
+                        lastSelectedIndex = selectedIndex; 
                         demoMode = false;
                         dbFilePath = selectedOption.value
                         var keyfile = appSettings.getKeyFileForDatabase(dbFilePath);
@@ -170,6 +175,8 @@ Page {
                 ]
             }
             DropDown {
+                property int lastSelectedIndex: -1
+                
                 id: keyDropDown
                 title: qsTr("Key file") + Retranslate.onLocaleOrLanguageChanged
                 topMargin: 20
@@ -177,10 +184,12 @@ Page {
                 onSelectedOptionChanged: {
                     if (!selectedOption) 
                         return;
-                     
+
                     if (selectedOption == keyBrowseOption) {
+                        // lastSelectedIndex should not change here
                         keyFilePicker.open();
                     } else {
+                        lastSelectedIndex = selectedIndex;
                         keyFilePath = selectedOption.value;
                     }
                 }
@@ -237,7 +246,7 @@ Page {
                 chooseDatabaseFile(selectedFiles[0]);
             }
             onCanceled: {
-                dbDropDown.selectedIndex = -1; // no option selected
+                dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex; // restore the pre-Browse selection
             }
         },
         FilePicker {
@@ -247,10 +256,10 @@ Page {
             title: qsTr("Choose key file") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
                 addKeyOption(selectedFiles[0]); // actual path
-                keyDropDown.selectedIndex = 1; // the first one is "None"
+                keyDropDown.selectedIndex = 1; // option[0] is "None"
             }
             onCanceled: {
-                // do nothing, keep the previous option
+                keyDropDown.selectedIndex = keyDropDown.lastSelectedIndex; // restore the pre-Browse selection
             }
         },
         SystemToast {
