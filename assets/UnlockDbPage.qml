@@ -264,6 +264,7 @@ Page {
         },
         SystemToast {
             id: dbErrorToast
+            position: SystemUiPosition.TopCenter
         },
         SystemProgressDialog {
             id: unlockProgressDialog
