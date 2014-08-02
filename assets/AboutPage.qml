@@ -46,7 +46,7 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("Version 2.0 beta") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Version 2.0.1 beta") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }

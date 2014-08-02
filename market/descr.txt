@@ -41,5 +41,12 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keypass, keepassberry
 
 Changelog:
+v2.0.1 beta
+Significantly faster database decryption (6x speedup)
+Fixed crash on databases with large transformation rounds value
+Fixed invocation from file managers
+Fixed text of the Lock icon (thanks, SparrowhawkMMU)
+Other minor UI improvements
+
 v2.0 beta
 - First native release
