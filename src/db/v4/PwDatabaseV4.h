@@ -47,17 +47,17 @@ public:
         GZIP = 1
     };
     enum ErrorCode {
-        SUCCESS = 0,
-        SIGNATURE_1_MISMATCH,
-        SIGNATURE_2_MISMATCH,
-        UNSUPPORTED_FILE_VERSION,
-        NOT_AES,                    // Not AES cypher
-        UNKNOWN_COMPRESSION_ALGORITHM,
-        MASTER_SEED_SIZE_MISMATCH,
-        TRANSFORM_SEED_SIZE_MISMATCH,
-        INITIAL_VECTOR_SIZE_MISMATCH,
-        PROTECTED_STREAM_SIZE_MISMATCH,
-        NOT_SALSA20
+        SUCCESS               = 0,
+        SIGNATURE_1_MISMATCH  = 1,
+        SIGNATURE_2_MISMATCH  = 2,
+        UNSUPPORTED_FILE_VERSION = 3,
+        NOT_AES                  = 4, // Not AES cypher
+        UNKNOWN_COMPRESSION_ALGORITHM  = 5,
+        MASTER_SEED_SIZE_MISMATCH      = 6,
+        TRANSFORM_SEED_SIZE_MISMATCH   = 7,
+        INITIAL_VECTOR_SIZE_MISMATCH   = 8,
+        PROTECTED_STREAM_SIZE_MISMATCH = 9,
+        NOT_SALSA20                    = 10
     };
     /**
      * Returns a user-friendly error description
@@ -102,24 +102,26 @@ public:
      */
     enum ErrorCode {
         SUCCESS = PwDatabase::SUCCESS,
-        PASSWORD_HASHING_ERROR_1 = LAST_COMMON + 1,
-        PASSWORD_HASHING_ERROR_2,
-        PASSWORD_HASHING_ERROR_3,
-        KEY_TRANSFORM_ERROR_1,
-        KEY_TRANSFORM_ERROR_2,
-        KEY_TRANSFORM_ERROR_3,
-        CANNOT_INIT_SALSA20,
-        CANNOT_DECRYPT_DB,
-        WRONG_BLOCK_ID,
-        BLOCK_HASH_NON_ZERO,
-        BLOCK_HASH_MISMATCH,
-        XML_PARSING_ERROR,
-        XML_TIMES_PARSING_ERROR,
-        XML_NO_ROOT_GROUP,
-        GROUP_LOADING_ERROR,
-        ICON_ID_IS_NOT_INTEGER,
-        XML_STRING_VALUE_PARSING_ERROR,
-        INVALID_ATTACHMENT_REFERENCE
+        PASSWORD_HASHING_ERROR_1 = 0x10,
+        PASSWORD_HASHING_ERROR_2 = 0x11,
+        PASSWORD_HASHING_ERROR_3 = 0x12,
+        KEY_TRANSFORM_INIT_ERROR = 0x20,
+        KEY_TRANSFORM_ERROR_1    = 0x21,
+        KEY_TRANSFORM_ERROR_2    = 0x22,
+        KEY_TRANSFORM_ERROR_3    = 0x23,
+        KEY_TRANSFORM_END_ERROR  = 0x24,
+        CANNOT_DECRYPT_DB        = 0x30,
+        CANNOT_INIT_SALSA20      = 0x31,
+        WRONG_BLOCK_ID           = 0x32,
+        BLOCK_HASH_NON_ZERO      = 0x33,
+        BLOCK_HASH_MISMATCH      = 0x34,
+        XML_PARSING_ERROR        = 0x50,
+        XML_TIMES_PARSING_ERROR  = 0x51,
+        XML_NO_ROOT_GROUP        = 0x52,
+        XML_STRING_VALUE_PARSING_ERROR = 0x53,
+        GROUP_LOADING_ERROR            = 0x60,
+        ICON_ID_IS_NOT_INTEGER         = 0x61,
+        INVALID_ATTACHMENT_REFERENCE   = 0x62,
     };
 
 private:

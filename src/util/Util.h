@@ -16,10 +16,10 @@ public:
      * Class-specific error codes
      */
     enum ErrorCode {
-        SUCCESS = 0,
-        GZIP_DATA_TOO_SHORT,
-        GZIP_INIT_FAIL,
-        GZIP_INFLATE_ERROR
+        SUCCESS             = 0,
+        GZIP_DATA_TOO_SHORT = 1,
+        GZIP_INIT_FAIL      = 2,
+        GZIP_INFLATE_ERROR  = 3
     };
     /**
      * Unpacks GZip data.

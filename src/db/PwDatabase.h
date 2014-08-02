@@ -26,9 +26,9 @@ protected:
 	virtual bool processKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
 public:
     enum Error {
-        SUCCESS = 0,
-        UNKNOWN_DB_FORMAT,
-        LAST_COMMON
+        SUCCESS           = 0,
+        UNKNOWN_DB_FORMAT = 1
+        // child classes' specific codes start from 0x10
     };
 	PwDatabase();
 	virtual ~PwDatabase();
