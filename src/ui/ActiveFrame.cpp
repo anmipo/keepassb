@@ -13,7 +13,7 @@
 
 using namespace bb::cascades;
 
-ActiveFrame::ActiveFrame() : SceneCover(this) {
+ActiveFrame::ActiveFrame(QObject* parent) : SceneCover(parent) {
 
     QmlDocument* qml = QmlDocument::create("asset:///ActiveFrameCover.qml").parent(this);
     Container* mainContainer = qml->createRootObject<Container>();

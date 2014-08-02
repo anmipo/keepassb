@@ -20,7 +20,7 @@ namespace bb {
 
 class ActiveFrame : public bb::cascades::SceneCover {
 public:
-    ActiveFrame();
+    ActiveFrame(QObject* parent=0);
 };
 
 #endif /* ACTIVEFRAME_H_ */
