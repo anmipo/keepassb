@@ -58,6 +58,7 @@ void CryptoManager::cleanup() {
 	if (keyTransformInitialized) {
 	    endKeyTransform();
 	}
+	hu_UninitSbg56(sbCtx);
 	hu_GlobalCtxDestroy(&sbCtx);
 }
 
