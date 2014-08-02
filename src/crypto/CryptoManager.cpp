@@ -119,6 +119,15 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
 	                reinterpret_cast<unsigned char*>(cipherText.data()), sbCtx),
 	        "AESEncryptMsg failed");
 
+    RETURN_IF_SB_ERROR(
+            hu_AESEnd(&aesContext, sbCtx),
+            "AESEnd failed");
+    RETURN_IF_SB_ERROR(
+            hu_AESKeyDestroy(aesParams, &aesKey, sbCtx),
+            "AESKeyDestroy failed");
+    RETURN_IF_SB_ERROR(
+            hu_AESParamsDestroy(&aesParams, sbCtx),
+            "AESParamsDestroy failed");
 	return SB_SUCCESS;
 }
 
