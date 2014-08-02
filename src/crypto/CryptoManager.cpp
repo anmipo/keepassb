@@ -232,6 +232,15 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
 	                reinterpret_cast<unsigned char*>(plainText.data()), sbCtx),
 	        "AESDecrypttMsg failed");
 
+    RETURN_IF_SB_ERROR(
+            hu_AESEnd(&aesContext, sbCtx),
+            "AESEnd failed");
+    RETURN_IF_SB_ERROR(
+            hu_AESKeyDestroy(aesParams, &aesKey, sbCtx),
+            "AESKeyDestroy failed");
+    RETURN_IF_SB_ERROR(
+            hu_AESParamsDestroy(&aesParams, sbCtx),
+            "AESParamsDestroy failed");
 	return SB_SUCCESS;
 }
 
