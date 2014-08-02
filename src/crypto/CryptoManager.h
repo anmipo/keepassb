@@ -20,6 +20,13 @@ private:
     static CryptoManager* _instance;
     sb_GlobalCtx sbCtx;        // Security Builder Crypto global context
 
+    QByteArray keyTransformInitVectorArray;
+    unsigned char* keyTransformIV; // points to keyTransformInitVectorArray.data()
+    sb_Params keyTransformAesParams;
+    sb_Key keyTransformAesKey;
+    sb_Context keyTransformAesContext;
+    bool keyTransformInitialized;
+
     CryptoManager();
     virtual ~CryptoManager();
 
@@ -58,6 +65,27 @@ public:
 	 * Returns an SB_* error code.
 	 */
 	int decryptAES(const QByteArray& key, const QByteArray& initVector, const QByteArray& cypherText, QByteArray& plainText);
+
+
+	// Three methods for key transformation
+
+	/**
+	 * Prepares key transformation routine (performKeyTransform).
+	 * endKeyTransform() must be called after transformation to free allocated resources.
+	 * Returns an SB_* error code.
+	 */
+	int beginKeyTransform(const QByteArray& key);
+	/**
+	 * Performs a key transformation round.
+	 * both originalKey and transformedKey must be 16 bytes (SB_AES_128_BLOCK_BYTES) long.
+	 * Returns an SB_* error code.
+	 */
+	int performKeyTransform(const unsigned char* originalKey, unsigned char* transformedKey) const;
+	/**
+	 * Frees resources allocated by beginKeyTransform().
+	 * Returns an SB_* error code.
+	 */
+	int endKeyTransform();
 };
 
 class Salsa20 {

@@ -17,8 +17,9 @@ CryptoManager* CryptoManager::_instance;
 // convenience macro: if func returns an SB_ error, log it and return its code
 #define RETURN_IF_SB_ERROR(func, msg) {int errCode = (func); if (errCode != SB_SUCCESS) { qDebug(msg); return errCode; }}
 
-CryptoManager::CryptoManager() {
+CryptoManager::CryptoManager() : keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
 	sbCtx = NULL;
+    keyTransformInitialized = false;
 }
 
 CryptoManager::~CryptoManager() {
@@ -54,6 +55,9 @@ int CryptoManager::init() {
 
 void CryptoManager::cleanup() {
 	qDebug() << "CryptoManager::cleanup";
+	if (keyTransformInitialized) {
+	    endKeyTransform();
+	}
 	hu_GlobalCtxDestroy(&sbCtx);
 }
 
@@ -129,6 +133,70 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
             hu_AESParamsDestroy(&aesParams, sbCtx),
             "AESParamsDestroy failed");
 	return SB_SUCCESS;
+}
+
+/**
+ * Prepares key transformation routine (performKeyTransform).
+ * endKeyTransform() must be called after transformation to free allocated resources.
+ * Returns an SB_* error code.
+ */
+int CryptoManager::beginKeyTransform(const QByteArray& key) {
+    keyTransformInitVectorArray.fill(0, SB_AES_128_BLOCK_BYTES);
+    keyTransformIV = reinterpret_cast<unsigned char*>(keyTransformInitVectorArray.data());
+
+    RETURN_IF_SB_ERROR(
+            hu_AESParamsCreate(SB_AES_ECB, SB_AES_128_BLOCK_BITS, NULL, NULL, &keyTransformAesParams, sbCtx),
+            "AESParamsCreate failed");
+
+    RETURN_IF_SB_ERROR(
+            hu_AESKeySet(keyTransformAesParams, SB_AES_256_KEY_BITS,
+                    reinterpret_cast<const unsigned char*>(key.constData()), &keyTransformAesKey, sbCtx),
+             "AESKeySet failed");
+
+    RETURN_IF_SB_ERROR(
+            hu_AESBegin(keyTransformAesParams, keyTransformAesKey, SB_AES_128_BLOCK_BYTES,
+                    keyTransformIV, &keyTransformAesContext, sbCtx),
+            "AESBegin failed");
+
+    keyTransformInitialized = true;
+    return SB_SUCCESS;
+}
+
+/**
+ * Performs a key transformation round.
+ * Call beginKeyTransform() to prepare necessary resources first.
+ * Call endKeyTransform() to free those resources.
+ * both originalKey and transformedKey must be 16 bytes (SB_AES_128_BLOCK_BYTES) long.
+ * Returns an SB_* error code.
+ */
+int CryptoManager::performKeyTransform(const unsigned char* originalKey, unsigned char* transformedKey) const {
+    RETURN_IF_SB_ERROR(
+            hu_AESEncryptMsg(keyTransformAesParams, keyTransformAesKey,
+                    SB_AES_128_BLOCK_BYTES, keyTransformIV,
+                    SB_AES_128_BLOCK_BYTES, originalKey,
+                    transformedKey, sbCtx),
+            "AESEncryptMsg failed");
+    return SB_SUCCESS;
+}
+
+/**
+ * Frees resources allocated by beginKeyTransform().
+ * Returns an SB_* error code.
+ */
+int CryptoManager::endKeyTransform() {
+    if (keyTransformInitialized) {
+        RETURN_IF_SB_ERROR(
+                hu_AESEnd(&keyTransformAesContext, sbCtx),
+                "AESEnd failed");
+        RETURN_IF_SB_ERROR(
+                hu_AESKeyDestroy(keyTransformAesParams, &keyTransformAesKey, sbCtx),
+                "AESKeyDestroy failed");
+        RETURN_IF_SB_ERROR(
+                hu_AESParamsDestroy(&keyTransformAesParams, sbCtx),
+                "AESParamsDestroy failed");
+        keyTransformInitialized = false;
+    }
+    return SB_SUCCESS;
 }
 
 /**

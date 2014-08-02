@@ -299,16 +299,32 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     QByteArray key = header.getTransformSeed();
     quint64 transformRounds = header.getTransformRounds();
 
-    QByteArray initVector(16, 0);
+    // temporary arrays for storing intermediate keys
+    QByteArray subKey1bis(subKey1.length(), 0);
+    QByteArray subKey2bis(subKey2.length(), 0);
+
     int progress = progressFrom;
     int subProgress = 0;
     int subProgressThreshold = ceil(transformRounds / (progressTo - progressFrom));
     int ec;
+
+    // prepare key transform
+    if (cm->beginKeyTransform(key) != SB_SUCCESS)
+        return KEY_TRANSFORM_INIT_ERROR;
+
+    unsigned char* origKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
+    unsigned char* origKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
+    unsigned char* transKey1 = reinterpret_cast<unsigned char*>(subKey1bis.data());
+    unsigned char* transKey2 = reinterpret_cast<unsigned char*>(subKey2bis.data());
     for (quint64 round = 0; round < transformRounds; round++) {
-        ec = cm->encryptAES(SB_AES_ECB, key, initVector, subKey1, subKey1);
+        ec = cm->performKeyTransform(origKey1, transKey1);
+        memcpy(origKey1, transKey1, SB_AES_128_BLOCK_BYTES);
         if (ec != SB_SUCCESS) break;
-        ec = cm->encryptAES(SB_AES_ECB, key, initVector, subKey2, subKey2);
+
+        ec = cm->performKeyTransform(origKey2, transKey2);
+        memcpy(origKey2, transKey2, SB_AES_128_BLOCK_BYTES);
         if (ec != SB_SUCCESS) break;
+
         if (++subProgress > subProgressThreshold) {
             subProgress = 0;
             progress++;
@@ -317,6 +333,10 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     }
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_1;
+
+    if (cm->endKeyTransform() != SB_SUCCESS)
+        return KEY_TRANSFORM_END_ERROR;
+
 
     QByteArray step2key;
     step2key.append(subKey1);
