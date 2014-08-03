@@ -142,7 +142,7 @@ signals:
     void dbLocked();
     void dbUnlocked();
     void dbUnlockError(const QString& message, const int errorCode);
-    void fileOpenError(const QString& message);
+    void fileOpenError(const QString& message, const QString& errorDescription);
     void invalidPasswordOrKey();
     void unlockProgressChanged(const int progressPercent);
     void searchResultChanged();

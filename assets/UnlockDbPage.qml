@@ -24,6 +24,12 @@ Page {
         dbErrorToast.show();
     }
     
+    function showFileAccessError(message, errorDescription) {
+        unlockProgressDialog.cancel();
+        dbErrorToast.body = message + "\n(" + errorDescription+ ")"; 
+        dbErrorToast.show();
+    }
+    
     // Returns a nice human-readable file path.
     // Basically, it just cuts off the prefix, such as 
     //   "/accounts/1000/shared" 
@@ -108,7 +114,7 @@ Page {
     
     onCreationCompleted: {
         app.invokedWithDatabase.connect(chooseDatabaseFile);
-        database.fileOpenError.connect(showErrorToast);
+        database.fileOpenError.connect(showFileAccessError);
         database.dbUnlockError.connect(showErrorToast);
         database.dbUnlocked.connect(function() {
             unlockProgressDialog.cancel();

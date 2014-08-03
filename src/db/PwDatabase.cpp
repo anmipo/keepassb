@@ -174,8 +174,8 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     // Load DB file to memory
     QFile dbFile (dbFilePath);
     if (!dbFile.open(QIODevice::ReadOnly)) {
-        qDebug() << "Cannot open DB file: " << dbFilePath;
-        emit fileOpenError(tr("DB file not found"));
+        qDebug() << "Cannot open DB file: '" << dbFilePath << "' Error: " << dbFile.error() << ". Message: " << dbFile.errorString();
+        emit fileOpenError(tr("Cannot open DB file"), dbFile.errorString());
         return;
     }
     qDebug() << "DB file read ok";
@@ -187,8 +187,8 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     if (!keyFilePath.isEmpty()) {
         QFile keyFile (keyFilePath);
         if (!keyFile.open(QIODevice::ReadOnly)) {
-            qDebug() << "Cannot open key file: " << keyFilePath;
-            emit fileOpenError(tr("Cannot open key file"));
+            qDebug() << "Cannot open key file: '" << keyFilePath << "' Error: " << keyFile.error() << ". Message: " << keyFile.errorString();
+            emit fileOpenError(tr("Cannot open key file"), keyFile.errorString());
             return;
         }
         keyFileData = keyFile.readAll();
