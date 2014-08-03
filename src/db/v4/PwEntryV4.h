@@ -25,8 +25,8 @@ private:
     QString _name;
     QString _value;
 public:
-    PwExtraField();
-    PwExtraField(const QString& name, const QString& value);
+    PwExtraField(QObject* parent=0);
+    PwExtraField(QObject* parent, const QString& name, const QString& value);
     virtual ~PwExtraField() {}
 
     // property accessors
@@ -63,7 +63,7 @@ private:
      */
     bool inflateData();
 public:
-    PwAttachment();
+    PwAttachment(QObject* parent=0);
     virtual ~PwAttachment();
 
     /**
@@ -102,7 +102,7 @@ private:
     bool isStandardField(const QString& name) const;
 
 public:
-    PwEntryV4();
+    PwEntryV4(QObject* parent=0);
     virtual ~PwEntryV4();
 
     virtual void clear();

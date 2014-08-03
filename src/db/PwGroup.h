@@ -60,7 +60,7 @@ protected slots:
 	 */
 	virtual void sortChildren();
 public:
-	PwGroup();
+	PwGroup(QObject* parent=0);
 	virtual ~PwGroup();
 
 	virtual void clear();

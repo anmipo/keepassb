@@ -7,7 +7,7 @@
 
 #include <PwGroupV4.h>
 
-PwGroupV4::PwGroupV4() : PwGroup() {
+PwGroupV4::PwGroupV4(QObject* parent) : PwGroup(parent) {
 
 }
 

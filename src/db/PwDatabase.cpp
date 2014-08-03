@@ -20,7 +20,7 @@ const QString XML_KEY = "Key";
 const QString XML_DATA = "Data";
 
 
-PwDatabase::PwDatabase() : QObject() {
+PwDatabase::PwDatabase(QObject* parent) : QObject(parent) {
 	_rootGroup = NULL;
 }
 
@@ -105,8 +105,14 @@ int PwDatabase::search(const SearchParams& params, QList<PwEntry*> &searchResult
 }
 
 /*****************************************/
+PwSearchResultDataModel::PwSearchResultDataModel(QObject* parent) :
+        bb::cascades::QListDataModel<PwEntry*>() {
+    // QListDataModel does not take parent in constructor, so set it separately
+    setParent(parent);
+}
+/*****************************************/
 
-PwDatabaseFacade::PwDatabaseFacade() : QObject(), _searchResultDataModel() {
+PwDatabaseFacade::PwDatabaseFacade(QObject* parent) : QObject(parent), _searchResultDataModel() {
     db = NULL;
     _locked = true;
     _searchResultDataModel.setParent(this);

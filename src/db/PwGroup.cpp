@@ -13,7 +13,8 @@
 #include <bb/cascades/DataModel>
 #include "util/Settings.h"
 
-PwGroup::PwGroup() : bb::cascades::DataModel(), _uuid(),
+PwGroup::PwGroup(QObject* parent) :
+        bb::cascades::DataModel(parent), _uuid(),
         _creationTime(), _lastModificationTime(),
         _lastAccessTime(), _expiryTime(),
         _subGroups(), sortedGroups(),

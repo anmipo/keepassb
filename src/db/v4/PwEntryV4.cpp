@@ -16,18 +16,19 @@ const static QString URL = "URL";
 const static QString NOTES = "Notes";
 
 
-PwExtraField::PwExtraField() : QObject() {
+PwExtraField::PwExtraField(QObject* parent) : QObject(parent) {
     _name = "";
     _value = "";
 }
 
-PwExtraField::PwExtraField(const QString& name, const QString& value) : QObject() {
+PwExtraField::PwExtraField(QObject* parent, const QString& name, const QString& value) : QObject(parent) {
     _name = name;
     _value = value;
 }
 
 /**************************/
-PwAttachment::PwAttachment() :
+PwAttachment::PwAttachment(QObject* parent) :
+        QObject(parent),
         name(""),
         size(0),
         content(NULL) {
@@ -98,8 +99,8 @@ bool PwAttachment::inflateData() {
 }
 /**************************/
 
-PwEntryV4::PwEntryV4() :
-        PwEntry(),
+PwEntryV4::PwEntryV4(QObject* parent) :
+        PwEntry(parent),
         fields(),
         _extraFieldsDataModel(),
         _historyDataModel(),
@@ -127,7 +128,7 @@ bool PwEntryV4::isStandardField(const QString& name) const {
 void PwEntryV4::setField(const QString& name, const QString& value) {
     fields.insert(name, value);
     if (!isStandardField(name)) {
-        PwExtraField* ef = new PwExtraField(name, value);
+        PwExtraField* ef = new PwExtraField(this, name, value);
         _extraFieldsDataModel.append(ef); // implicitly takes ownership
     }
 }

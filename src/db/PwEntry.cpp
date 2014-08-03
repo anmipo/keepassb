@@ -10,7 +10,7 @@
 #include <QDateTime>
 #include <QList>
 
-PwEntry::PwEntry() : QObject(), _uuid(), _iconId(0),
+PwEntry::PwEntry(QObject* parent) : QObject(parent), _uuid(), _iconId(0),
         _creationTime(), _lastModificationTime(),
         _lastAccessTime(), _expiryTime(),
         _deleted(false), _parentGroup(NULL) {

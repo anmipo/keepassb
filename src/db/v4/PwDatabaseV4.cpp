@@ -65,7 +65,7 @@ const int UNLOCK_PROGRESS_UNPACKED = 95;
 const int UNLOCK_PROGRESS_DONE = 100;
 
 
-PwHeaderV4::PwHeaderV4() : QObject(), data() {
+PwHeaderV4::PwHeaderV4(QObject* parent) : QObject(parent), data() {
     initialized = false;
     transformRounds = 0;
     size = 0;
@@ -217,14 +217,15 @@ int PwHeaderV4::sizeInBytes() const {
 
 /****************************/
 
-PwDatabaseV4::PwDatabaseV4() :
-        PwDatabase(),
+PwDatabaseV4::PwDatabaseV4(QObject* parent) :
+        PwDatabase(parent),
         header(),
         combinedKey(SB_SHA256_DIGEST_LEN, 0),
         aesKey(SB_SHA256_DIGEST_LEN, 0),
         salsa20(),
         binaries(),
         recycleBinGroupUuid() {
+    header.setParent(this);
 }
 
 PwDatabaseV4::~PwDatabaseV4() {
@@ -541,9 +542,8 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
         _rootGroup = NULL;
     }
 
-    PwGroupV4* rootV4 = new PwGroupV4();
-    rootV4->setParent(this); // parent in Qt terms, the object responsible for clean up
-    rootV4->setParentGroup(NULL); // parent in app terms, the group containing this one
+    PwGroupV4* rootV4 = new PwGroupV4(this);
+    rootV4->setParentGroup(NULL); // not Qt parent, but the group containing this one
 
     ErrorCode err;
     QXmlStreamReader xml(xmlString);
@@ -636,7 +636,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
                 if (err != SUCCESS)
                     return err;
             } else if (XML_GROUP == tagName) {
-                PwGroupV4* subGroup = new PwGroupV4();
+                PwGroupV4* subGroup = new PwGroupV4(&group);
                 err = loadGroupFromXml(xml, *subGroup);
                 if (err != SUCCESS) {
                     delete subGroup;
@@ -646,7 +646,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
                     subGroup->setDeleted(true); // propagate the deleted flag recursively
                 group.addSubGroup(subGroup);
             } else if (XML_ENTRY == tagName) {
-                PwEntryV4* entry = new PwEntryV4();
+                PwEntryV4* entry = new PwEntryV4(&group);
                 err = loadEntryFromXml(xml, *entry);
                 if (err != SUCCESS) {
                     delete entry;
@@ -690,8 +690,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, Pw
             } else if (XML_STRING == tagName) {
                 err = readEntryString(xml, entry);
             } else if (XML_BINARY == tagName) {
-                PwAttachment* attachment = new PwAttachment();
-                attachment->setParent(&entry);
+                PwAttachment* attachment = new PwAttachment(&entry);
                 err = readEntryAttachment(xml, *attachment);
                 entry.addAttachment(attachment);
             } else if (XML_TIMES == tagName) {
@@ -780,7 +779,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryHistory(QXmlStreamReader& xml, Pw
     QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_HISTORY))) {
         if (xml.isStartElement() && (tagName == XML_ENTRY)) {
-            PwEntryV4* historyEntry = new PwEntryV4();
+            PwEntryV4* historyEntry = new PwEntryV4(&hostEntry); // hostEntry is a parent, not a copy source
             err = loadEntryFromXml(xml, *historyEntry);
             if (err != SUCCESS) {
                 delete historyEntry;

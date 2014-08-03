@@ -64,7 +64,7 @@ public:
      */
     static QString getErrorMessage(ErrorCode errCode);
 
-    PwHeaderV4();
+    PwHeaderV4(QObject* parent=0);
     virtual ~PwHeaderV4();
     /**
      * Reads and parses header data.
@@ -171,7 +171,7 @@ private:
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;
 public:
-    PwDatabaseV4();
+    PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();
 
     /**

@@ -13,7 +13,7 @@
 class PwGroupV4: public PwGroup {
     Q_OBJECT
 public:
-    PwGroupV4();
+    PwGroupV4(QObject* parent=0);
     virtual ~PwGroupV4();
 };
 

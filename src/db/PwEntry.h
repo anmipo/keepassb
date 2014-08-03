@@ -40,7 +40,7 @@ private:
     PwGroup* _parentGroup;
 
 public:
-	PwEntry();
+	PwEntry(QObject* parent=0);
 	virtual ~PwEntry();
 
 	virtual void clear();

@@ -30,7 +30,7 @@ public:
         UNKNOWN_DB_FORMAT = 1
         // child classes' specific codes start from 0x10
     };
-	PwDatabase();
+	PwDatabase(QObject* parent=0);
 	virtual ~PwDatabase();
 
     /**
@@ -81,7 +81,7 @@ signals:
 class PwSearchResultDataModel: public bb::cascades::QListDataModel<PwEntry*> {
     Q_OBJECT
 public:
-    PwSearchResultDataModel() : bb::cascades::QListDataModel<PwEntry*>() {}
+    PwSearchResultDataModel(QObject* parent=0);
     virtual ~PwSearchResultDataModel() {}
 };
 
@@ -112,7 +112,7 @@ private slots:
     void onDbUnlocked();
     void onDbLocked();
 public:
-    PwDatabaseFacade();
+    PwDatabaseFacade(QObject* parent=0);
     virtual ~PwDatabaseFacade();
 
 

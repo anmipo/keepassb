@@ -49,8 +49,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     Application::instance()->setCover(new ActiveFrame(app));
     res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
 
-    database = new PwDatabaseFacade();
-    database->setParent(this);
+    database = new PwDatabaseFacade(this);
 
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
