@@ -72,6 +72,20 @@ Page {
                     topMargin: 20
                     horizontalAlignment: HorizontalAlignment.Left
                 }
+                Label{
+                    topMargin: 30
+                    text: qsTr("Privacy Policy") + Retranslate.onLocaleOrLanguageChanged
+                    textStyle.base: SystemDefaults.TextStyles.TitleText
+                    horizontalAlignment: HorizontalAlignment.Left
+                }
+                Label{
+                    text: qsTr("KeePassB does not collect any personal data nor share it with anyone.") + Retranslate.onLocaleOrLanguageChanged
+                    multiline: true
+                    textFormat: TextFormat.Plain
+                    textStyle.base: SystemDefaults.TextStyles.BodyText
+                    topMargin: 20
+                    horizontalAlignment: HorizontalAlignment.Left
+                }
             }
         }
     }
