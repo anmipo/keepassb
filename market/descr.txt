@@ -41,6 +41,10 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keypass, keepassberry
 
 Changelog:
+v2.0.2 beta
+Added long-tap menu for copying entry fields
+Fixed keyboard popup on all-touch devices
+
 v2.0.1 beta
 Significantly faster database decryption (6x speedup)
 Fixed crash on databases with large transformation rounds value
