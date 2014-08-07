@@ -167,6 +167,25 @@ Page {
                             description: Common.getEntryDescription(ListItemData)
                             imageSpaceReserved: true
                             imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
+                            contextActions: ActionSet {
+                                title: ListItemData.title
+                                actions: [
+                                    ActionItem {
+                                        title: qsTr("Copy User Name") + Retranslate.onLocaleOrLanguageChanged
+                                        imageSource: "asset:///images/ic_copy.png"
+                                        onTriggered: {
+                                            Qt.app.copyWithTimeout(ListItemData.userName);
+                                        }
+                                    },
+                                    ActionItem {
+                                        title: qsTr("Copy Password") + Retranslate.onLocaleOrLanguageChanged
+                                        imageSource: "asset:///images/ic_copy_password.png"
+                                        onTriggered: {
+                                            Qt.app.copyWithTimeout(ListItemData.password);
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     },
                     ListItemComponent {
