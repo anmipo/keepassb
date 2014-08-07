@@ -41,7 +41,8 @@ Page {
     }
     
     function focusOnPassword() {
-        passwordEdit.requestFocus();
+        if (!dbDemoOption.selected)
+            passwordEdit.requestFocus();
     }   
 
     /**
