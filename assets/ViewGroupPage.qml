@@ -7,7 +7,7 @@ import org.keepassb 1.0
 import "common.js" as Common
 
 Page {
-    property PwGroupV4 group
+    property PwGroup group
 
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
