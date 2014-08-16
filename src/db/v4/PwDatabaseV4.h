@@ -132,8 +132,6 @@ private:
     QMap<QString, PwBinaryV4*> binaries;
     PwUuid recycleBinGroupUuid;
 
-    // Combines password and key data into one key
-    ErrorCode buildCombinedKey(const QString& password, const QByteArray& keyFileData, QByteArray& combinedKey);
     // Calculates the AES encryption key based on the combined key (password + key data)
     // and current header seed values.
     ErrorCode transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,

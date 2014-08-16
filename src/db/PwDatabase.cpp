@@ -8,10 +8,12 @@
 #include "PwDatabase.h"
 #include <QtXml/QXmlStreamReader>
 #include "crypto/CryptoManager.h"
+#include "db/v3/PwDatabaseV3.h"
 #include "db/v4/PwDatabaseV4.h"
 #include "db/PwGroup.h"
 #include "db/PwEntry.h"
 #include "util/Settings.h"
+#include "sbdef.h"
 
 // Tag names for XML-formatted key files
 const QString XML_KEYFILE = "KeyFile";
@@ -89,6 +91,29 @@ bool PwDatabase::processKeyFile(const QByteArray& keyFileData, QByteArray& key) 
         qDebug() << "could not hash the key file data";
         return false;
     }
+    return true;
+}
+
+bool PwDatabase::buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const {
+    CryptoManager* cm = CryptoManager::instance();
+
+    QByteArray ba;
+    int ec = cm->sha256(passwordKey, ba);
+    if (ec != SB_SUCCESS)
+        return false;
+
+    // if no key file were supplied, the keyFileData will be empty
+    QByteArray fKey;
+    if (!keyFileData.isEmpty()) {
+        if (!processKeyFile(keyFileData, fKey))
+            return false;
+        ba.append(fKey);
+    }
+
+    ec = cm->sha256(ba, combinedKey);
+    if (ec != SB_SUCCESS)
+        return false;
+
     return true;
 }
 
@@ -217,13 +242,9 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
 }
 
 PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData) {
-/*
-    // not implemented yet
-    if (PwDatabase3::isSignatureMatch(rawData)) {
-        return new PwDatabase3();
-    }
-*/
-    if (PwDatabaseV4::isSignatureMatch(rawDbData)) {
+    if (PwDatabaseV3::isSignatureMatch(rawDbData)) {
+        return new PwDatabaseV3();
+    } else if (PwDatabaseV4::isSignatureMatch(rawDbData)) {
         return new PwDatabaseV4();
     }
     return NULL;

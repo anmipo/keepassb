@@ -24,10 +24,14 @@ protected:
 
 	// returns true if successful. If data is invalid/empty, returns an empty key
 	virtual bool processKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
+
+    /** Combines password and key data into one key */
+	bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
 public:
     enum Error {
         SUCCESS           = 0,
-        UNKNOWN_DB_FORMAT = 1
+        UNKNOWN_DB_FORMAT = 1,
+        COMPOSITE_KEY_ERROR = 2,
         // child classes' specific codes start from 0x10
     };
 	PwDatabase(QObject* parent=0);

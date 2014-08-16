@@ -4,35 +4,35 @@
 <context>
     <name>AboutPage</name>
     <message>
-        <location filename="../assets/AboutPage.qml" line="9"/>
-        <source>About</source>
+        <location filename="../assets/AboutPage.qml" line="10"/>
+        <source>Contact Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="27"/>
+        <location filename="../assets/AboutPage.qml" line="44"/>
         <source>KeePassB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="32"/>
-        <source>Version 2.0 alpha</source>
+        <location filename="../assets/AboutPage.qml" line="49"/>
+        <source>Version 2.0 beta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="42"/>
-        <source>Credits</source>
+        <location filename="../assets/AboutPage.qml" line="68"/>
+        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
+Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
+Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="48"/>
-        <source>Thanks to Dominik Reichl, the author of KeePass.
-Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, which helped me to understand the KeePass2 format.
-Some icons are from the free samples from &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;GetOtherCircles.com&lt;/a&gt; by LuboЕЎ Volkov.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AboutPage.qml" line="37"/>
+        <location filename="../assets/AboutPage.qml" line="54"/>
         <source>В©2014 Andrei Popleteev</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="63"/>
+        <source>Credits</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,0 +1,150 @@
+/*
+ * PwDatabaseV3.cpp
+ *
+ *  Created on: 16 Aug 2014
+ *      Author: Andrei
+ */
+
+#include "PwDatabaseV3.h"
+#include <QObject>
+#include <QDataStream>
+#include "sbreturn.h"
+#include "husha2.h"
+#include "huaes.h"
+#include "db/PwUuid.h"
+#include "util/Util.h"
+
+// DB unlock stages progress percentage
+const int UNLOCK_PROGRESS_INIT = 0;
+const int UNLOCK_PROGRESS_HEADER_READ = 5;
+const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
+const int UNLOCK_PROGRESS_DECRYPTED = 80;
+const int UNLOCK_PROGRESS_BLOCKS_READ = 90;
+const int UNLOCK_PROGRESS_UNPACKED = 95;
+const int UNLOCK_PROGRESS_DONE = 100;
+
+PwHeaderV3::PwHeaderV3(QObject* parent) : QObject(parent),
+        masterSeed(), initialVector(), contentHash(), transformSeed() {
+    transformRounds = 0;
+    groupCount = 0;
+    entryCount = 0;
+}
+
+PwHeaderV3::~PwHeaderV3() {
+    clear();
+}
+
+void PwHeaderV3::clear() {
+    masterSeed.clear();
+    initialVector.clear();
+    contentHash.clear();
+    transformSeed.clear();
+    transformRounds = 0;
+    groupCount = 0;
+    entryCount = 0;
+}
+
+PwHeaderV3::ErrorCode PwHeaderV3::read(QDataStream& stream) {
+    clear();
+
+    // check file signatures (although probably checked before)
+    quint32 sign1, sign2, flags, fileVersion;
+    stream >> sign1 >> sign2 >> flags >> fileVersion;
+    if (sign1 !=  SIGNATURE_1)
+        return SIGNATURE_1_MISMATCH;
+    if (sign2 != SIGNATURE_2)
+        return SIGNATURE_2_MISMATCH;
+    if ((flags & FLAG_TWOFISH) || !(flags & FLAG_RIJNDAEL))
+        return NOT_AES;
+    if ((fileVersion & 0xFFFFFF00) != (DB_VERSION & 0xFFFFFF00))
+        return UNSUPPORTED_FILE_VERSION;
+
+    qDebug("Signatures match");
+
+    masterSeed.fill(0, 16);
+    stream.readRawData(masterSeed.data(), 16);
+    initialVector.fill(0, 16);
+    stream.readRawData(initialVector.data(), 16);
+
+    stream >> groupCount >> entryCount;
+
+    contentHash.fill(0, 32);
+    stream.readRawData(contentHash.data(), 32);
+    transformSeed.fill(0, 32);
+    stream.readRawData(transformSeed.data(), 32);
+
+    stream >> transformRounds;
+    return SUCCESS;
+}
+
+QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
+    switch (errCode) {
+    case SUCCESS:
+        return "";
+    case SIGNATURE_1_MISMATCH:
+        // fallthrough
+    case SIGNATURE_2_MISMATCH:
+        return tr("Wrong file signature");
+    case UNSUPPORTED_FILE_VERSION:
+        return tr("Unsupported DB file version");
+    case NOT_AES:
+        return tr("Twofish cypher is not supported");
+    default:
+        return tr("Header error");
+    }
+}
+
+
+PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
+        header(parent), combinedKey() {
+    // TODO
+}
+
+PwDatabaseV3::~PwDatabaseV3() {
+    clear();
+}
+
+void PwDatabaseV3::clear() {
+    combinedKey.clear();
+}
+
+bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
+    QDataStream stream(rawDbData);
+    stream.setByteOrder(QDataStream::LittleEndian);
+
+    quint32 sign1, sign2;
+    stream >> sign1 >> sign2;
+
+    return (sign1 ==  PwHeaderV3::SIGNATURE_1) && (sign2 == PwHeaderV3::SIGNATURE_2);
+}
+
+void PwDatabaseV3::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
+    clear();
+
+    if (!buildCompositeKey(password.toLatin1(), keyFileData, combinedKey)) {
+        emit dbUnlockError(tr("Crypto library error"), COMPOSITE_KEY_ERROR);
+        return;
+    }
+
+    if (readDatabase(dbFileData)) {
+        emit dbUnlocked();
+    }
+}
+
+bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
+    QDataStream stream (dbBytes);
+//    stream.setByteOrder(QDataStream::LittleEndian);
+
+    emit unlockProgressChanged(UNLOCK_PROGRESS_INIT);
+
+    PwHeaderV3::ErrorCode headerErrCode = header.read(stream);
+    if (headerErrCode != PwHeaderV3::SUCCESS) {
+        qDebug() << PwHeaderV3::getErrorMessage(headerErrCode) << headerErrCode;
+        emit dbUnlockError(PwHeaderV3::getErrorMessage(headerErrCode), headerErrCode);
+        return false;
+    }
+    emit unlockProgressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
+
+    // TODO
+    return true;
+}

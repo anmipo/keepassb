@@ -255,38 +255,13 @@ void PwDatabaseV4::clear() {
 void PwDatabaseV4::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     clear();
 
-    ErrorCode errCode = buildCombinedKey(password, keyFileData, combinedKey);
-    if (errCode != SUCCESS) {
-        emit dbUnlockError(tr("Crypto library error"), errCode);
+    if (!buildCompositeKey(password.toUtf8(), keyFileData, combinedKey)) {
+        emit dbUnlockError(tr("Crypto library error"), COMPOSITE_KEY_ERROR);
         return;
     }
 
     if (readDatabase(dbFileData))
         emit dbUnlocked();
-}
-
-PwDatabaseV4::ErrorCode PwDatabaseV4::buildCombinedKey(const QString& password, const QByteArray& keyFileData, QByteArray& combinedKey) {
-
-    CryptoManager* cm = CryptoManager::instance();
-
-    QByteArray ba;
-    int ec = cm->sha256(password.toUtf8(), ba);
-    if (ec != SB_SUCCESS)
-        return PASSWORD_HASHING_ERROR_1;
-
-    // if no key file were supplied, the keyFileData will be empty
-    QByteArray fKey;
-    if (!keyFileData.isEmpty()) {
-        if (!processKeyFile(keyFileData, fKey))
-            return PASSWORD_HASHING_ERROR_2;
-        ba.append(fKey);
-    }
-
-    ec = cm->sha256(ba, combinedKey);
-    if (ec != SB_SUCCESS)
-        return PASSWORD_HASHING_ERROR_3;
-
-    return SUCCESS;
 }
 
 PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
