@@ -63,34 +63,45 @@ public:
     /** Erases loaded data from memory */
     void clear();
 
-    quint32 getTransformRounds() const;
-    QByteArray getMasterSeed() const;
-    QByteArray getTransformSeed() const;
-    QByteArray getInitialVector() const;
-    QByteArray getContentHash() const;
-    quint32 getGroupCount() const;
-    quint32 getEntryCount() const;
+    quint32 getTransformRounds() const { return transformRounds; }
+    QByteArray getMasterSeed() const { return masterSeed; }
+    QByteArray getTransformSeed() const { return transformSeed; }
+    QByteArray getInitialVector() const { return initialVector; }
+    QByteArray getContentHash() const { return contentHash; }
+    quint32 getGroupCount() const { return groupCount; }
+    quint32 getEntryCount() const { return entryCount; }
 };
 
 
 class PwDatabaseV3: public PwDatabase {
     Q_OBJECT
-private:
-    PwHeaderV3 header;
-    QByteArray combinedKey;
-
-    // Reads the encrypted DB; in case of errors emits appropriate signals and returns false.
-    bool readDatabase(const QByteArray& dbBytes);
-
 public:
     /**
      * Class-specific error codes
      */
     enum ErrorCode {
         SUCCESS = PwDatabase::SUCCESS,
-        HEADER_SIZE_ERROR       = 0x10
+        HEADER_SIZE_ERROR       = 0x10,
+        KEY_TRANSFORM_INIT_ERROR = 0x20,
+        KEY_TRANSFORM_ERROR_1    = 0x21,
+        KEY_TRANSFORM_ERROR_2    = 0x22,
+        KEY_TRANSFORM_ERROR_3    = 0x23,
+        KEY_TRANSFORM_END_ERROR  = 0x24,
     };
 
+private:
+    PwHeaderV3 header;
+    QByteArray combinedKey;
+    QByteArray aesKey;
+
+    // Reads the encrypted DB; in case of errors emits appropriate signals and returns false.
+    bool readDatabase(const QByteArray& dbBytes);
+    // Calculates the AES encryption key based on the combined key (password + key data)
+    // and current header seed values.
+    ErrorCode transformKey(const PwHeaderV3& header, const QByteArray& combinedKey, QByteArray& aesKey,
+            const int progressFrom, const int progressTo);
+
+public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();
 

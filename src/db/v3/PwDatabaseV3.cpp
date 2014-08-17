@@ -96,7 +96,7 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
 
 
 PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
-        header(parent), combinedKey() {
+        header(parent), combinedKey(), aesKey() {
     // TODO
 }
 
@@ -106,6 +106,7 @@ PwDatabaseV3::~PwDatabaseV3() {
 
 void PwDatabaseV3::clear() {
     combinedKey.clear();
+    aesKey.clear();
 }
 
 bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
@@ -145,6 +146,67 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     }
     emit unlockProgressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
 
+    /* Calculate the AES key */
+    ErrorCode err = transformKey(header, combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    if (err != SUCCESS) {
+        qDebug() << "Cannot decrypt database - transformKey" << err;
+        emit dbUnlockError(tr("Cannot decrypt database"), err);
+        return false;
+    }
+
+    emit unlockProgressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
+
     // TODO
     return true;
+}
+
+PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const PwHeaderV3& header,
+        const QByteArray& combinedKey, QByteArray& aesKey,
+        const int progressFrom, const int progressTo) {
+    CryptoManager* cm = CryptoManager::instance();
+
+    // prepare key transform
+    if (cm->beginKeyTransform(header.getTransformSeed()) != SB_SUCCESS)
+        return KEY_TRANSFORM_INIT_ERROR;
+
+    quint32 transformRounds = header.getTransformRounds();
+    int progress = progressFrom;
+    int subProgress = 0;
+    int subProgressThreshold = ceil(transformRounds / (progressTo - progressFrom));
+    int ec;
+
+    QByteArray transformedKey(SB_AES_128_BLOCK_BYTES, 0);
+    QByteArray combinedKey2(combinedKey.data(), combinedKey.size()); // this makes a deep copy
+    unsigned char* origKey = reinterpret_cast<unsigned char*>(combinedKey2.data());
+    unsigned char* transKey = reinterpret_cast<unsigned char*>(transformedKey.data());
+
+    for (quint64 round = 0; round < transformRounds; round++) {
+        ec = cm->performKeyTransform(origKey, transKey);
+        memcpy(origKey, transKey, SB_AES_128_BLOCK_BYTES);
+        if (ec != SB_SUCCESS) break;
+
+        if (++subProgress > subProgressThreshold) {
+            subProgress = 0;
+            progress++;
+            emit unlockProgressChanged(progress);
+        }
+    }
+    if (ec != SB_SUCCESS)
+        return KEY_TRANSFORM_ERROR_1;
+
+    // clean up
+    if (cm->endKeyTransform() != SB_SUCCESS)
+        return KEY_TRANSFORM_END_ERROR;
+
+    QByteArray prefinalKey;
+    ec = cm->sha256(transformedKey, prefinalKey);
+    if (ec != SB_SUCCESS)
+        return KEY_TRANSFORM_ERROR_2;
+
+    prefinalKey.prepend(header.getMasterSeed());
+    ec = cm->sha256(prefinalKey, aesKey);
+    if (ec != SB_SUCCESS)
+        return KEY_TRANSFORM_ERROR_3;
+
+    return SUCCESS;
 }
