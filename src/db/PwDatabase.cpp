@@ -94,29 +94,6 @@ bool PwDatabase::processKeyFile(const QByteArray& keyFileData, QByteArray& key) 
     return true;
 }
 
-bool PwDatabase::buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const {
-    CryptoManager* cm = CryptoManager::instance();
-
-    QByteArray ba;
-    int ec = cm->sha256(passwordKey, ba);
-    if (ec != SB_SUCCESS)
-        return false;
-
-    // if no key file were supplied, the keyFileData will be empty
-    QByteArray fKey;
-    if (!keyFileData.isEmpty()) {
-        if (!processKeyFile(keyFileData, fKey))
-            return false;
-        ba.append(fKey);
-    }
-
-    ec = cm->sha256(ba, combinedKey);
-    if (ec != SB_SUCCESS)
-        return false;
-
-    return true;
-}
-
 PwGroup* PwDatabase::getRootGroup() {
     return _rootGroup;
 }

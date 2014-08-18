@@ -137,12 +137,48 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
 }
 
 /**
+ * Adds PKCS#7 padding to the array to ensure (mod 16) length.
+ */
+void CryptoManager::addPadding16(QByteArray& data) {
+    int padLength = data.size() % 16;
+    if (padLength == 0) padLength = 16;
+    QByteArray padding(padLength, padLength);
+    data.append(padding);
+}
+
+/**
+ * Removes PKCS#7 padding to (mod 16) length. Returns false in case of any error.
+ */
+bool CryptoManager::removePadding16(QByteArray& data) {
+    int length = data.length();
+    if (length >= 0) {
+		// check if padding length is correct
+        int padLength = data.at(length - 1);
+        if ((padLength < 1) || (padLength > 16)) {
+            qDebug() << "Wrong padding length:" << padLength;
+            return false;
+        }
+        // verify if all padding bytes have correct value
+        for (int i = length - padLength; i < length; i++) {
+            if (data.at(i) != padLength) {
+                qDebug() << "Padding bytes corrupted";
+                return false;
+            }
+        }
+        data.chop(padLength); // remove the padding
+    }
+    return true;
+}
+
+
+/**
  * Prepares key transformation routine (performKeyTransform).
  * endKeyTransform() must be called after transformation to free allocated resources.
  * Returns an SB_* error code.
  */
-int CryptoManager::beginKeyTransform(const QByteArray& key) {
-    keyTransformInitVectorArray.fill(0, SB_AES_128_BLOCK_BYTES);
+int CryptoManager::beginKeyTransform(const QByteArray& key, const int keySizeBytes) {
+    keyTransformLength = keySizeBytes;
+    keyTransformInitVectorArray.fill(0, keySizeBytes);
     keyTransformIV = reinterpret_cast<unsigned char*>(keyTransformInitVectorArray.data());
 
     RETURN_IF_SB_ERROR(
@@ -167,14 +203,14 @@ int CryptoManager::beginKeyTransform(const QByteArray& key) {
  * Performs a key transformation round.
  * Call beginKeyTransform() to prepare necessary resources first.
  * Call endKeyTransform() to free those resources.
- * both originalKey and transformedKey must be 16 bytes (SB_AES_128_BLOCK_BYTES) long.
+ * both originalKey and transformedKey must be the size set in beginKeyTransform().
  * Returns an SB_* error code.
  */
 int CryptoManager::performKeyTransform(const unsigned char* originalKey, unsigned char* transformedKey) const {
     RETURN_IF_SB_ERROR(
             hu_AESEncryptMsg(keyTransformAesParams, keyTransformAesKey,
-                    SB_AES_128_BLOCK_BYTES, keyTransformIV,
-                    SB_AES_128_BLOCK_BYTES, originalKey,
+                    keyTransformLength, keyTransformIV,
+                    keyTransformLength, originalKey,
                     transformedKey, sbCtx),
             "AESEncryptMsg failed");
     return SB_SUCCESS;
@@ -217,8 +253,6 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
 	        hu_AESKeySet(aesParams, SB_AES_256_KEY_BITS,
 	                reinterpret_cast<const unsigned char*>(key.constData()), &aesKey, sbCtx),
 	        "AESKeySet failed");
-
-	//TODO pad the plainText if required
 
 	sb_Context aesContext;
 	RETURN_IF_SB_ERROR(

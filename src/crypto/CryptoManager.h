@@ -20,6 +20,7 @@ private:
     static CryptoManager* _instance;
     sb_GlobalCtx sbCtx;        // Security Builder Crypto global context
 
+    int keyTransformLength;
     QByteArray keyTransformInitVectorArray;
     unsigned char* keyTransformIV; // points to keyTransformInitVectorArray.data()
     sb_Params keyTransformAesParams;
@@ -66,15 +67,25 @@ public:
 	 */
 	int decryptAES(const QByteArray& key, const QByteArray& initVector, const QByteArray& cypherText, QByteArray& plainText);
 
+	/**
+	 * Adds PKCS#7 padding to the array to ensure (mod 16) length.
+	 */
+	static void addPadding16(QByteArray& data);
+
+	/**
+	 * Removes PKCS#7 padding to (mod 16) length. Returns false in case of any error.
+	 */
+	static bool removePadding16(QByteArray& data);
 
 	// Three methods for key transformation
 
 	/**
 	 * Prepares key transformation routine (performKeyTransform).
 	 * endKeyTransform() must be called after transformation to free allocated resources.
+	 * keySizeBytes specifies the size of keys to transform (SB_AES_128_KEY_BYTES or SB_AES_256_KEY_BYTES)
 	 * Returns an SB_* error code.
 	 */
-	int beginKeyTransform(const QByteArray& key);
+	int beginKeyTransform(const QByteArray& key, const int keySizeBytes);
 	/**
 	 * Performs a key transformation round.
 	 * both originalKey and transformedKey must be 16 bytes (SB_AES_128_BLOCK_BYTES) long.

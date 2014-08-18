@@ -168,6 +168,10 @@ private:
 
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;
+protected:
+    /** Combines password and key data into one key */
+    bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
+
 public:
     PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();

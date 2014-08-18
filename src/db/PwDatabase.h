@@ -26,7 +26,7 @@ protected:
 	virtual bool processKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
 
     /** Combines password and key data into one key */
-	bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
+	virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const = 0;
 public:
     enum Error {
         SUCCESS           = 0,

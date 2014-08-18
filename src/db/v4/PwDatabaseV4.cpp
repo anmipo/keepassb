@@ -264,6 +264,29 @@ void PwDatabaseV4::unlock(const QByteArray& dbFileData, const QString& password,
         emit dbUnlocked();
 }
 
+bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const {
+    CryptoManager* cm = CryptoManager::instance();
+
+    QByteArray ba;
+    int ec = cm->sha256(passwordKey, ba);
+    if (ec != SB_SUCCESS)
+        return false;
+
+    // if no key file were supplied, the keyFileData will be empty
+    QByteArray fKey;
+    if (!keyFileData.isEmpty()) {
+        if (!processKeyFile(keyFileData, fKey))
+            return false;
+        ba.append(fKey);
+    }
+
+    ec = cm->sha256(ba, combinedKey);
+    if (ec != SB_SUCCESS)
+        return false;
+
+    return true;
+}
+
 PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
         const int progressFrom, const int progressTo) {
 //    aesKey.clear();
@@ -285,7 +308,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     int ec;
 
     // prepare key transform
-    if (cm->beginKeyTransform(key) != SB_SUCCESS)
+    if (cm->beginKeyTransform(key, SB_AES_128_KEY_BYTES) != SB_SUCCESS)
         return KEY_TRANSFORM_INIT_ERROR;
 
     unsigned char* origKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
