@@ -87,6 +87,10 @@ public:
         KEY_TRANSFORM_ERROR_2    = 0x22,
         KEY_TRANSFORM_ERROR_3    = 0x23,
         KEY_TRANSFORM_END_ERROR  = 0x24,
+        CANNOT_DECRYPT_DB        = 0x30,
+        DECRYPTED_PADDING_ERROR  = 0x31,
+        CONTENT_HASHING_ERROR    = 0x32,  // == generic crypto lib error
+        DECRYPTED_CHECKSUM_MISMATCH = 0x33,
     };
 
 private:
@@ -94,12 +98,19 @@ private:
     QByteArray combinedKey;
     QByteArray aesKey;
 
-    // Reads the encrypted DB; in case of errors emits appropriate signals and returns false.
+    /** Reads the encrypted DB; in case of errors emits appropriate signals and returns false. */
     bool readDatabase(const QByteArray& dbBytes);
-    // Calculates the AES encryption key based on the combined key (password + key data)
-    // and current header seed values.
-    ErrorCode transformKey(const PwHeaderV3& header, const QByteArray& combinedKey, QByteArray& aesKey,
+    /**
+     * Calculates the AES encryption key based on the combined key (password + key data)
+     * and current header seed values.
+     */
+    ErrorCode transformKey(const QByteArray& combinedKey, QByteArray& aesKey,
             const int progressFrom, const int progressTo);
+    /** Decrypts the DB's data using current keys. */
+    ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
+protected:
+    /** Combines password and key data into one key */
+    bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
 
 public:
     PwDatabaseV3(QObject* parent=0);
