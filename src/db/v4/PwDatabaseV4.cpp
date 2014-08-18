@@ -460,16 +460,6 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::decryptData(const QByteArray& encryptedDat
 }
 
 /**
- * Auxiliary function, checks if data is filled only with zeros.
- */
-bool isAllZero(const QByteArray& data) {
-    for (int i = 0; i < data.length(); i++)
-        if (data[i] != '\x00')
-            return false;
-    return true;
-}
-
-/**
  * Extracts data blocks from the decrypted data stream, verifying hashes.
  */
 PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByteArray& blocksData) {
@@ -492,7 +482,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
         inputStream.readRawData(blockHash.data(), SB_SHA256_DIGEST_LEN);
         inputStream >> blockSize;
         if (blockSize == 0) {
-            if (isAllZero(blockHash)) {
+            if (Util::isAllZero(blockHash)) {
                 break;
             } else {
                 qDebug() << "readBlocks block hash is not all-zeros";

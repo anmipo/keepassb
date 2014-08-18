@@ -26,6 +26,11 @@ public:
      * This method is derived from http://stackoverflow.com/questions/13679592/gzip-in-blackberry-10
      */
     static ErrorCode inflateGZipData(const QByteArray& gzipData, QByteArray& outData);
+
+    /**
+     * Checks if data contains only zeros.
+     */
+    static bool isAllZero(const QByteArray& data);
 };
 
 #endif /* UTIL_H_ */

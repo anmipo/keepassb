@@ -64,3 +64,13 @@ Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& ou
     inflateEnd(&strm);
     return SUCCESS;
 }
+
+/**
+ * Checks if data contains only zeros.
+ */
+bool Util::isAllZero(const QByteArray& data) {
+    for (int i = 0; i < data.length(); i++)
+        if (data[i] != '\x00')
+            return false;
+    return true;
+}
