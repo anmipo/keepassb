@@ -191,6 +191,16 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     }
     emit unlockProgressChanged(UNLOCK_PROGRESS_DECRYPTED);
 
+    QDataStream decryptedDataStream(decryptedData);
+    decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
+    err = readAllGroups(decryptedDataStream, header.getGroupCount());
+    if (err != SUCCESS)
+        return false;
+
+    err = readAllEntries(decryptedDataStream, header.getEntryCount());
+    if (err != SUCCESS)
+        return false;
+
     return true;
 }
 
@@ -272,3 +282,89 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
     return SUCCESS;
 }
 
+PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, const quint32 groupCount) {
+    PwDatabaseV3::ErrorCode err;
+    QList<PwGroupV3*> groups;
+    for (quint32 iGroup = 0; iGroup < groupCount; iGroup++) {
+        PwGroupV3* group = new PwGroupV3();
+        err = readGroup(stream, *group);
+        if (err != SUCCESS)
+            return err;
+        groups.append(group);
+    }
+    return SUCCESS;
+}
+
+PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& group) {
+    quint16 fieldType;
+    qint32 fieldSize;
+    while (!stream.atEnd()) {
+        stream >> fieldType >> fieldSize;
+        switch(fieldType) {
+        case 0x0000: // ignored
+            stream.skipRawData(fieldSize);
+            break;
+        case 0x0001: // group ID
+            qint32 groupId;
+            stream >> groupId;
+            group.setId(groupId);
+            stream.skipRawData(fieldSize - sizeof(qint32));
+            break;
+        case 0x0002: { // name
+            QByteArray nameBuf(fieldSize, 0);
+            stream.readRawData(nameBuf.data(), fieldSize);
+            QString name = QString::fromUtf8(nameBuf.constData(), nameBuf.size());
+            //TODO check reading of unicode strings
+            group.setName(name);
+            break;
+        }
+        case 0x0003: // creation time
+            // TODO implement
+            stream.skipRawData(fieldSize);
+            break;
+        case 0x0004: // last modification time
+            // TODO implement
+            stream.skipRawData(fieldSize);
+            break;
+        case 0x0005: // last access time
+            // TODO implement
+            stream.skipRawData(fieldSize);
+            break;
+        case 0x0006: // expiration time
+            // TODO implement
+            stream.skipRawData(fieldSize);
+            break;
+        case 0x0007: { // icon ID
+            qint32 iconId;
+            stream >> iconId;
+            group.setIconId(iconId);
+            stream.skipRawData(fieldSize - sizeof(qint32));
+            break;
+        }
+        case 0x0008: { // group level
+            quint16 level;
+            stream >> level;
+            group.setLevel(level);
+            stream.skipRawData(fieldSize - sizeof(qint16));
+            break;
+        }
+        case 0x0009: { // group flags
+            qint32 flags;
+            stream >> flags;
+            group.setFlags(flags);
+            stream.skipRawData(fieldSize - sizeof(qint32));
+            break;
+        }
+        case 0xFFFF:
+            // group fields finished
+            stream.skipRawData(fieldSize);
+            return SUCCESS;
+        }
+    }
+    // if we reach here, something went wrong
+    return NOT_ENOUGH_GROUPS;
+}
+
+PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, const quint32 entryCount) {
+    return SUCCESS;
+}

@@ -11,6 +11,7 @@
 #include <QObject>
 #include "crypto/CryptoManager.h"
 #include "db/PwDatabase.h"
+#include "db/v3/PwGroupV3.h"
 
 /**
  * KeePass 1 database header.
@@ -91,6 +92,7 @@ public:
         DECRYPTED_PADDING_ERROR  = 0x31,
         CONTENT_HASHING_ERROR    = 0x32,  // == generic crypto lib error
         DECRYPTED_CHECKSUM_MISMATCH = 0x33,
+        NOT_ENOUGH_GROUPS        = 0x40,
     };
 
 private:
@@ -108,6 +110,14 @@ private:
             const int progressFrom, const int progressTo);
     /** Decrypts the DB's data using current keys. */
     ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
+    /** Reads groups from decrypted stream */
+    ErrorCode readAllGroups(QDataStream& stream, const quint32 groupCount);
+    /** Reads one group */
+    ErrorCode readGroup(QDataStream& stream, PwGroupV3& group);
+
+    /** Reads entries from decrypted stream */
+    ErrorCode readAllEntries(QDataStream& stream, const quint32 entryCount);
+
 protected:
     /** Combines password and key data into one key */
     bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
