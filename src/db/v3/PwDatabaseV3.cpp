@@ -295,6 +295,25 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, const q
     return SUCCESS;
 }
 
+/** Reads a 5-byte V3-specific timestamp from the stream */
+QDateTime PwDatabaseV3::readTimestamp(QDataStream& stream) {
+    quint8 dw1, dw2, dw3, dw4, dw5;
+    stream >> dw1 >> dw2 >> dw3 >> dw4 >> dw5; // 31, 122, 33, 42, 210
+
+    int year = (dw1 << 6) | (dw2 >> 2); // 2014
+    int month = ((dw2 & 0x00000003) << 2) | (dw3 >> 6); // 8
+    int day = (dw3 >> 1) & 0x0000001F; // 16
+    QDate date(year, month, day);
+
+    int hour = ((dw3 & 0x00000001) << 4) | (dw4 >> 4); // 18
+    int minute = ((dw4 & 0x0000000F) << 2) | (dw5 >> 6); // 43
+    int second = dw5 & 0x0000003F; // 18
+    QTime time(hour, minute, second, 0);
+
+    QDateTime result(date, time, Qt::UTC);
+    return result;
+}
+
 PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& group) {
     quint16 fieldType;
     qint32 fieldSize;
@@ -308,7 +327,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
             qint32 groupId;
             stream >> groupId;
             group.setId(groupId);
-            stream.skipRawData(fieldSize - sizeof(qint32));
             break;
         case 0x0002: { // name
             QByteArray nameBuf(fieldSize, 0);
@@ -319,40 +337,33 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
             break;
         }
         case 0x0003: // creation time
-            // TODO implement
-            stream.skipRawData(fieldSize);
+            group.setCreationTime(readTimestamp(stream));
             break;
         case 0x0004: // last modification time
-            // TODO implement
-            stream.skipRawData(fieldSize);
+            group.setLastModificationTime(readTimestamp(stream));
             break;
         case 0x0005: // last access time
-            // TODO implement
-            stream.skipRawData(fieldSize);
+            group.setLastAccessTime(readTimestamp(stream));
             break;
         case 0x0006: // expiration time
-            // TODO implement
-            stream.skipRawData(fieldSize);
+            group.setExpiryTime(readTimestamp(stream));
             break;
         case 0x0007: { // icon ID
             qint32 iconId;
             stream >> iconId;
             group.setIconId(iconId);
-            stream.skipRawData(fieldSize - sizeof(qint32));
             break;
         }
         case 0x0008: { // group level
             quint16 level;
             stream >> level;
             group.setLevel(level);
-            stream.skipRawData(fieldSize - sizeof(qint16));
             break;
         }
         case 0x0009: { // group flags
             qint32 flags;
             stream >> flags;
             group.setFlags(flags);
-            stream.skipRawData(fieldSize - sizeof(qint32));
             break;
         }
         case 0xFFFF:

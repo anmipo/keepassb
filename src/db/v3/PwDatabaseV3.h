@@ -118,6 +118,8 @@ private:
     /** Reads entries from decrypted stream */
     ErrorCode readAllEntries(QDataStream& stream, const quint32 entryCount);
 
+    /** Reads a 5-byte V3-specific timestamp from the stream */
+    QDateTime readTimestamp(QDataStream& stream);
 protected:
     /** Combines password and key data into one key */
     bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
