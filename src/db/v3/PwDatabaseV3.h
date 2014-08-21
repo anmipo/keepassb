@@ -12,6 +12,7 @@
 #include "crypto/CryptoManager.h"
 #include "db/PwDatabase.h"
 #include "db/v3/PwGroupV3.h"
+#include "db/v3/PwEntryV3.h"
 
 /**
  * KeePass 1 database header.
@@ -117,6 +118,8 @@ private:
 
     /** Reads entries from decrypted stream */
     ErrorCode readAllEntries(QDataStream& stream, const quint32 entryCount);
+    /** Reads one entry */
+    ErrorCode readEntry(QDataStream& stream, PwEntryV3& entry);
 
     /** Reads a 5-byte V3-specific timestamp from the stream */
     QDateTime readTimestamp(QDataStream& stream);
@@ -128,7 +131,7 @@ public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();
 
-    void clear();
+    virtual void clear();
 
     /**
      * Checks if DB signatures match those of Keepass V3 format.

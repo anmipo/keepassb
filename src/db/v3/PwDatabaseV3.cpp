@@ -96,8 +96,8 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
 
 
 PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
-        header(parent), combinedKey(), aesKey() {
-    // TODO
+        header(), combinedKey(), aesKey() {
+    header.setParent(this);
 }
 
 PwDatabaseV3::~PwDatabaseV3() {
@@ -105,6 +105,7 @@ PwDatabaseV3::~PwDatabaseV3() {
 }
 
 void PwDatabaseV3::clear() {
+    header.clear();
     combinedKey.clear();
     aesKey.clear();
 }
@@ -377,5 +378,111 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, const quint32 entryCount) {
+    PwDatabaseV3::ErrorCode err;
+    QList<PwEntryV3*> entries;
+    for (quint32 iEntry = 0; iEntry < entryCount; iEntry++) {
+        PwEntryV3* entry = new PwEntryV3();
+        err = readEntry(stream, *entry);
+        if (err != SUCCESS)
+            return err;
+        entries.append(entry);
+    }
     return SUCCESS;
+}
+
+PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& entry) {
+    quint16 fieldType;
+    qint32 fieldSize;
+    while (!stream.atEnd()) {
+        stream >> fieldType >> fieldSize;
+        switch(fieldType) {
+        case 0x0000: // ignored
+            stream.skipRawData(fieldSize);
+            break;
+        case 0x0001: { // UUID
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            entry.setUuid(PwUuid(buf));
+            break;
+        }
+        case 0x0002: { // group ID
+            qint32 groupId;
+            stream >> groupId;
+            entry.setGroupId(groupId);
+            break;
+        }
+        case 0x0003: { // icon ID
+            qint32 iconId;
+            stream >> iconId;
+            entry.setIconId(iconId);
+            break;
+        }
+        case 0x0004: { // title
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            QString title = QString::fromUtf8(buf.constData(), buf.size());
+            //TODO check reading of unicode strings
+            entry.setTitle(title);
+            break;
+        }
+        case 0x0005: { // url
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            QString url = QString::fromUtf8(buf.constData(), buf.size()); // check with unicode
+            entry.setUrl(url);
+            break;
+        }
+        case 0x0006: { // username
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            QString username = QString::fromUtf8(buf.constData(), buf.size());
+            entry.setUserName(username);
+            break;
+        }
+        case 0x0007: { // password
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            entry.setPassword(QString::fromUtf8(buf.constData(), buf.size())); // TODO check with unicode
+            break;
+        }
+        case 0x0008: { // note
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            QString note = QString::fromUtf8(buf.constData(), buf.size());
+            entry.setNotes(note);
+            break;
+        }
+        case 0x0009: // creation time
+            entry.setCreationTime(readTimestamp(stream));
+            break;
+        case 0x000A: // last modification time
+            entry.setLastModificationTime(readTimestamp(stream));
+            break;
+        case 0x000B: // last access time
+            entry.setLastAccessTime(readTimestamp(stream));
+            break;
+        case 0x000C: // expiration time
+            entry.setExpiryTime(readTimestamp(stream));
+            break;
+        case 0x000D: { // binary description
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            QString binaryDesc = QString::fromUtf8(buf.constData(), buf.size());
+            entry.setBinaryDesc(binaryDesc);
+            break;
+        }
+        case 0x000E: { // binary data
+            QByteArray buf(fieldSize, 0);
+            stream.readRawData(buf.data(), fieldSize);
+            entry.setBinaryData(buf); // TODO must deep-copy
+            break;
+        }
+        case 0xFFFF:
+            // group fields finished
+            stream.skipRawData(fieldSize);
+            return SUCCESS;
+        }
+    }
+    // if we reach here, something went wrong
+    return NOT_ENOUGH_GROUPS;
 }
