@@ -45,7 +45,6 @@ public:
 
 	virtual void clear();
 
-
 	// property getters/setters
 	PwUuid getUuid() const { return _uuid; }
 	void setUuid(const PwUuid& uuid);
@@ -81,7 +80,7 @@ public:
     static bool lessThan(const PwEntry* e1, const PwEntry* e2);
 
     /** Search helper. Returns true if any of the fields contain the query string. */
-    virtual bool matchesQuery(const QString& query) const = 0;
+    virtual bool matchesQuery(const QString& query) const;
 signals:
     void uuidChanged(PwUuid);
     void titleChanged(QString);

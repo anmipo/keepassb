@@ -29,6 +29,9 @@ public:
     PwExtraField(QObject* parent, const QString& name, const QString& value);
     virtual ~PwExtraField() {}
 
+    /** Returns true if any string contains the query string. */
+    virtual bool matchesQuery(const QString& query) const;
+
     // property accessors
     QString getName() const { return _name; }
     QString getValue() const { return _value; }
@@ -65,6 +68,9 @@ private:
 public:
     PwAttachment(QObject* parent=0);
     virtual ~PwAttachment();
+
+    /** Returns true if any string contains the query string. */
+    virtual bool matchesQuery(const QString& query) const;
 
     /**
      * Stores attachment contents to the specified file (creates or overwrites as necessary)
@@ -107,11 +113,11 @@ public:
 
     virtual void clear();
 
-    void addHistoryEntry(PwEntryV4* historyEntry);
-    void addAttachment(PwAttachment* attachment);
-
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
+
+    void addHistoryEntry(PwEntryV4* historyEntry);
+    void addAttachment(PwAttachment* attachment);
 
     /**
      * Adds a named field value to the entry.

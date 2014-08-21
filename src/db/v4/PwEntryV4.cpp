@@ -26,6 +26,11 @@ PwExtraField::PwExtraField(QObject* parent, const QString& name, const QString& 
     _value = value;
 }
 
+bool PwExtraField::matchesQuery(const QString& query) const {
+    return getName().contains(query, Qt::CaseInsensitive) ||
+            getValue().contains(query, Qt::CaseInsensitive);
+}
+
 /**************************/
 PwAttachment::PwAttachment(QObject* parent) :
         QObject(parent),
@@ -97,6 +102,12 @@ bool PwAttachment::inflateData() {
     }
     return true;
 }
+
+/** Returns true if any string contains the query string. */
+bool PwAttachment::matchesQuery(const QString& query) const {
+    return getName().contains(query, Qt::CaseInsensitive);
+}
+
 /**************************/
 
 PwEntryV4::PwEntryV4(QObject* parent) :
@@ -125,6 +136,22 @@ bool PwEntryV4::isStandardField(const QString& name) const {
     return (name == TITLE) || (name == USERNAME) || (name == PASSWORD) || (name == URL) || (name == NOTES);
 }
 
+/** Search helper. Returns true if any of the fields contain the query string. */
+bool PwEntryV4::matchesQuery(const QString& query) const {
+    if (PwEntry::matchesQuery(query))
+        return true;
+
+    for (int i = 0; i < _extraFieldsDataModel.size(); i++) {
+        if (_extraFieldsDataModel.value(i)->matchesQuery(query))
+            return true;
+    }
+    for (int i = 0; i < _attachmentsDataModel.size(); i++) {
+        if (_attachmentsDataModel.value(i)->matchesQuery(query))
+            return true;
+    }
+    return false;
+}
+
 void PwEntryV4::setField(const QString& name, const QString& value) {
     fields.insert(name, value);
     if (!isStandardField(name)) {
@@ -139,14 +166,6 @@ void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
 
 void PwEntryV4::addAttachment(PwAttachment* attachment) {
     _attachmentsDataModel.append(attachment); // implicitly takes ownership
-}
-
-bool PwEntryV4::matchesQuery(const QString& query) const {
-    //TODO consider extra fields
-    return getTitle().contains(query, Qt::CaseInsensitive) ||
-           getUserName().contains(query, Qt::CaseInsensitive) ||
-           getUrl().contains(query, Qt::CaseInsensitive) ||
-           getNotes().contains(query, Qt::CaseInsensitive);
 }
 
 QString PwEntryV4::getTitle() const {

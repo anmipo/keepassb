@@ -39,6 +39,13 @@ bool PwEntry::lessThan(const PwEntry* e1, const PwEntry* e2) {
     return e1->getTitle().compare(e2->getTitle(), Qt::CaseInsensitive) < 0;
 }
 
+bool PwEntry::matchesQuery(const QString& query) const {
+    return getTitle().contains(query, Qt::CaseInsensitive) ||
+           getUserName().contains(query, Qt::CaseInsensitive) ||
+           getUrl().contains(query, Qt::CaseInsensitive) ||
+           getNotes().contains(query, Qt::CaseInsensitive);
+}
+
 void PwEntry::setUuid(const PwUuid& uuid) {
     if (uuid != _uuid) {
         _uuid = uuid;

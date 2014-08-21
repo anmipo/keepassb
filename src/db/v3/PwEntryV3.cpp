@@ -7,12 +7,29 @@
 
 #include <PwEntryV3.h>
 
-PwEntryV3::PwEntryV3(QObject* parent) : PwEntry(parent) {
-    // TODO Auto-generated constructor stub
+PwEntryV3::PwEntryV3(QObject* parent) : PwEntry(parent), _binaryDesc(), _binaryData(),
+        _title(), _userName(), _password(), _url(), _notes() {
+    _groupId = 0;
 }
 
 PwEntryV3::~PwEntryV3() {
-    clear();
+    // nothing to do here
+}
+
+void PwEntryV3::clear() {
+    _groupId = 0;
+    _binaryDesc.clear();
+    _binaryData.clear();
+    _title.clear();
+    _userName.clear();
+    _password.clear();
+    _url.clear();
+    _notes.clear();
+}
+
+bool PwEntryV3::matchesQuery(const QString& query) const {
+    return PwEntry::matchesQuery(query) ||
+            getBinaryDesc().contains(query, Qt::CaseInsensitive);
 }
 
 void PwEntryV3::setGroupId(qint32 groupId) {

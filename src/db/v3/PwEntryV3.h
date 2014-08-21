@@ -10,6 +10,9 @@
 
 #include "db/PwEntry.h"
 
+/**
+ * Database v3 entry
+ */
 class PwEntryV3: public PwEntry {
     Q_OBJECT
     Q_PROPERTY(qint32 groupId READ getGroupId WRITE setGroupId NOTIFY groupIdChanged)
@@ -27,6 +30,11 @@ private:
 public:
     PwEntryV3(QObject* parent=0);
     virtual ~PwEntryV3();
+
+    virtual void clear();
+
+    /** Search helper. Returns true if any of the fields contain the query string. */
+    virtual bool matchesQuery(const QString& query) const;
 
     // property accessors
     qint32 getGroupId() const { return _groupId; }
@@ -50,6 +58,7 @@ signals:
     void groupIdChanged(qint32);
     void binaryDescChanged(QString);
     void binaryDataChanged(QByteArray);
+    // other ***Changed signals are defined in the parent class
 };
 
 #endif /* PWENTRYV3_H_ */
