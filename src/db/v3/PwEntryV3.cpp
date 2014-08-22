@@ -52,7 +52,7 @@ bool PwEntryV3::isMetaStream() const {
 
 void PwEntryV3::setGroupId(qint32 groupId) {
     if (groupId != _groupId) {
-        groupId = _groupId;
+        _groupId = groupId;
         emit groupIdChanged(groupId);
     }
 }
