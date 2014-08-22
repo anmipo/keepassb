@@ -94,12 +94,14 @@ public:
         CONTENT_HASHING_ERROR    = 0x32,  // == generic crypto lib error
         DECRYPTED_CHECKSUM_MISMATCH = 0x33,
         NOT_ENOUGH_GROUPS        = 0x40,
+        ORPHANED_ENTRY_ERROR     = 0x50,
     };
 
 private:
     PwHeaderV3 header;
     QByteArray combinedKey;
     QByteArray aesKey;
+    QList<PwEntryV3*> metaStreamEntries;
 
     /** Reads the encrypted DB; in case of errors emits appropriate signals and returns false. */
     bool readDatabase(const QByteArray& dbBytes);

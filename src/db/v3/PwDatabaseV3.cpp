@@ -94,7 +94,7 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
 
 
 PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
-        header(), combinedKey(), aesKey() {
+        header(), combinedKey(), aesKey(), metaStreamEntries() {
     header.setParent(this);
 }
 
@@ -103,6 +103,8 @@ PwDatabaseV3::~PwDatabaseV3() {
 }
 
 void PwDatabaseV3::clear() {
+    qDeleteAll(metaStreamEntries);
+    metaStreamEntries.clear();
     header.clear();
     combinedKey.clear();
     aesKey.clear();
@@ -202,8 +204,10 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     QDataStream decryptedDataStream(decryptedData);
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
     err = readContent(decryptedDataStream);
-    if (err != SUCCESS)
+    if (err != SUCCESS) {
+        emit dbUnlockError(tr("Cannot parse database"), err);
         return false;
+    }
 
     emit unlockProgressChanged(UNLOCK_PROGRESS_DONE);
 
@@ -315,7 +319,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
         err = readGroup(stream, *group);
         if (err != SUCCESS)
             return err;
-        qDebug() << "Group " << group->getName() << " level " << group->getLevel();
+        qDebug() << "Group " << group->getName() << " id:" << group->getId() << " level:" << group->getLevel();
         groups.append(group);
     }
     return SUCCESS;
@@ -503,11 +507,16 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
     if (err != SUCCESS)
         return err;
 
-    // find the maximum group level
+    // make a group-by-ID lookup hashtable;
+    // also find the maximum group level
     int maxLevel = 0;
     quint16 level;
+    PwGroupV3* group;
+    QHash<qint32, PwGroupV3*> groupById;
     for (int i = 0; i < groups.size(); i++) {
-        level = groups.at(i)->getLevel();
+        group = groups.at(i);
+        groupById.insert(group->getId(), group);
+        level = group->getLevel();
         if (level > maxLevel)
             maxLevel = level;
     }
@@ -525,6 +534,23 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
             } else if (curLevel == prevLevel) {
                 parentGroup = group;
             }
+        }
+    }
+
+    // put entries to their groups
+    PwEntryV3* entry;
+    for (int i = 0; i < entries.size(); i++) {
+        entry = entries.at(i);
+        if (entry->isMetaStream()) {
+            // meta streams are kept in their own list, invisibly for the user
+            metaStreamEntries.append(entry);
+        } else {
+            qint32 groupId = entry->getGroupId();
+            if (!groupById.contains(groupId)) {
+                qDebug() << "There is an entry " << entry->toString() << " with unknown groupId: " << groupId;
+                return ORPHANED_ENTRY_ERROR;
+            }
+            groupById.value(groupId)->addEntry(entry);
         }
     }
     return SUCCESS;
