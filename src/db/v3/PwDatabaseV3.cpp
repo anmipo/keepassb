@@ -101,13 +101,14 @@ PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
 }
 
 PwDatabaseV3::~PwDatabaseV3() {
-    clear();
+    // nothing to do here
 }
 
 void PwDatabaseV3::clear() {
     header.clear();
     combinedKey.clear();
     aesKey.clear();
+    PwDatabase::clear();
 }
 
 bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
@@ -186,8 +187,16 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     QByteArray decryptedData (dataSize, 0);
     err = decryptData(dbBytesWithoutHeader, decryptedData);
     if (err != SUCCESS) {
-        qDebug() << "Cannot decrypt database - decryptData" << err;
-        emit dbUnlockError(tr("Cannot decrypt database"), err);
+        if (err == DECRYPTED_PADDING_ERROR || err == DECRYPTED_CHECKSUM_MISMATCH) {
+            qDebug() << "Cannot decrypt database - decryptData" << err;
+            emit invalidPasswordOrKey();
+        } else {
+            // err == CANNOT_DECRYPT_DB
+            // err == CONTENT_HASHING_ERROR
+            // err == something else
+            qDebug() << "Cannot decrypt database - decryptData" << err;
+            emit dbUnlockError(tr("Cannot decrypt database"), err);
+        }
         return false;
     }
     emit unlockProgressChanged(UNLOCK_PROGRESS_DECRYPTED);
@@ -293,6 +302,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, const q
             return err;
         groups.append(group);
     }
+    _rootGroup = groups.at(0); // TODO remove this debug line
     return SUCCESS;
 }
 
@@ -332,7 +342,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
         case 0x0002: { // name
             QByteArray nameBuf(fieldSize, 0);
             stream.readRawData(nameBuf.data(), fieldSize);
-            QString name = QString::fromUtf8(nameBuf.constData(), nameBuf.size());
+            QString name = QString::fromUtf8(nameBuf.constData());
             //TODO check reading of unicode strings
             group.setName(name);
             break;
@@ -386,6 +396,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, const 
         if (err != SUCCESS)
             return err;
         entries.append(entry);
+        _rootGroup->addEntry(entry); // TODO remove this debug line
     }
     return SUCCESS;
 }
@@ -420,7 +431,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
         case 0x0004: { // title
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            QString title = QString::fromUtf8(buf.constData(), buf.size());
+            QString title = QString::fromUtf8(buf.constData());
             //TODO check reading of unicode strings
             entry.setTitle(title);
             break;
@@ -428,27 +439,27 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
         case 0x0005: { // url
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            QString url = QString::fromUtf8(buf.constData(), buf.size()); // check with unicode
+            QString url = QString::fromUtf8(buf.constData()); // check with unicode
             entry.setUrl(url);
             break;
         }
         case 0x0006: { // username
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            QString username = QString::fromUtf8(buf.constData(), buf.size());
+            QString username = QString::fromUtf8(buf.constData());
             entry.setUserName(username);
             break;
         }
         case 0x0007: { // password
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            entry.setPassword(QString::fromUtf8(buf.constData(), buf.size())); // TODO check with unicode
+            entry.setPassword(QString::fromUtf8(buf.constData())); // TODO check with unicode
             break;
         }
         case 0x0008: { // note
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            QString note = QString::fromUtf8(buf.constData(), buf.size());
+            QString note = QString::fromUtf8(buf.constData());
             entry.setNotes(note);
             break;
         }
@@ -467,7 +478,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
         case 0x000D: { // binary description
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            QString binaryDesc = QString::fromUtf8(buf.constData(), buf.size());
+            QString binaryDesc = QString::fromUtf8(buf.constData());
             entry.setBinaryDesc(binaryDesc);
             break;
         }

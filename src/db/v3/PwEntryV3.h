@@ -36,6 +36,11 @@ public:
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
 
+    /** Identifies if this entry is a special internal meta-stream data */
+    bool isMetaStream() const;
+
+    QString toString() const;
+
     // property accessors
     qint32 getGroupId() const { return _groupId; }
     void setGroupId(qint32 groupId);
@@ -53,6 +58,7 @@ public:
     virtual void setUrl(const QString& url);
     virtual QString getNotes() const { return _notes; }
     virtual void setNotes(const QString& notes);
+
 
 signals:
     void groupIdChanged(qint32);

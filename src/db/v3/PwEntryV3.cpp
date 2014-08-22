@@ -7,6 +7,12 @@
 
 #include <PwEntryV3.h>
 
+// field values of meta-stream entries
+const QString METASTREAM_ID_TITLE = QString("Meta-Info");
+const QString METASTREAM_ID_USER = QString("SYSTEM");
+const QString METASTREAM_ID_URL = QString("$");
+const QString METASTREAM_ID_BINDESC = QString("bin-stream");
+
 PwEntryV3::PwEntryV3(QObject* parent) : PwEntry(parent), _binaryDesc(), _binaryData(),
         _title(), _userName(), _password(), _url(), _notes() {
     _groupId = 0;
@@ -30,6 +36,18 @@ void PwEntryV3::clear() {
 bool PwEntryV3::matchesQuery(const QString& query) const {
     return PwEntry::matchesQuery(query) ||
             getBinaryDesc().contains(query, Qt::CaseInsensitive);
+}
+
+bool PwEntryV3::isMetaStream() const {
+    if (_notes.isEmpty() || _binaryData.isNull() || _binaryDesc.isEmpty())
+        return false;
+
+    bool cond1 = (_binaryDesc == METASTREAM_ID_BINDESC);
+    bool cond2 = (_userName == METASTREAM_ID_USER);
+    bool cond3 = (_url == METASTREAM_ID_URL);
+    bool cond4 = (_title == METASTREAM_ID_TITLE);
+
+    return (getIconId() == 0 && cond1 && cond2 && cond3 && cond4);
 }
 
 void PwEntryV3::setGroupId(qint32 groupId) {
