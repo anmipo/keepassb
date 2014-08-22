@@ -111,13 +111,14 @@ private:
             const int progressFrom, const int progressTo);
     /** Decrypts the DB's data using current keys. */
     ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
+    /** Read groups and entries from the decrypted stream and builds their tree */
+    ErrorCode readContent(QDataStream& stream);
     /** Reads groups from decrypted stream */
-    ErrorCode readAllGroups(QDataStream& stream, const quint32 groupCount);
+    ErrorCode readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups);
     /** Reads one group */
     ErrorCode readGroup(QDataStream& stream, PwGroupV3& group);
-
     /** Reads entries from decrypted stream */
-    ErrorCode readAllEntries(QDataStream& stream, const quint32 entryCount);
+    ErrorCode readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries);
     /** Reads one entry */
     ErrorCode readEntry(QDataStream& stream, PwEntryV3& entry);
 

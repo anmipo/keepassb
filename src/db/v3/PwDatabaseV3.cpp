@@ -19,8 +19,6 @@ const int UNLOCK_PROGRESS_INIT = 0;
 const int UNLOCK_PROGRESS_HEADER_READ = 5;
 const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
 const int UNLOCK_PROGRESS_DECRYPTED = 80;
-const int UNLOCK_PROGRESS_BLOCKS_READ = 90;
-const int UNLOCK_PROGRESS_UNPACKED = 95;
 const int UNLOCK_PROGRESS_DONE = 100;
 
 PwHeaderV3::PwHeaderV3(QObject* parent) : QObject(parent),
@@ -203,13 +201,11 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
 
     QDataStream decryptedDataStream(decryptedData);
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
-    err = readAllGroups(decryptedDataStream, header.getGroupCount());
+    err = readContent(decryptedDataStream);
     if (err != SUCCESS)
         return false;
 
-    err = readAllEntries(decryptedDataStream, header.getEntryCount());
-    if (err != SUCCESS)
-        return false;
+    emit unlockProgressChanged(UNLOCK_PROGRESS_DONE);
 
     return true;
 }
@@ -292,20 +288,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
     return SUCCESS;
 }
 
-PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, const quint32 groupCount) {
-    PwDatabaseV3::ErrorCode err;
-    QList<PwGroupV3*> groups;
-    for (quint32 iGroup = 0; iGroup < groupCount; iGroup++) {
-        PwGroupV3* group = new PwGroupV3();
-        err = readGroup(stream, *group);
-        if (err != SUCCESS)
-            return err;
-        groups.append(group);
-    }
-    _rootGroup = groups.at(0); // TODO remove this debug line
-    return SUCCESS;
-}
-
 /** Reads a 5-byte V3-specific timestamp from the stream */
 QDateTime PwDatabaseV3::readTimestamp(QDataStream& stream) {
     quint8 dw1, dw2, dw3, dw4, dw5;
@@ -323,6 +305,20 @@ QDateTime PwDatabaseV3::readTimestamp(QDataStream& stream) {
 
     QDateTime result(date, time, Qt::UTC);
     return result;
+}
+
+PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups) {
+    PwDatabaseV3::ErrorCode err;
+    groups.clear();
+    for (quint32 iGroup = 0; iGroup < header.getGroupCount(); iGroup++) {
+        PwGroupV3* group = new PwGroupV3();
+        err = readGroup(stream, *group);
+        if (err != SUCCESS)
+            return err;
+        qDebug() << "Group " << group->getName() << " level " << group->getLevel();
+        groups.append(group);
+    }
+    return SUCCESS;
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& group) {
@@ -387,16 +383,14 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
     return NOT_ENOUGH_GROUPS;
 }
 
-PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, const quint32 entryCount) {
+PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries) {
     PwDatabaseV3::ErrorCode err;
-    QList<PwEntryV3*> entries;
-    for (quint32 iEntry = 0; iEntry < entryCount; iEntry++) {
+    for (quint32 iEntry = 0; iEntry < header.getEntryCount(); iEntry++) {
         PwEntryV3* entry = new PwEntryV3();
         err = readEntry(stream, *entry);
         if (err != SUCCESS)
             return err;
         entries.append(entry);
-        _rootGroup->addEntry(entry); // TODO remove this debug line
     }
     return SUCCESS;
 }
@@ -496,4 +490,42 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
     }
     // if we reach here, something went wrong
     return NOT_ENOUGH_GROUPS;
+}
+
+PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
+    QList<PwGroupV3*> groups;
+    ErrorCode err = readAllGroups(stream, groups);
+    if (err != SUCCESS)
+        return err;
+
+    QList<PwEntryV3*> entries;
+    err = readAllEntries(stream, entries);
+    if (err != SUCCESS)
+        return err;
+
+    // find the maximum group level
+    int maxLevel = 0;
+    quint16 level;
+    for (int i = 0; i < groups.size(); i++) {
+        level = groups.at(i)->getLevel();
+        if (level > maxLevel)
+            maxLevel = level;
+    }
+
+    // restore group hierarchy
+    _rootGroup = new PwGroupV3();
+    PwGroupV3* parentGroup = (PwGroupV3*)_rootGroup;
+    for (quint16 level = 0; level <= maxLevel; level++) {
+        quint16 prevLevel = level - 1;
+        for (int i = 0; i < groups.size(); i++) {
+            PwGroupV3* group = groups.at(i);
+            quint16 curLevel = group->getLevel();
+            if (curLevel == level) {
+                parentGroup->addSubGroup(group);
+            } else if (curLevel == prevLevel) {
+                parentGroup = group;
+            }
+        }
+    }
+    return SUCCESS;
 }
