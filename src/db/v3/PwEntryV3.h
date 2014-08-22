@@ -39,8 +39,6 @@ public:
     /** Identifies if this entry is a special internal meta-stream data */
     bool isMetaStream() const;
 
-    QString toString() const;
-
     // property accessors
     qint32 getGroupId() const { return _groupId; }
     void setGroupId(qint32 groupId);

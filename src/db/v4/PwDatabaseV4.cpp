@@ -229,7 +229,7 @@ PwDatabaseV4::PwDatabaseV4(QObject* parent) :
 }
 
 PwDatabaseV4::~PwDatabaseV4() {
-    clear();
+    // nothing to do here
 }
 
 bool PwDatabaseV4::isSignatureMatch(const QByteArray& rawDbData) {
@@ -243,13 +243,13 @@ bool PwDatabaseV4::isSignatureMatch(const QByteArray& rawDbData) {
 }
 
 void PwDatabaseV4::clear() {
-    PwDatabase::clear(); // ancestor's cleaning
     qDeleteAll(binaries);
     binaries.clear();
     header.clear();
     combinedKey.clear();
     aesKey.clear();
     recycleBinGroupUuid.clear();
+    PwDatabase::clear(); // ancestor's cleaning
 }
 
 void PwDatabaseV4::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
