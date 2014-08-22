@@ -134,6 +134,9 @@ public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();
 
+    /** Returns the database format version */
+    virtual int getFormatVersion() { return 3; };
+
     virtual void clear();
 
     /**

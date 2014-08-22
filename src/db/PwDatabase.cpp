@@ -243,3 +243,11 @@ Q_INVOKABLE  int PwDatabaseFacade::search(const QString& query) {
     return resultSize;
 //    return 0;
 }
+
+Q_INVOKABLE int PwDatabaseFacade::getFormatVersion() const {
+    if (db) {
+        return db->getFormatVersion();
+    } else {
+        return -1;
+    }
+}

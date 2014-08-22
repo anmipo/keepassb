@@ -176,6 +176,9 @@ public:
     PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();
 
+    /** Returns the database format version */
+    virtual int getFormatVersion() { return 4; };
+
     /**
      * Checks if DB signatures match those of Keepass V4 format.
      */

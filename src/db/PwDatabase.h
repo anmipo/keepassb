@@ -46,6 +46,8 @@ public:
     virtual void clear();
     // Clears and locks the database.
     virtual void lock();
+    /** Returns the database format version */
+    virtual int getFormatVersion() = 0;
 
     /**
      * Returns the entries which contain given query text
@@ -131,6 +133,8 @@ public:
     PwGroup* getRootGroup() const { return (db ? db->getRootGroup() : NULL); }
     PwSearchResultDataModel* getSearchResult() { return &_searchResultDataModel; }
 
+    /** Returns the format version of the currently opened DB (3 or 4, or -1 if none opened) */
+    Q_INVOKABLE int getFormatVersion() const;
 public slots:
     /**
      * Locks/closes the current DB instance, if any.
@@ -151,6 +155,7 @@ signals:
     void unlockProgressChanged(const int progressPercent);
     void searchResultChanged();
     void lockedChanged(bool);
+    void dbVersionChanged(int);
 };
 
 #endif /* PWDATABASE_H_ */
