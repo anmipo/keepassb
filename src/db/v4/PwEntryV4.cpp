@@ -32,93 +32,14 @@ bool PwExtraField::matchesQuery(const QString& query) const {
 }
 
 /**************************/
-PwAttachment::PwAttachment(QObject* parent) :
-        QObject(parent),
-        name(""),
-        size(0),
-        content(NULL) {
-
-}
-
-PwAttachment::~PwAttachment() {
-    // nothing to do here
-}
-
-bool PwAttachment::saveContentToFile(const QString& fileName) {
-    qDebug() << "Saving attachment to file: " << fileName;
-
-    if (!inflateData())
-        return false;
-
-    QFile outFile(fileName);
-    if (!outFile.open(QIODevice::WriteOnly)) {
-        qDebug() << "Cannot open file for writing: " << fileName;
-        return false;
-    }
-    qint64 size = outFile.write(content->data);
-    if (size != content->data.size()) {
-        qDebug("%d bytes written out of %d total", (int)size, content->data.size());
-        return false;
-    }
-    outFile.close();
-    return true;
-}
-
-;void PwAttachment::setName(const QString& name) {
-    if (this->name != name) {
-        this->name = name;
-        emit nameChanged(name);
-    }
-}
-
-void PwAttachment::setContent(PwBinaryV4* content) {
-    // The content is managed by PwDatabaseV4
-    this->content = content;
-    emit sizeChanged(content->data.size());
-}
-
-int PwAttachment::getSize() {
-    if (content->isCompressed) {
-        bool inflateOk = inflateData();
-        if (!inflateOk)
-            return -1;
-    }
-    return content->data.size();
-}
-
-bool PwAttachment::inflateData() {
-    if (content->isCompressed) {
-        QByteArray unpackedData;
-        Util::ErrorCode err = Util::inflateGZipData(content->data, unpackedData);
-        if (err != Util::SUCCESS) {
-            qDebug() << "Attachment inflate error" << err;
-            return false;
-        }
-        content->data = unpackedData;
-        content->isCompressed = false;
-        qDebug() << "Data unpacked";
-    } else {
-        qDebug() << "Data not compressed, no need to inflate";
-    }
-    return true;
-}
-
-/** Returns true if any string contains the query string. */
-bool PwAttachment::matchesQuery(const QString& query) const {
-    return getName().contains(query, Qt::CaseInsensitive);
-}
-
-/**************************/
 
 PwEntryV4::PwEntryV4(QObject* parent) :
         PwEntry(parent),
         fields(),
         _extraFieldsDataModel(),
-        _historyDataModel(),
-        _attachmentsDataModel() {
+        _historyDataModel() {
     _extraFieldsDataModel.setParent(this);
     _historyDataModel.setParent(this);
-    _attachmentsDataModel.setParent(this);
 }
 
 PwEntryV4::~PwEntryV4() {
@@ -128,8 +49,8 @@ PwEntryV4::~PwEntryV4() {
 void PwEntryV4::clear() {
     _historyDataModel.clear();
     _extraFieldsDataModel.clear();
-    _attachmentsDataModel.clear();
     fields.clear();
+    PwEntry::clear();
 }
 
 bool PwEntryV4::isStandardField(const QString& name) const {
@@ -145,10 +66,6 @@ bool PwEntryV4::matchesQuery(const QString& query) const {
         if (_extraFieldsDataModel.value(i)->matchesQuery(query))
             return true;
     }
-    for (int i = 0; i < _attachmentsDataModel.size(); i++) {
-        if (_attachmentsDataModel.value(i)->matchesQuery(query))
-            return true;
-    }
     return false;
 }
 
@@ -162,10 +79,6 @@ void PwEntryV4::setField(const QString& name, const QString& value) {
 
 void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
     _historyDataModel.append(historyEntry); // implicitly takes ownership
-}
-
-void PwEntryV4::addAttachment(PwAttachment* attachment) {
-    _attachmentsDataModel.append(attachment); // implicitly takes ownership
 }
 
 QString PwEntryV4::getTitle() const {

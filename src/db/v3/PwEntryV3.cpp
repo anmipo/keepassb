@@ -31,6 +31,7 @@ void PwEntryV3::clear() {
     _password.clear();
     _url.clear();
     _notes.clear();
+    PwEntry::clear();
 }
 
 bool PwEntryV3::matchesQuery(const QString& query) const {

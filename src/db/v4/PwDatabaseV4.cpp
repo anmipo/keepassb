@@ -848,7 +848,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml,
                 if (!binary) {
                     return INVALID_ATTACHMENT_REFERENCE;
                 }
-                attachment.setContent(binary);
+                attachment.setData(binary->data, binary->isCompressed);
             }
         }
     }

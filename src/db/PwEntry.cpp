@@ -9,12 +9,96 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QList>
+#include "util/Util.h"
 
+
+/**************************/
+PwAttachment::PwAttachment(QObject* parent) :
+        QObject(parent),
+        name(""),
+        data() {
+    isCompressed = false;
+    isOriginallyCompressed = false;
+}
+
+PwAttachment::~PwAttachment() {
+    // nothing to do here
+}
+
+bool PwAttachment::saveContentToFile(const QString& fileName) {
+    qDebug() << "Saving attachment to file: " << fileName;
+
+    if (!inflateData())
+        return false;
+
+    QFile outFile(fileName);
+    if (!outFile.open(QIODevice::WriteOnly)) {
+        qDebug() << "Cannot open file for writing: " << fileName;
+        return false;
+    }
+    qint64 sizeWritten = outFile.write(data);
+    if (sizeWritten != data.size()) {
+        qDebug("%d bytes written out of %d total", (int)sizeWritten, data.size());
+        return false;
+    }
+    outFile.close();
+    return true;
+}
+
+void PwAttachment::setName(const QString& name) {
+    if (this->name != name) {
+        this->name = name;
+        emit nameChanged(name);
+    }
+}
+
+void PwAttachment::setData(const QByteArray& data, const bool isCompressed) {
+    this->data = data;
+    this->isOriginallyCompressed = isCompressed;
+    this->isCompressed = isCompressed;
+    emit sizeChanged(data.size()); // FIXME wrong value for compressed data
+}
+
+int PwAttachment::getSize() {
+    if (isCompressed) {
+        bool inflateOk = inflateData();
+        if (!inflateOk)
+            return -1;
+    }
+    return data.size();
+}
+
+bool PwAttachment::inflateData() {
+    if (isCompressed) {
+        QByteArray unpackedData;
+        Util::ErrorCode err = Util::inflateGZipData(data, unpackedData);
+        if (err != Util::SUCCESS) {
+            qDebug() << "Attachment inflate error" << err;
+            return false;
+        }
+        data = unpackedData;
+        isCompressed = false;
+        // the original 'compressed' flag stays in isOriginallyCompressed
+        qDebug() << "Data unpacked";
+    } else {
+        qDebug() << "Data not compressed, no need to inflate";
+    }
+    return true;
+}
+
+/** Returns true if any string contains the query string. */
+bool PwAttachment::matchesQuery(const QString& query) const {
+    return getName().contains(query, Qt::CaseInsensitive);
+}
+
+
+/**************************/
 PwEntry::PwEntry(QObject* parent) : QObject(parent), _uuid(), _iconId(0),
         _creationTime(), _lastModificationTime(),
         _lastAccessTime(), _expiryTime(),
-        _deleted(false), _parentGroup(NULL) {
-    // empty
+        _deleted(false), _parentGroup(NULL),
+        _attachmentsDataModel() {
+    _attachmentsDataModel.setParent(this);
 }
 
 PwEntry::~PwEntry() {
@@ -28,6 +112,7 @@ void PwEntry::clear() {
     _lastModificationTime.setMSecsSinceEpoch(0L);
     _lastAccessTime.setMSecsSinceEpoch(0L);
     _expiryTime.setMSecsSinceEpoch(0L);
+    _attachmentsDataModel.clear();
     _deleted = false;
 }
 
@@ -40,10 +125,17 @@ bool PwEntry::lessThan(const PwEntry* e1, const PwEntry* e2) {
 }
 
 bool PwEntry::matchesQuery(const QString& query) const {
-    return getTitle().contains(query, Qt::CaseInsensitive) ||
+    if (getTitle().contains(query, Qt::CaseInsensitive) ||
            getUserName().contains(query, Qt::CaseInsensitive) ||
            getUrl().contains(query, Qt::CaseInsensitive) ||
-           getNotes().contains(query, Qt::CaseInsensitive);
+           getNotes().contains(query, Qt::CaseInsensitive)) {
+        return true;
+    }
+    for (int i = 0; i < _attachmentsDataModel.size(); i++) {
+        if (_attachmentsDataModel.value(i)->matchesQuery(query))
+            return true;
+    }
+    return false;
 }
 
 void PwEntry::setUuid(const PwUuid& uuid) {
@@ -98,5 +190,14 @@ void PwEntry::setParentGroup(PwGroup* parentGroup) {
     if (parentGroup != _parentGroup) {
         _parentGroup = parentGroup;
         emit parentGroupChanged(parentGroup);
+    }
+}
+
+void PwEntry::addAttachment(PwAttachment* attachment) {
+    int prevSize = _attachmentsDataModel.size();
+    _attachmentsDataModel.append(attachment); // implicitly takes ownership
+    int newSize = _attachmentsDataModel.size();
+    if (newSize != prevSize) {
+        emit attachmentCountChanged(newSize);
     }
 }

@@ -13,6 +13,50 @@
 #include <QDateTime>
 #include "db/PwUuid.h"
 #include "db/PwGroup.h"
+#include <bb/cascades/DataModel>
+#include <bb/cascades/QListDataModel>
+
+/**
+ * Binary attachment of a V4 database entry
+ */
+class PwAttachment: public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
+    Q_PROPERTY(int size READ getSize NOTIFY sizeChanged)
+private:
+    QString name;
+    bool isOriginallyCompressed; // 'compressed' flag of the original data
+    bool isCompressed;  // lazy-uncompress helper flag
+    QByteArray data;
+
+    /**
+     * Unpacks content.data if it is compressed.
+     * Returns true if successful.
+     */
+    bool inflateData();
+public:
+    PwAttachment(QObject* parent=0);
+    virtual ~PwAttachment();
+
+    /** Returns true if any string contains the query string. */
+    virtual bool matchesQuery(const QString& query) const;
+
+    /**
+     * Stores attachment contents to the specified file (creates or overwrites as necessary)
+     */
+    Q_INVOKABLE bool saveContentToFile(const QString& fileName);
+
+    /** Sets attachment content */
+    void setData(const QByteArray& data, const bool isCompressed);
+
+    // property accessors
+    void setName(const QString& name);
+    QString getName() const { return name; }
+    int getSize();
+signals:
+    void nameChanged(QString);
+    void sizeChanged(int);
+};
 
 class PwEntry: public QObject {
 	Q_OBJECT
@@ -29,6 +73,7 @@ class PwEntry: public QObject {
     // indicates whether the entry is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
+    Q_PROPERTY(int attachmentCount READ getAttachmentCount NOTIFY attachmentCountChanged)
 private:
 	PwUuid _uuid;
 	int _iconId;
@@ -38,12 +83,16 @@ private:
     QDateTime _expiryTime;
     bool _deleted;
     PwGroup* _parentGroup;
+    bb::cascades::QListDataModel<PwAttachment*> _attachmentsDataModel;
 
 public:
 	PwEntry(QObject* parent=0);
 	virtual ~PwEntry();
 
 	virtual void clear();
+
+	virtual void addAttachment(PwAttachment* attachment);
+    Q_INVOKABLE bb::cascades::DataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 
 	// property getters/setters
 	PwUuid getUuid() const { return _uuid; }
@@ -62,6 +111,7 @@ public:
     void setDeleted(bool deleted);
     PwGroup* getParentGroup() const { return _parentGroup; }
     void setParentGroup(PwGroup* parentGroup);
+    int getAttachmentCount() { return _attachmentsDataModel.size(); }
 	// pure virtual getters/setters
 	virtual QString getTitle() const = 0;
 	virtual void setTitle(const QString& title) = 0;
@@ -95,8 +145,10 @@ signals:
     void expiryTimeChanged(QDateTime);
     void deletedChanged(bool);
     void parentGroupChanged(PwGroup*);
+    void attachmentCountChanged(int);
 };
 
+Q_DECLARE_METATYPE(PwAttachment*);
 Q_DECLARE_METATYPE(PwEntry*);
 
 #endif /* PWENTRY_H_ */
