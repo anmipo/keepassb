@@ -20,7 +20,13 @@ Page {
             dataModel: searchResult
             onTriggered: {
                 var entry = searchResult.data(indexPath);
-                var viewEntryPageComponent = Qt.createComponent("ViewEntryV4Page.qml");
+                
+                var viewEntryPageComponent;
+                if (Qt.database.getFormatVersion() == 3) {
+                    viewEntryPageComponent = Qt.createComponent("ViewEntryV3Page.qml");
+                } else {
+                    viewEntryPageComponent = Qt.createComponent("ViewEntryV4Page.qml");
+                }
                 var viewEntryPage = viewEntryPageComponent.createObject(null, {"data": entry});
                 naviPane.push(viewEntryPage);
             }
