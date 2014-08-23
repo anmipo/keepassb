@@ -151,7 +151,13 @@ Page {
                         var subGroupPage = viewSubGroupPage.createObject(null, {"group": item});
                         naviPane.push(subGroupPage);
                     } else if (itemType == "entry") {
-                        var viewEntryPage = Qt.createComponent("ViewEntryV4Page.qml");
+                        var formatVersion = Qt.database.getFormatVersion();
+                        var viewEntryPage;
+                        if (formatVersion == 3) {
+                            viewEntryPage = Qt.createComponent("ViewEntryV3Page.qml");
+                        } else {
+                            viewEntryPage = Qt.createComponent("ViewEntryV4Page.qml");
+                        }
                         var entryPage = viewEntryPage.createObject(null, {"data": item});
                         naviPane.push(entryPage);
                     } else {
@@ -225,6 +231,9 @@ Page {
         attachedObjects: [
             ComponentDefinition {
                 source: "SearchResultsPage.qml"
+            },
+            ComponentDefinition {
+                source: "ViewEntryV3Page.qml"
             },
             ComponentDefinition {
                 source: "ViewEntryV4Page.qml"

@@ -130,7 +130,9 @@ void PwDatabaseFacade::registerQmlTypes() {
     qmlRegisterType<PwSearchResultDataModel>("org.keepassb", 1, 0, "PwSearchResultDataModel");
     qmlRegisterUncreatableType<PwEntry>("org.keepassb", 1, 0, "PwEntry", "PwEntry is an abstract class and cannot be instantiated");
     qmlRegisterType<PwGroup>("org.keepassb", 1, 0, "PwGroup");
+    qmlRegisterType<PwGroupV3>("org.keepassb", 1, 0, "PwGroupV3");
     qmlRegisterType<PwGroupV4>("org.keepassb", 1, 0, "PwGroupV4");
+    qmlRegisterType<PwEntryV3>("org.keepassb", 1, 0, "PwEntryV3");
     qmlRegisterType<PwEntryV4>("org.keepassb", 1, 0, "PwEntryV4");
     qmlRegisterType<PwExtraField>("org.keepassb", 1, 0, "PwExtraField");
     qmlRegisterType<PwAttachment>("org.keepassb", 1, 0, "PwAttachment");

@@ -61,6 +61,7 @@ NavigationPane {
           
     onCreationCompleted: {
         Qt.app = app; // a hack to make 'app' available from ListItemComponent
+        Qt.database = database; // a hack to make 'database' available from ListItemComponent
         
         app.clipboardUpdated.connect(function() {
                 showToast(qsTr("Copied to clipboard") + Retranslate.onLocaleOrLanguageChanged)

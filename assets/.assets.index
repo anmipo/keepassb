@@ -1,5 +1,5 @@
 1
-251
+252
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -98,6 +98,7 @@ QuickUnlockPage.qml
 ReadOnlyTextField.qml
 SearchResultsPage.qml
 UnlockDbPage.qml
+ViewEntryV3Page.qml
 ViewEntryV4Files.qml
 ViewEntryV4Page.qml
 ViewGroupPage.qml
