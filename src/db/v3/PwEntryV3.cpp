@@ -39,6 +39,12 @@ bool PwEntryV3::matchesQuery(const QString& query) const {
             getBinaryDesc().contains(query, Qt::CaseInsensitive);
 }
 
+void PwEntryV3::addAttachment(PwAttachment* attachment) {
+    // V3 entries can only have one attachment
+    Q_ASSERT(getAttachmentCount() == 0);
+    PwEntry::addAttachment(attachment);
+}
+
 bool PwEntryV3::isMetaStream() const {
     if (_notes.isEmpty() || _binaryData.isNull() || _binaryDesc.isEmpty())
         return false;

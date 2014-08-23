@@ -136,7 +136,7 @@ Page {
     attachedObjects: [
         ComponentDefinition {
             id: viewEntryFilesComponent
-            source: "ViewEntryV4Files.qml"
+            source: "ViewEntryFiles.qml"
         },
         ScrollView {
             id: viewEntryGeneral

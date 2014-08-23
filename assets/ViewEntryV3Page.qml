@@ -116,7 +116,7 @@ Page {
     attachedObjects: [
         ComponentDefinition {
             id: viewEntryFilesComponent
-            source: "ViewEntryV4Files.qml" // FIXME refactor this
+            source: "ViewEntryFiles.qml"
         },
         ScrollView {
             id: viewEntryGeneral

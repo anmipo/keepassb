@@ -489,6 +489,13 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
         case 0xFFFF:
             // group fields finished
             stream.skipRawData(fieldSize);
+            if (!entry.getBinaryData().isEmpty()) {
+                // make the binary data available via the common 'attachment' interface
+                PwAttachment* attachment = new PwAttachment(&entry);
+                attachment->setName(entry.getBinaryDesc());
+                attachment->setData(entry.getBinaryData(), false);
+                entry.addAttachment(attachment);
+            }
             return SUCCESS;
         }
     }

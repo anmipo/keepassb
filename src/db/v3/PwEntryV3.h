@@ -16,8 +16,6 @@
 class PwEntryV3: public PwEntry {
     Q_OBJECT
     Q_PROPERTY(qint32 groupId READ getGroupId WRITE setGroupId NOTIFY groupIdChanged)
-    Q_PROPERTY(QString binaryDesc READ getBinaryDesc WRITE setBinaryDesc NOTIFY binaryDescChanged)
-    Q_PROPERTY(QByteArray binaryData READ getBinaryData WRITE setBinaryData NOTIFY binaryDataChanged)
 private:
     qint32 _groupId;
     QString _binaryDesc;
@@ -35,6 +33,8 @@ public:
 
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
+
+    virtual void addAttachment(PwAttachment* attachment);
 
     /** Identifies if this entry is a special internal meta-stream data */
     bool isMetaStream() const;
@@ -56,7 +56,6 @@ public:
     virtual void setUrl(const QString& url);
     virtual QString getNotes() const { return _notes; }
     virtual void setNotes(const QString& notes);
-
 
 signals:
     void groupIdChanged(qint32);
