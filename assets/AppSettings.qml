@@ -210,7 +210,7 @@ Page {
                 Label {
                     horizontalAlignment: HorizontalAlignment.Left
                     verticalAlignment: VerticalAlignment.Center
-                    text: qsTr("Search in Recycle Bin") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Search in Recycle Bin/Backup group") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1

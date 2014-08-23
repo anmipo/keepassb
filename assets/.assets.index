@@ -98,8 +98,8 @@ QuickUnlockPage.qml
 ReadOnlyTextField.qml
 SearchResultsPage.qml
 UnlockDbPage.qml
+ViewEntryFiles.qml
 ViewEntryV3Page.qml
-ViewEntryV4Files.qml
 ViewEntryV4Page.qml
 ViewGroupPage.qml
 VisualStyle.bright/images/ic_browse.png

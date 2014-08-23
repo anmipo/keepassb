@@ -21,6 +21,8 @@ const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
 const int UNLOCK_PROGRESS_DECRYPTED = 80;
 const int UNLOCK_PROGRESS_DONE = 100;
 
+const QString BACKUP_GROUP_NAME = QString("Backup");
+
 PwHeaderV3::PwHeaderV3(QObject* parent) : QObject(parent),
         masterSeed(), initialVector(), contentHash(), transformSeed() {
     transformRounds = 0;
@@ -380,6 +382,10 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
         case 0xFFFF:
             // group fields finished
             stream.skipRawData(fieldSize);
+            // a "Backup" group in the root is equivalent of V4's "Recycle Bin"
+            if ((group.getLevel() == 0) && (BACKUP_GROUP_NAME == group.getName())) {
+                group.setDeleted(true);
+            }
             return SUCCESS;
         }
     }
