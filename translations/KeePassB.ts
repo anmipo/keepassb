@@ -676,6 +676,11 @@ To continue, tap the lock symbol below.</source>
     </message>
     <message>
         <location filename="../assets/main.qml" line="41"/>
+        <source>Quick Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="41"/>
         <source>Lock</source>
         <translation type="unfinished"></translation>
     </message>

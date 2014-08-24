@@ -38,8 +38,8 @@ NavigationPane {
         }
         actions: [
             ActionItem {
-                title: qsTr("Lock") + Retranslate.onLocaleOrLanguageChanged
-                imageSource: "asset:///images/ic_lock.png"
+                title: (appSettings.quickUnlockEnabled ? qsTr("Quick Lock") : qsTr("Lock")) + Retranslate.onLocaleOrLanguageChanged
+                imageSource: (appSettings.quickUnlockEnabled ? "asset:///images/ic_quicklock.png" : "asset:///images/ic_lock.png")
                 enabled: !database.locked
                 onTriggered: {
                     app.lock();

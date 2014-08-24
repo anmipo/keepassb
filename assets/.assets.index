@@ -1,5 +1,5 @@
 1
-252
+253
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -16,6 +16,7 @@ images/ic_entry_general.png
 images/ic_history.png
 images/ic_lock.png
 images/ic_notes.png
+images/ic_quicklock.png
 images/ic_rename.png
 images/ic_save.png
 images/ic_search.png
