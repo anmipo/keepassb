@@ -852,21 +852,3 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml,
     }
     return SUCCESS;
 }
-
-//TODO remove debug print
-void PwDatabaseV4::debugPrint(const PwGroup* group, int indent) const {
-    qDebug() << QString(indent*2, ' ') + group->toString();
-    QList<PwEntry*> entries = group->getEntries();
-    for (int i = 0; i < entries.size(); i++) {
-        PwEntryV4* entry = reinterpret_cast<PwEntryV4*>(entries.at(i));
-        qDebug() << QString((indent + 1)*2, ' ') + entry->toString();
-
-//        QList<PwEntryV4*> historyEntries = entry->getHistoryEntries();
-//        for (int j = 0; j < historyEntries.size(); j++)
-//            qDebug() << QString((indent + 1)*2 + 1, ' ') + "(" + historyEntries.at(j)->toString() + ")";
-    }
-    QList<PwGroup*> subGroups = group->getSubGroups();
-    for (int i = 0; i < subGroups.size(); i++) {
-        debugPrint(subGroups[i], indent + 1);
-    }
-}

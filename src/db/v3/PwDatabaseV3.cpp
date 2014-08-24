@@ -342,7 +342,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
             QByteArray nameBuf(fieldSize, 0);
             stream.readRawData(nameBuf.data(), fieldSize);
             QString name = QString::fromUtf8(nameBuf.constData());
-            //TODO check reading of unicode strings
             group.setName(name);
             break;
         }
@@ -433,7 +432,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
             QString title = QString::fromUtf8(buf.constData());
-            //TODO check reading of unicode strings
             entry.setTitle(title);
             break;
         }
@@ -454,7 +452,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
         case 0x0007: { // password
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            entry.setPassword(QString::fromUtf8(buf.constData())); // TODO check with unicode
+            entry.setPassword(QString::fromUtf8(buf.constData()));
             break;
         }
         case 0x0008: { // note
@@ -486,7 +484,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
         case 0x000E: { // binary data
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
-            entry.setBinaryData(buf); // TODO must deep-copy
+            entry.setBinaryData(buf);
             break;
         }
         case 0xFFFF:

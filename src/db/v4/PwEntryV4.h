@@ -99,7 +99,6 @@ public:
     int getExtraSize() { return _extraFieldsDataModel.size(); }
 
 signals:
-    // FIXME these signals are never emitted, clean up
     void historySizeChanged(int historySize);
     void extraSizeChanged(int extraSize);
 };
