@@ -21,6 +21,7 @@ class PwDatabase : public QObject {
     Q_OBJECT
 protected:
 	PwGroup* _rootGroup;
+	QString _dbFilePath;
 
 	// returns true if successful. If data is invalid/empty, returns an empty key
 	virtual bool processKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
@@ -55,6 +56,13 @@ public:
     virtual int search(const SearchParams& params, QList<PwEntry*> &searchResult) const;
 
     PwGroup* getRootGroup();
+
+    /** Stores DB file path */
+    void setDatabaseFilePath(const QString& dbFilePath);
+    /** Returns full path to the DB file */
+    QString getDatabaseFilePath() const;
+    /** Returns only file name of the DB file (file.ext) */
+    QString getDatabaseFileName() const;
 signals:
     /**
      * Emitted once the DB has been locked.
@@ -128,13 +136,13 @@ public:
      */
     Q_INVOKABLE void unlock(const QString &dbFilePath, const QString &password, const QString &keyFilePath);
 
+    /** Returns the format version of the currently opened DB (3 or 4, or -1 if none opened) */
+    Q_INVOKABLE int getFormatVersion() const;
+
     // Property getters/setters
     bool isLocked() const { return _locked; }
     PwGroup* getRootGroup() const { return (db ? db->getRootGroup() : NULL); }
     PwSearchResultDataModel* getSearchResult() { return &_searchResultDataModel; }
-
-    /** Returns the format version of the currently opened DB (3 or 4, or -1 if none opened) */
-    Q_INVOKABLE int getFormatVersion() const;
 public slots:
     /**
      * Locks/closes the current DB instance, if any.

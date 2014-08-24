@@ -22,7 +22,7 @@ const QString XML_KEY = "Key";
 const QString XML_DATA = "Data";
 
 
-PwDatabase::PwDatabase(QObject* parent) : QObject(parent) {
+PwDatabase::PwDatabase(QObject* parent) : QObject(parent), _dbFilePath("") {
 	_rootGroup = NULL;
 }
 
@@ -43,6 +43,7 @@ void PwDatabase::clear() {
         delete _rootGroup;
         _rootGroup = NULL;
     }
+    _dbFilePath.clear();
 	qDebug("DB cleared");
 }
 
@@ -96,6 +97,21 @@ bool PwDatabase::processKeyFile(const QByteArray& keyFileData, QByteArray& key) 
 
 PwGroup* PwDatabase::getRootGroup() {
     return _rootGroup;
+}
+
+void PwDatabase::setDatabaseFilePath(const QString& dbFilePath) {
+    this->_dbFilePath = dbFilePath;
+}
+
+/** Returns full path to the DB file */
+QString PwDatabase::getDatabaseFilePath() const {
+    return _dbFilePath;
+}
+
+/** Returns only file name of the DB file (file.ext) */
+QString PwDatabase::getDatabaseFileName() const {
+    int sepPos = _dbFilePath.lastIndexOf("/");
+    return _dbFilePath.mid(sepPos + 1);
 }
 
 int PwDatabase::search(const SearchParams& params, QList<PwEntry*> &searchResult) const {
@@ -208,6 +224,9 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
         emit dbUnlockError(tr("Unknown DB format"), PwDatabase::UNKNOWN_DB_FORMAT);
         return;
     }
+
+    // let DB instance know the original file path
+    db->setDatabaseFilePath(dbFilePath);
 
     // Setup signal forwarding
     QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLocked()), this, SLOT(onDbLocked()));

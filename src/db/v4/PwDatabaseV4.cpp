@@ -253,8 +253,6 @@ void PwDatabaseV4::clear() {
 }
 
 void PwDatabaseV4::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
-    clear();
-
     if (!buildCompositeKey(password.toUtf8(), keyFileData, combinedKey)) {
         emit dbUnlockError(tr("Crypto library error"), COMPOSITE_KEY_ERROR);
         return;

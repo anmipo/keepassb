@@ -124,8 +124,6 @@ bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
 }
 
 void PwDatabaseV3::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
-    clear();
-
     if (!buildCompositeKey(password.toLatin1(), keyFileData, combinedKey)) {
         emit dbUnlockError(tr("Crypto library error"), COMPOSITE_KEY_ERROR);
         return;
@@ -536,6 +534,8 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
 
     // restore group hierarchy
     _rootGroup = new PwGroupV3();
+    // give the "virtual" root group some meaningful name
+    _rootGroup->setName(getDatabaseFileName());
     PwGroupV3* parentGroup = (PwGroupV3*)_rootGroup;
     for (quint16 level = 0; level <= maxLevel; level++) {
         quint16 prevLevel = level - 1;
