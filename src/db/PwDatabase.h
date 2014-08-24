@@ -85,6 +85,10 @@ signals:
      * Emitted when password/key seem to be invalid (decrypted checksum mismatch).
      */
     void invalidPasswordOrKey();
+    /**
+     * Emitted when database file path/name changes
+     */
+    void dbFileNameChanged(QString dbFileName);
 };
 
 /**********************************/
@@ -137,7 +141,10 @@ public:
     Q_INVOKABLE void unlock(const QString &dbFilePath, const QString &password, const QString &keyFilePath);
 
     /** Returns the format version of the currently opened DB (3 or 4, or -1 if none opened) */
-    Q_INVOKABLE int getFormatVersion() const;
+    Q_INVOKABLE int getFormatVersion() const { return (db ? db->getFormatVersion() : -1); }
+
+    /** Returns full file path of the currently opened DB. */
+    Q_INVOKABLE QString getDatabaseFilePath() const;
 
     // Property getters/setters
     bool isLocked() const { return _locked; }
@@ -162,8 +169,8 @@ signals:
     void invalidPasswordOrKey();
     void unlockProgressChanged(const int progressPercent);
     void searchResultChanged();
-    void lockedChanged(bool);
-    void dbVersionChanged(int);
+    void lockedChanged(bool locked);
+    void dbVersionChanged(int version);
 };
 
 #endif /* PWDATABASE_H_ */

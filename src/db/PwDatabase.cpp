@@ -100,7 +100,10 @@ PwGroup* PwDatabase::getRootGroup() {
 }
 
 void PwDatabase::setDatabaseFilePath(const QString& dbFilePath) {
-    this->_dbFilePath = dbFilePath;
+    if (dbFilePath != this->_dbFilePath) {
+        this->_dbFilePath = dbFilePath;
+        emit dbFileNameChanged(getDatabaseFileName());
+    }
 }
 
 /** Returns full path to the DB file */
@@ -229,11 +232,11 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     db->setDatabaseFilePath(dbFilePath);
 
     // Setup signal forwarding
-    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLocked()), this, SLOT(onDbLocked()));
-    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlocked()), this, SLOT(onDbUnlocked()));
-    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlockError(QString, int)), this, SIGNAL(dbUnlockError(QString, int)));
-    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(invalidPasswordOrKey()), this, SIGNAL(invalidPasswordOrKey()));
-    QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(unlockProgressChanged(int)), this, SIGNAL(unlockProgressChanged(int)));
+    bool res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLocked()), this, SLOT(onDbLocked())); Q_ASSERT(res);
+    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlocked()), this, SLOT(onDbUnlocked())); Q_ASSERT(res);
+    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlockError(QString, int)), this, SIGNAL(dbUnlockError(QString, int))); Q_ASSERT(res);
+    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(invalidPasswordOrKey()), this, SIGNAL(invalidPasswordOrKey())); Q_ASSERT(res);
+    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(unlockProgressChanged(int)), this, SIGNAL(unlockProgressChanged(int))); Q_ASSERT(res);
 
     // Initiate the actual unlocking
     db->unlock(dbFileData, password, keyFileData);
@@ -262,13 +265,12 @@ Q_INVOKABLE  int PwDatabaseFacade::search(const QString& query) {
     _searchResultDataModel.append(searchResult);
     qDebug("Found %d entries", resultSize);
     return resultSize;
-//    return 0;
 }
 
-Q_INVOKABLE int PwDatabaseFacade::getFormatVersion() const {
+Q_INVOKABLE QString PwDatabaseFacade::getDatabaseFilePath() const {
     if (db) {
-        return db->getFormatVersion();
+        return db->getDatabaseFilePath();
     } else {
-        return -1;
+        return QString("");
     }
 }

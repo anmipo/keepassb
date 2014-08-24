@@ -6,7 +6,8 @@ import "common.js" as Common
 Sheet {
     id: quickUnlockSheet
     peekEnabled: false
-    
+    property string dbName
+        
     // autofocus on password field
     function autoFocus() {
         quickPassEdit.requestFocus()
@@ -23,6 +24,9 @@ Sheet {
         }
     }
     
+    onOpened: {
+        dbName = Common.prettifyFilePath(database.getDatabaseFilePath());
+    }
     Page {
         titleBar: TitleBar {
             title: qsTr("Quick Unlock") + Retranslate.onLocaleOrLanguageChanged
@@ -40,8 +44,15 @@ Sheet {
             leftPadding: 10
             rightPadding: 10
             Label {
-                text: qsTr("Enter quick password:") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("Database: <i>%1</i>").arg(dbName) + Retranslate.onLocaleOrLanguageChanged
+                multiline: true
+                textFormat: TextFormat.Html
                 textStyle.base: SystemDefaults.TextStyles.BodyText
+            }
+            Label {
+                topMargin: 30
+                text: qsTr("Enter quick password:") + Retranslate.onLocaleOrLanguageChanged
+                textStyle.base: SystemDefaults.TextStyles.PrimaryText
             }
             TextField {
                 id: quickPassEdit
