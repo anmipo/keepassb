@@ -7,6 +7,7 @@ import bb.cascades.pickers 1.0
 import bb.system 1.2
 import QtQuick 1.0
 import org.keepassb 1.0
+import "common.js" as Common
 
 Page {
     // emmitted when a DB is successfully unlocked
@@ -28,16 +29,6 @@ Page {
         unlockProgressDialog.cancel();
         dbErrorToast.body = message + "\n(" + errorDescription+ ")"; 
         dbErrorToast.show();
-    }
-    
-    // Returns a nice human-readable file path.
-    // Basically, it just cuts off the prefix, such as 
-    //   "/accounts/1000/shared" 
-    //   "/accounts/1000/removable"
-    //   "/accounts/1000-enterprise/shared"
-    //   "/accounts/1000-enterprise/removable"
-    function prettifyFilePath(path) {
-        return path.split('/').slice(4).join('/');
     }
     
     function focusOnPassword() {
@@ -72,7 +63,7 @@ Page {
     
         var option = newOptionComponent.createObject();
         option.value = fullPath;
-        option.text = prettifyFilePath(fullPath);
+        option.text = Common.prettifyFilePath(fullPath);
         return option;
     }
     

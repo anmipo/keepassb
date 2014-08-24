@@ -47,3 +47,15 @@ function getQuickUnlockTypeDescription(quickUnlockType) {
     	return qsTr("Last 5 symbols of the password");
     }
 }
+
+/**
+ * Returns a nice human-readable file path.
+ * Basically, it just cuts off the prefix, such as
+ *   "/accounts/1000/shared"
+ *   "/accounts/1000/removable"
+ *   "/accounts/1000-enterprise/shared"
+ *   "/accounts/1000-enterprise/removable"   
+ */
+function prettifyFilePath(path) {
+    return path.split('/').slice(4).join('/');
+}
