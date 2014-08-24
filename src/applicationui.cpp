@@ -157,6 +157,12 @@ void ApplicationUI::invokeFile(const QString& uri) {
 }
 
 void ApplicationUI::lock() {
+    // lock() might be triggered by the watchdog even before any DB is opened,
+    // e.g. when the user reads through the Settings.
+    // So if there is nothing to lock, just quit.
+    if (database->isLocked())
+        return;
+
     if (settings->isQuickUnlockEnabled()) {
         emit appLocked();
     } else {
