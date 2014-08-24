@@ -14,18 +14,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="49"/>
-        <source>Version 2.0.2 beta</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AboutPage.qml" line="68"/>
-        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
-Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
-Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AboutPage.qml" line="77"/>
         <source>Privacy Policy</source>
         <translation type="unfinished"></translation>
@@ -41,8 +29,20 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/AboutPage.qml" line="49"/>
+        <source>Version 2.1 beta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/AboutPage.qml" line="63"/>
         <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="68"/>
+        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
+Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
+Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

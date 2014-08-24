@@ -7,11 +7,12 @@ KeePass is a free open source password manager, which helps you to manage your p
 
 
 FEATURES:
-- Native BlackBerry 10 interface
-- View KeePass v2 .kdbx files, including advanced features of .kdbx format:
+- View KeePass v1 (.kdb) databases (beta)
+- View KeePass v2 (.kdbx) databases, including:
     - Custom string fields
     - File attachments
     - History of entry changes
+- Native BlackBerry 10 interface
 - Easy copying of all fields
 - Lighting-fast search
 - Flexible settings
@@ -21,9 +22,7 @@ FEATURES:
 
 
 CURRENT LIMITATIONS:
-- KeePass v1 (kdb) databases are not supported.
-- Saving databases is not supported yet.
-If you really need any of this, please contact the developer.
+- Editing v1/v2 databases is not supported yet.
 
 
 VERSIONS: 
@@ -38,9 +37,15 @@ A more formal disclaimer for the enterprise folks:
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Keywords:
-keepass, password, manager, kdb, kdbx, vault, kipass, keypass, keepassberry
+keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
 
 Changelog:
+v2.1.0 beta
+Added v1 (.kdb) database reading
+Added Quick Unlock info page
+Disabled Quick Unlock for key-file-only databases
+Other minor improvements and bug fixes
+
 v2.0.2 beta
 Added long-tap menu for copying entry fields
 Fixed keyboard popup on all-touch devices
