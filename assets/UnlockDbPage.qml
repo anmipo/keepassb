@@ -289,6 +289,11 @@ Page {
                     enableQuickUnlock.checked = false;
                 } else {
                     var password = passwordEdit.text;
+                    // disable Quick Unlock when using only key file
+                    if (password.length == 0) {
+                        appSettings.quickUnlockEnabled = false;
+                    }
+                    
                     if (appSettings.quickUnlockEnabled) {
                         app.prepareQuickUnlock(password);
                     }
