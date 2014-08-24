@@ -21,6 +21,8 @@ public:
     PwGroupV3(QObject* parent = 0);
     virtual ~PwGroupV3();
 
+    virtual void clear();
+
     // property accessors
     void setId(const qint32 id) { this->_id = id; }
     qint32 getId() const { return _id; }

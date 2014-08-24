@@ -48,7 +48,11 @@ PwEntryV4::~PwEntryV4() {
 
 void PwEntryV4::clear() {
     _historyDataModel.clear();
+    emit historySizeChanged(0);
+
     _extraFieldsDataModel.clear();
+    emit extraSizeChanged(0);
+
     fields.clear();
     PwEntry::clear();
 }
@@ -74,11 +78,13 @@ void PwEntryV4::setField(const QString& name, const QString& value) {
     if (!isStandardField(name)) {
         PwExtraField* ef = new PwExtraField(this, name, value);
         _extraFieldsDataModel.append(ef); // implicitly takes ownership
+        emit extraSizeChanged(_extraFieldsDataModel.size());
     }
 }
 
 void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
     _historyDataModel.append(historyEntry); // implicitly takes ownership
+    emit historySizeChanged(_historyDataModel.size());
 }
 
 QString PwEntryV4::getTitle() const {

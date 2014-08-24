@@ -14,7 +14,12 @@ PwGroupV3::PwGroupV3(QObject* parent) : PwGroup(parent) {
 }
 
 PwGroupV3::~PwGroupV3() {
-    clear();
-    // TODO Auto-generated destructor stub
+    // nothing to do here
 }
 
+void PwGroupV3::clear() {
+    _id = -1;
+    _level = -1;
+    _flags = 0;
+    PwGroup::clear();
+}

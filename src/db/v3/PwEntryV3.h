@@ -58,9 +58,9 @@ public:
     virtual void setNotes(const QString& notes);
 
 signals:
-    void groupIdChanged(qint32);
-    void binaryDescChanged(QString);
-    void binaryDataChanged(QByteArray);
+    void groupIdChanged(qint32 groupId);
+    void binaryDescChanged(QString binaryDesc);
+    void binaryDataChanged(QByteArray binaryData);
     // other ***Changed signals are defined in the parent class
 };
 

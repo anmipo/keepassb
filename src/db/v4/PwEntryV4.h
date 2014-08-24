@@ -100,8 +100,8 @@ public:
 
 signals:
     // FIXME these signals are never emitted, clean up
-    void historySizeChanged();
-    void extraSizeChanged();
+    void historySizeChanged(int historySize);
+    void extraSizeChanged(int extraSize);
 };
 
 Q_DECLARE_METATYPE(PwExtraField*);

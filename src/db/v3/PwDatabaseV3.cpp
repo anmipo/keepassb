@@ -319,7 +319,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
         err = readGroup(stream, *group);
         if (err != SUCCESS)
             return err;
-        qDebug() << "Group " << group->getName() << " id:" << group->getId() << " level:" << group->getLevel();
         groups.append(group);
     }
     return SUCCESS;
