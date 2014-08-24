@@ -1,4 +1,5 @@
 import bb.cascades 1.2
+import bb.system 1.2
 import org.keepassb 1.0
 import "common.js" as Common
 Page {
@@ -136,6 +137,21 @@ Page {
                     selected: (appSettings.quickUnlockType == Settings.QUICK_UNLOCK_LAST_5)
                 }
             }
+            Label {
+                text: qsTr("Learn more") + Retranslate.onLocaleOrLanguageChanged
+                textStyle.color: Color.create("#FF0073BC")
+                multiline: true
+                topMargin: 10
+                bottomMargin: 30
+                textFormat: TextFormat.Html
+                textStyle.base: SystemDefaults.TextStyles.SubtitleText
+                gestureHandlers: TapHandler {
+                    onTapped: {
+                        var quickUnlockHelpPage = quickUnlockHelpComponent.createObject();
+                        naviPane.push(quickUnlockHelpPage);
+                    }
+                }
+            }
             Header {
                 title: qsTr("Lists") + Retranslate.onLocaleOrLanguageChanged
             }
@@ -225,4 +241,10 @@ Page {
             Divider { }
         }
     }
+    attachedObjects: [
+        ComponentDefinition {
+            id: quickUnlockHelpComponent
+            source: "QuickUnlockHelp.qml"
+        }
+    ]
 }

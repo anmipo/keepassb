@@ -1,5 +1,5 @@
 1
-253
+254
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -95,6 +95,7 @@ pwicons-dark/7.png
 pwicons-dark/8.png
 pwicons-dark/9.png
 pwicons-dark/_readme
+QuickUnlockHelp.qml
 QuickUnlockPage.qml
 ReadOnlyTextField.qml
 SearchResultsPage.qml
