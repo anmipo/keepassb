@@ -176,7 +176,7 @@ Page {
                 property int lastSelectedIndex: -1
                 
                 id: keyDropDown
-                title: qsTr("Key file") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Key File") + Retranslate.onLocaleOrLanguageChanged
                 topMargin: 20
                 visible: !demoMode
                 onSelectedOptionChanged: {
@@ -219,7 +219,7 @@ Page {
                 id: enableQuickUnlock
                 topMargin: 20
                 visible: !demoMode
-                text: qsTr("Enable quick unlock") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("Enable Quick Unlock") + Retranslate.onLocaleOrLanguageChanged
                 checked: appSettings.quickUnlockEnabled
                 onCheckedChanged: {
                     appSettings.quickUnlockEnabled = checked;

@@ -33,7 +33,7 @@ Container {
     attachedObjects: [
         FilePicker {
             id: saveAttachmentFilePicker
-            title: qsTr("Save attached file") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Save Attached File") + Retranslate.onLocaleOrLanguageChanged
             mode: FilePickerMode.Saver
             type: FileType.Other
             allowOverwrite: true

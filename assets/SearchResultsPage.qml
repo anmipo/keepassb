@@ -6,7 +6,7 @@ Page {
     property PwSearchResultDataModel searchResult
     
     titleBar: TitleBar {
-        title: qsTr("Search results") + Retranslate.onLocaleOrLanguageChanged 
+        title: qsTr("Search Results") + Retranslate.onLocaleOrLanguageChanged 
     }
     Container {
         onTouchCapture: {

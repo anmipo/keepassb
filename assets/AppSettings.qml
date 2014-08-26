@@ -24,14 +24,14 @@ Page {
             }
             DropDown {
                 id: lockTimeout
-                title: qsTr("Lock database") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Lock Database") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.autoLockTimeout = selectedOption.value;
                     }
                 }
                 Option {
-                    text: qsTr("When minimized") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("When Minimized") + Retranslate.onLocaleOrLanguageChanged
                     value: 0
                     selected: (appSettings.autoLockTimeout == 0)
                 }
@@ -63,7 +63,7 @@ Page {
             }
             DropDown {
                 id: clipboardTimeout
-                title: qsTr("Clear clipboard") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Clear Clipboard") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.clipboardTimeout = selectedOption.value;
@@ -105,7 +105,7 @@ Page {
                         appSettings.quickUnlockType = selectedOption.value;
                     }
                 }
-                title: qsTr("Quick password") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Quick Password") + Retranslate.onLocaleOrLanguageChanged
                 Option {
                     text: Common.getQuickUnlockTypeDescription(Settings.QUICK_UNLOCK_FIRST_3) + Retranslate.onLocaleOrLanguageChanged
                     value: Settings.QUICK_UNLOCK_FIRST_3
@@ -157,7 +157,7 @@ Page {
             }
             DropDown {
                 id: entryListDetails
-                title: qsTr("Entry list details") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Entry List Details") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.entryListDetail = selectedOption.value;
@@ -169,7 +169,7 @@ Page {
                     selected: appSettings.entryListDetail == 0
                 }
                 Option {
-                    text: qsTr("User name") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("User Name") + Retranslate.onLocaleOrLanguageChanged
                     value: 1
                     selected: appSettings.entryListDetail == 1
                 }
@@ -189,21 +189,21 @@ Page {
                     selected: appSettings.entryListDetail == 8
                 }
                 Option {
-                    text: qsTr("Last modified time") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Last Modified Time") + Retranslate.onLocaleOrLanguageChanged
                     value: 16
                     selected: appSettings.entryListDetail == 16
                 }
             }
             DropDown {
                 id: alphaSorting
-                title: qsTr("Sort lists") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Sort Lists") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.alphaSorting = selectedOption.value;
                     }
                 }
                 Option {
-                    text: qsTr("No sorting") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("No Sorting") + Retranslate.onLocaleOrLanguageChanged
                     value: false
                     selected: !appSettings.alphaSorting
                 }
@@ -226,7 +226,7 @@ Page {
                 Label {
                     horizontalAlignment: HorizontalAlignment.Left
                     verticalAlignment: VerticalAlignment.Center
-                    text: qsTr("Search in Recycle Bin/Backup group") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Search in Recycle Bin/Backup Group") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1

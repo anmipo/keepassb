@@ -124,7 +124,7 @@ Page {
             Container {
                 LabelTextButton {
                     id: usernameField
-                    labelText: qsTr("User name") + Retranslate.onLocaleOrLanguageChanged
+                    labelText: qsTr("User Name") + Retranslate.onLocaleOrLanguageChanged
                     valueText: data.userName
                 }
                 LabelTextButton {

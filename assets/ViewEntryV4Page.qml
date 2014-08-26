@@ -144,7 +144,7 @@ Page {
             Container {
                 LabelTextButton {
                     id: usernameField
-                    labelText: qsTr("User name") + Retranslate.onLocaleOrLanguageChanged
+                    labelText: qsTr("User Name") + Retranslate.onLocaleOrLanguageChanged
                     valueText: data.userName
                 }
                 LabelTextButton {
@@ -191,7 +191,7 @@ Page {
         Container {
             id: viewEntryHistory
             Header {
-                title: qsTr("Entry history") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Entry History") + Retranslate.onLocaleOrLanguageChanged
             }
             ListView {
                 id: entryHistoryList

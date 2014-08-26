@@ -14,6 +14,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/AboutPage.qml" line="68"/>
+        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
+Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
+Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/AboutPage.qml" line="77"/>
         <source>Privacy Policy</source>
         <translation type="unfinished"></translation>
@@ -38,13 +45,6 @@
         <source>Credits</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../assets/AboutPage.qml" line="68"/>
-        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
-Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
-Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AppSettings</name>
@@ -60,12 +60,12 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="27"/>
-        <source>Lock database</source>
+        <source>Lock Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="34"/>
-        <source>When minimized</source>
+        <source>When Minimized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -98,7 +98,42 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="66"/>
-        <source>Clear clipboard</source>
+        <source>Clear Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="108"/>
+        <source>Quick Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="160"/>
+        <source>Entry List Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="172"/>
+        <source>User Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="192"/>
+        <source>Last Modified Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="199"/>
+        <source>Sort Lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="206"/>
+        <source>No Sorting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="229"/>
+        <source>Search in Recycle Bin/Backup Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -117,11 +152,6 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="108"/>
-        <source>Quick password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AppSettings.qml" line="141"/>
         <source>Learn more</source>
         <translation type="unfinished"></translation>
@@ -132,18 +162,8 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="160"/>
-        <source>Entry list details</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AppSettings.qml" line="167"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="172"/>
-        <source>User name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -162,21 +182,6 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="192"/>
-        <source>Last modified time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="199"/>
-        <source>Sort lists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="206"/>
-        <source>No sorting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AppSettings.qml" line="211"/>
         <source>Alphabetically</source>
         <translation type="unfinished"></translation>
@@ -184,11 +189,6 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <message>
         <location filename="../assets/AppSettings.qml" line="217"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="229"/>
-        <source>Search in Recycle Bin/Backup group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -372,7 +372,7 @@ NOTE: A timeout or the main-menu Lock button will activate the quick lock (if en
     <name>SearchResultsPage</name>
     <message>
         <location filename="../assets/SearchResultsPage.qml" line="9"/>
-        <source>Search results</source>
+        <source>Search Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -399,13 +399,13 @@ NOTE: A timeout or the main-menu Lock button will activate the quick lock (if en
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="212"/>
-        <source>Enter password</source>
+        <location filename="../assets/UnlockDbPage.qml" line="179"/>
+        <source>Key File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="222"/>
-        <source>Enable quick unlock</source>
+        <location filename="../assets/UnlockDbPage.qml" line="212"/>
+        <source>Enter password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -425,13 +425,13 @@ NOTE: A timeout or the main-menu Lock button will activate the quick lock (if en
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="179"/>
-        <source>Key file</source>
+        <location filename="../assets/UnlockDbPage.qml" line="197"/>
+        <source>(none)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="197"/>
-        <source>(none)</source>
+        <location filename="../assets/UnlockDbPage.qml" line="222"/>
+        <source>Enable Quick Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -472,7 +472,7 @@ To continue, tap the lock symbol below.</source>
     </message>
     <message>
         <location filename="../assets/ViewEntryFiles.qml" line="36"/>
-        <source>Save attached file</source>
+        <source>Save Attached File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -510,7 +510,7 @@ To continue, tap the lock symbol below.</source>
     </message>
     <message>
         <location filename="../assets/ViewEntryV3Page.qml" line="127"/>
-        <source>User name</source>
+        <source>User Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -578,7 +578,12 @@ To continue, tap the lock symbol below.</source>
     </message>
     <message>
         <location filename="../assets/ViewEntryV4Page.qml" line="147"/>
-        <source>User name</source>
+        <source>User Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="194"/>
+        <source>Entry History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -594,11 +599,6 @@ To continue, tap the lock symbol below.</source>
     <message>
         <location filename="../assets/ViewEntryV4Page.qml" line="170"/>
         <source>Notes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="194"/>
-        <source>Entry history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
