@@ -107,6 +107,21 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/AppSettings.qml" line="274"/>
+        <source>Recent Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="278"/>
+        <source>Clear History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="295"/>
+        <source>Changes will apply after restart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/AppSettings.qml" line="162"/>
         <source>Entry List Details</source>
         <translation type="unfinished"></translation>
@@ -399,7 +414,7 @@ NOTE: A timeout or the main-menu Lock button will activate the quick lock (if en
 <context>
     <name>UnlockDbPage</name>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="242"/>
+        <location filename="../assets/UnlockDbPage.qml" line="244"/>
         <source>Choose database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -409,12 +424,12 @@ NOTE: A timeout or the main-menu Lock button will activate the quick lock (if en
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="179"/>
+        <location filename="../assets/UnlockDbPage.qml" line="180"/>
         <source>Key File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="212"/>
+        <location filename="../assets/UnlockDbPage.qml" line="214"/>
         <source>Enter password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -424,44 +439,44 @@ NOTE: A timeout or the main-menu Lock button will activate the quick lock (if en
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="163"/>
+        <location filename="../assets/UnlockDbPage.qml" line="164"/>
         <source>Demo database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="169"/>
-        <location filename="../assets/UnlockDbPage.qml" line="202"/>
+        <location filename="../assets/UnlockDbPage.qml" line="170"/>
+        <location filename="../assets/UnlockDbPage.qml" line="204"/>
         <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="197"/>
+        <location filename="../assets/UnlockDbPage.qml" line="198"/>
         <source>(none)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="222"/>
+        <location filename="../assets/UnlockDbPage.qml" line="224"/>
         <source>Enable Quick Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="232"/>
+        <location filename="../assets/UnlockDbPage.qml" line="234"/>
         <source>Demo option enables you to test KeePassB without importing a real database.
 To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="254"/>
+        <location filename="../assets/UnlockDbPage.qml" line="256"/>
         <source>Choose key file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="269"/>
+        <location filename="../assets/UnlockDbPage.qml" line="271"/>
         <source>Decrypting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="283"/>
+        <location filename="../assets/UnlockDbPage.qml" line="285"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -717,12 +732,12 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="70"/>
+        <location filename="../assets/main.qml" line="71"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="73"/>
+        <location filename="../assets/main.qml" line="74"/>
         <source>Clipboard cleared</source>
         <translation type="unfinished"></translation>
     </message>

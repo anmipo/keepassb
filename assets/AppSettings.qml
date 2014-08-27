@@ -270,6 +270,18 @@ Page {
                     verticalAlignment: VerticalAlignment.Top
                 }
             }
+            Header {
+                title: qsTr("Recent Files") + Retranslate.onLocaleOrLanguageChanged
+            }
+            Button {
+                id: clearRecentFiles
+                text: qsTr("Clear History") + Retranslate.onLocaleOrLanguageChanged
+                horizontalAlignment: HorizontalAlignment.Fill
+                onClicked: {
+                    appSettings.clearRecentFiles();
+                    restartToApplyToast.show();
+                }
+            }
             Divider { }
         }
     }
@@ -277,6 +289,10 @@ Page {
         ComponentDefinition {
             id: quickUnlockHelpComponent
             source: "QuickUnlockHelp.qml"
+        },
+        SystemToast {
+            id: restartToApplyToast
+            body: qsTr("Changes will apply after restart")
         }
     ]
 }

@@ -119,6 +119,10 @@ public:
      */
     Q_INVOKABLE QStringList getRecentFiles() const;
     /**
+     * Clears the list of recent files (permanently).
+     */
+    Q_INVOKABLE void clearRecentFiles();
+    /**
      * Returns the key file path last used for the given database;
      * or empty string if no such file found.
      */

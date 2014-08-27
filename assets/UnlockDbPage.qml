@@ -157,6 +157,7 @@ Page {
                     }
                 }
                 options: [
+                    // dynamically inserted options are inserted here
                     Option {
                         id: dbDemoOption
                         // TODO hide this after first non-demo file open
@@ -197,6 +198,7 @@ Page {
                         text: qsTr("(none)") + Retranslate.onLocaleOrLanguageChanged
                         value: ""
                     },
+                    // dynamically inserted options are inserted here
                     Option {
                         id: keyBrowseOption
                         text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged

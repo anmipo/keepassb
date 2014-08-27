@@ -130,6 +130,12 @@ QStringList Settings::getRecentFiles() const {
     return res;
 }
 
+Q_INVOKABLE void Settings::clearRecentFiles() {
+    _recentFiles.clear();
+    _recentDbToKey.clear();
+    saveRecentFiles();
+}
+
 QString Settings::getKeyFileForDatabase(const QString& dbFile) const {
     if (_recentDbToKey.contains(dbFile)) {
         return _recentDbToKey.value(dbFile);
