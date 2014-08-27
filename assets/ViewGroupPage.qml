@@ -62,6 +62,12 @@ Page {
             imageSource: "asset:///images/ic_search.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: startSearch()
+            shortcuts: [
+                SystemShortcut {
+                    type: SystemShortcuts.Search
+                    onTriggered: startSearch()
+                }
+            ]
         }
     ]
     
