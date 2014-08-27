@@ -18,6 +18,7 @@ Sheet {
         quickPassEdit.text = "";
         if (app.quickUnlock(pass)) {
             quickUnlockSheet.close();
+            app.restartWatchdog();
         } else {
             wrongCodeToast.show();
             database.lock();
