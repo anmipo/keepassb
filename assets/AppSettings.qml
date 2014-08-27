@@ -9,6 +9,8 @@ Page {
     onCreationCompleted: {
         searchInDeleted.checked = appSettings.searchInDeleted;
         searchInDeleted.checkedChanged.connect(appSettings.setSearchInDeleted);
+        searchAfterUnlock.checked = appSettings.searchAfterUnlock;
+        searchAfterUnlock.checkedChanged.connect(appSettings.setSearchAfterUnlock);
     }
     ScrollView {
         scrollRole: ScrollRole.Main
@@ -218,6 +220,35 @@ Page {
             }
             Container {
                 topMargin: 10
+                layout: StackLayout { 
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                horizontalAlignment: HorizontalAlignment.Fill
+                Label {
+                    horizontalAlignment: HorizontalAlignment.Left
+                    verticalAlignment: VerticalAlignment.Center
+                    text: qsTr("Search at Start") + Retranslate.onLocaleOrLanguageChanged
+                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                    layoutProperties: StackLayoutProperties {
+                        spaceQuota: 1
+                    }
+                }
+                ToggleButton {
+                    id: searchAfterUnlock
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Top
+                }
+            }
+            Label {
+                horizontalAlignment: HorizontalAlignment.Fill
+                text: qsTr("This option will automatically activate Search whenever a database is unlocked.")
+                textStyle.base: SystemDefaults.TextStyles.SubtitleText
+                textStyle.color: Color.Gray
+                multiline: true
+            }
+            Divider{}
+            Container {
+                topMargin: 10
                 bottomMargin: 10
                 layout: StackLayout { 
                     orientation: LayoutOrientation.LeftToRight
@@ -228,6 +259,7 @@ Page {
                     verticalAlignment: VerticalAlignment.Center
                     text: qsTr("Search in Recycle Bin/Backup Group") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                    multiline: true
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1
                     }

@@ -19,6 +19,10 @@ class Settings: public QObject {
      */
     Q_PROPERTY(bool searchInDeleted READ isSearchInDeleted WRITE setSearchInDeleted NOTIFY searchInDeletedChanged)
     /**
+     * Should we switch to search mode after unlocking a DB?
+     */
+    Q_PROPERTY(bool searchAfterUnlock READ isSearchAfterUnlock WRITE setSearchAfterUnlock NOTIFY searchAfterUnlockChanged)
+    /**
      * Time in millis until entries copied to clipboard are deleted from there. Negative means "never".
      */
     Q_PROPERTY(int clipboardTimeout READ getClipboardTimeout WRITE setClipboardTimeout NOTIFY clipboardTimeoutChanged)
@@ -70,6 +74,7 @@ public:
 private:
     static Settings* _instance;
     bool _searchInDeleted;
+    bool _searchAfterUnlock;
     int _clipboardTimeout;
     bool _trackRecentDb;
     int _autoLockTimeout;
@@ -95,6 +100,7 @@ public:
 
     // property accessors
     bool isSearchInDeleted() const { return _searchInDeleted; }
+    bool isSearchAfterUnlock() const { return _searchAfterUnlock; }
     int getClipboardTimeout() const { return _clipboardTimeout; }
     bool isTrackRecentDb() const { return _trackRecentDb; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
@@ -120,6 +126,7 @@ public:
 
 public slots:
     void setSearchInDeleted(bool searchInDeleted);
+    void setSearchAfterUnlock(bool searchAfterUnlock);
     void setClipboardTimeout(int timeout);
     void setTrackRecentDb(bool track);
     void setAutoLockTimeout(int timeout);
@@ -129,6 +136,7 @@ public slots:
     void setQuickUnlockType(QuickUnlockType type);
 signals:
     void searchInDeletedChanged(bool);
+    void searchAfterUnlockChanged(bool);
     void clipboardTimeoutChanged(int);
     void trackRecentDbChanged(bool);
     void autoLockTimeoutChanged(int);

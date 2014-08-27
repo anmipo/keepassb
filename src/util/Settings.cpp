@@ -15,6 +15,7 @@
  * Default settings values
  */
 const bool DEFAULT_SEARCH_IN_DELETED = false;
+const bool DEFAULT_SEARCH_AFTER_UNLOCK = false;
 const int DEFAULT_CLIPBOARD_TIMEOUT = 30 * 1000;
 const bool DEFAULT_TRACK_RECENT_DB = true;
 const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
@@ -27,6 +28,7 @@ const int DEFAULT_QUICK_UNLOCK_TYPE = Settings::QUICK_UNLOCK_FIRST_4;
  * Keys for preferences values
  */
 const QString KEY_SEARCH_IN_DELETED = "searchInDeleted";
+const QString KEY_SEARCH_AFTER_UNLOCK = "searchAfterUnlock";
 const QString KEY_CLIPBOARD_TIMEOUT = "clipboardTimeout";
 const QString KEY_TRACK_RECENT_DB = "trackRecentDb";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
@@ -64,6 +66,8 @@ Settings::Settings(QObject* parent) : QObject(parent) {
     QSettings settings;
     _searchInDeleted = settings.value(
             KEY_SEARCH_IN_DELETED, DEFAULT_SEARCH_IN_DELETED).toBool();
+    _searchAfterUnlock = settings.value(
+            KEY_SEARCH_AFTER_UNLOCK, DEFAULT_SEARCH_AFTER_UNLOCK).toBool();
     _clipboardTimeout = settings.value(
             KEY_CLIPBOARD_TIMEOUT, DEFAULT_CLIPBOARD_TIMEOUT).toInt();
     _trackRecentDb = settings.value(
@@ -139,6 +143,14 @@ void Settings::setSearchInDeleted(bool searchInDeleted) {
         QSettings().setValue(KEY_SEARCH_IN_DELETED, searchInDeleted);
         _searchInDeleted = searchInDeleted;
         emit searchInDeletedChanged(searchInDeleted);
+    }
+}
+
+void Settings::setSearchAfterUnlock(bool searchAfterUnlock) {
+    if (searchAfterUnlock != _searchAfterUnlock) {
+        QSettings().setValue(KEY_SEARCH_AFTER_UNLOCK, searchAfterUnlock);
+        _searchAfterUnlock = searchAfterUnlock;
+        emit searchAfterUnlockChanged(searchAfterUnlock);
     }
 }
 

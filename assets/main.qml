@@ -54,7 +54,11 @@ NavigationPane {
         onDatabaseUnlocked: {
             app.restartWatchdog();
             var viewGroupPage = Qt.createComponent("ViewGroupPage.qml");
-            var groupPage = viewGroupPage.createObject(null, {"group": database.rootGroup});
+            var groupPage = viewGroupPage.createObject(null, 
+                    {"group": database.rootGroup, "autofocus": appSettings.searchAfterUnlock});
+            if (appSettings.searchAfterUnlock) {
+                groupPage.startSearch();
+            }
             naviPane.push(groupPage);
         }
     }
@@ -115,6 +119,9 @@ NavigationPane {
         // auto focusing on UnlockDbPage's text field requires this weird workaround
         if (page == unlockDbPage) {
             unlockDbPage.focusOnPassword();
+        }
+        if (page.hasOwnProperty("autofocus") && page.autofocus) {
+            page.performAutofocus();
         }
     }
 

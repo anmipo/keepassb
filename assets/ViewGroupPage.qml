@@ -8,6 +8,7 @@ import "common.js" as Common
 
 Page {
     property PwGroup group
+    property bool autofocus: false
 
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
@@ -41,6 +42,13 @@ Page {
         }
     }
     
+    function performAutofocus() {
+        searchField.requestFocus();
+    }
+    function startSearch() {
+        searchContainer.visible = true;
+        performAutofocus();
+    }
     function cancelSearch() {
         searchContainer.visible = false;
         searchField.searchQuery = searchField.text;
@@ -53,10 +61,7 @@ Page {
             title: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_search.png"
             ActionBar.placement: ActionBarPlacement.OnBar
-            onTriggered: {
-                searchContainer.visible = true;
-                searchField.requestFocus();
-            }
+            onTriggered: startSearch()
         }
     ]
     
