@@ -38,6 +38,11 @@ Page {
                     selected: (appSettings.autoLockTimeout == 0)
                 }
                 Option {
+                    text: qsTr("After 15 seconds") + Retranslate.onLocaleOrLanguageChanged
+                    value: 15 * 1000
+                    selected: (appSettings.autoLockTimeout == 15 * 1000)
+                }
+                Option {
                     text: qsTr("After 30 seconds") + Retranslate.onLocaleOrLanguageChanged
                     value: 30 * 1000
                     selected: (appSettings.autoLockTimeout == 30 * 1000)
@@ -90,6 +95,11 @@ Page {
                     text: qsTr("After 1 minute") + Retranslate.onLocaleOrLanguageChanged
                     value: 60 * 1000;
                     selected: (appSettings.clipboardTimeout == 60 * 1000)
+                }
+                Option {
+                    text: qsTr("After 2 minutes") + Retranslate.onLocaleOrLanguageChanged
+                    value: 2 * 60 * 1000;
+                    selected: (appSettings.clipboardTimeout == 2 * 60 * 1000)
                 }
                 Option {
                     text: qsTr("Never") + Retranslate.onLocaleOrLanguageChanged

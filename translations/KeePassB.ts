@@ -14,13 +14,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="68"/>
-        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
-Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
-Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AboutPage.qml" line="77"/>
         <source>Privacy Policy</source>
         <translation type="unfinished"></translation>
@@ -43,6 +36,13 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <message>
         <location filename="../assets/AboutPage.qml" line="63"/>
         <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="68"/>
+        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
+Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
+Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -70,149 +70,155 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="41"/>
-        <location filename="../assets/AppSettings.qml" line="85"/>
-        <source>After 30 seconds</source>
+        <source>After 15 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="46"/>
         <location filename="../assets/AppSettings.qml" line="90"/>
-        <source>After 1 minute</source>
+        <source>After 30 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="51"/>
-        <source>After 2 minutes</source>
+        <location filename="../assets/AppSettings.qml" line="95"/>
+        <source>After 1 minute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="56"/>
-        <source>After 5 minutes</source>
+        <location filename="../assets/AppSettings.qml" line="100"/>
+        <source>After 2 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="61"/>
-        <location filename="../assets/AppSettings.qml" line="95"/>
+        <source>After 5 minutes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="66"/>
+        <location filename="../assets/AppSettings.qml" line="105"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="68"/>
+        <location filename="../assets/AppSettings.qml" line="73"/>
         <source>Clear Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="110"/>
+        <location filename="../assets/AppSettings.qml" line="120"/>
         <source>Quick Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="274"/>
+        <location filename="../assets/AppSettings.qml" line="284"/>
         <source>Recent Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="278"/>
+        <location filename="../assets/AppSettings.qml" line="288"/>
         <source>Clear History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="295"/>
-        <source>Changes will apply after restart.</source>
+        <location filename="../assets/AppSettings.qml" line="305"/>
+        <source>Changes will apply after restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="162"/>
+        <location filename="../assets/AppSettings.qml" line="172"/>
         <source>Entry List Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="174"/>
+        <location filename="../assets/AppSettings.qml" line="184"/>
         <source>User Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="194"/>
+        <location filename="../assets/AppSettings.qml" line="204"/>
         <source>Last Modified Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="201"/>
+        <location filename="../assets/AppSettings.qml" line="211"/>
         <source>Sort Lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="208"/>
+        <location filename="../assets/AppSettings.qml" line="218"/>
         <source>No Sorting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="230"/>
+        <location filename="../assets/AppSettings.qml" line="240"/>
         <source>Search at Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="244"/>
+        <location filename="../assets/AppSettings.qml" line="254"/>
         <source>This option will automatically activate Search whenever a database is unlocked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="260"/>
+        <location filename="../assets/AppSettings.qml" line="270"/>
         <source>Search in Recycle Bin/Backup Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="75"/>
+        <location filename="../assets/AppSettings.qml" line="80"/>
         <source>After 10 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="80"/>
+        <location filename="../assets/AppSettings.qml" line="85"/>
         <source>After 20 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="101"/>
+        <location filename="../assets/AppSettings.qml" line="111"/>
         <source>Quick Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="143"/>
+        <location filename="../assets/AppSettings.qml" line="153"/>
         <source>Learn more</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="158"/>
+        <location filename="../assets/AppSettings.qml" line="168"/>
         <source>Lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="169"/>
+        <location filename="../assets/AppSettings.qml" line="179"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="179"/>
+        <location filename="../assets/AppSettings.qml" line="189"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="184"/>
+        <location filename="../assets/AppSettings.qml" line="194"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="189"/>
+        <location filename="../assets/AppSettings.qml" line="199"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="213"/>
+        <location filename="../assets/AppSettings.qml" line="223"/>
         <source>Alphabetically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="219"/>
+        <location filename="../assets/AppSettings.qml" line="229"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
