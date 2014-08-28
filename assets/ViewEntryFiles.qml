@@ -55,7 +55,7 @@ Container {
         },
         SystemToast {
             id: infoToast
-            button.label: qsTr("Open") + Retranslate.onLocaleOrLanguageChanged
+            button.label: qsTr("Open", "An action which opens/launches a selected file (see related error message; reference:INVOKE_ATTACHMENT)") + Retranslate.onLocaleOrLanguageChanged
             onFinished: {
                 if (value == SystemUiResult.ButtonSelection) {
                     app.invokeFile("file://" + savedFileName);

@@ -84,13 +84,13 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
     case SIGNATURE_1_MISMATCH:
         // fallthrough
     case SIGNATURE_2_MISMATCH:
-        return tr("Wrong file signature");
+        return tr("Wrong database signature", "Error message when opening a database.");
     case UNSUPPORTED_FILE_VERSION:
-        return tr("Unsupported DB file version");
+        return tr("Unsupported database version", "Error message when opening a database.");
     case NOT_AES:
-        return tr("Twofish cypher is not supported");
+        return tr("Twofish cypher is not supported", "Error message when opening a database. 'Twofish' is an algorithm name, do not translate it.");
     default:
-        return tr("Header error");
+        return tr("Header error", "Error message when opening a database. 'Header' refers to supplemental data placed at the beginning of a file.");
     }
 }
 
@@ -125,7 +125,7 @@ bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
 
 void PwDatabaseV3::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(password.toLatin1(), keyFileData, combinedKey)) {
-        emit dbUnlockError(tr("Crypto library error"), COMPOSITE_KEY_ERROR);
+        emit dbUnlockError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
         return;
     }
 
@@ -174,7 +174,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     ErrorCode err = transformKey(combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
-        emit dbUnlockError(tr("Cannot decrypt database"), err);
+        emit dbUnlockError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
 
@@ -195,7 +195,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
             // err == CONTENT_HASHING_ERROR
             // err == something else
             qDebug() << "Cannot decrypt database - decryptData" << err;
-            emit dbUnlockError(tr("Cannot decrypt database"), err);
+            emit dbUnlockError(tr("Cannot decrypt database", "An error message"), err);
         }
         return false;
     }
@@ -205,7 +205,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
     err = readContent(decryptedDataStream);
     if (err != SUCCESS) {
-        emit dbUnlockError(tr("Cannot parse database"), err);
+        emit dbUnlockError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
     }
 

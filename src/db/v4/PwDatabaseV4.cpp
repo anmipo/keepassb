@@ -163,15 +163,15 @@ QString PwHeaderV4::getErrorMessage(ErrorCode errCode) {
     case SIGNATURE_1_MISMATCH:
         // fallthrough
     case SIGNATURE_2_MISMATCH:
-        return tr("Wrong file signature");
+        return tr("Wrong database signature", "Error message when opening a database.");
     case UNSUPPORTED_FILE_VERSION:
-        return tr("Unsupported DB file version");
+        return tr("Unsupported database version", "Error message when opening a database.");
     case UNKNOWN_COMPRESSION_ALGORITHM:
-        return tr("Unknown compression algorithm");
+        return tr("Unknown compression algorithm", "Error message when opening a database.");
     case NOT_AES:
-        return tr("Twofish cypher is not supported");
+        return tr("Twofish cypher is not supported", "Error message when opening a database. 'Twofish' is an algorithm name, do not translate it.");
     default:
-        return tr("Header error");
+        return tr("Header error", "Error message when opening a database. 'Header' refers to supplemental data placed at the beginning of a file.");
     }
 }
 
@@ -254,7 +254,7 @@ void PwDatabaseV4::clear() {
 
 void PwDatabaseV4::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(password.toUtf8(), keyFileData, combinedKey)) {
-        emit dbUnlockError(tr("Crypto library error"), COMPOSITE_KEY_ERROR);
+        emit dbUnlockError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
         return;
     }
 
@@ -371,7 +371,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     ErrorCode err = transformKey(header, combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
-        emit dbUnlockError(tr("Cannot decrypt database"), err);
+        emit dbUnlockError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
 
@@ -385,7 +385,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = decryptData(dbBytesWithoutHeader, decryptedData);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - decryptData" << err;
-        emit dbUnlockError(tr("Cannot decrypt database"), err);
+        emit dbUnlockError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
     emit unlockProgressChanged(UNLOCK_PROGRESS_DECRYPTED);
@@ -408,7 +408,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = readBlocks(decryptedStream, blocksData);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - readBlocks" << err;
-        emit dbUnlockError(tr("Error reading database"), err);
+        emit dbUnlockError(tr("Error reading database", "An error message"), err);
         return false;
     }
 
@@ -420,7 +420,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         Util::ErrorCode inflateErr = Util::inflateGZipData(blocksData, xmlData);
         if (inflateErr != Util::SUCCESS) {
             qDebug() << "Error inflating database";
-            emit dbUnlockError(tr("Error inflating database"), inflateErr);
+            emit dbUnlockError(tr("Error inflating database", "An error message. Inflating means decompression of compressed data."), inflateErr);
             return false;
         }
     } else {
@@ -433,7 +433,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = initSalsa20();
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - initSalsa20" << err;
-        emit dbUnlockError(tr("Cannot decrypt database"), err);
+        emit dbUnlockError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
 
@@ -442,7 +442,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = parseXml(xmlString);
     if (err != SUCCESS) {
         qDebug() << "Error parsing database" << err;
-        emit dbUnlockError(tr("Error parsing database"), err);
+        emit dbUnlockError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
     }
 

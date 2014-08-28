@@ -9,11 +9,11 @@
 #include "util/Util.h"
 
 // Standard entry fields
-const static QString TITLE = "Title";
-const static QString USERNAME = "UserName";
-const static QString PASSWORD = "Password";
-const static QString URL = "URL";
-const static QString NOTES = "Notes";
+const static QString TITLE = QString("Title");
+const static QString USERNAME = QString("UserName");
+const static QString PASSWORD = QString("Password");
+const static QString URL = QString("URL");
+const static QString NOTES = QString("Notes");
 
 
 PwExtraField::PwExtraField(QObject* parent) : QObject(parent) {

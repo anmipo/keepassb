@@ -94,7 +94,7 @@ void ApplicationUI::onSystemLanguageChanged() {
     QCoreApplication::instance()->removeTranslator(m_pTranslator);
     // Initiate, load and install the application translation files.
     QString locale_string = QLocale().name();
-    QString file_name = QString("KPB_proto1_%1").arg(locale_string);
+    QString file_name = QString("KeePassB_%1").arg(locale_string);
     if (m_pTranslator->load(file_name, "app/native/qm")) {
         QCoreApplication::instance()->installTranslator(m_pTranslator);
     }
@@ -152,7 +152,7 @@ void ApplicationUI::invokeFile(const QString& uri) {
         qDebug() << "invoke ok";
     } else {
         qDebug() << "invoke failed";
-        showToast(tr("Invoke failed"));
+        showToast(tr("Cannot open the file", "An error message related to the 'open file' action (see reference:INVOKE_ATTACHMENT)"));
     }
 }
 

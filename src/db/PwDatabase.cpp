@@ -198,7 +198,7 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     QFile dbFile (dbFilePath);
     if (!dbFile.open(QIODevice::ReadOnly)) {
         qDebug() << "Cannot open DB file: '" << dbFilePath << "' Error: " << dbFile.error() << ". Message: " << dbFile.errorString();
-        emit fileOpenError(tr("Cannot open DB file"), dbFile.errorString());
+        emit fileOpenError(tr("Cannot open database file", "An error message shown when the file is not available or cannot be read."), dbFile.errorString());
         return;
     }
     qDebug() << "DB file read ok";
@@ -211,7 +211,7 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
         QFile keyFile (keyFilePath);
         if (!keyFile.open(QIODevice::ReadOnly)) {
             qDebug() << "Cannot open key file: '" << keyFilePath << "' Error: " << keyFile.error() << ". Message: " << keyFile.errorString();
-            emit fileOpenError(tr("Cannot open key file"), keyFile.errorString());
+            emit fileOpenError(tr("Cannot open key file", "An error message shown when the file is not available or cannot be read. See 'key file' in the supplied thesaurus."), keyFile.errorString());
             return;
         }
         keyFileData = keyFile.readAll();
@@ -224,7 +224,7 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     // Get suitable DB processor (KeePass1 vs KeePass2)
     db = createDatabaseInstance(dbFileData);
     if (!db) {
-        emit dbUnlockError(tr("Unknown DB format"), PwDatabase::UNKNOWN_DB_FORMAT);
+        emit dbUnlockError(tr("Unknown database format", "An error message for unrecognized/unsupported database file structure."), PwDatabase::UNKNOWN_DB_FORMAT);
         return;
     }
 

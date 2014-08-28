@@ -14,6 +14,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/AboutPage.qml" line="68"/>
+        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
+Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
+Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/AboutPage.qml" line="77"/>
         <source>Privacy Policy</source>
         <translation type="unfinished"></translation>
@@ -36,13 +43,6 @@
     <message>
         <location filename="../assets/AboutPage.qml" line="63"/>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AboutPage.qml" line="68"/>
-        <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
-Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
-Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; (free Smashing Magazine release) and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by LuboЕЎ Volkov.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -227,7 +227,8 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <name>ApplicationUI</name>
     <message>
         <location filename="../src/applicationui.cpp" line="155"/>
-        <source>Invoke failed</source>
+        <source>Cannot open the file</source>
+        <comment>An error message related to the &apos;open file&apos; action (see reference:INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -235,17 +236,20 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <name>PwDatabaseFacade</name>
     <message>
         <location filename="../src/db/PwDatabase.cpp" line="201"/>
-        <source>Cannot open DB file</source>
+        <source>Cannot open database file</source>
+        <comment>An error message shown when the file is not available or cannot be read.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/PwDatabase.cpp" line="214"/>
         <source>Cannot open key file</source>
+        <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/PwDatabase.cpp" line="227"/>
-        <source>Unknown DB format</source>
+        <source>Unknown database format</source>
+        <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -253,18 +257,26 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <name>PwDatabaseV3</name>
     <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="128"/>
-        <source>Crypto library error</source>
+        <source>Cryptographic library error</source>
+        <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="177"/>
+        <source>Cannot decrypt database</source>
+        <comment>A generic error message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="198"/>
         <source>Cannot decrypt database</source>
+        <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="208"/>
         <source>Cannot parse database</source>
+        <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -272,29 +284,39 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <name>PwDatabaseV4</name>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="257"/>
-        <source>Crypto library error</source>
+        <source>Cryptographic library error</source>
+        <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="374"/>
+        <source>Cannot decrypt database</source>
+        <comment>A generic error message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="388"/>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="436"/>
         <source>Cannot decrypt database</source>
+        <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="411"/>
         <source>Error reading database</source>
+        <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="423"/>
         <source>Error inflating database</source>
+        <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="445"/>
-        <source>Error parsing database</source>
+        <source>Cannot parse database</source>
+        <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -302,22 +324,26 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <name>PwHeaderV3</name>
     <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="87"/>
-        <source>Wrong file signature</source>
+        <source>Wrong database signature</source>
+        <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="89"/>
-        <source>Unsupported DB file version</source>
+        <source>Unsupported database version</source>
+        <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="91"/>
         <source>Twofish cypher is not supported</source>
+        <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v3/PwDatabaseV3.cpp" line="93"/>
         <source>Header error</source>
+        <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -325,27 +351,32 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <name>PwHeaderV4</name>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="166"/>
-        <source>Wrong file signature</source>
+        <source>Wrong database signature</source>
+        <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="168"/>
-        <source>Unsupported DB file version</source>
+        <source>Unsupported database version</source>
+        <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="170"/>
         <source>Unknown compression algorithm</source>
+        <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="172"/>
         <source>Twofish cypher is not supported</source>
+        <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/db/v4/PwDatabaseV4.cpp" line="174"/>
         <source>Header error</source>
+        <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -369,32 +400,32 @@ NOTE: A timeout or the main-menu Lock button will activate the quick lock (if en
 <context>
     <name>QuickUnlockPage</name>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="32"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="33"/>
         <source>Quick Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="34"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="35"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="47"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="48"/>
         <source>Database: &lt;i&gt;%1&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="54"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="55"/>
         <source>Enter quick password:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="67"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="68"/>
         <source>Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="75"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="76"/>
         <source>Wrong unlock code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -519,6 +550,7 @@ To continue, tap the lock symbol below.</source>
     <message>
         <location filename="../assets/ViewEntryFiles.qml" line="58"/>
         <source>Open</source>
+        <comment>An action which opens/launches a selected file (see related error message; reference:INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -657,32 +689,32 @@ To continue, tap the lock symbol below.</source>
     <name>ViewGroupPage</name>
     <message>
         <location filename="../assets/ViewGroupPage.qml" line="61"/>
-        <location filename="../assets/ViewGroupPage.qml" line="113"/>
+        <location filename="../assets/ViewGroupPage.qml" line="119"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="81"/>
+        <location filename="../assets/ViewGroupPage.qml" line="87"/>
         <source>Lock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="135"/>
+        <location filename="../assets/ViewGroupPage.qml" line="141"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="185"/>
+        <location filename="../assets/ViewGroupPage.qml" line="191"/>
         <source>Copy User Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="192"/>
+        <location filename="../assets/ViewGroupPage.qml" line="198"/>
         <source>Copy Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="231"/>
+        <location filename="../assets/ViewGroupPage.qml" line="237"/>
         <source>This group is empty</source>
         <translation type="unfinished"></translation>
     </message>
