@@ -58,7 +58,7 @@ Page {
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Default
     actions: [
         ActionItem {
-            title: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Search", "A button/action which opens a search dialog.") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_search.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: startSearch()
@@ -84,7 +84,7 @@ Page {
         titleBar.title = group.name;
         if (!group.parentGroup) {
             backButton.imageSource = "asset:///images/ic_lock.png";
-            backButton.title = qsTr("Lock");
+            backButton.title = qsTr("Lock", "A button/action which locks/closes the database.");
         } 
     }
     
@@ -116,7 +116,7 @@ Page {
                     property string searchQuery 
                     
                     id: searchField
-                    hintText: qsTr("Search") + Retranslate.onLocaleOrLanguageChanged
+                    hintText: qsTr("Search...", "Hint text inside the search text input field") + Retranslate.onLocaleOrLanguageChanged
                     horizontalAlignment: HorizontalAlignment.Fill
                     layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                     clearButtonVisible: true 
@@ -138,7 +138,7 @@ Page {
                     }
                 }
                 Button {
-                    text: qsTr("Cancel") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Cancel", "Cancel button") + Retranslate.onLocaleOrLanguageChanged
                     horizontalAlignment: HorizontalAlignment.Right
                     preferredWidth: 50
                     onClicked: {
@@ -188,14 +188,14 @@ Page {
                                 title: ListItemData.title
                                 actions: [
                                     ActionItem {
-                                        title: qsTr("Copy User Name") + Retranslate.onLocaleOrLanguageChanged
+                                        title: qsTr("Copy User Name", "A button/action which copies user_name value to the clipboard. Here, 'User Name' refers to login information rather that person's own name.") + Retranslate.onLocaleOrLanguageChanged
                                         imageSource: "asset:///images/ic_copy.png"
                                         onTriggered: {
                                             Qt.app.copyWithTimeout(ListItemData.userName);
                                         }
                                     },
                                     ActionItem {
-                                        title: qsTr("Copy Password") + Retranslate.onLocaleOrLanguageChanged
+                                        title: qsTr("Copy Password", "A button/action which copies password password value to the clipborad.") + Retranslate.onLocaleOrLanguageChanged
                                         imageSource: "asset:///images/ic_copy_password.png"
                                         onTriggered: {
                                             Qt.app.copyWithTimeout(ListItemData.password);
@@ -234,7 +234,7 @@ Page {
                 horizontalAlignment: HorizontalAlignment.Center
             }
             Label {
-                text: qsTr("This group is empty") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("This group is empty", "Description for groups without any subgroups or entries.") + Retranslate.onLocaleOrLanguageChanged
                 textStyle.base: SystemDefaults.TextStyles.BodyText
                 horizontalAlignment: HorizontalAlignment.Center
             }

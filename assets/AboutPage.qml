@@ -7,7 +7,7 @@ Page {
 
     actions: [
         ActionItem {
-            title: qsTr("Contact Developer") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Contact Developer", "Menu item: action to write an email to the application developer") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_email.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
@@ -41,17 +41,17 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("KeePassB") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("KeePassB", "Application name, do not translate") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.BigText
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("Version 2.1 beta") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Version 2.1 beta", "Application version in 'About' screen") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("©2014 Andrei Popleteev") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("\u00A92014 Andrei Popleteev", "Developer name, do not translate") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }
@@ -60,12 +60,12 @@ Page {
                     bottomMargin: 30
                 }
                 Label{
-                    text: qsTr("Credits") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Credits", "Title of the help page with acknowledgements and licensing terms of used components.") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.TitleText
                     horizontalAlignment: HorizontalAlignment.Left
                 }
                 Label{
-                    text: qsTr("Thanks to Dominik Reichl for <a href='http://keepass.info'>KeePass</a>.\nThanks to Nam T. Nguyen for <a href='https://bitbucket.org/namn/browsepass/'>BrowsePass</a>, a nice JavaScript-based KeePass&nbsp;2 port.\n\rSome icons are based on free samples of the <a href='http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/'>Linecons Icon Set</a> (free Smashing Magazine release) and <a href='http://getothercircles.com'>The OtherCircles</a> icon set by Luboš Volkov.") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Thanks to Dominik Reichl for <a href='http://keepass.info'>KeePass</a>.\nThanks to Nam T. Nguyen for <a href='https://bitbucket.org/namn/browsepass/'>BrowsePass</a>, a nice JavaScript-based KeePass&nbsp;2 port.\n\rSome icons are based on free samples of the <a href='http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/'>Linecons Icon Set</a> and <a href='http://getothercircles.com'>The OtherCircles</a> icon set by Lubo\u0161 Volkov.", "Content of the 'Credits' help section ") + Retranslate.onLocaleOrLanguageChanged
                     multiline: true
                     textFormat: TextFormat.Html
                     textStyle.base: SystemDefaults.TextStyles.BodyText
@@ -74,12 +74,12 @@ Page {
                 }
                 Label{
                     topMargin: 30
-                    text: qsTr("Privacy Policy") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Privacy Policy", "Title of a help page") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.TitleText
                     horizontalAlignment: HorizontalAlignment.Left
                 }
                 Label{
-                    text: qsTr("KeePassB does not collect any personal data nor share it with anyone.") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("KeePassB does not collect any personal data nor share it with anyone.", "Content of the 'Privacy Policy' help page") + Retranslate.onLocaleOrLanguageChanged
                     multiline: true
                     textFormat: TextFormat.Plain
                     textStyle.base: SystemDefaults.TextStyles.BodyText

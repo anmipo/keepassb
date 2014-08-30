@@ -8,7 +8,7 @@ Container {
     property string savedFileName
 
     Header {
-        title: qsTr("Attachments") + Retranslate.onLocaleOrLanguageChanged
+        title: qsTr("Attachments", "Title for a list of attached files") + Retranslate.onLocaleOrLanguageChanged
     }    
     ListView {
         id: entryFileList
@@ -18,7 +18,7 @@ Container {
             ListItemComponent {
                 StandardListItem {
                     title: ListItemData.name
-                    description: qsTr("%n byte(s)", "", ListItemData.size) + Retranslate.onLocaleOrLanguageChanged
+                    description: qsTr("%n byte(s)", "File size in bytes; please specify the required plural forms.", ListItemData.size) + Retranslate.onLocaleOrLanguageChanged
                 }
             }
         ]
@@ -33,7 +33,7 @@ Container {
     attachedObjects: [
         FilePicker {
             id: saveAttachmentFilePicker
-            title: qsTr("Save Attached File") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Save File", "Title of a file saving dialog.") + Retranslate.onLocaleOrLanguageChanged
             mode: FilePickerMode.Saver
             type: FileType.Other
             allowOverwrite: true
@@ -41,10 +41,10 @@ Container {
                 savedFileName = selectedFiles[0]; // full path
                 var success = selectedAttachment.saveContentToFile(savedFileName); 
                 if (success) {
-                    infoToast.body = qsTr("File saved")
+                    infoToast.body = qsTr("File saved", "A confirmation message once the file has been successfully saved")
                     infoToast.button.enabled = true;
                 } else {
-                    infoToast.body = qsTr("Could not save file")
+                    infoToast.body = qsTr("Could not save file", "Error message")
                     infoToast.button.enabled = false;
                 }
                 infoToast.show();
@@ -55,7 +55,7 @@ Container {
         },
         SystemToast {
             id: infoToast
-            button.label: qsTr("Open", "An action which opens/launches a selected file (see related error message; reference:INVOKE_ATTACHMENT)") + Retranslate.onLocaleOrLanguageChanged
+            button.label: qsTr("Open", "A button/action which opens (or launches) a file (see related error message with reference INVOKE_ATTACHMENT)") + Retranslate.onLocaleOrLanguageChanged
             onFinished: {
                 if (value == SystemUiResult.ButtonSelection) {
                     app.invokeFile("file://" + savedFileName);

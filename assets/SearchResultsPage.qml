@@ -6,7 +6,7 @@ Page {
     property PwSearchResultDataModel searchResult
     
     titleBar: TitleBar {
-        title: qsTr("Search Results") + Retranslate.onLocaleOrLanguageChanged 
+        title: qsTr("Search Results", "Title of the page which lists search results") + Retranslate.onLocaleOrLanguageChanged 
     }
     Container {
         onTouchCapture: {
@@ -35,7 +35,7 @@ Page {
                     StandardListItem {
                         title: ListItemData.title
                         //description: Common.getEntryDescription(ListItemData)
-                        description: qsTr("Group: ") + ListItemData.parentGroup.name
+                        description: qsTr("Group: %1", "Describes the group of the selected entry. Example: 'Group:  Internet'").arg(ListItemData.parentGroup.name)
                         imageSpaceReserved: true
                         imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                     }
@@ -52,7 +52,7 @@ Page {
                 horizontalAlignment: HorizontalAlignment.Center
             }
             Label {
-                text: qsTr("Nothing found") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("Nothing found", "Description of an empty search result") + Retranslate.onLocaleOrLanguageChanged
                 textStyle.base: SystemDefaults.TextStyles.BodyText
                 horizontalAlignment: HorizontalAlignment.Center
             }

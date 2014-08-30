@@ -20,14 +20,20 @@ Page {
     function showErrorToast(message, errorCode) {
         unlockProgressDialog.cancel();
         if (errorCode)
-            message += " (#" + errorCode + ")";
+            message = qsTr("%1 (#%2)", 
+                    "A template for 'Error message (#error_code)'; change only for right-to-left langugages")
+                    .arg(message)
+                    .arg(errorCode);
         dbErrorToast.body = message; 
         dbErrorToast.show();
     }
     
     function showFileAccessError(message, errorDescription) {
         unlockProgressDialog.cancel();
-        dbErrorToast.body = message + "\n(" + errorDescription+ ")"; 
+        dbErrorToast.body = qsTr("%1\n(%2)", 
+                "A template for 'Error message (Error description)'; change only for right-to-left langugages")
+                .arg(message)
+                .arg(errorDescription); 
         dbErrorToast.show();
     }
     
@@ -116,7 +122,8 @@ Page {
             unlockProgressDialog.progress = progress;
         });
         database.invalidPasswordOrKey.connect(function() {
-            showErrorToast(qsTr("Invalid password or key file") + Retranslate.onLocaleOrLanguageChanged);
+            showErrorToast(qsTr("Invalid password or key file", 
+                    "An error message shown when the decryption fails. Also see 'key file' in thesaurus.") + Retranslate.onLocaleOrLanguageChanged);
         });
         loadRecentItems();
     }
@@ -134,7 +141,7 @@ Page {
                 property int lastSelectedIndex: -1
 
                 id: dbDropDown
-                title: qsTr("Database") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Database", "A label before the selected database file. Example: 'Database    documents/database.dat'") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (!selectedOption) 
                         return;
@@ -161,13 +168,13 @@ Page {
                     Option {
                         id: dbDemoOption
                         // TODO hide this after first non-demo file open
-                        text: qsTr("Demo database") + Retranslate.onLocaleOrLanguageChanged
+                        text: qsTr("Demo Database", "A special database used for demonstration purpose. Example: 'Database    Demo Database'.") + Retranslate.onLocaleOrLanguageChanged
                         imageSource: "asset:///pwicons/13.png"
                         value: "app/native/assets/demo.kdbx"
                     },
                     Option {
                         id: dbBrowseOption
-                        text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
+                        text: qsTr("Browse...", "A button/action which opens a file selection dialog.") + Retranslate.onLocaleOrLanguageChanged
                         imageSource: "asset:///images/ic_browse.png"
                         value: "_browse_"
                     }
@@ -177,7 +184,7 @@ Page {
                 property int lastSelectedIndex: -1
                 
                 id: keyDropDown
-                title: qsTr("Key File") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Key File", "A label before the selected key file (see thesaurus). Example: 'Key File    Documents/file.dat'.") + Retranslate.onLocaleOrLanguageChanged
                 topMargin: 20
                 visible: !demoMode
                 onSelectedOptionChanged: {
@@ -195,13 +202,13 @@ Page {
                 options: [
                     Option {
                         id: keyNoneOption
-                        text: qsTr("(none)") + Retranslate.onLocaleOrLanguageChanged
+                        text: qsTr("(none)", "Value of the 'Key File' field when no key file were selected; will be displayed as 'Key Flie    (none)'.") + Retranslate.onLocaleOrLanguageChanged
                         value: ""
                     },
                     // dynamically inserted options are inserted here
                     Option {
                         id: keyBrowseOption
-                        text: qsTr("Browse...") + Retranslate.onLocaleOrLanguageChanged
+                        text: qsTr("Browse...", "A button/action which opens a file selection dialog.") + Retranslate.onLocaleOrLanguageChanged
                         imageSource: "asset:///images/ic_browse.png"
                         value: "_browse_"
                     }
@@ -211,7 +218,7 @@ Page {
                 id: passwordEdit
                 topMargin: 20
                 visible: !demoMode
-                hintText: qsTr("Enter password") + Retranslate.onLocaleOrLanguageChanged
+                hintText: qsTr("Enter password", "Invitation to enter a password.") + Retranslate.onLocaleOrLanguageChanged
                 inputMode: TextFieldInputMode.Password
                 text: ""
                 input.submitKey: SubmitKey.EnterKey
@@ -221,7 +228,7 @@ Page {
                 id: enableQuickUnlock
                 topMargin: 20
                 visible: !demoMode
-                text: qsTr("Enable Quick Unlock") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("Enable Quick Unlock", "A checkbox which activates the Quick Unlock function. 'Enable' is used as 'activate', 'allow', 'turn on'.") + Retranslate.onLocaleOrLanguageChanged
                 checked: appSettings.quickUnlockEnabled
                 onCheckedChanged: {
                     appSettings.quickUnlockEnabled = checked;
@@ -231,7 +238,7 @@ Page {
                 visible: demoMode
                 topMargin: 20
                 verticalAlignment: VerticalAlignment.Center
-                text: qsTr("Demo option enables you to test KeePassB without importing a real database.\nTo continue, tap the lock symbol below.") + Retranslate.onLocaleOrLanguageChanged
+                text: qsTr("Demo database enables you to test KeePassB without importing a real database.\nTo continue, tap the lock symbol below.", "Description of the 'Demo Database' option. The 'lock symbol' refers to a button with a padlock icon.") + Retranslate.onLocaleOrLanguageChanged
                 multiline: true
             }
         }
@@ -241,7 +248,7 @@ Page {
             id: dbFilePicker
             mode: FilePickerMode.Picker
             type: FileType.Other
-            title: qsTr("Choose database") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Choose Database", "Title of a database selection dialog; an invitation to choose a file.") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
                 chooseDatabaseFile(selectedFiles[0]);
             }
@@ -253,7 +260,7 @@ Page {
             id: keyFilePicker
             mode: FilePickerMode.Picker
             type: FileType.Other
-            title: qsTr("Choose key file") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Choose Key File", "Title of a key file selection dialog; an invitation to choose a file (also see 'key file' in the thesaurus).") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
                 addKeyOption(selectedFiles[0]); // actual path
                 keyDropDown.selectedIndex = 1; // option[0] is "None"
@@ -268,7 +275,7 @@ Page {
         },
         SystemProgressDialog {
             id: unlockProgressDialog
-            title: qsTr("Decrypting...") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Decrypting...", "Title of a progress indicator while a database is being decrypted/decoded.") + Retranslate.onLocaleOrLanguageChanged
             autoUpdateEnabled: true
             confirmButton.label: ""
             cancelButton.label: ""
@@ -282,7 +289,7 @@ Page {
     actions: [
         ActionItem {
             id: openDbAction
-            title: qsTr("Open") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Open", "A button/action which opens/unlocks a database file.") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_unlock.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {

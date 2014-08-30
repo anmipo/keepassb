@@ -29,7 +29,7 @@ NavigationPane {
             }
         }
         helpAction: HelpActionItem {
-            title: qsTr("About") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("About", "A button/action which opens an information window about the application.") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_about.png"
             onTriggered : {
                 var aboutPage = aboutPageComponent.createObject();
@@ -38,7 +38,7 @@ NavigationPane {
         }
         actions: [
             ActionItem {
-                title: (appSettings.quickUnlockEnabled ? qsTr("Quick Lock") : qsTr("Lock")) + Retranslate.onLocaleOrLanguageChanged
+                title: (appSettings.quickUnlockEnabled ? qsTr("Quick Lock", "A button which engages Quick Lock mode (see thesaurus).") : qsTr("Lock", "A button which closes/locks the current database.")) + Retranslate.onLocaleOrLanguageChanged
                 imageSource: (appSettings.quickUnlockEnabled ? "asset:///images/ic_quicklock.png" : "asset:///images/ic_lock.png")
                 enabled: !database.locked
                 onTriggered: {
@@ -68,10 +68,10 @@ NavigationPane {
         Qt.database = database; // a hack to make 'database' available from ListItemComponent
         
         app.clipboardUpdated.connect(function() {
-                showToast(qsTr("Copied to clipboard") + Retranslate.onLocaleOrLanguageChanged)
+                showToast(qsTr("Copied to clipboard", "A notification which confirms successful copying of text.") + Retranslate.onLocaleOrLanguageChanged)
             });
         app.clipboardCleared.connect(function() {
-                showToast(qsTr("Clipboard cleared") + Retranslate.onLocaleOrLanguageChanged)
+                showToast(qsTr("Clipboard cleared", "A notification message") + Retranslate.onLocaleOrLanguageChanged)
             });
         database.dbLocked.connect(function() {
                 app.stopWatchdog();
