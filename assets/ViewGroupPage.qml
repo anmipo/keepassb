@@ -207,12 +207,35 @@ Page {
                     },
                     ListItemComponent {
                         type: "group"
-                        StandardListItem {
-                            title: "<b>" + ListItemData.name + "</b>"
-                            textFormat: TextFormat.Html
-                            status: "(" + ListItemData.childCount + ")"
-                            imageSpaceReserved: true
-                            imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
+                        CustomListItem {
+                            highlightAppearance: HighlightAppearance.Default
+                            dividerVisible: true
+                            Container {
+                                layout: StackLayout {
+                                    orientation: LayoutOrientation.LeftToRight
+                                }
+                                ImageView {
+                                    imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
+                                    horizontalAlignment: HorizontalAlignment.Left
+                                    verticalAlignment: VerticalAlignment.Center
+                                }
+                                Label {
+                                    text: ListItemData.name
+                                    textFormat: TextFormat.Plain
+                                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                                    textStyle.fontWeight: FontWeight.Bold
+                                    horizontalAlignment: HorizontalAlignment.Fill
+                                    verticalAlignment: VerticalAlignment.Center
+                                    layoutProperties: StackLayoutProperties {
+                                        spaceQuota: 1
+                                    } 
+                                }
+                                Label {
+                                    text: "(" + ListItemData.childCount + ")"
+                                    horizontalAlignment: HorizontalAlignment.Right
+                                    verticalAlignment: VerticalAlignment.Center 
+                                }
+                            }
                         }
                     },
                     ListItemComponent {
