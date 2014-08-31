@@ -169,7 +169,7 @@ Page {
                         } else {
                             viewEntryPage = Qt.createComponent("ViewEntryV4Page.qml");
                         }
-                        var entryPage = viewEntryPage.createObject(null, {"data": item});
+                        var entryPage = viewEntryPage.createObject(null, {"entry": item});
                         naviPane.push(entryPage);
                     } else {
                         console.log("WARN: unknown item type");

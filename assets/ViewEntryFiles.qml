@@ -13,7 +13,7 @@ Container {
     ListView {
         id: entryFileList
         scrollRole: ScrollRole.Main
-        dataModel: data.getAttachmentsDataModel()
+        dataModel: entry.getAttachmentsDataModel()
         listItemComponents: [
             ListItemComponent {
                 StandardListItem {

@@ -27,7 +27,7 @@ Page {
                 } else {
                     viewEntryPageComponent = Qt.createComponent("ViewEntryV4Page.qml");
                 }
-                var viewEntryPage = viewEntryPageComponent.createObject(null, {"data": entry});
+                var viewEntryPage = viewEntryPageComponent.createObject(null, {"entry": entry});
                 naviPane.push(viewEntryPage);
             }
             listItemComponents: [

@@ -9,7 +9,7 @@ import org.keepassb 1.0
 import "common.js" as Common
 
 Page {
-    property PwEntryV4 data
+    property PwEntryV4 entry
     property string currentView
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     
@@ -23,11 +23,11 @@ Page {
                 leftPadding: 10
                 rightPadding: 10
                 ImageView {
-                    imageSource: "asset:///pwicons-dark/" + data.iconId + ".png"
+                    imageSource: "asset:///pwicons-dark/" + entry.iconId + ".png"
                     verticalAlignment: VerticalAlignment.Center
                 }
                 Label {
-                    text: data.title
+                    text: entry.title
                     textStyle.base: SystemDefaults.TextStyles.TitleText
                     textStyle.color: Color.White
                     verticalAlignment: VerticalAlignment.Center
@@ -35,11 +35,11 @@ Page {
                 }
             }
             
-            expandableArea.indicatorVisibility: (data.title.length > 30) ? TitleBarExpandableAreaIndicatorVisibility.Visible : TitleBarExpandableAreaIndicatorVisibility.Hidden
+            expandableArea.indicatorVisibility: (entry.title.length > 30) ? TitleBarExpandableAreaIndicatorVisibility.Visible : TitleBarExpandableAreaIndicatorVisibility.Hidden
             expandableArea.toggleArea: TitleBarExpandableAreaToggleArea.EntireTitleBar
             expandableArea.content: TextArea {
                 editable: false
-                text: data.title
+                text: entry.title
                 textFormat: TextFormat.Plain
                 backgroundVisible: false
                 autoSize.maxLineCount: 3
@@ -56,23 +56,23 @@ Page {
             onTriggered: setCurrentView("general")
         },
         ActionItem {
-            title: qsTr("Extras (%1)", "Title of a page which shows additional/advanced properties of an entry (and their amount).").arg(data.extraSize) + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Extras (%1)", "Title of a page which shows additional/advanced properties of an entry (and their amount).").arg(entry.extraSize) + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_view_details.png"
-            enabled: (data.extraSize > 0)
+            enabled: (entry.extraSize > 0)
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: setCurrentView("extra")
         },
         ActionItem {
-            title: qsTr("Files (%1)", "Title of a page which shows files attached to an entry (and their amount)").arg(data.attachmentCount) + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Files (%1)", "Title of a page which shows files attached to an entry (and their amount)").arg(entry.attachmentCount) + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_attach.png"
-            enabled: (data.attachmentCount > 0)
+            enabled: (entry.attachmentCount > 0)
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: setCurrentView("files")
         },
         ActionItem {
-            title: qsTr("History (%1)", "Title of a page which lists the previous versions of an entry (and their number).").arg(data.historySize) + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("History (%1)", "Title of a page which lists the previous versions of an entry (and their number).").arg(entry.historySize) + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_history.png"
-            enabled: (data.historySize > 0)
+            enabled: (entry.historySize > 0)
             ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: setCurrentView("history")
         },
@@ -146,20 +146,20 @@ Page {
                 LabelTextButton {
                     id: usernameField
                     labelText: qsTr("User Name", "Label of the username field; refers to login information rather then person's own name.") + Retranslate.onLocaleOrLanguageChanged
-                    valueText: data.userName
+                    valueText: entry.userName
                 }
                 LabelTextButton {
                     id: passwordField
                     labelText: qsTr("Password", "Label of the password field.") + Retranslate.onLocaleOrLanguageChanged
                     imageSource: "asset:///images/ic_copy.png"
-                    valueText: data.password
+                    valueText: entry.password
                     passwordMasking: true
                 }
                 LabelTextButton {
                     id: urlField
                     labelText: qsTr("URL", "Label of the entry field containing a link/internet address.") + Retranslate.onLocaleOrLanguageChanged
                     imageSource: "asset:///images/ic_copy.png"
-                    valueText: data.url
+                    valueText: entry.url
                     gestureHandlers: TapHandler {
                         onTapped: {
                             Qt.openUrlExternally(urlField.valueText);
@@ -169,7 +169,7 @@ Page {
                 LabelTextButton {
                     id: notesText
                     labelText: qsTr("Notes", "Label of the entry field containing comments or additional text information.") + Retranslate.onLocaleOrLanguageChanged
-                    valueText: data.notes
+                    valueText: entry.notes
                 }
             }       
         },
@@ -178,7 +178,7 @@ Page {
             ListView {
                 id: entryExtraList
                 scrollRole: ScrollRole.Main
-                dataModel: data.getExtraFieldsDataModel()
+                dataModel: entry.getExtraFieldsDataModel()
                 listItemComponents: [
                     ListItemComponent {
                         LabelTextButton {
@@ -197,12 +197,12 @@ Page {
             ListView {
                 id: entryHistoryList
                 scrollRole: ScrollRole.Main
-                visible: (data.historySize > 0)
-                dataModel: data.getHistoryDataModel()
+                visible: (entry.historySize > 0)
+                dataModel: entry.getHistoryDataModel()
                 onTriggered: {
                     var item = dataModel.data(indexPath);
                     var viewHistoryEntryPage = Qt.createComponent("ViewEntryV4Page.qml");
-                    var historyEntryPage = viewHistoryEntryPage.createObject(null, {"data": item});
+                    var historyEntryPage = viewHistoryEntryPage.createObject(null, {"entry": item});
                     naviPane.push(historyEntryPage);
                 }
                 listItemComponents: [
@@ -221,19 +221,19 @@ Page {
             id: viewEntryTimestamps
             LabelTextButton { 
                 labelText: qsTr("Expiry Date", "Label of a field with date and time when the entry will no longer be valid. 'Never' is also a possible value.") + Retranslate.onLocaleOrLanguageChanged
-                valueText: data.expires ? Common.timestampToString(data.expiryTime) : qsTr("Never", "Expiry Date of the entry which does not expire.")
+                valueText: entry.expires ? Common.timestampToString(entry.expiryTime) : qsTr("Never", "Expiry Date of the entry which does not expire.")
             }
             LabelTextButton { 
                 labelText: qsTr("Creation Date", "Label of a field with entry creation date and time") + Retranslate.onLocaleOrLanguageChanged
-                valueText: Common.timestampToString(data.creationTime)  
+                valueText: Common.timestampToString(entry.creationTime)  
             }
             LabelTextButton { 
                 labelText: qsTr("Last Modification Date", "Label of a field with entry's last modification date and time") + Retranslate.onLocaleOrLanguageChanged
-                valueText: Common.timestampToString(data.lastModificationTime)  
+                valueText: Common.timestampToString(entry.lastModificationTime)  
             }
             LabelTextButton { 
                 labelText: qsTr("Last Access Date", "Label of a field with date and time when the entry was last accessed/viewed") + Retranslate.onLocaleOrLanguageChanged
-                valueText: Common.timestampToString(data.lastAccessTime)
+                valueText: Common.timestampToString(entry.lastAccessTime)
             }
         }
     ]
