@@ -41,12 +41,12 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("KeePassB", "Application name, do not translate") + Retranslate.onLocaleOrLanguageChanged
+                    text: Application.applicationName
                     textStyle.base: SystemDefaults.TextStyles.BigText
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("Version 2.1 beta", "Application version in 'About' screen") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Version %1", "Application version in 'About' screen").arg(Application.applicationVersion) + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }

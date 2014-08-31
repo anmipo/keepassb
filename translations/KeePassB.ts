@@ -10,14 +10,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="44"/>
-        <source>KeePassB</source>
-        <comment>Application name, do not translate</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AboutPage.qml" line="49"/>
-        <source>Version 2.1 beta</source>
+        <source>Version %1</source>
         <comment>Application version in &apos;About&apos; screen</comment>
         <translation type="unfinished"></translation>
     </message>
