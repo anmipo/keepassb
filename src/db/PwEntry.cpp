@@ -96,8 +96,8 @@ bool PwAttachment::matchesQuery(const QString& query) const {
 PwEntry::PwEntry(QObject* parent) : QObject(parent), _uuid(), _iconId(0),
         _creationTime(), _lastModificationTime(),
         _lastAccessTime(), _expiryTime(),
-        _deleted(false), _parentGroup(NULL),
-        _attachmentsDataModel() {
+        _expires(false), _deleted(false),
+        _parentGroup(NULL), _attachmentsDataModel() {
     _attachmentsDataModel.setParent(this);
 }
 
@@ -114,6 +114,7 @@ void PwEntry::clear() {
     _expiryTime.setMSecsSinceEpoch(0L);
     _attachmentsDataModel.clear();
     _deleted = false;
+    _expires = false;
 }
 
 QString PwEntry::toString() const {
@@ -183,6 +184,13 @@ void PwEntry::setDeleted(bool deleted) {
     if (deleted != _deleted) {
         _deleted = deleted;
         emit deletedChanged(deleted);
+    }
+}
+
+void PwEntry::setExpires(bool expires) {
+    if (expires != _expires) {
+        _expires = expires;
+        emit expiresChanged(expires);
     }
 }
 

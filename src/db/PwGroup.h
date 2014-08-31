@@ -35,6 +35,7 @@ class PwGroup : public bb::cascades::DataModel {
     Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
     Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
     Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
+    Q_PROPERTY(bool expires READ isExpires WRITE setExpires NOTIFY expiresChanged)
     // indicates whether the group is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
@@ -47,6 +48,7 @@ private:
     QDateTime _lastModificationTime;
     QDateTime _lastAccessTime;
     QDateTime _expiryTime;
+    bool _expires;
     bool _deleted;
 
 	bool _isChildrenModified;
@@ -101,6 +103,8 @@ public:
     void setLastAccessTime(const QDateTime& time);
     QDateTime getExpiryTime() const { return _expiryTime; }
     void setExpiryTime(const QDateTime& time);
+    bool isExpires() const { return _expires; }
+    void setExpires(bool expires);
     bool isDeleted() const { return _deleted; }
     void setDeleted(bool deleted);
     PwGroup* getParentGroup() const { return _parentGroup; }
@@ -120,6 +124,7 @@ signals:
     void lastModificationTimeChanged(QDateTime);
     void lastAccessTimeChanged(QDateTime);
     void expiryTimeChanged(QDateTime);
+    void expiresChanged(bool);
     void deletedChanged(bool);
     void parentGroupChanged(PwGroup*);
 };

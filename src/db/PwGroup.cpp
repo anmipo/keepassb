@@ -23,6 +23,7 @@ PwGroup::PwGroup(QObject* parent) :
 	_notes = QString::null;
 	_iconId = 0;
 	_isChildrenModified = false;
+	_expires = false;
 	_deleted = false;
 	_parentGroup = NULL;
 
@@ -50,6 +51,7 @@ void PwGroup::clear() {
     _lastAccessTime.setMSecsSinceEpoch(0L);
     _expiryTime.setMSecsSinceEpoch(0L);
     _isChildrenModified = true;
+    _expires = false;
     _deleted = false;
 }
 
@@ -229,6 +231,13 @@ void PwGroup::setExpiryTime(const QDateTime& time) {
     if (time != _expiryTime) {
         _expiryTime = time;
         emit expiryTimeChanged(time);
+    }
+}
+
+void PwGroup::setExpires(bool expires) {
+    if (expires != _expires) {
+        _expires = expires;
+        emit expiresChanged(expires);
     }
 }
 

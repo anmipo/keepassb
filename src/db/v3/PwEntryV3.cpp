@@ -13,6 +13,8 @@ const QString METASTREAM_ID_USER = QString("SYSTEM");
 const QString METASTREAM_ID_URL = QString("$");
 const QString METASTREAM_ID_BINDESC = QString("bin-stream");
 
+const QDateTime EXPIRY_DATE_NEVER = QDateTime(QDate(2999, 12, 28), QTime(23, 59, 59, 0), Qt::UTC);
+
 PwEntryV3::PwEntryV3(QObject* parent) : PwEntry(parent), _binaryDesc(), _binaryData(),
         _title(), _userName(), _password(), _url(), _notes() {
     _groupId = 0;
@@ -111,4 +113,9 @@ void PwEntryV3::setNotes(const QString& notes) {
         _notes = notes;
         emit notesChanged(notes);
     }
+}
+
+void PwEntryV3::setExpiryTime(const QDateTime& time) {
+    PwEntry::setExpiryTime(time);
+    setExpires(time != EXPIRY_DATE_NEVER);
 }

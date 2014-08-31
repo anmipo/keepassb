@@ -59,3 +59,12 @@ function getQuickUnlockTypeDescription(quickUnlockType) {
 function prettifyFilePath(path) {
     return path.split('/').slice(4).join('/');
 }
+
+/**
+ * Returns a text representation of QDateTime.
+ * 
+ * @param timestamp
+ */
+function timestampToString(timestamp) {
+	return timestamp.toString();
+}

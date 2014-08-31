@@ -56,7 +56,8 @@ public:
     virtual void setUrl(const QString& url);
     virtual QString getNotes() const { return _notes; }
     virtual void setNotes(const QString& notes);
-
+    // override to handle the "Never" magic const
+    virtual void setExpiryTime(const QDateTime& time);
 signals:
     void groupIdChanged(qint32 groupId);
     void binaryDescChanged(QString binaryDesc);

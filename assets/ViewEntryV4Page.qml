@@ -6,6 +6,7 @@ import bb.cascades 1.2
 import bb.device 1.2
 import bb.system 1.2
 import org.keepassb 1.0
+import "common.js" as Common
 
 Page {
     property PwEntryV4 data
@@ -219,20 +220,20 @@ Page {
         Container {
             id: viewEntryTimestamps
             LabelTextButton { 
+                labelText: qsTr("Expiry Date", "Label of a field with date and time when the entry will no longer be valid. 'Never' is also a possible value.") + Retranslate.onLocaleOrLanguageChanged
+                valueText: data.expires ? Common.timestampToString(data.expiryTime) : qsTr("Never", "Expiry Date of the entry which does not expire.")
+            }
+            LabelTextButton { 
                 labelText: qsTr("Creation Date", "Label of a field with entry creation date and time") + Retranslate.onLocaleOrLanguageChanged
-                valueText: data.creationTime.toString()  
+                valueText: Common.timestampToString(data.creationTime)  
             }
             LabelTextButton { 
                 labelText: qsTr("Last Modification Date", "Label of a field with entry's last modification date and time") + Retranslate.onLocaleOrLanguageChanged
-                valueText: data.lastModificationTime.toString()  
+                valueText: Common.timestampToString(data.lastModificationTime)  
             }
             LabelTextButton { 
                 labelText: qsTr("Last Access Date", "Label of a field with date and time when the entry was last accessed/viewed") + Retranslate.onLocaleOrLanguageChanged
-                valueText: data.lastAccessTime.toString()
-            }
-            LabelTextButton { 
-                labelText: qsTr("Expiry Date", "Label of a field with date and time when the entry will no longer be valid. 'Never' is also a possible value.") + Retranslate.onLocaleOrLanguageChanged
-                valueText: data.expiryTime.toString()
+                valueText: Common.timestampToString(data.lastAccessTime)
             }
         }
     ]

@@ -70,6 +70,7 @@ class PwEntry: public QObject {
 	Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
 	Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
 	Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
+	Q_PROPERTY(bool expires READ isExpires WRITE setExpires NOTIFY expiresChanged)
     // indicates whether the entry is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
@@ -81,6 +82,7 @@ private:
     QDateTime _lastModificationTime;
     QDateTime _lastAccessTime;
     QDateTime _expiryTime;
+    bool _expires;
     bool _deleted;
     PwGroup* _parentGroup;
     bb::cascades::QListDataModel<PwAttachment*> _attachmentsDataModel;
@@ -105,8 +107,10 @@ public:
     void setLastModificationTime(const QDateTime& time);
     QDateTime getLastAccessTime() const { return _lastAccessTime; }
     void setLastAccessTime(const QDateTime& time);
-    QDateTime getExpiryTime() const { return _expiryTime; }
-    void setExpiryTime(const QDateTime& time);
+    virtual QDateTime getExpiryTime() const { return _expiryTime; }
+    virtual void setExpiryTime(const QDateTime& time);
+    virtual bool isExpires() const { return _expires; }
+    virtual void setExpires(bool expires);
     bool isDeleted() const { return _deleted; }
     void setDeleted(bool deleted);
     PwGroup* getParentGroup() const { return _parentGroup; }
@@ -143,6 +147,7 @@ signals:
     void lastModificationTimeChanged(QDateTime);
     void lastAccessTimeChanged(QDateTime);
     void expiryTimeChanged(QDateTime);
+    void expiresChanged(bool);
     void deletedChanged(bool);
     void parentGroupChanged(PwGroup*);
     void attachmentCountChanged(int);

@@ -345,38 +345,38 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="257"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="258"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="374"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="375"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="388"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="436"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="389"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="437"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="411"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="412"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="423"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="424"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="445"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="446"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
@@ -412,31 +412,31 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwHeaderV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="166"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="167"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="168"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="169"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="170"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="171"/>
         <source>Unknown compression algorithm</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="172"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="173"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="174"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="175"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
@@ -659,156 +659,168 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryV3Page</name>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="51"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="52"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="58"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="59"/>
         <source>Files (%1)</source>
         <comment>Title of a page which shows files attached to an entry (and their amount)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="65"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="66"/>
         <source>Timestamps</source>
         <comment>Title of a page which shows specific time-related properties of an entry, such as creation and modification date and time.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="127"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="128"/>
         <source>User Name</source>
         <comment>Label of the username field; refers to login information rather then person&apos;s own name.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="132"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="133"/>
         <source>Password</source>
         <comment>Label of the password field.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="139"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="140"/>
         <source>URL</source>
         <comment>Label of the entry field containing a link/internet address.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="150"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="151"/>
         <source>Notes</source>
         <comment>Label of the entry field containing comments or additional text information.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="158"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="163"/>
         <source>Creation Date</source>
         <comment>Label of a field with entry creation date and time</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="162"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="167"/>
         <source>Last Modification Date</source>
         <comment>Label of a field with entry&apos;s last modification date and time</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="166"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="171"/>
         <source>Last Access Date</source>
         <comment>Label of a field with date and time when the entry was last accessed/viewed</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="170"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="159"/>
         <source>Expiry Date</source>
         <comment>Label of a field with date and time when the entry will no longer be valid. &apos;Never&apos; is also a possible value.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV3Page.qml" line="160"/>
+        <source>Never</source>
+        <comment>Expiry Date of the entry which does not expire.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ViewEntryV4Page</name>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="51"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="52"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="58"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="59"/>
         <source>Extras (%1)</source>
         <comment>Title of a page which shows additional/advanced properties of an entry (and their amount).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="65"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="66"/>
         <source>Files (%1)</source>
         <comment>Title of a page which shows files attached to an entry (and their amount)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="72"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="73"/>
         <source>History (%1)</source>
         <comment>Title of a page which lists the previous versions of an entry (and their number).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="79"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="80"/>
         <source>Timestamps</source>
         <comment>Title of a page which shows specific time-related properties of an entry, such as creation and modification date and time.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="147"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="148"/>
         <source>User Name</source>
         <comment>Label of the username field; refers to login information rather then person&apos;s own name.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="152"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="153"/>
         <source>Password</source>
         <comment>Label of the password field.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="159"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="160"/>
         <source>URL</source>
         <comment>Label of the entry field containing a link/internet address.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="170"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="171"/>
         <source>Notes</source>
         <comment>Label of the entry field containing comments or additional text information.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="194"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="195"/>
         <source>Previous versions</source>
         <comment>Header of a list with previous versions/revisions of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="222"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="227"/>
         <source>Creation Date</source>
         <comment>Label of a field with entry creation date and time</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="226"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="231"/>
         <source>Last Modification Date</source>
         <comment>Label of a field with entry&apos;s last modification date and time</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="230"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="235"/>
         <source>Last Access Date</source>
         <comment>Label of a field with date and time when the entry was last accessed/viewed</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="234"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="223"/>
         <source>Expiry Date</source>
         <comment>Label of a field with date and time when the entry will no longer be valid. &apos;Never&apos; is also a possible value.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="224"/>
+        <source>Never</source>
+        <comment>Expiry Date of the entry which does not expire.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

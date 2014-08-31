@@ -36,7 +36,7 @@ const QString XML_HISTORY = QString("History");
 const QString XML_KEY = QString("Key");
 const QString XML_VALUE = QString("Value");
 const QString XML_PROTECTED = QString("Protected");
-const QString XML_TRUE = QString("True");
+const QString XML_TRUE = QString("True"); // Since Qt/Cascades does not have string-to-bool conversion, we need this
 const QString XML_BINARY = QString("Binary");
 const QString XML_BINARY_ID = QString("ID");
 const QString XML_BINARY_COMPRESSED = QString("Compressed");
@@ -48,6 +48,7 @@ const QString XML_LAST_MODIFICATION_TIME = QString("LastModificationTime");
 const QString XML_CREATION_TIME = QString("CreationTime");
 const QString XML_LAST_ACCESS_TIME = QString("LastAccessTime");
 const QString XML_EXPIRY_TIME = QString("ExpiryTime");
+const QString XML_EXPIRES = QString("Expires");
 
 // Cypher parameters and signatures
 const QByteArray SALSA_20_ID = QByteArray("\x02\x00\x00\x00", 4);
@@ -716,6 +717,9 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readGroupTimes(QXmlStreamReader& xml, PwGr
             } else if (tagName == XML_EXPIRY_TIME) {
                 text = xml.readElementText();
                 group.setExpiryTime(QDateTime::fromString(text, Qt::ISODate));
+            } else if (tagName == XML_EXPIRES) {
+                text = xml.readElementText();
+                group.setExpires(text == XML_TRUE);
             }
         }
         xml.readNext();
@@ -747,6 +751,9 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryTimes(QXmlStreamReader& xml, PwEn
             } else if (tagName == XML_EXPIRY_TIME) {
                 text = xml.readElementText();
                 entry.setExpiryTime(QDateTime::fromString(text, Qt::ISODate));
+            } else if (tagName == XML_EXPIRES) {
+                text = xml.readElementText();
+                entry.setExpires(text == XML_TRUE);
             }
         }
         xml.readNext();
