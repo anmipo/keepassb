@@ -59,6 +59,7 @@ Sheet {
                 id: quickPassEdit
                 hintText: Common.getQuickUnlockTypeDescription(appSettings.quickUnlockType) + Retranslate.onLocaleOrLanguageChanged
                 horizontalAlignment: HorizontalAlignment.Fill
+                maximumLength: Common.getQuickPasswordLength(appSettings.quickUnlockType)
                 inputMode: TextFieldInputMode.Password
                 input.onSubmitted: tryQuickUnlock()
                 input.submitKey: SubmitKey.EnterKey

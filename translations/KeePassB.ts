@@ -488,12 +488,12 @@ NOTE: A timeout or the main-menu Lock button will activate the Quick Lock (if en
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="68"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="69"/>
         <source>Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="76"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="77"/>
         <source>Wrong unlock code</source>
         <translation type="unfinished"></translation>
     </message>

@@ -47,6 +47,25 @@ function getQuickUnlockTypeDescription(quickUnlockType) {
     	return qsTr("Last 5 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    Last 5 symbols of the password'");
     }
 }
+/**
+ * Returns the required length of the quick password.
+ * @param quickUnlockType
+ */
+function getQuickPasswordLength(quickUnlockType) {
+    switch (quickUnlockType) {
+    case Settings.QUICK_UNLOCK_FIRST_3: // fallthrough
+    case Settings.QUICK_UNLOCK_LAST_3:
+    	return 3;
+    case Settings.QUICK_UNLOCK_LAST_4:  // fallthrough
+    case Settings.QUICK_UNLOCK_FIRST_4:
+    	return 4;
+    case Settings.QUICK_UNLOCK_FIRST_5:  // fallthrough
+    case Settings.QUICK_UNLOCK_LAST_5:
+    	return 5;
+    default:
+    	return 1000; // an arbitrary but long enough value, just in case
+    }
+}
 
 /**
  * Returns a nice human-readable file path.
