@@ -728,93 +728,131 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryV4Page</name>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="52"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="27"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="59"/>
-        <source>Extras (%1)</source>
-        <comment>Title of a page which shows additional/advanced properties of an entry (and their amount).</comment>
+        <location filename="../assets/ViewEntryV4Page.qml" line="31"/>
+        <source>Extra</source>
+        <comment>Title of a page which shows additional/advanced properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="66"/>
-        <source>Files (%1)</source>
-        <comment>Title of a page which shows files attached to an entry (and their amount)</comment>
+        <location filename="../assets/ViewEntryV4Page.qml" line="35"/>
+        <source>History</source>
+        <comment>Title of a page which lists the previous versions of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="73"/>
-        <source>History (%1)</source>
-        <comment>Title of a page which lists the previous versions of an entry (and their number).</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="80"/>
-        <source>Timestamps</source>
-        <comment>Title of a page which shows specific time-related properties of an entry, such as creation and modification date and time.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="148"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="103"/>
         <source>User Name</source>
         <comment>Label of the username field; refers to login information rather then person&apos;s own name.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="153"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="108"/>
         <source>Password</source>
         <comment>Label of the password field.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="160"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="115"/>
         <source>URL</source>
         <comment>Label of the entry field containing a link/internet address.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="171"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="126"/>
         <source>Notes</source>
         <comment>Label of the entry field containing comments or additional text information.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="195"/>
-        <source>Previous versions</source>
-        <comment>Header of a list with previous versions/revisions of an entry.</comment>
+        <location filename="../assets/ViewEntryV4Page.qml" line="136"/>
+        <source>String Fields</source>
+        <comment>Title of a list which shows additional/advanced text properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="227"/>
-        <source>Creation Date</source>
-        <comment>Label of a field with entry creation date and time</comment>
+        <location filename="../assets/ViewEntryV4Page.qml" line="152"/>
+        <source>Attached Files</source>
+        <comment>Title of a list with attached files</comment>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="231"/>
-        <source>Last Modification Date</source>
-        <comment>Label of a field with entry&apos;s last modification date and time</comment>
-        <translation type="unfinished"></translation>
+    <message numerus="yes">
+        <location filename="../assets/ViewEntryV4Page.qml" line="162"/>
+        <source>%n byte(s)</source>
+        <comment>File size in bytes; please specify the required plural forms.</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="235"/>
-        <source>Last Access Date</source>
-        <comment>Label of a field with date and time when the entry was last accessed/viewed</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="223"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="211"/>
         <source>Expiry Date</source>
         <comment>Label of a field with date and time when the entry will no longer be valid. &apos;Never&apos; is also a possible value.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="224"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="212"/>
         <source>Never</source>
         <comment>Expiry Date of the entry which does not expire.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="215"/>
+        <source>Creation Date</source>
+        <comment>Label of a field with entry creation date and time</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="219"/>
+        <source>Last Modification Date</source>
+        <comment>Label of a field with entry&apos;s last modification date and time</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="223"/>
+        <source>Last Access Date</source>
+        <comment>Label of a field with date and time when the entry was last accessed/viewed</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="227"/>
+        <source>Previous Versions</source>
+        <comment>Header of a list with previous versions/revisions of an entry.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="230"/>
+        <source>There are no previous versions available.</source>
+        <comment>Explanation for the empty list of previous entry versions/revisions.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="175"/>
+        <source>Save File</source>
+        <comment>Title of a file saving dialog.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="183"/>
+        <source>File saved</source>
+        <comment>A confirmation message once the file has been successfully saved</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="186"/>
+        <source>Could not save file</source>
+        <comment>Error message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="197"/>
+        <source>Open</source>
+        <comment>A button/action which opens (or launches) a file (see related error message with reference INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
