@@ -7,6 +7,7 @@ import org.keepassb 1.0
 import "common.js" as Common
 
 ScrollView {
+    property bool hasHistory: (database.getFormatVersion() == 4)
     Container {
         LabelTextButton { 
             labelText: qsTr("Expiry Date", "Label of a field with date and time when the entry will no longer be valid. 'Never' is also a possible value.") + Retranslate.onLocaleOrLanguageChanged
@@ -26,17 +27,18 @@ ScrollView {
         }
         Header {
             title: qsTr("Previous Versions", "Header of a list with previous versions/revisions of an entry.") + Retranslate.onLocaleOrLanguageChanged
+            visible: hasHistory
         }
         Label {
             text: qsTr("There are no previous versions.", "Explanation for the empty list of previous entry versions/revisions.")
-            visible: entry.historySize == 0
+            visible: hasHistory && (entry.historySize == 0)
         }
         ListView {
             id: entryHistoryList
-            visible: entry.historySize > 0
+            visible: hasHistory && (entry.historySize > 0)
             scrollRole: ScrollRole.Main
             preferredHeight: 360
-            dataModel: entry.getHistoryDataModel()
+            dataModel: hasHistory ? entry.getHistoryDataModel() : null
             onTriggered: {
                 var item = dataModel.data(indexPath);
                 var viewHistoryEntryPage = Qt.createComponent("ViewEntryV4Page.qml");

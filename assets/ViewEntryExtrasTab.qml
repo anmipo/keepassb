@@ -11,11 +11,13 @@ import org.keepassb 1.0
 Container {
     property PwAttachment selectedAttachment
     property string savedFileName
+    property bool hasExtraStrings: (database.getFormatVersion() == 4)
+    
     ListView {
         id: entryExtraList
         scrollRole: ScrollRole.Main
-        dataModel: entry.getExtraFieldsDataModel()
-        visible: entry.extraSize > 0
+        dataModel: hasExtraStrings ? entry.getExtraFieldsDataModel() : null
+        visible: hasExtraStrings && (entry.extraSize > 0)
         listItemComponents: [
             ListItemComponent {
                 LabelTextButton {
@@ -27,7 +29,7 @@ Container {
     }
     Divider { 
         preferredHeight: 30
-        visible: entry.extraSize > 0 
+        visible: hasExtraStrings && (entry.extraSize > 0) 
     }
     Header {
         title: qsTr("Attached Files", "Title of a list with attached files") + Retranslate.onLocaleOrLanguageChanged
