@@ -770,19 +770,19 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="136"/>
-        <source>String Fields</source>
-        <comment>Title of a list which shows additional/advanced text properties of an entry.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="152"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="154"/>
         <source>Attached Files</source>
         <comment>Title of a list with attached files</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../assets/ViewEntryV4Page.qml" line="157"/>
+        <source>There are no attached files.</source>
+        <comment>Explanation for the empty list of attached files.</comment>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryV4Page.qml" line="162"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="169"/>
         <source>%n byte(s)</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
         <translation type="unfinished">
@@ -790,67 +790,67 @@ To continue, tap the lock symbol below.</source>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="211"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="218"/>
         <source>Expiry Date</source>
         <comment>Label of a field with date and time when the entry will no longer be valid. &apos;Never&apos; is also a possible value.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="212"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="219"/>
         <source>Never</source>
         <comment>Expiry Date of the entry which does not expire.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="215"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="222"/>
         <source>Creation Date</source>
         <comment>Label of a field with entry creation date and time</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="219"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="226"/>
         <source>Last Modification Date</source>
         <comment>Label of a field with entry&apos;s last modification date and time</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="223"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="230"/>
         <source>Last Access Date</source>
         <comment>Label of a field with date and time when the entry was last accessed/viewed</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="227"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="234"/>
         <source>Previous Versions</source>
         <comment>Header of a list with previous versions/revisions of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="230"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="237"/>
         <source>There are no previous versions available.</source>
         <comment>Explanation for the empty list of previous entry versions/revisions.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="175"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="182"/>
         <source>Save File</source>
         <comment>Title of a file saving dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="183"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="190"/>
         <source>File saved</source>
         <comment>A confirmation message once the file has been successfully saved</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="186"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="193"/>
         <source>Could not save file</source>
         <comment>Error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="197"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="204"/>
         <source>Open</source>
         <comment>A button/action which opens (or launches) a file (see related error message with reference INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>

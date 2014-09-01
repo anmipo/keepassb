@@ -132,13 +132,11 @@ Page {
             id: viewEntryExtrasTab
             property PwAttachment selectedAttachment
             property string savedFileName
-            Header {
-                title: qsTr("String Fields", "Title of a list which shows additional/advanced text properties of an entry.") + Retranslate.onLocaleOrLanguageChanged                
-            }
             ListView {
                 id: entryExtraList
                 scrollRole: ScrollRole.Main
                 dataModel: entry.getExtraFieldsDataModel()
+                visible: entry.extraSize > 0
                 listItemComponents: [
                     ListItemComponent {
                         LabelTextButton {
@@ -148,13 +146,22 @@ Page {
                     }
                 ]
             }
+            Divider { 
+                preferredHeight: 30
+                visible: entry.extraSize > 0 
+            }
             Header {
                 title: qsTr("Attached Files", "Title of a list with attached files") + Retranslate.onLocaleOrLanguageChanged
-            }    
+            }
+            Label {
+                text: qsTr("There are no attached files.", "Explanation for the empty list of attached files.")
+                visible: entry.attachmentCount == 0
+            }
             ListView {
                 id: entryFileList
                 scrollRole: ScrollRole.Main
                 dataModel: entry.getAttachmentsDataModel()
+                visible: entry.attachmentCount > 0
                 listItemComponents: [
                     ListItemComponent {
                         StandardListItem {
@@ -227,7 +234,7 @@ Page {
                     title: qsTr("Previous Versions", "Header of a list with previous versions/revisions of an entry.") + Retranslate.onLocaleOrLanguageChanged
                 }
                 Label {
-                    text: qsTr("There are no previous versions available.", "Explanation for the empty list of previous entry versions/revisions.")
+                    text: qsTr("There are no previous versions.", "Explanation for the empty list of previous entry versions/revisions.")
                     visible: entry.historySize == 0
                 }
                 ListView {
@@ -242,13 +249,25 @@ Page {
                         var historyEntryPage = viewHistoryEntryPage.createObject(null, {"entry": item});
                         naviPane.push(historyEntryPage);
                     }
+                    function updateHeight(itemHeight) {
+                        entryHistoryList.maxHeight = itemHeight * entry.historySize;
+                    }
                     listItemComponents: [
                         ListItemComponent {
                             StandardListItem {
+                                id: entryHistoryListItem
                                 title: ListItemData.title
                                 description: ListItemData.lastModificationTime.toString()
                                 imageSpaceReserved: true
                                 imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
+                                attachedObjects: [
+                                    // ensures the list is large enough to fit all the entries, but no more than that
+                                    LayoutUpdateHandler {
+                                        onLayoutFrameChanged: {
+                                            entryHistoryListItem.ListItem.view.updateHeight(layoutFrame.height);
+                                        }
+                                    }
+                                ]
                             }
                         }
                     ]
