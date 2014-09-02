@@ -16,14 +16,18 @@ const static QString URL = QString("URL");
 const static QString NOTES = QString("Notes");
 
 
-PwExtraField::PwExtraField(QObject* parent) : QObject(parent) {
-    _name = "";
-    _value = "";
+PwExtraField::PwExtraField(QObject* parent) : QObject(parent),
+        _name(""), _value("") {
+    // left empty
 }
 
-PwExtraField::PwExtraField(QObject* parent, const QString& name, const QString& value) : QObject(parent) {
-    _name = name;
-    _value = value;
+PwExtraField::PwExtraField(QObject* parent, const QString& name, const QString& value) : QObject(parent),
+        _name(name), _value(value) {
+    // left empty
+}
+
+QString PwExtraField::toString() const {
+    return _name + " = " + _value;
 }
 
 bool PwExtraField::matchesQuery(const QString& query) const {
@@ -47,10 +51,10 @@ PwEntryV4::~PwEntryV4() {
 }
 
 void PwEntryV4::clear() {
-    _historyDataModel.clear();
+    _historyDataModel.clear(); // deletes owned objects
     emit historySizeChanged(0);
 
-    _extraFieldsDataModel.clear();
+    _extraFieldsDataModel.clear(); // deletes owned objects
     emit extraSizeChanged(0);
 
     fields.clear();
@@ -76,15 +80,27 @@ bool PwEntryV4::matchesQuery(const QString& query) const {
 void PwEntryV4::setField(const QString& name, const QString& value) {
     fields.insert(name, value);
     if (!isStandardField(name)) {
-        PwExtraField* ef = new PwExtraField(this, name, value);
-        _extraFieldsDataModel.append(ef); // implicitly takes ownership
-        emit extraSizeChanged(_extraFieldsDataModel.size());
+        addExtraField(name, value);
     }
+}
+
+void PwEntryV4::addExtraField(const QString& name, const QString& value) {
+    PwExtraField* ef = new PwExtraField(this, name, value);
+    _extraFieldsDataModel.append(ef); // implicitly takes ownership
+    emit extraSizeChanged(_extraFieldsDataModel.size());
 }
 
 void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
     _historyDataModel.append(historyEntry); // implicitly takes ownership
     emit historySizeChanged(_historyDataModel.size());
+}
+
+bb::cascades::DataModel* PwEntryV4::getExtraFieldsDataModel() {
+    return &_extraFieldsDataModel;
+}
+
+bb::cascades::DataModel* PwEntryV4::getHistoryDataModel() {
+    return &_historyDataModel;
 }
 
 QString PwEntryV4::getTitle() const {

@@ -29,6 +29,8 @@ public:
     PwExtraField(QObject* parent, const QString& name, const QString& value);
     virtual ~PwExtraField() {}
 
+    Q_INVOKABLE QString toString() const;
+
     /** Returns true if any string contains the query string. */
     virtual bool matchesQuery(const QString& query) const;
 
@@ -36,6 +38,7 @@ public:
     QString getName() const { return _name; }
     QString getValue() const { return _value; }
 signals:
+    // nameChanged and valueChanged are never emitted
     void nameChanged(QString name);
     void valueChanged(QString value);
 };
@@ -74,6 +77,7 @@ public:
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
 
+    void addExtraField(const QString& name, const QString& value);
     void addHistoryEntry(PwEntryV4* historyEntry);
 
     /**
@@ -81,8 +85,8 @@ public:
      */
     void setField(const QString& name, const QString& value);
 
-    Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel() { return &_extraFieldsDataModel; }
-    Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel() { return &_historyDataModel; }
+    Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel();
+    Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel();
 
     // property accessors
     virtual QString getTitle() const;
