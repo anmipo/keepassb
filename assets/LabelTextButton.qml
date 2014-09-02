@@ -7,24 +7,12 @@ Container {
     property alias inputMode: edit.inputMode
     // sets visibility of the "show/hide password" switch  
     property bool passwordMasking: false
-    property string passwordMaskText: "********"
     
     leftMargin: 10
     topMargin: 10
     rightMargin: 10
     bottomMargin: 10
 
-    onValueTextChanged: {
-        if (passwordMasking)
-            setEditMasked(showPasswordCheck.checked);
-    }
-    onCreationCompleted: {
-        setEditMasked(passwordMasking);
-    }
-    function setEditMasked(masked) {
-        edit.text = (masked ? passwordMaskText : valueText);        
-    }
-    
     Header {
         id: label
         title: "Label title"
@@ -36,7 +24,7 @@ Container {
         }
         ReadOnlyTextField {
             id: edit
-            text: "Edit text"
+            text: (showPasswordCheck.checked ? valueText : "********")
             autoSize.maxLineCount: 5
             textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
             horizontalAlignment: HorizontalAlignment.Fill
@@ -58,10 +46,9 @@ Container {
             visible: passwordMasking
             imageSourceDefault: "asset:///images/password_hidden.png"
             imageSourceChecked: "asset:///images/password_visible.png"
-            checked: false
+            checked: !passwordMasking
             verticalAlignment: VerticalAlignment.Center
             rightMargin: padding
-            onCheckedChanged: setEditMasked(!checked)
         }
         Button {
             id: button
@@ -75,10 +62,5 @@ Container {
             }
         }
     }
-    Divider {}
-    attachedObjects: [
-        ComponentDefinition {
-            source: "asset:///ReadOnlyTextField.qml"
-        }
-    ]    
+    Divider {} 
 }
