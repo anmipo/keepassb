@@ -293,17 +293,29 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <message>
         <location filename="../src/db/PwDatabase.cpp" line="201"/>
         <source>Cannot open database file</source>
-        <comment>An error message shown when the file is not available or cannot be read.</comment>
+        <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="214"/>
+        <location filename="../src/db/PwDatabase.cpp" line="208"/>
+        <source>Error loading database file</source>
+        <comment>An error message shown when the file cannot be loaded/read.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="216"/>
+        <source>Database file is empty</source>
+        <comment>An error message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="226"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="227"/>
+        <location filename="../src/db/PwDatabase.cpp" line="239"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>

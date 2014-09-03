@@ -1,5 +1,5 @@
-KeePassB 2 (native beta)
-Native KeePass v2 password manager
+KeePassB 2 - KeePass Built for BlackBerry
+Native KeePass v1/v2 password manager
 
 KeePassB 2 is a native BlackBerry 10 version of the multi-platform KeePass password manager.
 
@@ -40,6 +40,15 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
 
 Changelog:
+v2.1.1 beta
+Refreshed entry view interface
+Added "Search on start" option
+Added "Clear recent files" option
+Added keyboard shortcut: S for search
+Improved reporting of file read errors
+Fix displaying titles with special symbols
+Other minor improvements and fixes
+
 v2.1.0 beta
 Added v1 (.kdb) database reading
 Added Quick Unlock info page
