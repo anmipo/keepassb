@@ -612,19 +612,19 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryExtrasTab</name>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="35"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="33"/>
         <source>Attached Files</source>
         <comment>Title of a list with attached files</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="38"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="36"/>
         <source>There are no attached files.</source>
         <comment>Explanation for the empty list of attached files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="51"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="48"/>
         <source>%n byte(s)</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
         <translation type="unfinished">
@@ -632,25 +632,25 @@ To continue, tap the lock symbol below.</source>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="64"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="61"/>
         <source>Save File</source>
         <comment>Title of a file saving dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="72"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="69"/>
         <source>File saved</source>
         <comment>A confirmation message once the file has been successfully saved</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="75"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="72"/>
         <source>Could not save file</source>
         <comment>Error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="86"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="83"/>
         <source>Open</source>
         <comment>A button/action which opens (or launches) a file (see related error message with reference INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>

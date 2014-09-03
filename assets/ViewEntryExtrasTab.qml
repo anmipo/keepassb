@@ -15,7 +15,6 @@ Container {
     
     ListView {
         id: entryExtraList
-        scrollRole: ScrollRole.Main
         dataModel: hasExtraStrings ? entry.getExtraFieldsDataModel() : null
         visible: hasExtraStrings && (entry.extraSize > 0)
         listItemComponents: [
@@ -28,7 +27,6 @@ Container {
         ]
     }
     Divider { 
-        preferredHeight: 30
         visible: hasExtraStrings && (entry.extraSize > 0) 
     }
     Header {
@@ -40,7 +38,6 @@ Container {
     }
     ListView {
         id: entryFileList
-        scrollRole: ScrollRole.Main
         dataModel: entry.getAttachmentsDataModel()
         visible: entry.attachmentCount > 0
         listItemComponents: [
