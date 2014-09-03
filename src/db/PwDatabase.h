@@ -30,9 +30,10 @@ protected:
 	virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const = 0;
 public:
     enum Error {
-        SUCCESS           = 0,
-        UNKNOWN_DB_FORMAT = 1,
+        SUCCESS             = 0,
+        UNKNOWN_DB_FORMAT   = 1,
         COMPOSITE_KEY_ERROR = 2,
+        DB_FILE_EMPTY       = 3,
         // child classes' specific codes start from 0x10
     };
 	PwDatabase(QObject* parent=0);
