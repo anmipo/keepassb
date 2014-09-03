@@ -731,19 +731,19 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryV3Page</name>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="27"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="26"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="31"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="30"/>
         <source>Extra</source>
         <comment>Title of a page which shows additional/advanced properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="35"/>
+        <location filename="../assets/ViewEntryV3Page.qml" line="34"/>
         <source>History</source>
         <comment>Title of a page which lists the previous versions of an entry.</comment>
         <translation type="unfinished"></translation>
@@ -752,19 +752,19 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryV4Page</name>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="27"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="26"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="31"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="30"/>
         <source>Extra</source>
         <comment>Title of a page which shows additional/advanced properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="35"/>
+        <location filename="../assets/ViewEntryV4Page.qml" line="34"/>
         <source>History</source>
         <comment>Title of a page which lists the previous versions of an entry.</comment>
         <translation type="unfinished"></translation>

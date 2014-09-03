@@ -15,7 +15,6 @@ Page {
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     
     titleBar: TitleBar { 
-        scrollBehavior: TitleBarScrollBehavior.Sticky
         kind: TitleBarKind.Segmented
         onSelectedValueChanged: {
             app.restartWatchdog();
