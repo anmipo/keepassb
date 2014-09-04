@@ -6,6 +6,7 @@
  */
 
 #include <PwUuid.h>
+#include "util/Util.h"
 
 const int UUID_SIZE = 16;
 
@@ -22,7 +23,7 @@ PwUuid::~PwUuid() {
 }
 
 void PwUuid::clear() {
-    bytes.clear();
+    Util::safeClear(bytes);
 }
 
 PwUuid PwUuid::fromBase64(const QString& base64) {

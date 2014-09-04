@@ -35,10 +35,10 @@ PwHeaderV3::~PwHeaderV3() {
 }
 
 void PwHeaderV3::clear() {
-    masterSeed.clear();
-    initialVector.clear();
-    contentHash.clear();
-    transformSeed.clear();
+    Util::safeClear(masterSeed);
+    Util::safeClear(initialVector);
+    Util::safeClear(contentHash);
+    Util::safeClear(transformSeed);
     transformRounds = 0;
     groupCount = 0;
     entryCount = 0;
@@ -101,15 +101,15 @@ PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
 }
 
 PwDatabaseV3::~PwDatabaseV3() {
-    // nothing to do here
+    clear();
 }
 
 void PwDatabaseV3::clear() {
     qDeleteAll(metaStreamEntries);
     metaStreamEntries.clear();
     header.clear();
-    combinedKey.clear();
-    aesKey.clear();
+    Util::safeClear(combinedKey);
+    Util::safeClear(aesKey);
     PwDatabase::clear();
 }
 
@@ -184,7 +184,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     int dataSize = dbBytes.size() - header.HEADER_SIZE;
     // DB header not needed for decryption
     QByteArray dbBytesWithoutHeader = dbBytes.right(dataSize);
-    QByteArray decryptedData (dataSize, 0);
+    QByteArray decryptedData(dataSize, 0);
     err = decryptData(dbBytesWithoutHeader, decryptedData);
     if (err != SUCCESS) {
         if (err == DECRYPTED_PADDING_ERROR || err == DECRYPTED_CHECKSUM_MISMATCH) {
@@ -244,6 +244,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
             emit unlockProgressChanged(progress);
         }
     }
+    Util::safeClear(combinedKey2); // ~ origKey
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_1;
 
@@ -253,11 +254,13 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
 
     QByteArray prefinalKey;
     ec = cm->sha256(transformedKey, prefinalKey);
+    Util::safeClear(transformedKey);
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_2;
 
     prefinalKey.prepend(header.getMasterSeed());
     ec = cm->sha256(prefinalKey, aesKey);
+    Util::safeClear(prefinalKey);
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_3;
 
@@ -343,6 +346,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& 
             stream.readRawData(nameBuf.data(), fieldSize);
             QString name = QString::fromUtf8(nameBuf.constData());
             group.setName(name);
+            Util::safeClear(nameBuf);
             break;
         }
         case 0x0003: // creation time
@@ -414,6 +418,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
             entry.setUuid(PwUuid(buf));
+            Util::safeClear(buf);
             break;
         }
         case 0x0002: { // group ID
@@ -433,6 +438,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
             stream.readRawData(buf.data(), fieldSize);
             QString title = QString::fromUtf8(buf.constData());
             entry.setTitle(title);
+            Util::safeClear(buf);
             break;
         }
         case 0x0005: { // url
@@ -440,6 +446,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
             stream.readRawData(buf.data(), fieldSize);
             QString url = QString::fromUtf8(buf.constData()); // check with unicode
             entry.setUrl(url);
+            Util::safeClear(buf);
             break;
         }
         case 0x0006: { // username
@@ -447,12 +454,14 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
             stream.readRawData(buf.data(), fieldSize);
             QString username = QString::fromUtf8(buf.constData());
             entry.setUserName(username);
+            Util::safeClear(buf);
             break;
         }
         case 0x0007: { // password
             QByteArray buf(fieldSize, 0);
             stream.readRawData(buf.data(), fieldSize);
             entry.setPassword(QString::fromUtf8(buf.constData()));
+            Util::safeClear(buf);
             break;
         }
         case 0x0008: { // note
@@ -460,6 +469,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
             stream.readRawData(buf.data(), fieldSize);
             QString note = QString::fromUtf8(buf.constData());
             entry.setNotes(note);
+            Util::safeClear(buf);
             break;
         }
         case 0x0009: // creation time
@@ -479,6 +489,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
             stream.readRawData(buf.data(), fieldSize);
             QString binaryDesc = QString::fromUtf8(buf.constData());
             entry.setBinaryDesc(binaryDesc);
+            Util::safeClear(buf);
             break;
         }
         case 0x000E: { // binary data
@@ -501,7 +512,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& 
         }
     }
     // if we reach here, something went wrong
-    return NOT_ENOUGH_GROUPS;
+    return NOT_ENOUGH_ENTRIES;
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {

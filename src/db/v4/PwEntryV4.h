@@ -27,7 +27,7 @@ private:
 public:
     PwExtraField(QObject* parent=0);
     PwExtraField(QObject* parent, const QString& name, const QString& value);
-    virtual ~PwExtraField() {}
+    virtual ~PwExtraField();
 
     Q_INVOKABLE QString toString() const;
 

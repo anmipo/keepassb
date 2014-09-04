@@ -247,8 +247,8 @@ void PwDatabaseV4::clear() {
     qDeleteAll(binaries);
     binaries.clear();
     header.clear();
-    combinedKey.clear();
-    aesKey.clear();
+    Util::safeClear(combinedKey);
+    Util::safeClear(aesKey);
     recycleBinGroupUuid.clear();
     PwDatabase::clear(); // ancestor's cleaning
 }
@@ -280,6 +280,7 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
     }
 
     ec = cm->sha256(ba, combinedKey);
+    Util::safeClear(ba);
     if (ec != SB_SUCCESS)
         return false;
 
@@ -341,12 +342,17 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     step2key.append(subKey2);
     QByteArray transformedKey;
     ec = cm->sha256(step2key, transformedKey);
+    Util::safeClear(subKey1);
+    Util::safeClear(subKey2);
+    Util::safeClear(step2key);
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_2;
 
     QByteArray step3key(header.getMasterSeed());
     step3key.append(transformedKey);
     ec = cm->sha256(step3key, aesKey);
+    Util::safeClear(transformedKey);
+    Util::safeClear(step3key);
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_3;
 
@@ -407,6 +413,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     /* Read data blocks */
     QByteArray blocksData;
     err = readBlocks(decryptedStream, blocksData);
+    Util::safeClear(decryptedData); // not needed any further
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - readBlocks" << err;
         emit dbUnlockError(tr("Error reading database", "An error message"), err);
@@ -419,6 +426,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     if (header.isCompressed()) {
         /* Inflate GZip data to XML */
         Util::ErrorCode inflateErr = Util::inflateGZipData(blocksData, xmlData);
+        Util::safeClear(blocksData);
         if (inflateErr != Util::SUCCESS) {
             qDebug() << "Error inflating database";
             emit dbUnlockError(tr("Error inflating database", "An error message. Inflating means decompression of compressed data."), inflateErr);
@@ -441,6 +449,8 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     /* Parse XML */
     QString xmlString = QString::fromUtf8(xmlData.data(), xmlData.size());
     err = parseXml(xmlString);
+    Util::safeClear(xmlData);
+    Util::safeClear(xmlString);
     if (err != SUCCESS) {
         qDebug() << "Error parsing database" << err;
         emit dbUnlockError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
@@ -489,7 +499,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
     QByteArray blockHash(SB_SHA256_DIGEST_LEN, 0);
     QByteArray computedHash(SB_SHA256_DIGEST_LEN, 0);
 
-    blocksData.clear();
+    Util::safeClear(blocksData);
     CryptoManager* cm = CryptoManager::instance();
 
     quint32 blockId = 0;
@@ -519,6 +529,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
             return BLOCK_HASH_MISMATCH;
         }
         blocksData.append(blockData);
+        Util::safeClear(blockData);
     }
     return SUCCESS;
 }
@@ -568,7 +579,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadXmlMetaData(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_META);
 
     xml.readNext();
-    QString tagName = xml.name().toString();
+    QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (XML_META == tagName))) {
         if (xml.isStartElement()) {
             if (XML_RECYCLE_BIN_UUID == tagName) {
@@ -586,7 +597,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadXmlMetaData(QXmlStreamReader& xml) {
             }
         }
         xml.readNext();
-        tagName = xml.name().toString();
+        tagName = xml.name();
     }
     if (xml.hasError())
         return XML_PARSING_ERROR;
@@ -600,12 +611,13 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
 
     ErrorCode err;
     xml.readNext();
-    QString tagName = xml.name().toString();
+    QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (XML_GROUP == tagName))) {
         if (xml.isStartElement()) {
             if (XML_UUID == tagName) {
                 QString uuidBase64Str = xml.readElementText();
                 PwUuid uuid = PwUuid::fromBase64(uuidBase64Str);
+                Util::safeClear(uuidBase64Str);
                 group.setUuid(uuid);
                 if (uuid == recycleBinGroupUuid)
                     group.setDeleted(true); // may also be set higher in call stack
@@ -644,7 +656,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
             }
         }
         xml.readNext();
-        tagName = xml.name().toString();
+        tagName = xml.name();
     }
 
     if (xml.hasError())
@@ -662,7 +674,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, Pw
     ErrorCode err = SUCCESS;
 
     xml.readNext();
-    QString tagName = xml.name().toString();
+    QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (XML_ENTRY == tagName))) {
         if (xml.isStartElement()) {
             if (XML_UUID == tagName) {
@@ -689,7 +701,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, Pw
         if (err != SUCCESS)
             return err;
         xml.readNext();
-        tagName = xml.name().toString();
+        tagName = xml.name();
     }
     if (xml.hasError())
         return XML_PARSING_ERROR;
@@ -818,6 +830,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryStringValue(QXmlStreamReader& xml
     if (attr.value(XML_PROTECTED) == XML_TRUE) {
         QString valueStr = xml.readElementText();
         QByteArray valueBytes = QByteArray::fromBase64(valueStr.toLatin1());
+        Util::safeClear(valueStr);
         int size = valueBytes.length();
 
         QByteArray salsaBytes;

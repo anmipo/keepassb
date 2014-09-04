@@ -22,7 +22,14 @@ PwAttachment::PwAttachment(QObject* parent) :
 }
 
 PwAttachment::~PwAttachment() {
-    // nothing to do here
+    clear();
+}
+
+void PwAttachment::clear() {
+    Util::safeClear(name);
+    Util::safeClear(data);
+    isCompressed = false;
+    isOriginallyCompressed = false;
 }
 
 bool PwAttachment::saveContentToFile(const QString& fileName) {

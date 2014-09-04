@@ -12,6 +12,6 @@ PwGroupV4::PwGroupV4(QObject* parent) : PwGroup(parent) {
 }
 
 PwGroupV4::~PwGroupV4() {
-    // nothing to do here
+    clear();
 }
 

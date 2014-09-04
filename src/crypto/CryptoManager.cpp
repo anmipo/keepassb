@@ -11,6 +11,7 @@
 #include "hugse56.h"
 #include "sbreturn.h"
 #include "huaes.h"
+#include "util/Util.h"
 
 CryptoManager* CryptoManager::_instance;
 
@@ -57,6 +58,7 @@ void CryptoManager::cleanup() {
 	qDebug() << "CryptoManager::cleanup";
 	if (keyTransformInitialized) {
 	    endKeyTransform();
+	    keyTransformInitialized = false;
 	}
 	hu_UninitSbg56(sbCtx);
 	hu_GlobalCtxDestroy(&sbCtx);
@@ -410,9 +412,9 @@ Salsa20::Salsa20() : block(BLOCK_SIZE, 0) {
 }
 
 Salsa20::~Salsa20() {
-    key.clear();
-    iv.clear();
-    block.clear();
+    Util::safeClear(key);
+    Util::safeClear(iv);
+    Util::safeClear(block);
 }
 
 void Salsa20::init(const QByteArray& _key, const QByteArray& _iv) {

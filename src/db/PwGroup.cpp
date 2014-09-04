@@ -12,6 +12,7 @@
 #include <bb/cascades/ItemGrouping>
 #include <bb/cascades/DataModel>
 #include "util/Settings.h"
+#include "util/Util.h"
 
 PwGroup::PwGroup(QObject* parent) :
         bb::cascades::DataModel(parent), _uuid(),
@@ -38,8 +39,8 @@ PwGroup::~PwGroup() {
 void PwGroup::clear() {
     _uuid.clear();
     _iconId = 0;
-    _name.clear();
-    _notes.clear();
+    Util::safeClear(_name);
+    Util::safeClear(_notes);
     sortedGroups.clear();
 	qDeleteAll(_subGroups);
 	_subGroups.clear();

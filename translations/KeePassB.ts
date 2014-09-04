@@ -282,7 +282,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>ApplicationUI</name>
     <message>
-        <location filename="../src/applicationui.cpp" line="155"/>
+        <location filename="../src/applicationui.cpp" line="158"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (see reference:INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
@@ -291,31 +291,31 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="201"/>
+        <location filename="../src/db/PwDatabase.cpp" line="202"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="208"/>
+        <location filename="../src/db/PwDatabase.cpp" line="209"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="216"/>
+        <location filename="../src/db/PwDatabase.cpp" line="217"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="226"/>
+        <location filename="../src/db/PwDatabase.cpp" line="227"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="239"/>
+        <location filename="../src/db/PwDatabase.cpp" line="240"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>
@@ -357,32 +357,32 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="375"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="381"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="389"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="437"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="395"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="445"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="412"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="419"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="424"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="432"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="446"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="456"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>

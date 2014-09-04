@@ -94,6 +94,7 @@ public:
         CONTENT_HASHING_ERROR    = 0x32,  // == generic crypto lib error
         DECRYPTED_CHECKSUM_MISMATCH = 0x33,
         NOT_ENOUGH_GROUPS        = 0x40,
+        NOT_ENOUGH_ENTRIES       = 0x45,
         ORPHANED_ENTRY_ERROR     = 0x50,
     };
 

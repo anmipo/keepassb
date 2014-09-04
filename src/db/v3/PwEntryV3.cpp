@@ -6,6 +6,7 @@
  */
 
 #include <PwEntryV3.h>
+#include "util/Util.h"
 
 // field values of meta-stream entries
 const QString METASTREAM_ID_TITLE = QString("Meta-Info");
@@ -26,13 +27,13 @@ PwEntryV3::~PwEntryV3() {
 
 void PwEntryV3::clear() {
     _groupId = 0;
-    _binaryDesc.clear();
-    _binaryData.clear();
-    _title.clear();
-    _userName.clear();
-    _password.clear();
-    _url.clear();
-    _notes.clear();
+    Util::safeClear(_binaryDesc);
+    Util::safeClear(_binaryData);
+    Util::safeClear(_title);
+    Util::safeClear(_userName);
+    Util::safeClear(_password);
+    Util::safeClear(_url);
+    Util::safeClear(_notes);
     PwEntry::clear();
 }
 

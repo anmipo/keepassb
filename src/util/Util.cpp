@@ -74,3 +74,21 @@ bool Util::isAllZero(const QByteArray& data) {
             return false;
     return true;
 }
+
+/**
+ * Fills the array with a random byte value, then clears.
+ */
+void Util::safeClear(QByteArray& data) {
+    char randomByte = qrand() % 0xFF;
+    data.fill(randomByte);
+    data.clear();
+}
+
+/**
+ * Fills the string data with a random byte, then clears.
+ */
+void Util::safeClear(QString& string) {
+    QChar randomChar(qrand() % 0xFF);
+    string.fill(randomChar);
+    string.clear();
+}

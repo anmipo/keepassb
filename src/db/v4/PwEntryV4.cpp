@@ -26,6 +26,11 @@ PwExtraField::PwExtraField(QObject* parent, const QString& name, const QString& 
     // left empty
 }
 
+PwExtraField::~PwExtraField() {
+    Util::safeClear(_name);
+    Util::safeClear(_value);
+}
+
 QString PwExtraField::toString() const {
     return _name + " = " + _value;
 }
@@ -47,7 +52,7 @@ PwEntryV4::PwEntryV4(QObject* parent) :
 }
 
 PwEntryV4::~PwEntryV4() {
-    //nothing to do here
+    clear();
 }
 
 void PwEntryV4::clear() {

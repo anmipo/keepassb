@@ -17,7 +17,7 @@
 #include <bb/cascades/QListDataModel>
 
 /**
- * Binary attachment of a V4 database entry
+ * Binary attachment of a database entry
  */
 class PwAttachment: public QObject {
     Q_OBJECT
@@ -48,6 +48,8 @@ public:
 
     /** Sets attachment content */
     void setData(const QByteArray& data, const bool isCompressed);
+
+    void clear();
 
     // property accessors
     void setName(const QString& name);

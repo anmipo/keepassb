@@ -16,6 +16,7 @@
 #include "db/PwDatabase.h"
 #include "crypto/CryptoManager.h"
 #include "ui/ActiveFrame.h"
+#include "util/Util.h"
 
 using namespace bb::cascades;
 using namespace bb::system;
@@ -40,6 +41,9 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
     // initial load
     onSystemLanguageChanged();
+
+    // init random seed -- for Utils, not for cryptography
+    qsrand((uint)QTime::currentTime().msec());
 
     settings = Settings::instance();
     settings->setParent(app);
@@ -166,7 +170,7 @@ void ApplicationUI::lock() {
     if (settings->isQuickUnlockEnabled()) {
         emit appLocked();
     } else {
-        quickPassHash.clear();
+        Util::safeClear(quickPassHash);
         database->lock();
     }
 }

@@ -31,6 +31,15 @@ public:
      * Checks if data contains only zeros.
      */
     static bool isAllZero(const QByteArray& data);
+
+    /**
+     * Fills the array with a random byte value, then clears.
+     */
+    static void safeClear(QByteArray& data);
+    /**
+     * Fills the string data with a random byte, then clears.
+     */
+    static void safeClear(QString& string);
 };
 
 #endif /* UTIL_H_ */

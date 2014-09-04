@@ -13,6 +13,7 @@
 #include "db/PwGroup.h"
 #include "db/PwEntry.h"
 #include "util/Settings.h"
+#include "util/Util.h"
 #include "sbdef.h"
 
 // Tag names for XML-formatted key files
@@ -43,7 +44,7 @@ void PwDatabase::clear() {
         delete _rootGroup;
         _rootGroup = NULL;
     }
-    _dbFilePath.clear();
+    Util::safeClear(_dbFilePath);
 	qDebug("DB cleared");
 }
 
