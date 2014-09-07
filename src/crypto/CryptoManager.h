@@ -19,6 +19,7 @@ class CryptoManager {
 private:
     static CryptoManager* _instance;
     sb_GlobalCtx sbCtx;        // Security Builder Crypto global context
+    sb_RNGCtx rngCtx;          // RNG context
 
     int keyTransformLength;
     QByteArray keyTransformInitVectorArray;
@@ -30,6 +31,8 @@ private:
 
     CryptoManager();
     virtual ~CryptoManager();
+
+    int initRngSeed();
 
     // releases allocated resources
     void cleanup();
@@ -51,6 +54,11 @@ public:
 	 * Returns an SB_* error code.
 	 */
 	int sha256(const QByteArray& inputData, QByteArray& outputData);
+
+	/**
+	 * Fills 'bytes' with 'size' bytes from a hardware-seeded DRNG.
+	 */
+	int getRandomBytes(QByteArray& bytes, const int size);
 
 	/**
      * Encrypts data with AES with the specified mode.

@@ -11,6 +11,8 @@
 #include "hugse56.h"
 #include "sbreturn.h"
 #include "huaes.h"
+#include "huseed.h"
+#include "hurandom.h"
 #include "util/Util.h"
 
 CryptoManager* CryptoManager::_instance;
@@ -51,6 +53,13 @@ int CryptoManager::init() {
 
 	RETURN_IF_SB_ERROR(hu_InitSbg56(sbCtx), "CryptoManager error calling hu_InitSbg56");
 
+	// Init RNG seed using hardware-based randomness
+	RETURN_IF_SB_ERROR(hu_RegisterSystemSeed(sbCtx), "CryptoManager error calling hu_RegisterSystemSeed");
+	RETURN_IF_SB_ERROR(
+	        hu_RngDrbgCreate(HU_DRBG_HASH, 256, false, 0, NULL, NULL, &rngCtx, sbCtx),
+	        "CryptoManager error creating RNG");
+	RETURN_IF_SB_ERROR(initRngSeed(), "CryptoManager error initializing RNG seed");
+
 	return SB_SUCCESS;
 }
 
@@ -60,8 +69,19 @@ void CryptoManager::cleanup() {
 	    endKeyTransform();
 	    keyTransformInitialized = false;
 	}
+	hu_RngDrbgDestroy(&rngCtx, sbCtx);
 	hu_UninitSbg56(sbCtx);
 	hu_GlobalCtxDestroy(&sbCtx);
+}
+
+int CryptoManager::initRngSeed() {
+    size_t seedLen = 2048;
+    unsigned char seedBuf[seedLen];
+    RETURN_IF_SB_ERROR(hu_SeedGet(&seedLen, seedBuf, sbCtx), "CryptoManager error calling hu_SeedGet");
+    // seedLen returned might be less than requested
+    RETURN_IF_SB_ERROR(hu_RngReseed(rngCtx, seedLen, seedBuf, sbCtx), "CryptoManager error calling hu_RngReseed");
+
+    return SB_SUCCESS;
 }
 
 /**
@@ -92,6 +112,17 @@ int CryptoManager::sha256(const QByteArray& inputData, QByteArray& outputData) {
 	        "CryptoManager error completing hashing");
 
 	return SB_SUCCESS;
+}
+
+/**
+ * Fills 'bytes' with 'size' bytes from a hardware-seeded DRNG.
+ */
+int CryptoManager::getRandomBytes(QByteArray& bytes, const int size) {
+    bytes.resize(size);
+    RETURN_IF_SB_ERROR(
+            hu_RngGetBytes(rngCtx, bytes.size(), reinterpret_cast<unsigned char*>(bytes.data()), sbCtx),
+            "Error from hu_RngGetBytes");
+    return SB_SUCCESS;
 }
 
 /**
