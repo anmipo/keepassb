@@ -247,12 +247,12 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     // Setup signal forwarding
     bool res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLocked()), this, SLOT(onDbLocked())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlocked()), this, SLOT(onDbUnlocked())); Q_ASSERT(res);
-    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlockError(QString, int)), this, SIGNAL(dbUnlockError(QString, int))); Q_ASSERT(res);
+    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLoadError(QString, int)), this, SIGNAL(dbUnlockError(QString, int))); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(invalidPasswordOrKey()), this, SIGNAL(invalidPasswordOrKey())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(unlockProgressChanged(int)), this, SIGNAL(unlockProgressChanged(int))); Q_ASSERT(res);
 
-    // Initiate the actual unlocking
-    db->unlock(dbFileData, password, keyFileData);
+    // Initiate the actual unlocking/loading
+    db->load(dbFileData, password, keyFileData);
 }
 
 PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData) {

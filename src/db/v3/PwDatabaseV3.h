@@ -149,7 +149,12 @@ public:
      * Tries to decrypt the given DB data with given password/key.
      * The progress and the result are communicated asynchronously via signals.
      */
-    void unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData);
+    void load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData);
+
+    /**
+     * Encrypts and writes DB content to the given array.
+     */
+    void save(QByteArray& outData);
 };
 
 #endif /* PWDATABASEV3_H_ */

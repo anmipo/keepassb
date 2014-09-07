@@ -253,9 +253,9 @@ void PwDatabaseV4::clear() {
     PwDatabase::clear(); // ancestor's cleaning
 }
 
-void PwDatabaseV4::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
+void PwDatabaseV4::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(password.toUtf8(), keyFileData, combinedKey)) {
-        emit dbUnlockError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
+        emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
         return;
     }
 
@@ -368,7 +368,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     PwHeaderV4::ErrorCode headerErrCode = header.read(stream);
     if (headerErrCode != PwHeaderV4::SUCCESS) {
         qDebug() << PwHeaderV4::getErrorMessage(headerErrCode) << headerErrCode;
-        emit dbUnlockError(PwHeaderV4::getErrorMessage(headerErrCode), headerErrCode);
+        emit dbLoadError(PwHeaderV4::getErrorMessage(headerErrCode), headerErrCode);
         return false;
     }
 
@@ -378,7 +378,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     ErrorCode err = transformKey(header, combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
-        emit dbUnlockError(tr("Cannot decrypt database", "A generic error message"), err);
+        emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
 
@@ -392,7 +392,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = decryptData(dbBytesWithoutHeader, decryptedData);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - decryptData" << err;
-        emit dbUnlockError(tr("Cannot decrypt database", "An error message"), err);
+        emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
     emit unlockProgressChanged(UNLOCK_PROGRESS_DECRYPTED);
@@ -416,7 +416,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     Util::safeClear(decryptedData); // not needed any further
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - readBlocks" << err;
-        emit dbUnlockError(tr("Error reading database", "An error message"), err);
+        emit dbLoadError(tr("Error reading database", "An error message"), err);
         return false;
     }
 
@@ -429,7 +429,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         Util::safeClear(blocksData);
         if (inflateErr != Util::SUCCESS) {
             qDebug() << "Error inflating database";
-            emit dbUnlockError(tr("Error inflating database", "An error message. Inflating means decompression of compressed data."), inflateErr);
+            emit dbLoadError(tr("Error inflating database", "An error message. Inflating means decompression of compressed data."), inflateErr);
             return false;
         }
     } else {
@@ -442,7 +442,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = initSalsa20();
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - initSalsa20" << err;
-        emit dbUnlockError(tr("Cannot decrypt database", "An error message"), err);
+        emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
 
@@ -453,7 +453,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     Util::safeClear(xmlString);
     if (err != SUCCESS) {
         qDebug() << "Error parsing database" << err;
-        emit dbUnlockError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
+        emit dbLoadError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
     }
 
@@ -871,4 +871,11 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml,
         }
     }
     return SUCCESS;
+}
+
+/**
+ * Encrypts and writes DB content to the given array.
+ */
+void PwDatabaseV4::save(QByteArray& outData) {
+    //TODO implement V4 saving
 }

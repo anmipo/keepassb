@@ -123,9 +123,9 @@ bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
     return (sign1 ==  PwHeaderV3::SIGNATURE_1) && (sign2 == PwHeaderV3::SIGNATURE_2);
 }
 
-void PwDatabaseV3::unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
+void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(password.toLatin1(), keyFileData, combinedKey)) {
-        emit dbUnlockError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
+        emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
         return;
     }
 
@@ -165,7 +165,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     PwHeaderV3::ErrorCode headerErrCode = header.read(stream);
     if (headerErrCode != PwHeaderV3::SUCCESS) {
         qDebug() << PwHeaderV3::getErrorMessage(headerErrCode) << headerErrCode;
-        emit dbUnlockError(PwHeaderV3::getErrorMessage(headerErrCode), headerErrCode);
+        emit dbLoadError(PwHeaderV3::getErrorMessage(headerErrCode), headerErrCode);
         return false;
     }
     emit unlockProgressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
@@ -174,7 +174,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     ErrorCode err = transformKey(combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
-        emit dbUnlockError(tr("Cannot decrypt database", "A generic error message"), err);
+        emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
 
@@ -195,7 +195,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
             // err == CONTENT_HASHING_ERROR
             // err == something else
             qDebug() << "Cannot decrypt database - decryptData" << err;
-            emit dbUnlockError(tr("Cannot decrypt database", "An error message"), err);
+            emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         }
         return false;
     }
@@ -205,7 +205,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
     err = readContent(decryptedDataStream);
     if (err != SUCCESS) {
-        emit dbUnlockError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
+        emit dbLoadError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
     }
 
@@ -575,4 +575,11 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
         }
     }
     return SUCCESS;
+}
+
+/**
+ * Encrypts and writes DB content to the given array.
+ */
+void PwDatabaseV3::save(QByteArray& outData) {
+    // TODO implement V3 saving
 }

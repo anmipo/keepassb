@@ -40,10 +40,15 @@ public:
 	virtual ~PwDatabase();
 
     /**
-     * Tries to decrypt the given DB data with given password/key.
+     * Tries to decrypt and load the given DB data with given password/key.
      * The progress and the result are communicated asynchronously via signals.
      */
-    virtual void unlock(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) = 0;
+    virtual void load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) = 0;
+    /**
+     * Encrypts the DB and stores its content to the given array.
+     */
+    virtual void save(QByteArray& outData) = 0;
+
     // Clears the database.
     virtual void clear();
     // Clears and locks the database.
@@ -79,9 +84,14 @@ signals:
     void unlockProgressChanged(const int progressPercent);
     /**
      * Emitted in case of generic DB loading/decryption error.
-     * errorCode parameter is one of PwDatabaseV4::Errors values.
+     * errorCode parameter is one of PwDatabase::Error/PwDatabaseV3::Error/PwDatabaseV4::Error values.
      */
-    void dbUnlockError(const QString& message, const int errorCode);
+    void dbLoadError(const QString& message, const int errorCode);
+    /**
+     * Emitted in case of DB saving error.
+     * errorCode parameter is one of PwDatabase::Error/PwDatabaseV3::Error/PwDatabaseV4::Error values.
+     */
+    void dbSaveError(const QString& message, const int errorCode);
     /**
      * Emitted when password/key seem to be invalid (decrypted checksum mismatch).
      */
