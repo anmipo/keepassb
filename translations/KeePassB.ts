@@ -320,29 +320,47 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="316"/>
+        <source>Cannot save database file</source>
+        <comment>An error message shown when the database file cannot be saved.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="322"/>
+        <source>Cannot write to database file</source>
+        <comment>An error message shown when the database file cannot be written to.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="327"/>
+        <source>Error writing to database file</source>
+        <comment>An error message shown when the database file cannot be written to.</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PwDatabaseV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="128"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="162"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="177"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="211"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="198"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="232"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="208"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="242"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
@@ -391,25 +409,25 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwHeaderV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="87"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="121"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="89"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="123"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="91"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="125"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="93"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="127"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
@@ -869,33 +887,46 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="32"/>
+        <location filename="../assets/main.qml" line="35"/>
         <source>About</source>
         <comment>A button/action which opens an information window about the application.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="41"/>
+        <location filename="../assets/main.qml" line="44"/>
         <source>Quick Lock</source>
         <comment>A button which engages Quick Lock mode (see thesaurus).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="41"/>
+        <location filename="../assets/main.qml" line="44"/>
         <source>Lock</source>
         <comment>A button which closes/locks the current database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="71"/>
+        <location filename="../assets/main.qml" line="86"/>
         <source>Copied to clipboard</source>
         <comment>A notification which confirms successful copying of text.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="74"/>
+        <location filename="../assets/main.qml" line="89"/>
         <source>Clipboard cleared</source>
         <comment>A notification message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="128"/>
+        <source>Saving...</source>
+        <comment>Title of a progress indicator while a database is being encrypted/saved.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="143"/>
+        <source>%1
+(%2)</source>
+        <comment>A template for &apos;Error message (Error description)&apos;; change only for right-to-left langugages</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

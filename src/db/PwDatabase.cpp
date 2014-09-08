@@ -202,7 +202,7 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
         emit fileOpenError(tr("Cannot open database file", "An error message shown when the file is not available or cannot be opened."), dbFile.errorString());
         return;
     }
-    qDebug() << "DB file read ok";
+    qDebug() << "DB file open ok";
     QByteArray dbFileData = dbFile.readAll();
     if (dbFile.error() != QFile::NoError) {
         // There was a problem reading the file
@@ -248,6 +248,7 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     bool res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLocked()), this, SLOT(onDbLocked())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlocked()), this, SLOT(onDbUnlocked())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLoadError(QString, int)), this, SIGNAL(dbUnlockError(QString, int))); Q_ASSERT(res);
+    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbSaveError(QString, int)), this, SIGNAL(dbSaveError(QString, int))); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(invalidPasswordOrKey()), this, SIGNAL(invalidPasswordOrKey())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(unlockProgressChanged(int)), this, SIGNAL(unlockProgressChanged(int))); Q_ASSERT(res);
 
@@ -286,4 +287,48 @@ Q_INVOKABLE QString PwDatabaseFacade::getDatabaseFilePath() const {
     } else {
         return QString("");
     }
+}
+
+/**
+ * Saves changes in the current database.
+ */
+Q_INVOKABLE void PwDatabaseFacade::save() {
+    if (!db) {
+        qDebug() << "Cannot save - no DB open";
+        return;
+    }
+    if (isLocked()) {
+        qDebug() << "Cannot save - DB is locked";
+        return;
+    }
+
+    emit dbAboutToSave();
+
+    // Encrypt and save to memory
+    QByteArray outData;
+    db->save(outData);
+
+    // Save to file and check all the errors
+    QString tmpFilePath = db->getDatabaseFilePath() + ".tmp";
+    QFile outDbFile(tmpFilePath);
+    if (!outDbFile.open(QIODevice::WriteOnly)) {
+        qDebug() << "Cannot open DB file: '" << tmpFilePath << "' Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();
+        emit fileSaveError(tr("Cannot save database file", "An error message shown when the database file cannot be saved."), outDbFile.errorString());
+        return;
+    }
+    qint64 bytesWritten = outDbFile.write(outData);
+    if ((outDbFile.error() != QFile::NoError) || (bytesWritten != outData.size())) {
+        qDebug() << "Cannot write to DB file. Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();
+        emit fileSaveError(tr("Cannot write to database file", "An error message shown when the database file cannot be written to."), outDbFile.errorString());
+        return;
+    }
+    if (!outDbFile.flush()) {
+        qDebug() << "Could not flush the DB file. Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();
+        emit fileSaveError(tr("Error writing to database file", "An error message shown when the database file cannot be written to."), outDbFile.errorString());
+        // no return, pass through to close()
+    }
+    outDbFile.close();
+
+    // TODO rename the temporary file to the actual one
+    emit dbSaved();
 }

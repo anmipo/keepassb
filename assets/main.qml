@@ -21,6 +21,9 @@ import QtQuick 1.0
 NavigationPane {
     id: naviPane
     
+    // emitted when the DB is successfully saved
+    signal databaseSaved()
+    
     Menu.definition: MenuDefinition {
         settingsAction: SettingsActionItem {
             onTriggered : {
@@ -53,6 +56,16 @@ NavigationPane {
         objectName: "unlockDbPage"
         onDatabaseUnlocked: {
             app.restartWatchdog();
+            
+            database.dbAboutToSave.connect(function() {
+                saveProgressDialog.show();
+            });
+            database.fileSaveError.connect(showFileSaveError);
+            database.dbSaved.connect(function() {
+                saveProgressDialog.cancel();
+                databaseSaved();
+            });
+
             var viewGroupPage = Qt.createComponent("ViewGroupPage.qml");
             var groupPage = viewGroupPage.createObject(null, 
                     {"group": database.rootGroup, "autofocus": appSettings.searchAfterUnlock});
@@ -60,18 +73,20 @@ NavigationPane {
                 groupPage.startSearch();
             }
             naviPane.push(groupPage);
+            
+            database.save(); // TODO remove this debug line
         }
     }
-          
+
     onCreationCompleted: {
         Qt.app = app; // a hack to make 'app' available from ListItemComponent
         Qt.database = database; // a hack to make 'database' available from ListItemComponent
         
         app.clipboardUpdated.connect(function() {
-                showToast(qsTr("Copied to clipboard", "A notification which confirms successful copying of text.") + Retranslate.onLocaleOrLanguageChanged)
+                showClipboardToast(qsTr("Copied to clipboard", "A notification which confirms successful copying of text.") + Retranslate.onLocaleOrLanguageChanged)
             });
         app.clipboardCleared.connect(function() {
-                showToast(qsTr("Clipboard cleared", "A notification message") + Retranslate.onLocaleOrLanguageChanged)
+                showClipboardToast(qsTr("Clipboard cleared", "A notification message") + Retranslate.onLocaleOrLanguageChanged)
             });
         database.dbLocked.connect(function() {
                 app.stopWatchdog();
@@ -102,13 +117,34 @@ NavigationPane {
             id: quickUnlockPage
         },
         SystemToast {
-            id: toast  
+            id: clipboardToast  
+        },
+        SystemToast {
+            id: dbSaveErrorToast
+            position: SystemUiPosition.TopCenter
+        },
+        SystemProgressDialog {
+            id: saveProgressDialog
+            title: qsTr("Saving...", "Title of a progress indicator while a database is being encrypted/saved.") + Retranslate.onLocaleOrLanguageChanged
+            progress: -1; // infinite
+            autoUpdateEnabled: true
+            confirmButton.label: ""
+            cancelButton.label: ""
         }
     ]
 
-    function showToast(message) {
-        toast.body = message; 
-        toast.show();
+    function showClipboardToast(message) {
+        clipboardToast.body = message; 
+        clipboardToast.show();
+    }
+
+    function showFileSaveError(message, errorDescription) {
+        saveProgressDialog.cancel();
+        dbSaveErrorToast.body = qsTr("%1\n(%2)",
+                "A template for 'Error message (Error description)'; change only for right-to-left langugages")
+                .arg(message)
+                .arg(errorDescription); 
+        dbSaveErrorToast.show();
     }
 
     onPopTransitionEnded: {

@@ -20,6 +20,7 @@
 class PwHeaderV3: public QObject {
     Q_OBJECT
 private:
+    quint32 flags; // used internally by KeePass
     QByteArray masterSeed;
     QByteArray initialVector;
     QByteArray contentHash;
@@ -50,6 +51,7 @@ public:
         SIGNATURE_2_MISMATCH  = 2,
         UNSUPPORTED_FILE_VERSION = 3,
         NOT_AES                  = 4, // only AES/Rijndael is supported
+        ERROR_RANDOMIZING_IVS    = 5,
     };
     /**
      * Returns a user-friendly error description
@@ -61,7 +63,11 @@ public:
 
     /** Reads and parses header data */
     ErrorCode read(QDataStream& data);
+    /** Writes header data to the stream */
+    ErrorCode write(QDataStream& outStream);
 
+    /** Resets encryption IV, master and transform seeds to (securely) random values. */
+    ErrorCode randomizeInitialVectors();
     /** Erases loaded data from memory */
     void clear();
 
@@ -70,6 +76,7 @@ public:
     QByteArray getTransformSeed() const { return transformSeed; }
     QByteArray getInitialVector() const { return initialVector; }
     QByteArray getContentHash() const { return contentHash; }
+    void setContentHash(const QByteArray& contentHash) { this->contentHash = contentHash; }
     quint32 getGroupCount() const { return groupCount; }
     quint32 getEntryCount() const { return entryCount; }
 };

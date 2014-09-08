@@ -23,8 +23,14 @@ const int UNLOCK_PROGRESS_DONE = 100;
 
 const QString BACKUP_GROUP_NAME = QString("Backup");
 
+const int MASTER_SEED_SIZE = 16;
+const int INITIAL_VECTOR_SIZE = 16;
+const int CONTENT_HASH_SIZE = 32;
+const int TRANSFORM_SEED_SIZE = 32;
+
 PwHeaderV3::PwHeaderV3(QObject* parent) : QObject(parent),
         masterSeed(), initialVector(), contentHash(), transformSeed() {
+    flags = 0;
     transformRounds = 0;
     groupCount = 0;
     entryCount = 0;
@@ -35,6 +41,7 @@ PwHeaderV3::~PwHeaderV3() {
 }
 
 void PwHeaderV3::clear() {
+    flags = 0;
     Util::safeClear(masterSeed);
     Util::safeClear(initialVector);
     Util::safeClear(contentHash);
@@ -48,7 +55,7 @@ PwHeaderV3::ErrorCode PwHeaderV3::read(QDataStream& stream) {
     clear();
 
     // check file signatures (although probably checked before)
-    quint32 sign1, sign2, flags, fileVersion;
+    quint32 sign1, sign2, fileVersion;
     stream >> sign1 >> sign2 >> flags >> fileVersion;
     if (sign1 !=  SIGNATURE_1)
         return SIGNATURE_1_MISMATCH;
@@ -61,19 +68,46 @@ PwHeaderV3::ErrorCode PwHeaderV3::read(QDataStream& stream) {
 
     qDebug("Signatures match");
 
-    masterSeed.fill(0, 16);
-    stream.readRawData(masterSeed.data(), 16);
-    initialVector.fill(0, 16);
-    stream.readRawData(initialVector.data(), 16);
+    masterSeed.fill(0, MASTER_SEED_SIZE);
+    stream.readRawData(masterSeed.data(), MASTER_SEED_SIZE);
+    initialVector.fill(0, INITIAL_VECTOR_SIZE);
+    stream.readRawData(initialVector.data(), INITIAL_VECTOR_SIZE);
 
     stream >> groupCount >> entryCount;
 
-    contentHash.fill(0, 32);
-    stream.readRawData(contentHash.data(), 32);
-    transformSeed.fill(0, 32);
-    stream.readRawData(transformSeed.data(), 32);
+    contentHash.fill(0, CONTENT_HASH_SIZE);
+    stream.readRawData(contentHash.data(), CONTENT_HASH_SIZE);
+    transformSeed.fill(0, TRANSFORM_SEED_SIZE);
+    stream.readRawData(transformSeed.data(), TRANSFORM_SEED_SIZE);
 
     stream >> transformRounds;
+    return SUCCESS;
+}
+
+/** Resets encryption IV, master and transform seeds to (securely) random values. */
+PwHeaderV3::ErrorCode PwHeaderV3::randomizeInitialVectors() {
+    CryptoManager* cm = CryptoManager::instance();
+    int err = cm->getRandomBytes(initialVector, INITIAL_VECTOR_SIZE);
+    if (err != SB_SUCCESS)
+        return ERROR_RANDOMIZING_IVS;
+    err = cm->getRandomBytes(masterSeed, MASTER_SEED_SIZE);
+    if (err != SB_SUCCESS)
+        return ERROR_RANDOMIZING_IVS;
+    err = cm->getRandomBytes(transformSeed, TRANSFORM_SEED_SIZE);
+    if (err != SB_SUCCESS)
+        return ERROR_RANDOMIZING_IVS;
+    return SUCCESS;
+}
+
+/** Erases loaded data from memory */
+PwHeaderV3::ErrorCode PwHeaderV3::write(QDataStream& outStream) {
+    outStream << SIGNATURE_1 << SIGNATURE_2 << flags << DB_VERSION;
+    outStream.writeRawData(masterSeed.constData(), masterSeed.size());
+    outStream.writeRawData(initialVector.constData(), initialVector.size());
+    outStream << groupCount << entryCount;
+    outStream.writeRawData(contentHash.constData(), contentHash.size());
+    outStream.writeRawData(transformSeed.constData(), transformSeed.size());
+    outStream << transformRounds;
     return SUCCESS;
 }
 
@@ -582,4 +616,10 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
  */
 void PwDatabaseV3::save(QByteArray& outData) {
     // TODO implement V3 saving
+    outData.clear();
+    QDataStream outStream(&outData, QIODevice::WriteOnly);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+
+//    header.randomizeInitialVectors(); // TOOD uncomment after debug
+    header.write(outStream);
 }

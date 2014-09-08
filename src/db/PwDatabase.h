@@ -144,7 +144,6 @@ public:
     PwDatabaseFacade(QObject* parent=0);
     virtual ~PwDatabaseFacade();
 
-
     /**
      * Initiates DB unlocking.
      * The progress and the result is communicated via appropriate signal.
@@ -172,11 +171,31 @@ public slots:
      */
     Q_INVOKABLE int search(const QString& query);
 
+    /**
+     * Saves changes in the current database.
+     */
+    Q_INVOKABLE void save();
+
 signals:
     void dbLocked();
     void dbUnlocked();
     void dbUnlockError(const QString& message, const int errorCode);
     void fileOpenError(const QString& message, const QString& errorDescription);
+
+    /** Emitted before starting DB encryption/saving */
+    void dbAboutToSave();
+    /** Emitted when DB is successfully saved */
+    void dbSaved();
+    /**
+     * Emitted in case of DB encryption error.
+     * errorCode parameter is one of PwDatabase::Error/PwDatabaseV3::Error/PwDatabaseV4::Error values.
+     */
+    void dbSaveError(const QString& message, const int errorCode);
+    /**
+     * Emitted in case of I/O error during DB saving.
+     */
+    void fileSaveError(const QString& message, const QString& errorDescription);
+
     void invalidPasswordOrKey();
     void unlockProgressChanged(const int progressPercent);
     void searchResultChanged();
