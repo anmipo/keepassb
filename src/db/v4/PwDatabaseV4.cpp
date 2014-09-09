@@ -88,7 +88,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(QDataStream& stream) {
         return SIGNATURE_1_MISMATCH;
     if (sign2 != SIGNATURE_2)
         return SIGNATURE_2_MISMATCH;
-    if ((fileVersion != 0x00030001) && (fileVersion != 0x00030000))
+    if ((fileVersion & FILE_VERSION_CRITICAL_MASK) != (FILE_VERSION & FILE_VERSION_CRITICAL_MASK))
         return UNSUPPORTED_FILE_VERSION;
 
     qDebug("Signatures match");
