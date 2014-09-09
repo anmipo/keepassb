@@ -282,7 +282,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>ApplicationUI</name>
     <message>
-        <location filename="../src/applicationui.cpp" line="158"/>
+        <location filename="../src/applicationui.cpp" line="159"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (see reference:INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>

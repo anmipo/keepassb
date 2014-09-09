@@ -40,6 +40,9 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
 
 Changelog:
+v2.1.2 beta
+Fixed the "Unsupported database version" error occuring with some v2 (.kdbx) databases. 
+
 v2.1.1 beta
 Refreshed entry view interface
 Added "Search on start" option
