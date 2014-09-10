@@ -125,15 +125,9 @@ private:
     ErrorCode readContent(QDataStream& stream);
     /** Reads groups from decrypted stream */
     ErrorCode readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups);
-    /** Reads one group */
-    ErrorCode readGroup(QDataStream& stream, PwGroupV3& group);
     /** Reads entries from decrypted stream */
     ErrorCode readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries);
-    /** Reads one entry */
-    ErrorCode readEntry(QDataStream& stream, PwEntryV3& entry);
 
-    /** Reads a 5-byte V3-specific timestamp from the stream */
-    QDateTime readTimestamp(QDataStream& stream);
 protected:
     /** Combines password and key data into one key */
     bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
@@ -141,6 +135,9 @@ protected:
 public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();
+
+    /** Reads a 5-byte V3-specific timestamp from the stream */
+    static QDateTime readTimestamp(QDataStream& stream);
 
     /** Returns the database format version */
     virtual int getFormatVersion() { return 3; };

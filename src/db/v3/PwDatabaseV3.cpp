@@ -21,8 +21,6 @@ const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
 const int UNLOCK_PROGRESS_DECRYPTED = 80;
 const int UNLOCK_PROGRESS_DONE = 100;
 
-const QString BACKUP_GROUP_NAME = QString("Backup");
-
 const int MASTER_SEED_SIZE = 16;
 const int INITIAL_VECTOR_SIZE = 16;
 const int CONTENT_HASH_SIZE = 32;
@@ -353,200 +351,22 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
     groups.clear();
     for (quint32 iGroup = 0; iGroup < header.getGroupCount(); iGroup++) {
         PwGroupV3* group = new PwGroupV3();
-        err = readGroup(stream, *group);
-        if (err != SUCCESS)
-            return err;
+        if (!group->readFromStream(stream))
+            return NOT_ENOUGH_GROUPS;
         groups.append(group);
     }
     return SUCCESS;
-}
-
-PwDatabaseV3::ErrorCode PwDatabaseV3::readGroup(QDataStream& stream, PwGroupV3& group) {
-    quint16 fieldType;
-    qint32 fieldSize;
-    while (!stream.atEnd()) {
-        stream >> fieldType >> fieldSize;
-        switch(fieldType) {
-        case 0x0000: // ignored
-            stream.skipRawData(fieldSize);
-            break;
-        case 0x0001: // group ID
-            qint32 groupId;
-            stream >> groupId;
-            group.setId(groupId);
-            break;
-        case 0x0002: { // name
-            QByteArray nameBuf(fieldSize, 0);
-            stream.readRawData(nameBuf.data(), fieldSize);
-            QString name = QString::fromUtf8(nameBuf.constData());
-            group.setName(name);
-            Util::safeClear(nameBuf);
-            break;
-        }
-        case 0x0003: // creation time
-            group.setCreationTime(readTimestamp(stream));
-            break;
-        case 0x0004: // last modification time
-            group.setLastModificationTime(readTimestamp(stream));
-            break;
-        case 0x0005: // last access time
-            group.setLastAccessTime(readTimestamp(stream));
-            break;
-        case 0x0006: // expiration time
-            group.setExpiryTime(readTimestamp(stream));
-            break;
-        case 0x0007: { // icon ID
-            qint32 iconId;
-            stream >> iconId;
-            group.setIconId(iconId);
-            break;
-        }
-        case 0x0008: { // group level
-            quint16 level;
-            stream >> level;
-            group.setLevel(level);
-            break;
-        }
-        case 0x0009: { // group flags
-            qint32 flags;
-            stream >> flags;
-            group.setFlags(flags);
-            break;
-        }
-        case 0xFFFF:
-            // group fields finished
-            stream.skipRawData(fieldSize);
-            // a "Backup" group in the root is equivalent of V4's "Recycle Bin"
-            if ((group.getLevel() == 0) && (BACKUP_GROUP_NAME == group.getName())) {
-                group.setDeleted(true);
-            }
-            return SUCCESS;
-        }
-    }
-    // if we reach here, something went wrong
-    return NOT_ENOUGH_GROUPS;
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries) {
     PwDatabaseV3::ErrorCode err;
     for (quint32 iEntry = 0; iEntry < header.getEntryCount(); iEntry++) {
         PwEntryV3* entry = new PwEntryV3();
-        err = readEntry(stream, *entry);
-        if (err != SUCCESS)
-            return err;
+        if (!entry->readFromStream(stream))
+            return NOT_ENOUGH_ENTRIES;
         entries.append(entry);
     }
     return SUCCESS;
-}
-
-PwDatabaseV3::ErrorCode PwDatabaseV3::readEntry(QDataStream& stream, PwEntryV3& entry) {
-    quint16 fieldType;
-    qint32 fieldSize;
-    while (!stream.atEnd()) {
-        stream >> fieldType >> fieldSize;
-        switch(fieldType) {
-        case 0x0000: // ignored
-            stream.skipRawData(fieldSize);
-            break;
-        case 0x0001: { // UUID
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            entry.setUuid(PwUuid(buf));
-            Util::safeClear(buf);
-            break;
-        }
-        case 0x0002: { // group ID
-            qint32 groupId;
-            stream >> groupId;
-            entry.setGroupId(groupId);
-            break;
-        }
-        case 0x0003: { // icon ID
-            qint32 iconId;
-            stream >> iconId;
-            entry.setIconId(iconId);
-            break;
-        }
-        case 0x0004: { // title
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString title = QString::fromUtf8(buf.constData());
-            entry.setTitle(title);
-            Util::safeClear(buf);
-            break;
-        }
-        case 0x0005: { // url
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString url = QString::fromUtf8(buf.constData()); // check with unicode
-            entry.setUrl(url);
-            Util::safeClear(buf);
-            break;
-        }
-        case 0x0006: { // username
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString username = QString::fromUtf8(buf.constData());
-            entry.setUserName(username);
-            Util::safeClear(buf);
-            break;
-        }
-        case 0x0007: { // password
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            entry.setPassword(QString::fromUtf8(buf.constData()));
-            Util::safeClear(buf);
-            break;
-        }
-        case 0x0008: { // note
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString note = QString::fromUtf8(buf.constData());
-            entry.setNotes(note);
-            Util::safeClear(buf);
-            break;
-        }
-        case 0x0009: // creation time
-            entry.setCreationTime(readTimestamp(stream));
-            break;
-        case 0x000A: // last modification time
-            entry.setLastModificationTime(readTimestamp(stream));
-            break;
-        case 0x000B: // last access time
-            entry.setLastAccessTime(readTimestamp(stream));
-            break;
-        case 0x000C: // expiration time
-            entry.setExpiryTime(readTimestamp(stream));
-            break;
-        case 0x000D: { // binary description
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString binaryDesc = QString::fromUtf8(buf.constData());
-            entry.setBinaryDesc(binaryDesc);
-            Util::safeClear(buf);
-            break;
-        }
-        case 0x000E: { // binary data
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            entry.setBinaryData(buf);
-            break;
-        }
-        case 0xFFFF:
-            // group fields finished
-            stream.skipRawData(fieldSize);
-            if (!entry.getBinaryData().isEmpty()) {
-                // make the binary data available via the common 'attachment' interface
-                PwAttachment* attachment = new PwAttachment(&entry);
-                attachment->setName(entry.getBinaryDesc());
-                attachment->setData(entry.getBinaryData(), false);
-                entry.addAttachment(attachment);
-            }
-            return SUCCESS;
-        }
-    }
-    // if we reach here, something went wrong
-    return NOT_ENOUGH_ENTRIES;
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {

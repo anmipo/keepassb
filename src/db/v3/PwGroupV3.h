@@ -17,9 +17,25 @@ private:
     qint32 _id;
     quint16 _level;
     qint32 _flags;   // some internal KeePass field
+
+    const static quint16 FIELD_RESERVED  = 0x0000;
+    const static quint16 FIELD_GROUP_ID  = 0x0001;
+    const static quint16 FIELD_NAME      = 0x0002;
+    const static quint16 FIELD_CREATION_TIME      = 0x0003;
+    const static quint16 FIELD_LAST_MODIFIED_TIME = 0x0004;
+    const static quint16 FIELD_LAST_ACCESS_TIME   = 0x0005;
+    const static quint16 FIELD_EXPIRATION_TIME    = 0x0006;
+    const static quint16 FIELD_ICON_ID            = 0x0007;
+    const static quint16 FIELD_GROUP_LEVEL        = 0x0008;
+    const static quint16 FIELD_GROUP_FLAGS        = 0x0009;
+    const static quint16 FIELD_END                = 0xFFFF;
+
 public:
     PwGroupV3(QObject* parent = 0);
     virtual ~PwGroupV3();
+
+    /** Loads group fields from the stream. Returns true on success, false in case of error. */
+    bool readFromStream(QDataStream& stream);
 
     virtual void clear();
 
