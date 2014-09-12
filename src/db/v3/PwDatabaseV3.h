@@ -136,9 +136,6 @@ public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();
 
-    /** Reads a 5-byte V3-specific timestamp from the stream */
-    static QDateTime readTimestamp(QDataStream& stream);
-
     /** Returns the database format version */
     virtual int getFormatVersion() { return 3; };
 

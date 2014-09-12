@@ -7,7 +7,7 @@
 
 #include <PwGroupV3.h>
 #include "util/Util.h"
-#include "PwDatabaseV3.h"
+#include "db/v3/PwStreamUtilsV3.h"
 
 const QString BACKUP_GROUP_NAME = QString("Backup");
 
@@ -39,48 +39,32 @@ bool PwGroupV3::readFromStream(QDataStream& stream) {
             stream.skipRawData(fieldSize);
             break;
         case FIELD_GROUP_ID:
-            qint32 groupId;
-            stream >> groupId;
-            this->setId(groupId);
+            this->setId(PwStreamUtilsV3::readInt32(stream));
             break;
-        case FIELD_NAME: {
-            QByteArray nameBuf(fieldSize, 0);
-            stream.readRawData(nameBuf.data(), fieldSize);
-            QString name = QString::fromUtf8(nameBuf.constData());
-            this->setName(name);
-            Util::safeClear(nameBuf);
+        case FIELD_NAME:
+            this->setName(PwStreamUtilsV3::readString(stream, fieldSize));
             break;
-        }
         case FIELD_CREATION_TIME:
-            this->setCreationTime(PwDatabaseV3::readTimestamp(stream));
+            this->setCreationTime(PwStreamUtilsV3::readTimestamp(stream));
             break;
         case FIELD_LAST_MODIFIED_TIME:
-            this->setLastModificationTime(PwDatabaseV3::readTimestamp(stream));
+            this->setLastModificationTime(PwStreamUtilsV3::readTimestamp(stream));
             break;
         case FIELD_LAST_ACCESS_TIME:
-            this->setLastAccessTime(PwDatabaseV3::readTimestamp(stream));
+            this->setLastAccessTime(PwStreamUtilsV3::readTimestamp(stream));
             break;
         case FIELD_EXPIRATION_TIME:
-            this->setExpiryTime(PwDatabaseV3::readTimestamp(stream));
+            this->setExpiryTime(PwStreamUtilsV3::readTimestamp(stream));
             break;
-        case FIELD_ICON_ID: {
-            qint32 iconId;
-            stream >> iconId;
-            this->setIconId(iconId);
+        case FIELD_ICON_ID:
+            this->setIconId(PwStreamUtilsV3::readInt32(stream));
             break;
-        }
-        case FIELD_GROUP_LEVEL: {
-            quint16 level;
-            stream >> level;
-            this->setLevel(level);
+        case FIELD_GROUP_LEVEL:
+            this->setLevel(PwStreamUtilsV3::readUInt16(stream));
             break;
-        }
-        case FIELD_GROUP_FLAGS: {
-            qint32 flags;
-            stream >> flags;
-            this->setFlags(flags);
+        case FIELD_GROUP_FLAGS:
+            this->setFlags(PwStreamUtilsV3::readInt32(stream));
             break;
-        }
         case FIELD_END:
             // group fields finished
             stream.skipRawData(fieldSize);
@@ -93,4 +77,38 @@ bool PwGroupV3::readFromStream(QDataStream& stream) {
     }
     // something went wrong, there was no FIELD_END marker
     return false;
+}
+
+/** Writes group fields to the stream. Returns true on success, false in case of error. */
+bool PwGroupV3::writeToStream(QDataStream& stream) {
+    stream << FIELD_GROUP_ID;
+    PwStreamUtilsV3::writeInt32(stream, getId());
+
+    stream << FIELD_NAME;
+    PwStreamUtilsV3::writeString(stream, getName());
+
+    stream << FIELD_CREATION_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getCreationTime());
+
+    stream << FIELD_LAST_MODIFIED_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getLastModificationTime());
+
+    stream << FIELD_LAST_ACCESS_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getLastAccessTime());
+
+    stream << FIELD_EXPIRATION_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getExpiryTime());
+
+    stream << FIELD_ICON_ID;
+    PwStreamUtilsV3::writeInt32(stream, getIconId());
+
+    stream << FIELD_GROUP_LEVEL;
+    PwStreamUtilsV3::writeUInt16(stream, getLevel());
+
+    stream << FIELD_GROUP_FLAGS;
+    PwStreamUtilsV3::writeInt32(stream, getFlags());
+
+    stream << FIELD_END << (qint32)0;
+
+    return (stream.status() == QDataStream::Ok);
 }

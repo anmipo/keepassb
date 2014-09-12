@@ -327,25 +327,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
     return SUCCESS;
 }
 
-/** Reads a 5-byte V3-specific timestamp from the stream */
-QDateTime PwDatabaseV3::readTimestamp(QDataStream& stream) {
-    quint8 dw1, dw2, dw3, dw4, dw5;
-    stream >> dw1 >> dw2 >> dw3 >> dw4 >> dw5; // 31, 122, 33, 42, 210
-
-    int year = (dw1 << 6) | (dw2 >> 2); // 2014
-    int month = ((dw2 & 0x00000003) << 2) | (dw3 >> 6); // 8
-    int day = (dw3 >> 1) & 0x0000001F; // 16
-    QDate date(year, month, day);
-
-    int hour = ((dw3 & 0x00000001) << 4) | (dw4 >> 4); // 18
-    int minute = ((dw4 & 0x0000000F) << 2) | (dw5 >> 6); // 43
-    int second = dw5 & 0x0000003F; // 18
-    QTime time(hour, minute, second, 0);
-
-    QDateTime result(date, time, Qt::UTC);
-    return result;
-}
-
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups) {
     PwDatabaseV3::ErrorCode err;
     groups.clear();

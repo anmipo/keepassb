@@ -19,6 +19,7 @@ public:
     virtual ~PwUuid();
 
     void clear();
+    QByteArray toByteArray() const { return bytes; }
 
     // returns a new instance of PwUuid with the ID specified by a Base64 string
     static PwUuid fromBase64(const QString& base64);

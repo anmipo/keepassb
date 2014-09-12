@@ -7,7 +7,7 @@
 
 #include <PwEntryV3.h>
 #include "util/Util.h"
-#include "PwDatabaseV3.h"
+#include "db/v3/PwStreamUtilsV3.h"
 
 // field values of meta-stream entries
 const QString METASTREAM_ID_TITLE = QString("Meta-Info");
@@ -41,117 +41,6 @@ void PwEntryV3::clear() {
 bool PwEntryV3::matchesQuery(const QString& query) const {
     return PwEntry::matchesQuery(query) ||
             getBinaryDesc().contains(query, Qt::CaseInsensitive);
-}
-
-/** Loads entry fields from the stream. Returns true on success, false in case of error. */
-bool PwEntryV3::readFromStream(QDataStream& stream) {
-    clear();
-    quint16 fieldType;
-    qint32 fieldSize;
-    while (!stream.atEnd()) {
-        stream >> fieldType >> fieldSize;
-        switch(fieldType) {
-        case FIELD_RESERVED: // ignored
-            stream.skipRawData(fieldSize);
-            break;
-        case FIELD_UUID: {
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            this->setUuid(PwUuid(buf));
-            Util::safeClear(buf);
-            break;
-        }
-        case FIELD_GROUP_ID: {
-            qint32 groupId;
-            stream >> groupId;
-            this->setGroupId(groupId);
-            break;
-        }
-        case FIELD_ICON_ID: {
-            qint32 iconId;
-            stream >> iconId;
-            this->setIconId(iconId);
-            break;
-        }
-        case FIELD_TITLE: {
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString title = QString::fromUtf8(buf.constData());
-            this->setTitle(title);
-            Util::safeClear(buf);
-            break;
-        }
-        case FIELD_URL: {
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString url = QString::fromUtf8(buf.constData()); // check with unicode
-            this->setUrl(url);
-            Util::safeClear(buf);
-            break;
-        }
-        case FIELD_USERNAME: {
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString username = QString::fromUtf8(buf.constData());
-            this->setUserName(username);
-            Util::safeClear(buf);
-            break;
-        }
-        case FIELD_PASSWORD: {
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            this->setPassword(QString::fromUtf8(buf.constData()));
-            Util::safeClear(buf);
-            break;
-        }
-        case FIELD_NOTE: {
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString note = QString::fromUtf8(buf.constData());
-            this->setNotes(note);
-            Util::safeClear(buf);
-            break;
-        }
-        case FIELD_CREATION_TIME:
-            this->setCreationTime(PwDatabaseV3::readTimestamp(stream));
-            break;
-        case FIELD_LAST_MODIFIED_TIME:
-            this->setLastModificationTime(PwDatabaseV3::readTimestamp(stream));
-            break;
-        case FIELD_LAST_ACCESS_TIME:
-            this->setLastAccessTime(PwDatabaseV3::readTimestamp(stream));
-            break;
-        case FIELD_EXPIRATION_TIME:
-            this->setExpiryTime(PwDatabaseV3::readTimestamp(stream));
-            break;
-        case FIELD_BINARY_DESC: { // binary description
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            QString binaryDesc = QString::fromUtf8(buf.constData());
-            this->setBinaryDesc(binaryDesc);
-            Util::safeClear(buf);
-            break;
-        }
-        case FIELD_BINARY_DATA: {
-            QByteArray buf(fieldSize, 0);
-            stream.readRawData(buf.data(), fieldSize);
-            this->setBinaryData(buf);
-            break;
-        }
-        case FIELD_END:
-            // group fields finished
-            stream.skipRawData(fieldSize);
-            if (!this->getBinaryData().isEmpty()) {
-                // make the binary data available via the common 'attachment' interface
-                PwAttachment* attachment = new PwAttachment(this);
-                attachment->setName(this->getBinaryDesc());
-                attachment->setData(this->getBinaryData(), false);
-                this->addAttachment(attachment);
-            }
-            return true;
-        }
-    }
-    return false;
 }
 
 void PwEntryV3::addAttachment(PwAttachment* attachment) {
@@ -231,4 +120,121 @@ void PwEntryV3::setNotes(const QString& notes) {
 void PwEntryV3::setExpiryTime(const QDateTime& time) {
     PwEntry::setExpiryTime(time);
     setExpires(time != EXPIRY_DATE_NEVER);
+}
+
+/** Loads entry fields from the stream. Returns true on success, false in case of error. */
+bool PwEntryV3::readFromStream(QDataStream& stream) {
+    clear();
+    quint16 fieldType;
+    qint32 fieldSize;
+    while (!stream.atEnd()) {
+        stream >> fieldType >> fieldSize;
+        switch(fieldType) {
+        case FIELD_RESERVED: // ignored
+            stream.skipRawData(fieldSize);
+            break;
+        case FIELD_UUID:
+            this->setUuid(PwUuid(PwStreamUtilsV3::readData(stream, fieldSize)));
+            break;
+        case FIELD_GROUP_ID:
+            this->setGroupId(PwStreamUtilsV3::readInt32(stream));
+            break;
+        case FIELD_ICON_ID:
+            this->setIconId(PwStreamUtilsV3::readInt32(stream));
+            break;
+        case FIELD_TITLE:
+            this->setTitle(PwStreamUtilsV3::readString(stream, fieldSize));
+            break;
+        case FIELD_URL:
+            this->setUrl(PwStreamUtilsV3::readString(stream, fieldSize));
+            break;
+        case FIELD_USERNAME:
+            this->setUserName(PwStreamUtilsV3::readString(stream, fieldSize));
+            break;
+        case FIELD_PASSWORD:
+            this->setPassword(PwStreamUtilsV3::readString(stream, fieldSize));
+            break;
+        case FIELD_NOTE:
+            this->setNotes(PwStreamUtilsV3::readString(stream, fieldSize));
+            break;
+        case FIELD_CREATION_TIME:
+            this->setCreationTime(PwStreamUtilsV3::readTimestamp(stream));
+            break;
+        case FIELD_LAST_MODIFIED_TIME:
+            this->setLastModificationTime(PwStreamUtilsV3::readTimestamp(stream));
+            break;
+        case FIELD_LAST_ACCESS_TIME:
+            this->setLastAccessTime(PwStreamUtilsV3::readTimestamp(stream));
+            break;
+        case FIELD_EXPIRATION_TIME:
+            this->setExpiryTime(PwStreamUtilsV3::readTimestamp(stream));
+            break;
+        case FIELD_BINARY_DESC:
+            this->setBinaryDesc(PwStreamUtilsV3::readString(stream, fieldSize));
+            break;
+        case FIELD_BINARY_DATA: {
+            this->setBinaryData(PwStreamUtilsV3::readData(stream, fieldSize));
+            break;
+        }
+        case FIELD_END:
+            // group fields finished
+            stream.skipRawData(fieldSize);
+            if (!this->getBinaryData().isEmpty()) {
+                // make the binary data available via the common 'attachment' interface
+                PwAttachment* attachment = new PwAttachment(this);
+                attachment->setName(this->getBinaryDesc());
+                attachment->setData(this->getBinaryData(), false);
+                this->addAttachment(attachment);
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+/** Writes entry fields to the stream. Returns true on success, false in case of error. */
+bool PwEntryV3::writeToStream(QDataStream& stream) {
+    stream << FIELD_UUID;
+    PwStreamUtilsV3::writeData(stream, getUuid().toByteArray());
+
+    stream << FIELD_GROUP_ID;
+    PwStreamUtilsV3::writeInt32(stream, getGroupId());
+
+    stream << FIELD_ICON_ID;
+    PwStreamUtilsV3::writeInt32(stream, getIconId());
+
+    stream << FIELD_TITLE;
+    PwStreamUtilsV3::writeString(stream, getTitle());
+
+    stream << FIELD_URL;
+    PwStreamUtilsV3::writeString(stream, getUrl());
+
+    stream << FIELD_USERNAME;
+    PwStreamUtilsV3::writeString(stream, getUserName());
+
+    stream << FIELD_PASSWORD;
+    PwStreamUtilsV3::writeString(stream, getPassword());
+
+    stream << FIELD_NOTE;
+    PwStreamUtilsV3::writeString(stream, getNotes());
+
+    stream << FIELD_CREATION_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getCreationTime());
+
+    stream << FIELD_LAST_MODIFIED_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getLastModificationTime());
+
+    stream << FIELD_LAST_ACCESS_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getLastAccessTime());
+
+    stream << FIELD_EXPIRATION_TIME;
+    PwStreamUtilsV3::writeTimestamp(stream, getExpiryTime());
+
+    stream << FIELD_BINARY_DESC;
+    PwStreamUtilsV3::writeString(stream, getBinaryDesc());
+
+    stream << FIELD_BINARY_DATA;
+    PwStreamUtilsV3::writeData(stream, getBinaryData());
+
+    stream << FIELD_END << (qint32)0;
 }

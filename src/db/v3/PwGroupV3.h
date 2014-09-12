@@ -36,6 +36,8 @@ public:
 
     /** Loads group fields from the stream. Returns true on success, false in case of error. */
     bool readFromStream(QDataStream& stream);
+    /** Writes group fields to the stream. Returns true on success, false in case of error. */
+    bool writeToStream(QDataStream& stream);
 
     virtual void clear();
 
