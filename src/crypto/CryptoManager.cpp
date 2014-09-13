@@ -18,7 +18,7 @@
 CryptoManager* CryptoManager::_instance;
 
 // convenience macro: if func returns an SB_ error, log it and return its code
-#define RETURN_IF_SB_ERROR(func, msg) {int errCode = (func); if (errCode != SB_SUCCESS) { qDebug(msg); return errCode; }}
+#define RETURN_IF_SB_ERROR(func, msg) {int errCode = (func); if (errCode != SB_SUCCESS) { qDebug() << msg << ". ErrCode:" << errCode; return errCode; }}
 
 CryptoManager::CryptoManager() : keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
 	sbCtx = NULL;
@@ -75,7 +75,7 @@ void CryptoManager::cleanup() {
 }
 
 int CryptoManager::initRngSeed() {
-    size_t seedLen = 2048;
+    size_t seedLen = 1024;
     unsigned char seedBuf[seedLen];
     RETURN_IF_SB_ERROR(hu_SeedGet(&seedLen, seedBuf, sbCtx), "CryptoManager error calling hu_SeedGet");
     // seedLen returned might be less than requested
