@@ -233,6 +233,13 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     }
     emit unlockProgressChanged(UNLOCK_PROGRESS_DECRYPTED);
 
+    // TODO remove this debug saving
+    QFile rawFile(getDatabaseFilePath() + ".in");
+    rawFile.open(QIODevice::WriteOnly);
+    rawFile.write(decryptedData);
+    rawFile.flush();
+    rawFile.close();
+
     QDataStream decryptedDataStream(decryptedData);
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
     err = readContent(decryptedDataStream);
@@ -328,7 +335,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups) {
-    PwDatabaseV3::ErrorCode err;
     groups.clear();
     for (quint32 iGroup = 0; iGroup < header.getGroupCount(); iGroup++) {
         PwGroupV3* group = new PwGroupV3();
@@ -340,7 +346,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries) {
-    PwDatabaseV3::ErrorCode err;
     for (quint32 iEntry = 0; iEntry < header.getEntryCount(); iEntry++) {
         PwEntryV3* entry = new PwEntryV3();
         if (!entry->readFromStream(stream))
@@ -421,6 +426,36 @@ void PwDatabaseV3::save(QByteArray& outData) {
     QDataStream outStream(&outData, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
 
+    // first prepare the content
+    QList<PwGroupV3*> groups;
+    QList<PwEntryV3*> entries;
+
+    QList<PwGroup*> rootGroups = dynamic_cast<PwGroupV3*>(getRootGroup())->getSubGroups();
+    PwGroupV3* generalGroup = dynamic_cast<PwGroupV3*>(rootGroups.first());
+    PwGroupV3* backupGroup;
+    if (rootGroups.size() > 1) {
+        // There is a Backup group, it is second within the root.
+        // It should be last in the list of groups, but its entries are stored first.
+        backupGroup = dynamic_cast<PwGroupV3*>(rootGroups.at(1));
+        backupGroup->getAllChildren(groups, entries);
+    }
+    groups.append(generalGroup);
+    generalGroup->getAllChildren(groups, entries);
+
+    if (backupGroup)
+        groups.append(backupGroup);
+
+    for (int i = 0; i < groups.size(); i++) {
+        groups.at(i)->writeToStream(outStream);
+    }
+    entries.append(metaStreamEntries);
+    for (int i = 0; i < entries.size(); i++) {
+        entries.at(i)->writeToStream(outStream);
+    }
+
+    // now update the header
 //    header.randomizeInitialVectors(); // TOOD uncomment after debug
-    header.write(outStream);
+//    header.write(outStream);
+
+    // now encrypt the content
 }

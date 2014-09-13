@@ -186,6 +186,7 @@ bool PwEntryV3::readFromStream(QDataStream& stream) {
                 attachment->setData(this->getBinaryData(), false);
                 this->addAttachment(attachment);
             }
+            qDebug() << "Load entry: '" << getTitle() << "' groupId:" << getGroupId();
             return true;
         }
     }
@@ -237,4 +238,7 @@ bool PwEntryV3::writeToStream(QDataStream& stream) {
     PwStreamUtilsV3::writeData(stream, getBinaryData());
 
     stream << FIELD_END << (qint32)0;
+
+    qDebug() << "Save entry: '" << getTitle() << "' groupId:" << getGroupId();
+    return (stream.status() == QDataStream::Ok);
 }

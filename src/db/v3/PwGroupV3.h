@@ -11,6 +11,8 @@
 #include <QObject>
 #include "db/PwGroup.h"
 
+class PwEntryV3;
+
 class PwGroupV3: public PwGroup {
     Q_OBJECT
 private:
@@ -33,6 +35,12 @@ private:
 public:
     PwGroupV3(QObject* parent = 0);
     virtual ~PwGroupV3();
+
+    /**
+     * Recursively iterates through all the children groups and entries of this group
+     * and adds them to the given lists. The group itself is excluded.
+     */
+    void getAllChildren(QList<PwGroupV3*> &childGroups, QList<PwEntryV3*> &childEntries) const;
 
     /** Loads group fields from the stream. Returns true on success, false in case of error. */
     bool readFromStream(QDataStream& stream);

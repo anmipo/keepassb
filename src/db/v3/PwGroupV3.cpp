@@ -28,6 +28,23 @@ void PwGroupV3::clear() {
     PwGroup::clear();
 }
 
+/**
+ * Recursively iterates through all the children groups and entries of this group
+ * and adds them to the given lists. The group itself is excluded.
+ */
+void PwGroupV3::getAllChildren(QList<PwGroupV3*> &childGroups, QList<PwEntryV3*> &childEntries) const {
+    QList<PwGroup*> groups = this->getSubGroups();
+    for (int i = 0; i < groups.size(); i++) {
+        PwGroupV3* gr = dynamic_cast<PwGroupV3*>(groups.at(i));
+        childGroups.append(gr);
+        gr->getAllChildren(childGroups, childEntries);
+    }
+    QList<PwEntry*> entries = this->getEntries();
+    for (int i = 0; i < entries.size(); i++) {
+        childEntries.append(reinterpret_cast<PwEntryV3*>(entries.at(i)));
+    }
+}
+
 /** Loads group fields from the stream. Returns true on success, false in case of error. */
 bool PwGroupV3::readFromStream(QDataStream& stream) {
     quint16 fieldType;
@@ -72,6 +89,7 @@ bool PwGroupV3::readFromStream(QDataStream& stream) {
             if ((this->getLevel() == 0) && (BACKUP_GROUP_NAME == this->getName())) {
                 this->setDeleted(true);
             }
+            qDebug() << "Load group: '" << getName() << "' id:" << getId();
             return true;
         }
     }
@@ -110,5 +128,6 @@ bool PwGroupV3::writeToStream(QDataStream& stream) {
 
     stream << FIELD_END << (qint32)0;
 
+    qDebug() << "Save group: '" << getName() << "' id:" << getId();
     return (stream.status() == QDataStream::Ok);
 }
