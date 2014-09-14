@@ -313,7 +313,7 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
 
 
     // Save to file and check all the errors
-    QString tmpFilePath = db->getDatabaseFilePath() + ".out";
+    QString tmpFilePath = db->getDatabaseFilePath() + "-save.kdb";
     QFile outDbFile(tmpFilePath);
     if (!outDbFile.open(QIODevice::WriteOnly)) {
         qDebug() << "Cannot open DB file: '" << tmpFilePath << "' Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();

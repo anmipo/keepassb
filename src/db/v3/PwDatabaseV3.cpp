@@ -419,12 +419,59 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
 
 /**
  * Encrypts and writes DB content to the given array.
+ * In case of error emits a dbSaveError with error code and returns false.
  */
-void PwDatabaseV3::save(QByteArray& outData) {
-    // TODO implement V3 saving
+bool PwDatabaseV3::save(QByteArray& outData) {
     outData.clear();
+
+    QString saveErrorMessage = tr("Cannot save database", "An error message");
+
+    // pack up the groups&entries
+    QByteArray contentData;
+    int groupCount, entryCount;
+    ErrorCode err = writeContent(contentData, groupCount, entryCount);
+    if (err != SUCCESS) {
+        emit dbSaveError(saveErrorMessage, err);
+        return false;
+    }
+
+    // now update the header (hash and counts)
+    header.setGroupCount(groupCount);
+    header.setEntryCount(entryCount);
+
+    QByteArray contentHash;
+    CryptoManager* cm = CryptoManager::instance();
+    if (cm->sha256(contentData, contentHash) != SB_SUCCESS) {
+        emit dbSaveError(saveErrorMessage, CONTENT_HASHING_ERROR);
+        return false;
+    }
+    header.setContentHash(contentHash);
+
+    // write header
     QDataStream outStream(&outData, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
+//    header.randomizeInitialVectors(); // TODO uncomment after debug
+    header.write(outStream);
+
+    // encrypt the content
+    qDebug() << "contentData size: " << contentData.size();
+    cm->addPadding16(contentData);
+    qDebug() << "padded contentData size: " << contentData.size();
+    QByteArray encryptedContentData;
+    cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData);
+    Util::safeClear(contentData);
+
+    outData.append(encryptedContentData);
+    return true;
+}
+
+/**
+ * Puts groups and entries data into the given array (without encryption).
+ * Sets groupCount and entryCount to the number of saved groups/entries.
+ */
+PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int& groupCount, int& entryCount) {
+    QDataStream contentStream(&contentData, QIODevice::WriteOnly);
+    contentStream.setByteOrder(QDataStream::LittleEndian);
 
     // first prepare the content
     QList<PwGroupV3*> groups;
@@ -446,16 +493,14 @@ void PwDatabaseV3::save(QByteArray& outData) {
         groups.append(backupGroup);
 
     for (int i = 0; i < groups.size(); i++) {
-        groups.at(i)->writeToStream(outStream);
+        groups.at(i)->writeToStream(contentStream);
     }
     entries.append(metaStreamEntries);
     for (int i = 0; i < entries.size(); i++) {
-        entries.at(i)->writeToStream(outStream);
+        entries.at(i)->writeToStream(contentStream);
     }
 
-    // now update the header
-//    header.randomizeInitialVectors(); // TOOD uncomment after debug
-//    header.write(outStream);
-
-    // now encrypt the content
+    groupCount = groups.size();
+    entryCount = entries.size();
+    return SUCCESS;
 }

@@ -78,7 +78,9 @@ public:
     QByteArray getContentHash() const { return contentHash; }
     void setContentHash(const QByteArray& contentHash) { this->contentHash = contentHash; }
     quint32 getGroupCount() const { return groupCount; }
+    void setGroupCount(quint32 count) { this->groupCount = count; }
     quint32 getEntryCount() const { return entryCount; }
+    void setEntryCount(quint32 count) { this->entryCount = count; }
 };
 
 
@@ -103,6 +105,7 @@ public:
         NOT_ENOUGH_GROUPS        = 0x40,
         NOT_ENOUGH_ENTRIES       = 0x45,
         ORPHANED_ENTRY_ERROR     = 0x50,
+        // write-related error start from 0x80
     };
 
 private:
@@ -127,6 +130,12 @@ private:
     ErrorCode readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups);
     /** Reads entries from decrypted stream */
     ErrorCode readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries);
+
+    /**
+     * Puts groups and entries data into the given array (without encryption).
+     * Sets groupCount and entryCount to the number of saved groups/entries.
+     */
+    ErrorCode writeContent(QByteArray& contentData, int& groupCount, int& entryCount);
 
 protected:
     /** Combines password and key data into one key */
@@ -154,8 +163,9 @@ public:
 
     /**
      * Encrypts and writes DB content to the given array.
+     * In case of error emits a dbSaveError with error code and returns false.
      */
-    void save(QByteArray& outData);
+    bool save(QByteArray& outData);
 };
 
 #endif /* PWDATABASEV3_H_ */

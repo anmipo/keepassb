@@ -321,19 +321,19 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="316"/>
+        <location filename="../src/db/PwDatabase.cpp" line="320"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="322"/>
+        <location filename="../src/db/PwDatabase.cpp" line="326"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="327"/>
+        <location filename="../src/db/PwDatabase.cpp" line="331"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
@@ -342,27 +342,33 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="162"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="160"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="211"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="209"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="232"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="230"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="242"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="247"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="427"/>
+        <source>Cannot save database</source>
+        <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -409,25 +415,25 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwHeaderV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="121"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="119"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="123"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="121"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="125"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="123"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="127"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="125"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
