@@ -22,6 +22,7 @@ CryptoManager* CryptoManager::_instance;
 
 CryptoManager::CryptoManager() : keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
 	sbCtx = NULL;
+	rngCtx = NULL;
     keyTransformInitialized = false;
 }
 
@@ -127,7 +128,7 @@ int CryptoManager::getRandomBytes(QByteArray& bytes, const int size) {
 
 /**
  * Encrypts data with AES with the specified mode.
- * cipherText must be preallocated to fit the result
+ * cipherText will be resized to fit the result
  * Returns an SB_* error code.
  */
 int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector, const QByteArray& plainText, QByteArray& cipherText) {
@@ -142,13 +143,13 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
 	                reinterpret_cast<const unsigned char*>(key.constData()), &aesKey, sbCtx),
 	         "AESKeySet failed");
 
-	//TODO pad the plainText if required
-
 	sb_Context aesContext;
 	RETURN_IF_SB_ERROR(
 	        hu_AESBegin(aesParams, aesKey, SB_AES_128_BLOCK_BYTES,
 	                reinterpret_cast<const unsigned char*>(initVector.constData()), &aesContext, sbCtx),
 	        "AESBegin failed");
+
+    cipherText.resize(plainText.size());
 
 	RETURN_IF_SB_ERROR(
 	        hu_AESEncryptMsg(aesParams, aesKey,

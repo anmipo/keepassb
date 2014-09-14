@@ -61,10 +61,10 @@ public:
 	int getRandomBytes(QByteArray& bytes, const int size);
 
 	/**
-     * Encrypts data with AES with the specified mode.
-     * cipherText must be preallocated to fit the result
-     * Returns an SB_* error code.
-     */
+	 * Encrypts data with AES with the specified mode.
+	 * cipherText will be resized to fit the result
+	 * Returns an SB_* error code.
+	 */
 	int encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector, const QByteArray& plainText, QByteArray& cipherText);
 
 	/**
