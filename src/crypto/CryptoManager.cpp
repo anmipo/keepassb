@@ -149,7 +149,7 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
 	                reinterpret_cast<const unsigned char*>(initVector.constData()), &aesContext, sbCtx),
 	        "AESBegin failed");
 
-    cipherText.resize(plainText.size());
+    cipherText.fill(0, plainText.size());
 
 	RETURN_IF_SB_ERROR(
 	        hu_AESEncryptMsg(aesParams, aesKey,
@@ -174,7 +174,7 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
  * Adds PKCS#7 padding to the array to ensure (mod 16) length.
  */
 void CryptoManager::addPadding16(QByteArray& data) {
-    int padLength = data.size() % 16;
+    int padLength = 16 - data.size() % 16;
     if (padLength == 0) padLength = 16;
     QByteArray padding(padLength, padLength);
     data.append(padding);
