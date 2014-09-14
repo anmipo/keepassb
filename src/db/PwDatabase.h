@@ -46,8 +46,9 @@ public:
     virtual void load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) = 0;
     /**
      * Encrypts the DB and stores its content to the given array.
+     * In case of error emits a dbSaveError with error code and returns false.
      */
-    virtual void save(QByteArray& outData) = 0;
+    virtual bool save(QByteArray& outData) = 0;
 
     // Clears the database.
     virtual void clear();

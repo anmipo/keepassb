@@ -876,6 +876,6 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml,
 /**
  * Encrypts and writes DB content to the given array.
  */
-void PwDatabaseV4::save(QByteArray& outData) {
+bool PwDatabaseV4::save(QByteArray& outData) {
     //TODO implement V4 saving
 }

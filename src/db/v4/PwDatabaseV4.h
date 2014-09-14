@@ -195,7 +195,7 @@ public:
     /**
      * Encrypts and writes DB content to the given array.
      */
-    void save(QByteArray& outData);
+    bool save(QByteArray& outData);
 
     /**
      * Erases all loaded/decrypted data

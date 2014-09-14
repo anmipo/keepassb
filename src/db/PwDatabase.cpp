@@ -306,7 +306,11 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
 
     // Encrypt and save to memory
     QByteArray outData;
-    db->save(outData);
+    if (!db->save(outData)) {
+        qDebug() << "DB saving failed";
+        return;
+    }
+
 
     // Save to file and check all the errors
     QString tmpFilePath = db->getDatabaseFilePath() + ".out";
