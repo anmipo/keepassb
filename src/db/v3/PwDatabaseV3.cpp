@@ -20,6 +20,11 @@ const int UNLOCK_PROGRESS_HEADER_READ = 5;
 const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
 const int UNLOCK_PROGRESS_DECRYPTED = 80;
 const int UNLOCK_PROGRESS_DONE = 100;
+// DB save stages progress percentage
+const int SAVE_PROGRESS_INIT = 0;
+const int SAVE_PROGRESS_CONTENT_PACKED = 5;
+const int SAVE_PROGRESS_KEY_TRANSFORMED = 90;
+const int SAVE_PROGRESS_DONE = 100;
 
 const int MASTER_SEED_SIZE = 16;
 const int INITIAL_VECTOR_SIZE = 16;
@@ -192,7 +197,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     QDataStream stream (dbBytes);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_INIT);
+    emit progressChanged(UNLOCK_PROGRESS_INIT);
 
     PwHeaderV3::ErrorCode headerErrCode = header.read(stream);
     if (headerErrCode != PwHeaderV3::SUCCESS) {
@@ -200,7 +205,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
         emit dbLoadError(PwHeaderV3::getErrorMessage(headerErrCode), headerErrCode);
         return false;
     }
-    emit unlockProgressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    emit progressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
 
     /* Calculate the AES key */
     ErrorCode err = transformKey(combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
@@ -210,7 +215,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    emit progressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
 
     /* Decrypt data */
     int dataSize = dbBytes.size() - header.HEADER_SIZE;
@@ -231,7 +236,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
         }
         return false;
     }
-    emit unlockProgressChanged(UNLOCK_PROGRESS_DECRYPTED);
+    emit progressChanged(UNLOCK_PROGRESS_DECRYPTED);
 
     // TODO remove this debug saving
     QFile rawFile(getDatabaseFilePath() + ".in");
@@ -248,7 +253,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_DONE);
+    emit progressChanged(UNLOCK_PROGRESS_DONE);
 
     return true;
 }
@@ -280,7 +285,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
         if (++subProgress > subProgressThreshold) {
             subProgress = 0;
             progress++;
-            emit unlockProgressChanged(progress);
+            emit progressChanged(progress);
         }
     }
     Util::safeClear(combinedKey2); // ~ origKey
@@ -422,9 +427,10 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
  * In case of error emits a dbSaveError with error code and returns false.
  */
 bool PwDatabaseV3::save(QByteArray& outData) {
-    outData.clear();
-
     QString saveErrorMessage = tr("Cannot save database", "An error message");
+
+    outData.clear();
+    emit progressChanged(SAVE_PROGRESS_INIT);
 
     // pack up the groups&entries
     QByteArray contentData;
@@ -434,10 +440,12 @@ bool PwDatabaseV3::save(QByteArray& outData) {
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
+    emit progressChanged(SAVE_PROGRESS_CONTENT_PACKED);
 
     // now update the header (hash and counts)
     header.setGroupCount(groupCount);
     header.setEntryCount(entryCount);
+    qDebug("Saving %d groups and %d entries", groupCount, entryCount);
 
     QByteArray contentHash;
     CryptoManager* cm = CryptoManager::instance();
@@ -447,19 +455,27 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     }
     header.setContentHash(contentHash);
 
-    // write header
+    // update encryption seeds
+    header.randomizeInitialVectors();
+    err = transformKey(combinedKey, aesKey, SAVE_PROGRESS_CONTENT_PACKED, SAVE_PROGRESS_KEY_TRANSFORMED);
+    if (err != SUCCESS) {
+        qDebug() << "transformKey error while saving: " << err;
+        emit dbSaveError(saveErrorMessage, err);
+        return false;
+    }
+
+    // write the header
     QDataStream outStream(&outData, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
-//    header.randomizeInitialVectors(); // TODO uncomment after debug
     header.write(outStream);
 
     // encrypt the content
-    qDebug() << "contentData size: " << contentData.size();
     cm->addPadding16(contentData);
-    qDebug() << "padded contentData size: " << contentData.size();
     QByteArray encryptedContentData;
     cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData);
     Util::safeClear(contentData);
+
+    emit progressChanged(SAVE_PROGRESS_DONE);
 
     outData.append(encryptedContentData);
     return true;
