@@ -327,7 +327,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
         if (++subProgress > subProgressThreshold) {
             subProgress = 0;
             progress++;
-            emit unlockProgressChanged(progress);
+            emit progressChanged(progress);
         }
     }
     if (ec != SB_SUCCESS)
@@ -363,7 +363,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     QDataStream stream (dbBytes);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_INIT);
+    emit progressChanged(UNLOCK_PROGRESS_INIT);
 
     PwHeaderV4::ErrorCode headerErrCode = header.read(stream);
     if (headerErrCode != PwHeaderV4::SUCCESS) {
@@ -372,7 +372,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_HEADER_READ);
+    emit progressChanged(UNLOCK_PROGRESS_HEADER_READ);
 
     /* Calculate the AES key */
     ErrorCode err = transformKey(header, combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
@@ -382,7 +382,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    emit progressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
 
     /* Decrypt data */
     int dataSize = dbBytes.size() - header.sizeInBytes();
@@ -395,7 +395,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
-    emit unlockProgressChanged(UNLOCK_PROGRESS_DECRYPTED);
+    emit progressChanged(UNLOCK_PROGRESS_DECRYPTED);
 
     QDataStream decryptedStream(decryptedData);
     decryptedStream.setByteOrder(QDataStream::LittleEndian);
@@ -420,7 +420,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_BLOCKS_READ);
+    emit progressChanged(UNLOCK_PROGRESS_BLOCKS_READ);
 
     QByteArray xmlData;
     if (header.isCompressed()) {
@@ -436,7 +436,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         xmlData = blocksData;
     }
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_UNPACKED);
+    emit progressChanged(UNLOCK_PROGRESS_UNPACKED);
 
     /* Init Salsa20 for reading protected values */
     err = initSalsa20();
@@ -457,7 +457,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit unlockProgressChanged(UNLOCK_PROGRESS_DONE);
+    emit progressChanged(UNLOCK_PROGRESS_DONE);
     qDebug() << "DB unlocked";
 
     return true;

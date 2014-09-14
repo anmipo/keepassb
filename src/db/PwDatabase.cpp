@@ -250,7 +250,7 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLoadError(QString, int)), this, SIGNAL(dbUnlockError(QString, int))); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbSaveError(QString, int)), this, SIGNAL(dbSaveError(QString, int))); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(invalidPasswordOrKey()), this, SIGNAL(invalidPasswordOrKey())); Q_ASSERT(res);
-    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(unlockProgressChanged(int)), this, SIGNAL(unlockProgressChanged(int))); Q_ASSERT(res);
+    res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(progressChanged(int)), this, SIGNAL(progressChanged(int))); Q_ASSERT(res);
 
     // Initiate the actual unlocking/loading
     db->load(dbFileData, password, keyFileData);

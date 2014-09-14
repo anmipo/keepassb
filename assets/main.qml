@@ -60,7 +60,11 @@ NavigationPane {
             database.dbAboutToSave.connect(function() {
                 saveProgressDialog.show();
             });
+            database.dbSaveError.connect(showFileSaveError);
             database.fileSaveError.connect(showFileSaveError);
+            database.progressChanged.connect(function(progress) {
+                saveProgressDialog.progress = progress;
+            });
             database.dbSaved.connect(function() {
                 saveProgressDialog.cancel();
                 databaseSaved();

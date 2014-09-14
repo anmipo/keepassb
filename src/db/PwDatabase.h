@@ -80,9 +80,9 @@ signals:
      */
     void dbUnlocked();
     /**
-     * Periodically emitted during the unlocking process.
+     * Periodically emitted during the decryption/encryption process.
      */
-    void unlockProgressChanged(const int progressPercent);
+    void progressChanged(const int progressPercent);
     /**
      * Emitted in case of generic DB loading/decryption error.
      * errorCode parameter is one of PwDatabase::Error/PwDatabaseV3::Error/PwDatabaseV4::Error values.
@@ -198,7 +198,7 @@ signals:
     void fileSaveError(const QString& message, const QString& errorDescription);
 
     void invalidPasswordOrKey();
-    void unlockProgressChanged(const int progressPercent);
+    void progressChanged(const int progressPercent);
     void searchResultChanged();
     void lockedChanged(bool locked);
     void dbVersionChanged(int version);

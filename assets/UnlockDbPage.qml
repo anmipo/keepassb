@@ -118,7 +118,7 @@ Page {
             unlockProgressDialog.cancel();
             databaseUnlocked();
         });
-        database.unlockProgressChanged.connect(function(progress) {
+        database.progressChanged.connect(function(progress) {
             unlockProgressDialog.progress = progress;
         });
         database.invalidPasswordOrKey.connect(function() {
