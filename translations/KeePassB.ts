@@ -291,49 +291,61 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="202"/>
+        <location filename="../src/db/PwDatabase.cpp" line="204"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="209"/>
+        <location filename="../src/db/PwDatabase.cpp" line="211"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="217"/>
+        <location filename="../src/db/PwDatabase.cpp" line="219"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="227"/>
+        <location filename="../src/db/PwDatabase.cpp" line="229"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="240"/>
+        <location filename="../src/db/PwDatabase.cpp" line="242"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="320"/>
+        <location filename="../src/db/PwDatabase.cpp" line="321"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="326"/>
+        <location filename="../src/db/PwDatabase.cpp" line="341"/>
+        <source>Cannot replace database file</source>
+        <comment>An error message shown when the database file cannot be replaced by another file.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="346"/>
+        <source>Cannot rename temporary database file</source>
+        <comment>An error message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="327"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="331"/>
+        <location filename="../src/db/PwDatabase.cpp" line="332"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
@@ -360,13 +372,13 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="252"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="245"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="430"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="423"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
@@ -911,25 +923,31 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="90"/>
+        <location filename="../assets/main.qml" line="91"/>
         <source>Copied to clipboard</source>
         <comment>A notification which confirms successful copying of text.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="93"/>
+        <location filename="../assets/main.qml" line="94"/>
         <source>Clipboard cleared</source>
         <comment>A notification message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="132"/>
+        <location filename="../assets/main.qml" line="129"/>
+        <source>Database saved</source>
+        <comment>A short notification/confirmation message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="137"/>
         <source>Saving...</source>
         <comment>Title of a progress indicator while a database is being encrypted/saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="147"/>
+        <location filename="../assets/main.qml" line="152"/>
         <source>%1
 (%2)</source>
         <comment>A template for &apos;Error message (Error description)&apos;; change only for right-to-left langugages</comment>

@@ -22,6 +22,8 @@ const QString XML_META = "Meta";
 const QString XML_KEY = "Key";
 const QString XML_DATA = "Data";
 
+// String added to temporary DB file name when saving
+const QString TMP_SAVE_FILE_NAME_SUFFIX = ".tmp";
 
 PwDatabase::PwDatabase(QObject* parent) : QObject(parent), _dbFilePath("") {
 	_rootGroup = NULL;
@@ -311,9 +313,8 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
         return;
     }
 
-
-    // Save to file and check all the errors
-    QString tmpFilePath = db->getDatabaseFilePath() + "-save.kdb";
+    // Save to a temporary file and check all the errors
+    QString tmpFilePath = db->getDatabaseFilePath() + TMP_SAVE_FILE_NAME_SUFFIX;
     QFile outDbFile(tmpFilePath);
     if (!outDbFile.open(QIODevice::WriteOnly)) {
         qDebug() << "Cannot open DB file: '" << tmpFilePath << "' Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();
@@ -333,6 +334,17 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
     }
     outDbFile.close();
 
-    // TODO rename the temporary file to the actual one
+    // Ok, QFile::rename() cannot replace an existing file, so we need to remove the original DB first
+    QFile origDbFile(db->getDatabaseFilePath());
+    if (!origDbFile.remove()) {
+        qDebug() << "Failed to remove original DB" << origDbFile.errorString();
+        emit fileSaveError(tr("Cannot replace database file", "An error message shown when the database file cannot be replaced by another file."), origDbFile.errorString());
+        return;
+    }
+    if (!outDbFile.rename(db->getDatabaseFilePath())) {
+        qDebug() << "Failed to rename tmp file: " << outDbFile.errorString();
+        emit fileSaveError(tr("Cannot rename temporary database file", "An error message"), outDbFile.errorString());
+        return;
+    }
     emit dbSaved();
 }
