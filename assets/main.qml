@@ -130,6 +130,7 @@ NavigationPane {
         },
         SystemDialog {
             id: dbSaveErrorDialog
+            title: qsTr("Error", "Title of an error notification popup")
             cancelButton.label: ""
         },
         SystemProgressDialog {
