@@ -238,13 +238,6 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     }
     emit progressChanged(UNLOCK_PROGRESS_DECRYPTED);
 
-    // TODO remove this debug saving
-    QFile rawFile(getDatabaseFilePath() + ".in");
-    rawFile.open(QIODevice::WriteOnly);
-    rawFile.write(decryptedData);
-    rawFile.flush();
-    rawFile.close();
-
     QDataStream decryptedDataStream(decryptedData);
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
     err = readContent(decryptedDataStream);
