@@ -67,6 +67,7 @@ NavigationPane {
             });
             database.dbSaved.connect(function() {
                 saveProgressDialog.cancel();
+                dbSavedConfirmationToast.show();
                 databaseSaved();
             });
 
@@ -124,8 +125,12 @@ NavigationPane {
             id: clipboardToast  
         },
         SystemToast {
-            id: dbSaveErrorToast
-            position: SystemUiPosition.TopCenter
+            id: dbSavedConfirmationToast
+            body: qsTr("Database saved", "A short notification/confirmation message") + Retranslate.onLocaleOrLanguageChanged
+        },
+        SystemDialog {
+            id: dbSaveErrorDialog
+            cancelButton.label: ""
         },
         SystemProgressDialog {
             id: saveProgressDialog
@@ -144,11 +149,11 @@ NavigationPane {
 
     function showFileSaveError(message, errorDescription) {
         saveProgressDialog.cancel();
-        dbSaveErrorToast.body = qsTr("%1\n(%2)",
+        dbSaveErrorDialog.body = qsTr("%1\n(%2)",
                 "A template for 'Error message (Error description)'; change only for right-to-left langugages")
                 .arg(message)
                 .arg(errorDescription); 
-        dbSaveErrorToast.show();
+        dbSaveErrorDialog.show();
     }
 
     onPopTransitionEnded: {
