@@ -3,13 +3,14 @@
  */
 
 import bb.cascades 1.2
+import bb.system 1.2
 import org.keepassb 1.0
 import "common.js" as Common
 
 Page {
     property PwGroup group
     property bool autofocus: false
-
+    
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
         kindProperties: FreeFormTitleBarKindProperties {
@@ -149,6 +150,14 @@ Page {
             }
             ListView {
                 id: groupList
+                
+                property PwGroup selectedGroup
+                function showRenameGroupDialog(group) {
+                    selectedGroup = group;
+                    renameGroupDialog.inputField.defaultText = group.name
+                    renameGroupDialog.show();
+                }
+                
                 objectName: "groupList"
                 dataModel: group
                 visible: !group.isEmpty()
@@ -180,6 +189,7 @@ Page {
                     ListItemComponent {
                         type: "entry"
                         StandardListItem {
+                            id: groupListEntryItem
                             title: ListItemData.title
                             description: Common.getEntryDescription(ListItemData)
                             imageSpaceReserved: true
@@ -208,6 +218,7 @@ Page {
                     ListItemComponent {
                         type: "group"
                         CustomListItem {
+                            id: groupListGroupItem
                             highlightAppearance: HighlightAppearance.Default
                             dividerVisible: true
                             Container {
@@ -234,6 +245,16 @@ Page {
                                     text: "(" + ListItemData.childCount + ")"
                                     horizontalAlignment: HorizontalAlignment.Right
                                     verticalAlignment: VerticalAlignment.Center 
+                                }
+                            }
+                            contextActions: ActionSet {
+                                title: ListItemData.name
+                                ActionItem {
+                                    title: qsTr("Rename Group", "A button/action which shows a dialog to rename the selected group") + Retranslate.onLocaleOrLanguageChanged
+                                    imageSource: "asset:///images/ic_rename.png"
+                                    onTriggered: {
+                                        groupListGroupItem.ListItem.view.showRenameGroupDialog(ListItemData);
+                                    }
                                 }
                             }
                         }
@@ -271,6 +292,17 @@ Page {
             },
             ComponentDefinition {
                 source: "ViewEntryV4Page.qml"
+            },
+            SystemPrompt {
+                id: renameGroupDialog
+                title: qsTr("Rename Group", "Title of a dialog to rename a group") + Retranslate.onLocaleOrLanguageChanged
+                onFinished: {
+                    var newName = inputFieldTextEntry();
+                    if ((value == SystemUiResult.ConfirmButtonSelection) && (newName.length > 0)){
+                        groupList.selectedGroup.name = newName;
+                        database.save();
+                    }
+                }
             }
         ]
     }

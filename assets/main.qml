@@ -78,8 +78,6 @@ NavigationPane {
                 groupPage.startSearch();
             }
             naviPane.push(groupPage);
-            
-            database.save(); // TODO remove this debug line
         }
     }
 
