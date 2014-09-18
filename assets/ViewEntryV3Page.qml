@@ -13,7 +13,30 @@ Page {
     property PwEntryV3 entry
     property string currentView
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
-    
+
+    actions: [
+        ActionItem {
+            id: editEntryAction
+            title: qsTr("Edit", "A button/action to edit an entry")
+            imageSource: "asset:///images/ic_edit.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            shortcuts: [
+                SystemShortcut {
+                    type: SystemShortcuts.Edit
+                    onTriggered: editEntryAction.triggered()
+                }
+            ]
+            onTriggered: {
+                if (!editEntryPageComponent.hasErrors()) { 
+                    var editEntryPage = editEntryPageComponent.createObject(this);
+                    editEntryPage.open();
+                } else {
+                    console.log("Error loading editEntryPageComponent: " + editEntryPageComponent.errorMessage());
+                }
+            }
+        }
+    ]   
+     
     titleBar: TitleBar { 
         kind: TitleBarKind.Segmented
         onSelectedValueChanged: {
@@ -85,6 +108,10 @@ Page {
         },
         ViewEntryHistoryTab {
             id: viewEntryHistoryTab
+        },
+        ComponentDefinition {
+            id: editEntryPageComponent
+            source: "asset:///EditEntryV3Page.qml"
         }
     ]
 }
