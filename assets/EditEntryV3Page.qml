@@ -53,25 +53,24 @@ Sheet {
                 rightPadding: 10
                 bottomPadding: 10
             
-                Header {
-                    title: qsTr("Title", "Label of the entry title edit field") + Retranslate.onLocaleOrLanguageChanged
-                    bottomMargin: 10
+                Label {
+                    text: qsTr("Title", "Label of the entry title edit field") + Retranslate.onLocaleOrLanguageChanged
                 }
                 MonoTextField {
                     id: titleField
                     text: entry.title
                 }
-                Header {
-                    title: qsTr("User Name", "Label of the username edit field") + Retranslate.onLocaleOrLanguageChanged
-                    bottomMargin: 10
+                Divider{}
+                Label {
+                    text: qsTr("User Name", "Label of the username edit field") + Retranslate.onLocaleOrLanguageChanged
                 }
                 MonoTextField {
                     id: usernameField
                     text: entry.userName
                 }
-                Header {
-                    title: qsTr("Password", "Label of the password edit field") + Retranslate.onLocaleOrLanguageChanged
-                    bottomMargin: 10
+                Divider{}
+                Label {
+                    text: qsTr("Password", "Label of the password edit field") + Retranslate.onLocaleOrLanguageChanged
                 }
                 Container {
                     layout: StackLayout {
@@ -83,23 +82,27 @@ Sheet {
                         inputMode: TextFieldInputMode.Password
                     }
                     Button {
-                        imageSource: "asset:///images/ic_edit.png"
+                        imageSource: "asset:///images/ic_new_password.png"
                         preferredWidth: 50
                         verticalAlignment: VerticalAlignment.Top
                         horizontalAlignment: HorizontalAlignment.Right
+                        onClicked: {
+                            var generatorSheet = passwordGeneratorSheetComponent.createObject(this);
+                            generatorSheet.open();
+                        }
                     }
                 }
-                Header {
-                    title: qsTr("URL", "Label of the link/internet address edit field") + Retranslate.onLocaleOrLanguageChanged
-                    bottomMargin: 10
+                Divider{}
+                Label {
+                    text: qsTr("URL", "Label of the link/internet address edit field") + Retranslate.onLocaleOrLanguageChanged
                 }
                 MonoTextField {
                     id: urlField
                     text: entry.url
                 }
-                Header {
-                    title: qsTr("Notes", "Label of the notes/comments edit field") + Retranslate.onLocaleOrLanguageChanged
-                    bottomMargin: 10
+                Divider{}
+                Label {
+                    text: qsTr("Notes", "Label of the notes/comments edit field") + Retranslate.onLocaleOrLanguageChanged
                 }
                 TextArea {
                     id: notesField
@@ -125,6 +128,10 @@ Sheet {
                     entryEditSheet.close();
                 }
             }
+        },
+        ComponentDefinition {
+            id: passwordGeneratorSheetComponent
+            source: "asset:///PasswordGeneratorPage.qml"
         }
     ]
 }
