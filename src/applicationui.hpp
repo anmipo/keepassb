@@ -15,6 +15,7 @@
 #include "db/PwDatabase.h"
 #include "util/TimedClipboard.h"
 #include "util/Settings.h"
+#include "util/PasswordGenerator.h"
 
 class QTranslator;
 
@@ -34,6 +35,7 @@ private:
     PwGroup* _parentGroup;
     bb::system::InvokeManager* invokeManager;
     TimedClipboard clipboard;
+    PasswordGenerator* passwordGenerator;
     QTimer watchdog;
     QByteArray quickPassHash;
 
@@ -55,6 +57,8 @@ public:
     Q_INVOKABLE bool quickUnlock(const QString& quickCode);
     // Remembers the necessary info for quick unlock
     Q_INVOKABLE void prepareQuickUnlock(const QString& fullPassword);
+
+    Q_INVOKABLE PasswordGenerator* getPasswordGenerator() const;
 private slots:
     void onSystemLanguageChanged();
     void onWatchdogTimeoutChanged(int timeout);

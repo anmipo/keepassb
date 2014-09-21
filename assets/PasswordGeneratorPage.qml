@@ -1,5 +1,5 @@
-
 import bb.cascades 1.2
+import org.keepassb 1.0
 
 /*
  * Length: 8 to 16
@@ -7,13 +7,42 @@ import bb.cascades 1.2
  * look-alike
  */
 Sheet {
-    property string password
+    property string password: "password_template"
+    
     function updatePassword() {
+        var preset = presetDropDown.selectedOption;
+        var pwGen = app.getPasswordGenerator();
+        var newPassword;
+        if (preset == presetCustom) {
+            newPassword = pwGen.makeCustomPassword(Math.round(passwordLength.value), 
+                includeLowerCase.checked, includeUpperCase.checked, 
+                includeDigits.checked, includeSpecials.checked, 
+                excludeSimilar.checked);
+        } else if (preset == preset40Hex) {
+            newPassword = app.getPasswordGenerator().makeHexPassword(40 / 8);
+        } else if (preset == preset128Hex) {
+            newPassword = app.getPasswordGenerator().makeHexPassword(128 / 8);
+        } else if (preset == preset256Hex) {
+            newPassword = app.getPasswordGenerator().makeHexPassword(256 / 8);
+        } else if (preset == presetMacAddress) {
+            newPassword = app.getPasswordGenerator().makeMacAddress();
+        } else {
+            newPassword = pwGen.makeCustomPassword(
+                20,   // password length
+                true, // includeLowerCase 
+                true, // includeUpperCase 
+                true, // includeDigits 
+                false, // includeSpecials 
+                false); // excludeSimilar
+        }
+        password = newPassword;
         
+        app.restartWatchdog();
     }
+    
     Page {
         onCreationCompleted: {
-            updatePassword()
+            updatePassword();
         }
         titleBar: TitleBar {
             title: qsTr("Password Generator", "Title of a page which helps the user to create random passwords")
@@ -35,6 +64,7 @@ Sheet {
                 title: qsTr("Refresh", "A button/action which generates a new password")
                 imageSource: "asset:///images/ic_refresh.png"
                 ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: updatePassword()
             }
         ]
         Container {
@@ -42,15 +72,22 @@ Sheet {
             leftPadding: 10
             rightPadding: 10
             bottomPadding: 10
+            onTouchCapture: {
+                app.restartWatchdog();
+            }
             Label {
                 id: passwordLabel
+                text: password
+                multiline: true
                 bottomMargin: 30
-                text: "fqwWRE123Lpoei%%dsfa"
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
-                textStyle.base: SystemDefaults.TextStyles.TitleText
+                textStyle.textAlign: TextAlign.Center
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+                textStyle.base: SystemDefaults.TextStyles.BodyText
+                textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
                 textFit.mode: LabelTextFitMode.FitToBounds
-                textStyle.fontWeight: FontWeight.Bold
+                textFit.minFontSizeValue: 5
+                textFormat: TextFormat.Plain
             }
             Divider{}
             DropDown {
@@ -60,7 +97,7 @@ Sheet {
                 options: [
                     Option {
                         id: presetDefault
-                        text: qsTr("Default", "One of the values of Preset selector, means using default setting for password generation. Will look like 'Preset    Default'")
+                        text: qsTr("Default", "One of the values of Preset selector. Generates password with default/standard settings. Will look like 'Preset    Default'.")
                     },
                     Option {
                         id: presetCustom
@@ -83,6 +120,9 @@ Sheet {
                         text: qsTr("Random MAC Address", "One of the values of the Preset selector. 'MAC Address' is a special technical term, see http://en.wikipedia.org/wiki/MAC_address. Will look like 'Preset    Random MAC Address'.")
                     }
                 ]
+                onSelectedOptionChanged: {
+                    updatePassword();
+                }
             }
             Container {
                 id: customPreset
@@ -92,33 +132,50 @@ Sheet {
                     layout: StackLayout {
                         orientation: LayoutOrientation.LeftToRight
                     }
-                    Button {
+                    CheckBox {
+                        id: includeLowerCase
                         text: "abc"
+                        checked: true
+                        onCheckedChanged: updatePassword()
                     }
-                    Button {
+                    CheckBox {
+                        id: includeUpperCase
                         text: "ABC"
+                        checked: true
+                        onCheckedChanged: updatePassword()
                     }
-                    Button {
+                    CheckBox {
+                        id: includeDigits
                         text: "123"
+                        checked: true
+                        onCheckedChanged: updatePassword()
                     }
-                    Button {
+                    CheckBox {
+                        id: includeSpecials
                         text: "@%)"
+                        checked: true
+                        onCheckedChanged: updatePassword()
                     }
                 }
                 Divider{}
                 Label {
-                    text: "Password Length: 20"
+                    text: qsTr("Password Length: %1", "Text showing current password length. %1 will be replaced by a number")
+                                .arg(Math.round(passwordLength.immediateValue))
                 }
                 Slider {
-                    fromValue: 5
-                    toValue: 60
-                    value: 20
+                    id: passwordLength
+                    fromValue: 5.0
+                    toValue: 60.0
+                    value: 20.0
+                    onValueChanged: updatePassword()
                 }
                 Divider {
                     bottomMargin: 20
                 }
                 CheckBox {
-                    text: qsTr("Exclude look-alikes (I,l,1,O,0)")
+                    id: excludeSimilar
+                    text: qsTr("Avoid similar characters (I,l,1,O,0)", "An option/checkbox which excludes visually similar symbols from the generated password. Symbols inside the brackets should not be translated.")
+                    onCheckedChanged: updatePassword()
                 }
             }
         }

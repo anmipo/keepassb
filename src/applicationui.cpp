@@ -24,7 +24,7 @@ using namespace bb::system;
 const QString OPEN_DB_ACTION = "org.keepassb.database.open";
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
-        QObject(app), clipboard(app), watchdog(), quickPassHash() {
+        QObject(app), clipboard(app), watchdog(), quickPassHash()  {
 
     m_pTranslator = new QTranslator(this);
     m_pLocaleHandler = new LocaleHandler(this);
@@ -49,6 +49,9 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     settings->setParent(app);
 
     CryptoManager::instance()->init();
+
+    passwordGenerator = PasswordGenerator::instance();
+    passwordGenerator->setParent(app);
 
     Application::instance()->setCover(new ActiveFrame(app));
     res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
@@ -224,4 +227,8 @@ bool ApplicationUI::quickUnlock(const QString& quickPass) {
         return false;
     }
     return (candidateHash == quickPassHash);
+}
+
+PasswordGenerator* ApplicationUI::getPasswordGenerator() const {
+    return passwordGenerator;
 }
