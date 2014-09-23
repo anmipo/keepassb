@@ -11,6 +11,7 @@
 #define SETTINGS_H_
 
 #include <QStringList>
+#include "util/PasswordGenerator.h"
 
 class Settings: public QObject {
     Q_OBJECT
@@ -53,7 +54,15 @@ class Settings: public QObject {
     /**
      * Password generator preset profile
      */
-    Q_PROPERTY(PwGenPreset pwGenPreset READ getPwGenPreset WRITE setPwGenPreset NOTIFY pwGenPresetChanged)
+    Q_PROPERTY(PasswordGenerator::PwGenPreset pwGenPreset READ getPwGenPreset WRITE setPwGenPreset NOTIFY pwGenPresetChanged)
+    /**
+     * Length of generated passwords
+     */
+    Q_PROPERTY(int pwGenLength READ getPwGenLength WRITE setPwGenLength NOTIFY pwGenLengthChanged)
+    /**
+     * Password generation features (includes and excluded character sets)
+     */
+    Q_PROPERTY(int pwGenFlags READ getPwGenFlags WRITE setPwGenFlags NOTIFY pwGenFlagsChanged)
 public:
     enum EntryListDetail {
         ENTRY_DETAIL_NONE      = 0x00,
@@ -75,15 +84,6 @@ public:
     };
     Q_ENUMS(QuickUnlockType);
 
-    enum PwGenPreset {
-        PWGEN_PRESET_DEFAULT = 0x00,
-        PWGEN_PRESET_CUSTOM  = 0x01,
-        PWGEN_PRESET_HEX40   = 0x02,
-        PWGEN_PRESET_HEX128  = 0x03,
-        PWGEN_PRESET_HEX256  = 0x04,
-        PWGEN_PRESET_MAC_ADDRESS = 0x05
-    };
-    Q_ENUMS(PwGenPreset);
 private:
     static Settings* _instance;
     bool _searchInDeleted;
@@ -95,7 +95,9 @@ private:
     EntryListDetail _entryListDetail;
     bool _quickUnlockEnabled;
     QuickUnlockType _quickUnlockType;
-    PwGenPreset _pwGenPreset;
+    PasswordGenerator::PwGenPreset _pwGenPreset;
+    int _pwGenLength;
+    int _pwGenFlags;
     QStringList _recentFiles;
     QMap<QString, QString> _recentDbToKey;
 
@@ -122,7 +124,9 @@ public:
     EntryListDetail getEntryListDetail() const { return _entryListDetail; }
     bool isQuickUnlockEnabled() const { return _quickUnlockEnabled; }
     QuickUnlockType getQuickUnlockType() const { return _quickUnlockType; }
-    PwGenPreset getPwGenPreset() const { return _pwGenPreset; }
+    PasswordGenerator::PwGenPreset getPwGenPreset() const { return _pwGenPreset; }
+    int getPwGenLength() const { return _pwGenLength; }
+    int getPwGenFlags() const { return _pwGenFlags; }
 
     /**
      * Adds paths to the top of the recent files list
@@ -153,7 +157,9 @@ public slots:
     void setEntryListDetail(EntryListDetail detail);
     void setQuickUnlockEnabled(bool enabled);
     void setQuickUnlockType(QuickUnlockType type);
-    void setPwGenPreset(PwGenPreset preset);
+    void setPwGenPreset(PasswordGenerator::PwGenPreset preset);
+    void setPwGenLength(int length);
+    void setPwGenFlags(int flags);
 signals:
     void searchInDeletedChanged(bool);
     void searchAfterUnlockChanged(bool);
@@ -164,7 +170,9 @@ signals:
     void entryListDetailChanged(EntryListDetail);
     void quickUnlockEnabledChanged(bool);
     void quickUnlockTypeChanged(QuickUnlockType);
-    void pwGenPresetChanged(PwGenPreset);
+    void pwGenPresetChanged(PasswordGenerator::PwGenPreset);
+    void pwGenLengthChanged(int);
+    void pwGenFlagsChanged(int);
 };
 
 #endif /* SETTINGS_H_ */

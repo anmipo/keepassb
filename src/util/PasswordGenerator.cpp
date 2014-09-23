@@ -6,8 +6,9 @@
  */
 
 #include <PasswordGenerator.h>
-#include "crypto/CryptoManager.h"
 #include <bb/cascades/Application>
+#include "crypto/CryptoManager.h"
+#include "util/Settings.h"
 
 const QString CHAR_SET_LOWER  = "abcdefghijklmnopqrstuvwxyz";
 const QString CHAR_SET_UPPER  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -30,19 +31,20 @@ PasswordGenerator::PasswordGenerator(QObject* parent) : QObject(parent) {
 
 /**
  * Returns a random string made of the allowed characters.
- * If all parameters are false, returns an empty string.
+ * Flags define included and excluded character sets (see Settings::PWGEN_INCLUDE_* and Setting::PWGEN_EXCLUDE_*)
+ * If no charset included, returns an empty string.
  */
-QString PasswordGenerator::makeCustomPassword(const int length, const bool lowerCase, const bool upperCase, const bool numbers, const bool specials, const bool excludeSimilar) const {
+QString PasswordGenerator::makeCustomPassword(const int length, const int flags) const {
     QString charset;
-    if (lowerCase)
+    if (flags & Settings::PWGEN_INCLUDE_LOWER)
         charset += CHAR_SET_LOWER;
-    if (upperCase)
+    if (flags & Settings::PWGEN_INCLUDE_UPPER)
         charset += CHAR_SET_UPPER;
-    if (numbers)
+    if (flags & Settings::PWGEN_INCLUDE_DIGITS)
         charset += CHAR_SET_DIGITS;
-    if (specials)
+    if (flags & Settings::PWGEN_INCLUDE_SPECIALS)
         charset += CHAR_SET_SPECIAL;
-    if (excludeSimilar) {
+    if (flags & Settings::PWGEN_EXCLUDE_SIMILAR) {
         for (int i = 0; i < CHAR_SET_LOOKALIKE.length(); i++) {
             charset.remove(CHAR_SET_LOOKALIKE.at(i), Qt::CaseSensitive);
         }

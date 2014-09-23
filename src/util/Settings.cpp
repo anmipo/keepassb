@@ -23,7 +23,13 @@ const bool DEFAULT_ALPHA_SORTING = false;
 const int DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
 const bool DEFAULT_QUICK_UNLOCK_ENABLED = false;
 const int DEFAULT_QUICK_UNLOCK_TYPE = Settings::QUICK_UNLOCK_FIRST_4;
-const int DEFAULT_PWGEN_PRESET = Settings::PWGEN_PRESET_DEFAULT;
+const int DEFAULT_PWGEN_PRESET = PasswordGenerator::PWGEN_PRESET_DEFAULT;
+const int DEFAULT_PWGEN_LENGTH = 20;
+const int DEFAULT_PWGEN_FLAGS =
+        PasswordGenerator::PWGEN_INCLUDE_LOWER |
+        PasswordGenerator::PWGEN_INCLUDE_UPPER |
+        PasswordGenerator::PWGEN_INCLUDE_DIGITS |
+        PasswordGenerator::PWGEN_INCLUDE_SPECIALS;
 
 /**
  * Keys for preferences values
@@ -38,6 +44,8 @@ const QString KEY_ENTRY_LIST_DETAIL = "entryListDetail";
 const QString KEY_QUICK_UNLOCK_ENABLED = "quickUnlockEnabled";
 const QString KEY_QUICK_UNLOCK_TYPE = "quickUnlockType";
 const QString KEY_PWGEN_PRESET = "pwGenPreset";
+const QString KEY_PWGEN_LENGTH = "pwGenLength";
+const QString KEY_PWGEN_FLAGS = "pwGenFlags";
 const QString KEY_RECENT_FILES_COUNT = "recentFiles/count";
 const QString KEY_RECENT_FILES_ITEM = "recentFiles/item%1";
 
@@ -84,8 +92,12 @@ Settings::Settings(QObject* parent) : QObject(parent) {
             KEY_QUICK_UNLOCK_ENABLED, DEFAULT_QUICK_UNLOCK_ENABLED).toBool();
     _quickUnlockType = (QuickUnlockType) settings.value(
             KEY_QUICK_UNLOCK_TYPE, DEFAULT_QUICK_UNLOCK_TYPE).toInt();
-    _pwGenPreset = (PwGenPreset) settings.value(
+    _pwGenPreset = (PasswordGenerator::PwGenPreset) settings.value(
             KEY_PWGEN_PRESET, DEFAULT_PWGEN_PRESET).toInt();
+    _pwGenLength = settings.value(
+            KEY_PWGEN_LENGTH, DEFAULT_PWGEN_LENGTH).toInt();
+    _pwGenFlags = settings.value(
+            KEY_PWGEN_FLAGS, DEFAULT_PWGEN_FLAGS).toInt();
     loadRecentFiles();
 }
 
@@ -220,10 +232,26 @@ void Settings::setQuickUnlockType(Settings::QuickUnlockType type) {
     }
 }
 
-void Settings::setPwGenPreset(Settings::PwGenPreset preset) {
+void Settings::setPwGenPreset(PasswordGenerator::PwGenPreset preset) {
     if (preset != _pwGenPreset) {
         QSettings().setValue(KEY_PWGEN_PRESET, preset);
         _pwGenPreset = preset;
         emit pwGenPresetChanged(preset);
+    }
+}
+
+void Settings::setPwGenLength(int length) {
+    if (length != _pwGenLength) {
+        QSettings().setValue(KEY_PWGEN_LENGTH, length);
+        _pwGenLength = length;
+        emit pwGenLengthChanged(length);
+    }
+}
+
+void Settings::setPwGenFlags(int flags) {
+    if (flags!= _pwGenFlags) {
+        QSettings().setValue(KEY_PWGEN_FLAGS, flags);
+        _pwGenFlags = flags;
+        emit pwGenFlagsChanged(flags);
     }
 }

@@ -10,14 +10,11 @@ Sheet {
     property string password: "password_template"
     
     function updatePassword() {
-        var preset = appSettings.pwGenPreset;
+        var preset = presetDropDown.selectedOption;
         var pwGen = app.getPasswordGenerator();
         var newPassword;
         if (preset == presetCustom) {
-            newPassword = pwGen.makeCustomPassword(Math.round(passwordLength.value), 
-                includeLowerCase.checked, includeUpperCase.checked, 
-                includeDigits.checked, includeSpecials.checked, 
-                excludeSimilar.checked);
+            newPassword = pwGen.makeCustomPassword(appSettings.pwGenLength, appSettings.pwGenFlags);
         } else if (preset == preset40Hex) {
             newPassword = app.getPasswordGenerator().makeHexPassword(40 / 8);
         } else if (preset == preset128Hex) {
@@ -27,13 +24,9 @@ Sheet {
         } else if (preset == presetMacAddress) {
             newPassword = app.getPasswordGenerator().makeMacAddress();
         } else {
-            newPassword = pwGen.makeCustomPassword(
-                20,   // password length
-                true, // includeLowerCase 
-                true, // includeUpperCase 
-                true, // includeDigits 
-                false, // includeSpecials 
-                false); // excludeSimilar
+            newPassword = pwGen.makeCustomPassword(20, // password length
+                PasswordGenerator.PWGEN_INCLUDE_LOWER | PasswordGenerator.PWGEN_INCLUDE_UPPER | 
+                PasswordGenerator.PWGEN_INCLUDE_DIGITS | PasswordGenerator.PWGEN_EXCLUDE_SIMILAR);
         }
         password = newPassword;
         
@@ -97,43 +90,42 @@ Sheet {
                     Option {
                         id: presetDefault
                         text: qsTr("Default", "One of the values of Preset selector. Generates password with default/standard settings. Will look like 'Preset    Default'.")
-                        value: Settings.PWGEN_PRESET_DEFAULT
-                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_DEFAULT)
+                        value: PasswordGenerator.PWGEN_PRESET_DEFAULT
+                        selected: (appSettings.pwGenPreset == PasswordGenerator.PWGEN_PRESET_DEFAULT)
                     },
                     Option {
                         id: presetCustom
                         text: qsTr("Custom", "One of the values of Preset selector. Custom here means user-defined. Will look like 'Preset    Custom'")
-                        value: Settings.PWGEN_PRESET_CUSTOM
-                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_CUSTOM)
+                        value: PasswordGenerator.PWGEN_PRESET_CUSTOM
+                        selected: (appSettings.pwGenPreset == PasswordGenerator.PWGEN_PRESET_CUSTOM)
                     },
                     Option {
                         id: preset40Hex
                         text: qsTr("40-bit Hex", "One of the values of the Preset selector. Results in creation of hexadecimal number 40 binary bits long. Will look like 'Preset    40-bit Hex'.")
-                        value: Settings.PWGEN_PRESET_HEX40
-                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_HEX40)
+                        value: PasswordGenerator.PWGEN_PRESET_HEX40
+                        selected: (appSettings.pwGenPreset == PasswordGenerator.PWGEN_PRESET_HEX40)
                     },
                     Option {
                         id: preset128Hex
                         text: qsTr("128-bit Hex", "One of the values of the Preset selector. Results in creation of hexadecimal number 128 binary bits long. Will look like 'Preset    128-bit Hex'.")
-                        value: Settings.PWGEN_PRESET_HEX128
-                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_HEX128)
+                        value: PasswordGenerator.PWGEN_PRESET_HEX128
+                        selected: (appSettings.pwGenPreset == PasswordGenerator.PWGEN_PRESET_HEX128)
                     },
                     Option {
                         id: preset256Hex
                         text: qsTr("256-bit Hex", "One of the values of the Preset selector. Results in creation of hexadecimal number 256 binary bits long. Will look like 'Preset    256-bit Hex'.")
-                        value: Settings.PWGEN_PRESET_HEX256
-                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_HEX256)
+                        value: PasswordGenerator.PWGEN_PRESET_HEX256
+                        selected: (appSettings.pwGenPreset == PasswordGenerator.PWGEN_PRESET_HEX256)
                     },
                     Option {
                         id: presetMacAddress
                         text: qsTr("Random MAC Address", "One of the values of the Preset selector. 'MAC Address' is a special technical term, see http://en.wikipedia.org/wiki/MAC_address. Will look like 'Preset    Random MAC Address'.")
-                        value: Settings.PWGEN_PRESET_MAC_ADDRESS
-                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_MAC_ADDRESS)
+                        value: PasswordGenerator.PWGEN_PRESET_MAC_ADDRESS
+                        selected: (appSettings.pwGenPreset == PasswordGenerator.PWGEN_PRESET_MAC_ADDRESS)
                     }
                 ]
                 onSelectedOptionChanged: {
                     if (selectedOption) {
-                        console.log("selectedOption: " + selectedOption + "   value: " + selectedOption.value);
                         appSettings.pwGenPreset = selectedOption.value;
                     }
                     updatePassword();
@@ -150,26 +142,50 @@ Sheet {
                     CheckBox {
                         id: includeLowerCase
                         text: "abc"
-                        checked: true
-                        onCheckedChanged: updatePassword()
+                        checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_LOWER
+                        onCheckedChanged: {
+                            if (checked)
+                                appSettings.pwGenFlags |= PasswordGenerator.PWGEN_INCLUDE_LOWER;
+                            else
+                                appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_INCLUDE_LOWER;
+                            updatePassword();
+                        }
                     }
                     CheckBox {
                         id: includeUpperCase
                         text: "ABC"
-                        checked: true
-                        onCheckedChanged: updatePassword()
+                        checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_UPPER
+                        onCheckedChanged: {
+                            if (checked)
+                                appSettings.pwGenFlags |= PasswordGenerator.PWGEN_INCLUDE_UPPER;
+                            else
+                                appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_INCLUDE_UPPER;
+                            updatePassword()
+                        }
                     }
                     CheckBox {
                         id: includeDigits
                         text: "123"
-                        checked: true
-                        onCheckedChanged: updatePassword()
+                        checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_DIGITS
+                        onCheckedChanged: {
+                            if (checked)
+                                appSettings.pwGenFlags |= PasswordGenerator.PWGEN_INCLUDE_DIGITS;
+                            else
+                                appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_INCLUDE_DIGITS;
+                            updatePassword();
+                        }
                     }
                     CheckBox {
                         id: includeSpecials
                         text: "@%)"
-                        checked: true
-                        onCheckedChanged: updatePassword()
+                        checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_SPECIALS
+                        onCheckedChanged: {
+                            if (checked)
+                                appSettings.pwGenFlags |= PasswordGenerator.PWGEN_INCLUDE_SPECIALS;
+                            else
+                                appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_INCLUDE_SPECIALS;
+                            updatePassword();
+                        }
                     }
                 }
                 Divider{}
@@ -179,10 +195,13 @@ Sheet {
                 }
                 Slider {
                     id: passwordLength
-                    fromValue: 5.0
-                    toValue: 60.0
-                    value: 20.0
-                    onValueChanged: updatePassword()
+                    fromValue: 8.0
+                    toValue: 50.0
+                    value: appSettings.pwGenLength
+                    onValueChanged: {
+                        appSettings.pwGenLength = Math.round(value);
+                        updatePassword();
+                    }
                 }
                 Divider {
                     bottomMargin: 20
@@ -190,7 +209,14 @@ Sheet {
                 CheckBox {
                     id: excludeSimilar
                     text: qsTr("Avoid similar characters (I,l,1,O,0)", "An option/checkbox which excludes visually similar symbols from the generated password. Symbols inside the brackets should not be translated.")
-                    onCheckedChanged: updatePassword()
+                    checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
+                    onCheckedChanged: {
+                        if (checked)
+                            appSettings.pwGenFlags |= PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
+                        else
+                            appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
+                        updatePassword();
+                    }
                 }
             }
         }
