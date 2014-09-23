@@ -23,6 +23,7 @@ const bool DEFAULT_ALPHA_SORTING = false;
 const int DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
 const bool DEFAULT_QUICK_UNLOCK_ENABLED = false;
 const int DEFAULT_QUICK_UNLOCK_TYPE = Settings::QUICK_UNLOCK_FIRST_4;
+const int DEFAULT_PWGEN_PRESET = Settings::PWGEN_PRESET_DEFAULT;
 
 /**
  * Keys for preferences values
@@ -36,6 +37,7 @@ const QString KEY_ALPHA_SORTING = "alphaSorting";
 const QString KEY_ENTRY_LIST_DETAIL = "entryListDetail";
 const QString KEY_QUICK_UNLOCK_ENABLED = "quickUnlockEnabled";
 const QString KEY_QUICK_UNLOCK_TYPE = "quickUnlockType";
+const QString KEY_PWGEN_PRESET = "pwGenPreset";
 const QString KEY_RECENT_FILES_COUNT = "recentFiles/count";
 const QString KEY_RECENT_FILES_ITEM = "recentFiles/item%1";
 
@@ -82,6 +84,8 @@ Settings::Settings(QObject* parent) : QObject(parent) {
             KEY_QUICK_UNLOCK_ENABLED, DEFAULT_QUICK_UNLOCK_ENABLED).toBool();
     _quickUnlockType = (QuickUnlockType) settings.value(
             KEY_QUICK_UNLOCK_TYPE, DEFAULT_QUICK_UNLOCK_TYPE).toInt();
+    _pwGenPreset = (PwGenPreset) settings.value(
+            KEY_PWGEN_PRESET, DEFAULT_PWGEN_PRESET).toInt();
     loadRecentFiles();
 }
 
@@ -213,5 +217,13 @@ void Settings::setQuickUnlockType(Settings::QuickUnlockType type) {
         QSettings().setValue(KEY_QUICK_UNLOCK_TYPE, type);
         _quickUnlockType = type;
         emit quickUnlockTypeChanged(type);
+    }
+}
+
+void Settings::setPwGenPreset(Settings::PwGenPreset preset) {
+    if (preset != _pwGenPreset) {
+        QSettings().setValue(KEY_PWGEN_PRESET, preset);
+        _pwGenPreset = preset;
+        emit pwGenPresetChanged(preset);
     }
 }

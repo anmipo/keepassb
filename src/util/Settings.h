@@ -50,6 +50,10 @@ class Settings: public QObject {
      * Type of quick unlock password, specifying which part of the full password is used and its size
      */
     Q_PROPERTY(QuickUnlockType quickUnlockType READ getQuickUnlockType WRITE setQuickUnlockType NOTIFY quickUnlockTypeChanged)
+    /**
+     * Password generator preset profile
+     */
+    Q_PROPERTY(PwGenPreset pwGenPreset READ getPwGenPreset WRITE setPwGenPreset NOTIFY pwGenPresetChanged)
 public:
     enum EntryListDetail {
         ENTRY_DETAIL_NONE      = 0x00,
@@ -71,6 +75,15 @@ public:
     };
     Q_ENUMS(QuickUnlockType);
 
+    enum PwGenPreset {
+        PWGEN_PRESET_DEFAULT = 0x00,
+        PWGEN_PRESET_CUSTOM  = 0x01,
+        PWGEN_PRESET_HEX40   = 0x02,
+        PWGEN_PRESET_HEX128  = 0x03,
+        PWGEN_PRESET_HEX256  = 0x04,
+        PWGEN_PRESET_MAC_ADDRESS = 0x05
+    };
+    Q_ENUMS(PwGenPreset);
 private:
     static Settings* _instance;
     bool _searchInDeleted;
@@ -82,6 +95,7 @@ private:
     EntryListDetail _entryListDetail;
     bool _quickUnlockEnabled;
     QuickUnlockType _quickUnlockType;
+    PwGenPreset _pwGenPreset;
     QStringList _recentFiles;
     QMap<QString, QString> _recentDbToKey;
 
@@ -108,6 +122,7 @@ public:
     EntryListDetail getEntryListDetail() const { return _entryListDetail; }
     bool isQuickUnlockEnabled() const { return _quickUnlockEnabled; }
     QuickUnlockType getQuickUnlockType() const { return _quickUnlockType; }
+    PwGenPreset getPwGenPreset() const { return _pwGenPreset; }
 
     /**
      * Adds paths to the top of the recent files list
@@ -138,6 +153,7 @@ public slots:
     void setEntryListDetail(EntryListDetail detail);
     void setQuickUnlockEnabled(bool enabled);
     void setQuickUnlockType(QuickUnlockType type);
+    void setPwGenPreset(PwGenPreset preset);
 signals:
     void searchInDeletedChanged(bool);
     void searchAfterUnlockChanged(bool);
@@ -148,6 +164,7 @@ signals:
     void entryListDetailChanged(EntryListDetail);
     void quickUnlockEnabledChanged(bool);
     void quickUnlockTypeChanged(QuickUnlockType);
+    void pwGenPresetChanged(PwGenPreset);
 };
 
 #endif /* SETTINGS_H_ */

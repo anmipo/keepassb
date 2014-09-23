@@ -10,7 +10,7 @@ Sheet {
     property string password: "password_template"
     
     function updatePassword() {
-        var preset = presetDropDown.selectedOption;
+        var preset = appSettings.pwGenPreset;
         var pwGen = app.getPasswordGenerator();
         var newPassword;
         if (preset == presetCustom) {
@@ -93,34 +93,49 @@ Sheet {
             DropDown {
                 id: presetDropDown
                 title: qsTr("Preset", "Label for a selection of password presets/templates")
-                selectedOption: presetDefault
                 options: [
                     Option {
                         id: presetDefault
                         text: qsTr("Default", "One of the values of Preset selector. Generates password with default/standard settings. Will look like 'Preset    Default'.")
+                        value: Settings.PWGEN_PRESET_DEFAULT
+                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_DEFAULT)
                     },
                     Option {
                         id: presetCustom
                         text: qsTr("Custom", "One of the values of Preset selector. Custom here means user-defined. Will look like 'Preset    Custom'")
+                        value: Settings.PWGEN_PRESET_CUSTOM
+                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_CUSTOM)
                     },
                     Option {
                         id: preset40Hex
                         text: qsTr("40-bit Hex", "One of the values of the Preset selector. Results in creation of hexadecimal number 40 binary bits long. Will look like 'Preset    40-bit Hex'.")
+                        value: Settings.PWGEN_PRESET_HEX40
+                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_HEX40)
                     },
                     Option {
                         id: preset128Hex
                         text: qsTr("128-bit Hex", "One of the values of the Preset selector. Results in creation of hexadecimal number 128 binary bits long. Will look like 'Preset    128-bit Hex'.")
+                        value: Settings.PWGEN_PRESET_HEX128
+                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_HEX128)
                     },
                     Option {
                         id: preset256Hex
                         text: qsTr("256-bit Hex", "One of the values of the Preset selector. Results in creation of hexadecimal number 256 binary bits long. Will look like 'Preset    256-bit Hex'.")
+                        value: Settings.PWGEN_PRESET_HEX256
+                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_HEX256)
                     },
                     Option {
                         id: presetMacAddress
                         text: qsTr("Random MAC Address", "One of the values of the Preset selector. 'MAC Address' is a special technical term, see http://en.wikipedia.org/wiki/MAC_address. Will look like 'Preset    Random MAC Address'.")
+                        value: Settings.PWGEN_PRESET_MAC_ADDRESS
+                        selected: (appSettings.pwGenPreset == Settings.PWGEN_PRESET_MAC_ADDRESS)
                     }
                 ]
                 onSelectedOptionChanged: {
+                    if (selectedOption) {
+                        console.log("selectedOption: " + selectedOption + "   value: " + selectedOption.value);
+                        appSettings.pwGenPreset = selectedOption.value;
+                    }
                     updatePassword();
                 }
             }
