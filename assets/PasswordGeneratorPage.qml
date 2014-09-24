@@ -131,17 +131,35 @@ Sheet {
                     updatePassword();
                 }
             }
-            Container {
-                id: customPreset
-                visible: presetDropDown.selectedOption == presetCustom
+            ScrollView {
+                scrollRole: ScrollRole.Main
                 Container {
-                    bottomPadding: 10
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
+                    id: customPreset
+                    visible: true //presetDropDown.selectedOption == presetCustom
+                    topPadding: 0
+                    Label {
+                        text: qsTr("Password Length: <b>%1</b>", "Text showing current password length. %1 will be replaced by a number")
+                                    .arg(Math.round(passwordLength.immediateValue))
+                        textFormat: TextFormat.Html
+                    }
+                    Slider {
+                        id: passwordLength
+                        fromValue: 8.0
+                        toValue: 50.0
+                        value: appSettings.pwGenLength
+                        topMargin: 20
+                        bottomMargin: 20
+                        onValueChanged: {
+                            appSettings.pwGenLength = Math.round(value);
+                            updatePassword();
+                        }
+                    }
+                    Header {
+                        title: qsTr("Include Characters", "Title of a group with on/off options which define which characters CAN be used in generated passwords.")
                     }
                     CheckBox {
                         id: includeLowerCase
-                        text: "abc"
+                        text: qsTr("Lower Case Letters (abc...)", "An option/checkbox which can be On or Off. Do not translate the brackets content.")
                         checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_LOWER
                         onCheckedChanged: {
                             if (checked)
@@ -153,7 +171,7 @@ Sheet {
                     }
                     CheckBox {
                         id: includeUpperCase
-                        text: "ABC"
+                        text: qsTr("Upper Case Letters (ABC...)", "An option/checkbox which can be On or Off. Do not translate the brackets content.")
                         checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_UPPER
                         onCheckedChanged: {
                             if (checked)
@@ -161,23 +179,11 @@ Sheet {
                             else
                                 appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_INCLUDE_UPPER;
                             updatePassword()
-                        }
-                    }
-                    CheckBox {
-                        id: includeDigits
-                        text: "123"
-                        checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_DIGITS
-                        onCheckedChanged: {
-                            if (checked)
-                                appSettings.pwGenFlags |= PasswordGenerator.PWGEN_INCLUDE_DIGITS;
-                            else
-                                appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_INCLUDE_DIGITS;
-                            updatePassword();
-                        }
+                       }
                     }
                     CheckBox {
                         id: includeSpecials
-                        text: "@%)"
+                        text: qsTr("Special Symbols (@#$...)", "An option/checkbox which can be On or Off. Do not translate the brackets content.")
                         checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_SPECIALS
                         onCheckedChanged: {
                             if (checked)
@@ -187,35 +193,32 @@ Sheet {
                             updatePassword();
                         }
                     }
-                }
-                Divider{}
-                Label {
-                    text: qsTr("Password Length: %1", "Text showing current password length. %1 will be replaced by a number")
-                                .arg(Math.round(passwordLength.immediateValue))
-                }
-                Slider {
-                    id: passwordLength
-                    fromValue: 8.0
-                    toValue: 50.0
-                    value: appSettings.pwGenLength
-                    onValueChanged: {
-                        appSettings.pwGenLength = Math.round(value);
-                        updatePassword();
+                    CheckBox {
+                        id: includeDigits
+                        text: qsTr("Digits (123...)", "An option/checkbox which can be On or Off. Do not translate the brackets content.")
+                        checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_INCLUDE_DIGITS
+                        onCheckedChanged: {
+                            if (checked)
+                                appSettings.pwGenFlags |= PasswordGenerator.PWGEN_INCLUDE_DIGITS;
+                            else
+                                appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_INCLUDE_DIGITS;
+                            updatePassword();
+                        }
                     }
-                }
-                Divider {
-                    bottomMargin: 20
-                }
-                CheckBox {
-                    id: excludeSimilar
-                    text: qsTr("Avoid similar characters (I,l,1,O,0)", "An option/checkbox which excludes visually similar symbols from the generated password. Symbols inside the brackets should not be translated.")
-                    checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
-                    onCheckedChanged: {
-                        if (checked)
-                            appSettings.pwGenFlags |= PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
-                        else
-                            appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
-                        updatePassword();
+                    Header {
+                        title: qsTr("Exclude Characters", "Title of a group with on/off options which define which characters CANNOT be used in generated passwords.")
+                    }
+                    CheckBox {
+                        id: excludeSimilar
+                        text: qsTr("Similar Characters (I,l,1,O,0)", "An option/checkbox which excludes visually similar symbols from the generated password. Symbols inside the brackets should not be translated.")
+                        checked: appSettings.pwGenFlags & PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
+                        onCheckedChanged: {
+                            if (checked)
+                                appSettings.pwGenFlags |= PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
+                            else
+                                appSettings.pwGenFlags &= ~PasswordGenerator.PWGEN_EXCLUDE_SIMILAR;
+                            updatePassword();
+                        }
                     }
                 }
             }
