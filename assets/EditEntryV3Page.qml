@@ -5,11 +5,13 @@ import "common.js" as Common
 
 Sheet {
     id: entryEditSheet
-//    property PwEntryV3 entry -- used from the caller 
+//    property PwEntryV3 entry -- used from the caller
+    property int iconId: entry.iconId 
 
     // Checks if the user edited any of the fields
     function isModified() {
-        return (entry.title != titleField.text) ||
+        return (entry.iconId != iconId) || 
+                (entry.title != titleField.text) ||
                 (entry.userName != usernameField.text) ||
                 (entry.password != passwordField.text) ||
                 (entry.url != urlField.text) ||
@@ -19,6 +21,7 @@ Sheet {
     function saveChanges() {
         app.restartWatchdog();
         
+        entry.iconId = iconId
         entry.title = titleField.text;
         entry.userName = usernameField.text;
         entry.password = passwordField.text;
@@ -30,7 +33,9 @@ Sheet {
     function updatePassword(newPwd) {
         passwordField.text = newPwd; 
     }
-    
+    function updateIconId(newIconId) {
+        iconId = newIconId;
+    }
     onCreationCompleted: {
         database.dbLocked.connect(function() {
                 // close without saving when DB is being locked
@@ -71,13 +76,36 @@ Sheet {
                 onTouchCapture: {
                     app.restartWatchdog();
                 }
-            
+
                 Label {
                     text: qsTr("Title", "Label of the entry title edit field") + Retranslate.onLocaleOrLanguageChanged
                 }
                 MonoTextField {
                     id: titleField
                     text: entry.title
+                }
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    ImageView {
+                        imageSource: "asset:///pwicons-dark/" + iconId + ".png"
+                        horizontalAlignment: HorizontalAlignment.Left
+                        verticalAlignment: VerticalAlignment.Fill
+                    }
+                    Button {
+                        text: qsTr("Change Icon", "A button/action to change entry's icon")
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        verticalAlignment: VerticalAlignment.Center
+                        layoutProperties: StackLayoutProperties {
+                            spaceQuota: 1.0
+                        }
+                        onClicked: {
+                            var iconPickerSheet = iconPickerSheetComponent.createObject(this);
+                            iconPickerSheet.iconPicked.connect(updateIconId);
+                            iconPickerSheet.open();
+                        }
+                    }
                 }
                 Divider{}
                 Label {
@@ -152,6 +180,10 @@ Sheet {
         ComponentDefinition {
             id: passwordGeneratorSheetComponent
             source: "asset:///PasswordGeneratorPage.qml"
+        },
+        ComponentDefinition {
+            id: iconPickerSheetComponent
+            source: "asset:///IconPickerPage.qml"
         }
     ]
 }
