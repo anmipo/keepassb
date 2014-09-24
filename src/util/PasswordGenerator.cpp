@@ -36,15 +36,15 @@ PasswordGenerator::PasswordGenerator(QObject* parent) : QObject(parent) {
  */
 QString PasswordGenerator::makeCustomPassword(const int length, const int flags) const {
     QString charset;
-    if (flags & Settings::PWGEN_INCLUDE_LOWER)
+    if (flags & PWGEN_INCLUDE_LOWER)
         charset += CHAR_SET_LOWER;
-    if (flags & Settings::PWGEN_INCLUDE_UPPER)
+    if (flags & PWGEN_INCLUDE_UPPER)
         charset += CHAR_SET_UPPER;
-    if (flags & Settings::PWGEN_INCLUDE_DIGITS)
+    if (flags & PWGEN_INCLUDE_DIGITS)
         charset += CHAR_SET_DIGITS;
-    if (flags & Settings::PWGEN_INCLUDE_SPECIALS)
+    if (flags & PWGEN_INCLUDE_SPECIALS)
         charset += CHAR_SET_SPECIAL;
-    if (flags & Settings::PWGEN_EXCLUDE_SIMILAR) {
+    if (flags & PWGEN_EXCLUDE_SIMILAR) {
         for (int i = 0; i < CHAR_SET_LOOKALIKE.length(); i++) {
             charset.remove(CHAR_SET_LOOKALIKE.at(i), Qt::CaseSensitive);
         }

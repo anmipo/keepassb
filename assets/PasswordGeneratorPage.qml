@@ -8,6 +8,8 @@ import org.keepassb 1.0
  */
 Sheet {
     property string password: "password_template"
+    // emitted when the user taps OK
+    signal newPasswordReady(string pwd)
     
     function updatePassword() {
         var preset = presetDropDown.selectedOption;
@@ -48,7 +50,8 @@ Sheet {
             acceptAction: ActionItem {
                 title: qsTr("OK", "A button/action")
                 onTriggered: {
-                    //TODO implement this
+                    newPasswordReady(password);
+                    close();
                 }
             }
         }
@@ -135,7 +138,7 @@ Sheet {
                 scrollRole: ScrollRole.Main
                 Container {
                     id: customPreset
-                    visible: true //presetDropDown.selectedOption == presetCustom
+                    visible: presetDropDown.selectedOption == presetCustom
                     topPadding: 0
                     Label {
                         text: qsTr("Password Length: <b>%1</b>", "Text showing current password length. %1 will be replaced by a number")

@@ -25,6 +25,10 @@ Sheet {
         database.save();
     }
 
+    function updatePassword(newPwd) {
+        passwordField.text = newPwd; 
+    }
+    
     Page {
         titleBar: TitleBar {
             title: qsTr("Edit Entry", "Title of a dialog box") + Retranslate.onLocaleOrLanguageChanged
@@ -88,6 +92,7 @@ Sheet {
                         horizontalAlignment: HorizontalAlignment.Right
                         onClicked: {
                             var generatorSheet = passwordGeneratorSheetComponent.createObject(this);
+                            generatorSheet.newPasswordReady.connect(updatePassword);
                             generatorSheet.open();
                         }
                     }
