@@ -7,6 +7,7 @@ import org.keepassb 1.0
  * look-alike
  */
 Sheet {
+    id: pwGenSheet
     property string password: "password_template"
     // emitted when the user taps OK
     signal newPasswordReady(string pwd)
@@ -35,15 +36,23 @@ Sheet {
         app.restartWatchdog();
     }
     
+    onCreationCompleted: {
+        database.dbLocked.connect(function() {
+                // close without saving when DB is being locked
+                pwGenSheet.close();
+            });
+        updatePassword();
+    }
+    onClosed: {
+        app.restartWatchdog();
+    }
     Page {
-        onCreationCompleted: {
-            updatePassword();
-        }
         titleBar: TitleBar {
             title: qsTr("Password Generator", "Title of a page which helps the user to create random passwords")
             dismissAction: ActionItem {
                 title: qsTr("Cancel", "A button/action")
                 onTriggered: {
+                    app.restartWatchdog();
                     close();
                 }
             }
@@ -51,6 +60,7 @@ Sheet {
                 title: qsTr("OK", "A button/action")
                 onTriggered: {
                     newPasswordReady(password);
+                    app.restartWatchdog();
                     close();
                 }
             }

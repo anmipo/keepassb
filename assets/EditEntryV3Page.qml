@@ -17,6 +17,8 @@ Sheet {
     }
 
     function saveChanges() {
+        app.restartWatchdog();
+        
         entry.title = titleField.text;
         entry.userName = usernameField.text;
         entry.password = passwordField.text;
@@ -29,6 +31,15 @@ Sheet {
         passwordField.text = newPwd; 
     }
     
+    onCreationCompleted: {
+        database.dbLocked.connect(function() {
+                // close without saving when DB is being locked
+                entryEditSheet.close();
+            });
+    }
+    onClosed: {
+        app.restartWatchdog();
+    }
     Page {
         titleBar: TitleBar {
             title: qsTr("Edit Entry", "Title of a dialog box") + Retranslate.onLocaleOrLanguageChanged
@@ -42,6 +53,7 @@ Sheet {
             dismissAction: ActionItem {
                 title: qsTr("Cancel", "A button/action to dismiss current dialog") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
+                    app.restartWatchdog();
                     if (isModified()) {
                         dismissChangesDialog.show();
                     } else {
@@ -56,6 +68,9 @@ Sheet {
                 leftPadding: 10
                 rightPadding: 10
                 bottomPadding: 10
+                onTouchCapture: {
+                    app.restartWatchdog();
+                }
             
                 Label {
                     text: qsTr("Title", "Label of the entry title edit field") + Retranslate.onLocaleOrLanguageChanged
