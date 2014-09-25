@@ -151,11 +151,11 @@ Page {
             ListView {
                 id: groupList
                 
-                property PwGroup selectedGroup
-                function showRenameGroupDialog(group) {
-                    selectedGroup = group;
-                    renameGroupDialog.inputField.defaultText = group.name
-                    renameGroupDialog.show();
+                function showEditGroupDialog(selGroup) {
+                    var editGroupPageComponent = Qt.createComponent("EditGroupPage.qml");
+                    var editGroupSheet = editGroupPageComponent.createObject(this, {"group": selGroup});
+                    editGroupSheet.open();
+                    editGroupSheet.autoFocus();
                 }
                 
                 objectName: "groupList"
@@ -250,10 +250,10 @@ Page {
                             contextActions: ActionSet {
                                 title: ListItemData.name
                                 ActionItem {
-                                    title: qsTr("Rename Group", "A button/action which shows a dialog to rename the selected group") + Retranslate.onLocaleOrLanguageChanged
+                                    title: qsTr("Edit Group", "A button/action to edit the selected group") + Retranslate.onLocaleOrLanguageChanged
                                     imageSource: "asset:///images/ic_rename.png"
                                     onTriggered: {
-                                        groupListGroupItem.ListItem.view.showRenameGroupDialog(ListItemData);
+                                        groupListGroupItem.ListItem.view.showEditGroupDialog(ListItemData);
                                     }
                                 }
                             }
@@ -293,16 +293,13 @@ Page {
             ComponentDefinition {
                 source: "ViewEntryV4Page.qml"
             },
-            SystemPrompt {
-                id: renameGroupDialog
-                title: qsTr("Rename Group", "Title of a dialog to rename a group") + Retranslate.onLocaleOrLanguageChanged
-                onFinished: {
-                    var newName = inputFieldTextEntry();
-                    if ((value == SystemUiResult.ConfirmButtonSelection) && (newName.length > 0)){
-                        groupList.selectedGroup.name = newName;
-                        database.save();
-                    }
-                }
+            ComponentDefinition {
+                id: editEntryPageComponent
+                source: "EditEntryV3Page.qml"
+//            },
+//            ComponentDefinition {
+//                id: editGroupPageComponent
+//                source: "EditGroupPage.qml"
             }
         ]
     }
