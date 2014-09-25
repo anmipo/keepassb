@@ -23,6 +23,10 @@ Sheet {
             }
         }
         Container {
+            topPadding: 10
+            leftPadding: 10
+            rightPadding: 10
+            bottomPadding: 10
             onTouchCapture: {
                 app.restartWatchdog();
             }
