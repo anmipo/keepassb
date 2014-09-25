@@ -27,6 +27,8 @@ Sheet {
         entry.password = passwordField.text;
         entry.url = urlField.text;
         entry.notes = notesField.text;
+        entry.renewTimestamps();
+        
         database.save();
     }
 

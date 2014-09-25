@@ -28,6 +28,7 @@ Sheet {
         app.restartWatchdog();
         group.iconId = iconId
         group.name = nameField.text;
+        group.renewTimestamps();
         database.save();
     }
     

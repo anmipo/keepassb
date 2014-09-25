@@ -74,6 +74,9 @@ public:
 	QList<PwEntry*> getEntries() const { return _entries; }
     Q_INVOKABLE bool isEmpty() const { return immediateChildCount() == 0;};
 
+    /** Updates modification and last access timestamps to current time */
+    Q_INVOKABLE void renewTimestamps();
+
     /**
      * Finds entries which contain the query substring, and adds them to the result.
      */

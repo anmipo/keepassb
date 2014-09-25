@@ -180,6 +180,13 @@ QString PwGroup::toString() const {
     return "PwGroup[" + _name + "]";
 }
 
+/** Updates modification and last access timestamps to current time */
+void PwGroup::renewTimestamps() {
+    QDateTime now = QDateTime::currentDateTime();
+    setLastAccessTime(now);
+    setLastModificationTime(now);
+}
+
 void PwGroup::setUuid(const PwUuid& uuid) {
     if (uuid != _uuid) {
         _uuid = uuid;

@@ -146,6 +146,13 @@ bool PwEntry::matchesQuery(const QString& query) const {
     return false;
 }
 
+/** Updates modification and last access timestamps to current time */
+void PwEntry::renewTimestamps() {
+    QDateTime now = QDateTime::currentDateTime();
+    setLastAccessTime(now);
+    setLastModificationTime(now);
+}
+
 void PwEntry::setUuid(const PwUuid& uuid) {
     if (uuid != _uuid) {
         _uuid = uuid;

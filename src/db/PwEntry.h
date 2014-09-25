@@ -98,6 +98,9 @@ public:
 	virtual void addAttachment(PwAttachment* attachment);
     Q_INVOKABLE bb::cascades::DataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 
+    /** Updates modification and last access timestamps to current time */
+    Q_INVOKABLE void renewTimestamps();
+
 	// property getters/setters
 	PwUuid getUuid() const { return _uuid; }
 	void setUuid(const PwUuid& uuid);
