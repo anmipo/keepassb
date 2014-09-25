@@ -42,6 +42,9 @@ Sheet {
                 entryEditSheet.close();
             });
     }
+    onClosed: {
+        destroy();
+    }
     Page {
         titleBar: TitleBar {
             title: qsTr("Edit Entry", "Title of a dialog box") + Retranslate.onLocaleOrLanguageChanged

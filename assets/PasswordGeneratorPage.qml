@@ -44,7 +44,7 @@ Sheet {
         updatePassword();
     }
     onClosed: {
-        app.restartWatchdog();
+        destroy();
     }
     Page {
         titleBar: TitleBar {
