@@ -42,9 +42,6 @@ Sheet {
                 entryEditSheet.close();
             });
     }
-    onClosed: {
-        app.restartWatchdog();
-    }
     Page {
         titleBar: TitleBar {
             title: qsTr("Edit Entry", "Title of a dialog box") + Retranslate.onLocaleOrLanguageChanged
@@ -70,6 +67,7 @@ Sheet {
         ScrollView {
             scrollRole: ScrollRole.Main
             Container {
+                topPadding: 10
                 leftPadding: 10
                 rightPadding: 10
                 bottomPadding: 10
@@ -170,7 +168,7 @@ Sheet {
             title: qsTr("Discard Changes", "Title of a dialog asking whether the user wants to discard unsaved changes.") + Retranslate.onLocaleOrLanguageChanged
             body: qsTr("There are unsaved changes.", "A notification when the user closes an editor with unsaved changes.") + Retranslate.onLocaleOrLanguageChanged
             cancelButton.label: qsTr("Discard", "A button/action to ignore and discard any unsaved changes made by the user.") + Retranslate.onLocaleOrLanguageChanged
-            confirmButton.label: qsTr("Edit", "A button/action to return to entry edit mode") + Retranslate.onLocaleOrLanguageChanged
+            confirmButton.label: qsTr("Edit", "A button/action to return to edit mode") + Retranslate.onLocaleOrLanguageChanged
             onFinished: {
                 if (value == SystemUiResult.CancelButtonSelection) {
                     entryEditSheet.close();
