@@ -10,6 +10,7 @@ import org.keepassb 1.0
 import "common.js" as Common
 
 Page {
+    id: viewEntryPage
     property PwEntryV3 entry
     property string currentView
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
@@ -27,12 +28,9 @@ Page {
                 }
             ]
             onTriggered: {
-                if (!editEntryPageComponent.hasErrors()) { 
-                    var editEntryPage = editEntryPageComponent.createObject(this);
-                    editEntryPage.open();
-                } else {
-                    console.log("Error loading editEntryPageComponent: " + editEntryPageComponent.errorMessage());
-                }
+                var editEntryPageComponent = Qt.createComponent("EditEntryV3Page.qml");
+                var editEntryPage = editEntryPageComponent.createObject(viewEntryPage, {"entry": entry});
+                editEntryPage.open();
             }
         }
     ]   
@@ -108,10 +106,6 @@ Page {
         },
         ViewEntryHistoryTab {
             id: viewEntryHistoryTab
-        },
-        ComponentDefinition {
-            id: editEntryPageComponent
-            source: "asset:///EditEntryV3Page.qml"
         }
     ]
 }

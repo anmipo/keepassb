@@ -1,11 +1,10 @@
 import bb.cascades 1.2
 import bb.system 1.2
 import org.keepassb 1.0
-import "common.js" as Common
 
 Sheet {
     id: entryEditSheet
-//    property PwEntryV3 entry -- used from the caller
+    property PwEntryV3 entry
     property int iconId: entry.iconId 
 
     // Checks if the user edited any of the fields
@@ -21,7 +20,7 @@ Sheet {
     function saveChanges() {
         app.restartWatchdog();
         
-        entry.iconId = iconId
+        entry.iconId = iconId;
         entry.title = titleField.text;
         entry.userName = usernameField.text;
         entry.password = passwordField.text;
