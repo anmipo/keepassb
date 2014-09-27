@@ -1,11 +1,10 @@
+/*
+ * Copyright (c) 2014 Andrei Popleteev
+ */
+
 import bb.cascades 1.2
 import org.keepassb 1.0
 
-/*
- * Length: 8 to 16
- * Uppser case, lower-case, digits, minus, underline, space, specials, brackets
- * look-alike
- */
 Sheet {
     id: pwGenSheet
     property string password: "password_template"
@@ -19,13 +18,13 @@ Sheet {
         if (preset == presetCustom) {
             newPassword = pwGen.makeCustomPassword(appSettings.pwGenLength, appSettings.pwGenFlags);
         } else if (preset == preset40Hex) {
-            newPassword = app.getPasswordGenerator().makeHexPassword(40 / 8);
+            newPassword = pwGen.makeHexPassword(40 / 8);
         } else if (preset == preset128Hex) {
-            newPassword = app.getPasswordGenerator().makeHexPassword(128 / 8);
+            newPassword = pwGen.makeHexPassword(128 / 8);
         } else if (preset == preset256Hex) {
-            newPassword = app.getPasswordGenerator().makeHexPassword(256 / 8);
+            newPassword = pwGen.makeHexPassword(256 / 8);
         } else if (preset == presetMacAddress) {
-            newPassword = app.getPasswordGenerator().makeMacAddress();
+            newPassword = pwGen.makeMacAddress();
         } else {
             newPassword = pwGen.makeCustomPassword(20, // password length
                 PasswordGenerator.PWGEN_INCLUDE_LOWER | PasswordGenerator.PWGEN_INCLUDE_UPPER | 
@@ -89,10 +88,8 @@ Sheet {
                 textStyle.textAlign: TextAlign.Center
                 horizontalAlignment: HorizontalAlignment.Fill
                 verticalAlignment: VerticalAlignment.Fill
-                textStyle.base: SystemDefaults.TextStyles.BodyText
+                textStyle.base: SystemDefaults.TextStyles.PrimaryText
                 textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
-                textFit.mode: LabelTextFitMode.FitToBounds
-                textFit.minFontSizeValue: 5
                 textFormat: TextFormat.Plain
             }
             Divider{}
