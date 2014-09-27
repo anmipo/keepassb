@@ -251,7 +251,7 @@ Page {
                                 title: ListItemData.name
                                 ActionItem {
                                     title: qsTr("Edit Group", "A button/action to edit the selected group") + Retranslate.onLocaleOrLanguageChanged
-                                    imageSource: "asset:///images/ic_rename.png"
+                                    imageSource: "asset:///images/ic_edit_group.png"
                                     onTriggered: {
                                         groupListGroupItem.ListItem.view.showEditGroupDialog(ListItemData);
                                     }
@@ -292,15 +292,7 @@ Page {
             },
             ComponentDefinition {
                 source: "ViewEntryV4Page.qml"
-            },
-            ComponentDefinition {
-                id: editEntryPageComponent
-                source: "EditEntryV3Page.qml"
-//            },
-//            ComponentDefinition {
-//                id: editGroupPageComponent
-//                source: "EditGroupPage.qml"
-            }
+            }        
         ]
     }
 }
