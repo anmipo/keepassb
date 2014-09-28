@@ -20,6 +20,7 @@ Page {
             id: editEntryAction
             title: qsTr("Edit", "A button/action to edit an entry")
             imageSource: "asset:///images/ic_edit.png"
+            enabled: database.isEditable()
             ActionBar.placement: ActionBarPlacement.OnBar
             shortcuts: [
                 SystemShortcut {

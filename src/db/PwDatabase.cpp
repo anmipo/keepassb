@@ -25,6 +25,9 @@ const QString XML_DATA = "Data";
 // String added to temporary DB file name when saving
 const QString TMP_SAVE_FILE_NAME_SUFFIX = ".tmp";
 
+const QString DEMO_DATABASE_FILE_PATH = "app/native/assets/demo.kdbx";
+
+
 PwDatabase::PwDatabase(QObject* parent) : QObject(parent), _dbFilePath("") {
 	_rootGroup = NULL;
 }
@@ -181,6 +184,24 @@ void PwDatabaseFacade::clear() {
         delete db;
         db = NULL;
     }
+}
+
+/**
+  * Indicates whether the DB can be edited/saved.
+  */
+bool PwDatabaseFacade::isEditable() const {
+    return (!isDemoDatabase()) && (getFormatVersion() == 3);
+}
+
+bool PwDatabaseFacade::isDemoDatabase() const {
+    return (db) && (db->getDatabaseFilePath() == DEMO_DATABASE_FILE_PATH);
+}
+
+/**
+ * Returns true when the parameter is the DB root group; false otherwise.
+ */
+bool PwDatabaseFacade::isRoot(PwGroup* group) const {
+    return (group) && (group == getRootGroup());
 }
 
 void PwDatabaseFacade::onDbLocked() {

@@ -5,6 +5,7 @@ import org.keepassb 1.0
 Sheet {
     id: entryEditSheet
     property PwEntryV3 entry
+    property bool creationMode: false
     property int iconId: entry.iconId 
 
     // Checks if the user edited any of the fields
@@ -38,9 +39,9 @@ Sheet {
         iconId = newIconId;
     }
     onCreationCompleted: {
+        // close without saving when DB is being locked
         database.dbLocked.connect(function() {
-                // close without saving when DB is being locked
-                entryEditSheet.close();
+                close()
             });
     }
     onClosed: {

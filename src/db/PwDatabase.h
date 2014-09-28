@@ -159,7 +159,25 @@ public:
 
     // Property getters/setters
     bool isLocked() const { return _locked; }
+
+    /**
+     * Returns true if the current DB is a demo DB from app assets.
+     * Returns false otherwise (real DB opened or there is no opened DB).
+     */
+    Q_INVOKABLE bool isDemoDatabase() const;
+
+    /**
+     * Indicates whether the DB can be edited/saved.
+     */
+    Q_INVOKABLE bool isEditable() const;
+
+    /**
+     * Returns true when the parameter is the DB root group; false otherwise.
+     */
+    Q_INVOKABLE bool isRoot(PwGroup* group) const;
+
     PwGroup* getRootGroup() const { return (db ? db->getRootGroup() : NULL); }
+
     PwSearchResultDataModel* getSearchResult() { return &_searchResultDataModel; }
 public slots:
     /**

@@ -55,6 +55,18 @@ Page {
         searchField.searchQuery = searchField.text;
         searchField.text = "";
     }
+    function canCreateEntryHere() {
+        return (database.isEditable() && !database.isRoot(group)); 
+    }
+    function canCreateGroupHere() {
+        return (database.isEditable() && !database.isRoot(group)); 
+    }
+    function createEntry() {
+        //TODO implement this
+    }
+    function createGroupt() {
+        //TODO implement this
+    }
     
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Default
     actions: [
@@ -69,6 +81,20 @@ Page {
                     onTriggered: startSearch()
                 }
             ]
+        },
+        ActionItem {
+            title: qsTr("Create Entry", "A button/action to create a new entry") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_add_entry.png"
+            enabled: canCreateEntryHere()
+            ActionBar.placement: ActionBarPlacement.Default
+            onTriggered: createEntry()
+        },
+        ActionItem {
+            title: qsTr("Create Group", "A button/action to create a new group") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_add_group.png"
+            enabled: canCreateGroupHere()
+            ActionBar.placement: ActionBarPlacement.Default
+            onTriggered: createGroup()
         }
     ]
     
@@ -171,7 +197,7 @@ Page {
                         var subGroupPage = viewSubGroupPage.createObject(null, {"group": item});
                         naviPane.push(subGroupPage);
                     } else if (itemType == "entry") {
-                        var formatVersion = Qt.database.getFormatVersion();
+                        var formatVersion = database.getFormatVersion();
                         var viewEntryPage;
                         if (formatVersion == 3) {
                             viewEntryPage = Qt.createComponent("ViewEntryV3Page.qml");
@@ -252,6 +278,7 @@ Page {
                                 ActionItem {
                                     title: qsTr("Edit Group", "A button/action to edit the selected group") + Retranslate.onLocaleOrLanguageChanged
                                     imageSource: "asset:///images/ic_edit_group.png"
+                                    enabled: Qt.database.isEditable() 
                                     onTriggered: {
                                         groupListGroupItem.ListItem.view.showEditGroupDialog(ListItemData);
                                     }
