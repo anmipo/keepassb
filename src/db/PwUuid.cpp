@@ -6,6 +6,7 @@
  */
 
 #include <PwUuid.h>
+#include <QUuid.h>
 #include "util/Util.h"
 
 const int UUID_SIZE = 16;
@@ -24,6 +25,13 @@ PwUuid::~PwUuid() {
 
 void PwUuid::clear() {
     Util::safeClear(bytes);
+}
+
+/** Generates and returns a new UUID instance. */
+PwUuid PwUuid::create() {
+    // QUuid uses cryptographic-quality RNG when available.
+    QByteArray uuidBytes = QUuid::createUuid().toRfc4122();
+    return PwUuid(uuidBytes);
 }
 
 PwUuid PwUuid::fromBase64(const QString& base64) {

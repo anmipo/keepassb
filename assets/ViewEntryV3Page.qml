@@ -32,6 +32,7 @@ Page {
                 var editEntryPageComponent = Qt.createComponent("EditEntryV3Page.qml");
                 var editEntryPage = editEntryPageComponent.createObject(viewEntryPage, {"entry": entry});
                 editEntryPage.open();
+                editEntryPage.autofocus();
             }
         }
     ]   

@@ -21,6 +21,9 @@ public:
     void clear();
     QByteArray toByteArray() const { return bytes; }
 
+    /** Generates and returns a new UUID instance. */
+    static PwUuid create();
+
     // returns a new instance of PwUuid with the ID specified by a Base64 string
     static PwUuid fromBase64(const QString& base64);
 

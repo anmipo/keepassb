@@ -31,7 +31,9 @@ Sheet {
         
         database.save();
     }
-
+    function autofocus() {
+        titleField.requestFocus();
+    }
     function updatePassword(newPwd) {
         passwordField.text = newPwd; 
     }
@@ -64,6 +66,8 @@ Sheet {
                     if (isModified()) {
                         dismissChangesDialog.show();
                     } else {
+                        if (creationMode)
+                            entry.deleteWithoutBackup();
                         entryEditSheet.close();
                     }
                 }
@@ -86,6 +90,7 @@ Sheet {
                 MonoTextField {
                     id: titleField
                     text: entry.title
+                    input.flags: TextInputFlag.SpellCheck
                 }
                 Container {
                     layout: StackLayout {
@@ -150,6 +155,7 @@ Sheet {
                 MonoTextField {
                     id: urlField
                     text: entry.url
+                    input.flags: TextInputFlag.SpellCheckOff | TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff
                 }
                 Divider{}
                 Label {

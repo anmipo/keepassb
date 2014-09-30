@@ -15,6 +15,11 @@ class PwGroupV4: public PwGroup {
 public:
     PwGroupV4(QObject* parent=0);
     virtual ~PwGroupV4();
+
+    /**
+     * Creates an entry in the group and returns a reference to it.
+     */
+    virtual PwEntry* createEntry();
 };
 
 Q_DECLARE_METATYPE(PwGroupV4*);

@@ -28,8 +28,7 @@ PwGroup::PwGroup(QObject* parent) :
 	_deleted = false;
 	_parentGroup = NULL;
 
-	bool res = QObject::connect(Settings::instance(), SIGNAL(alphaSortingChanged(bool)), this, SLOT(sortChildren()));
-	Q_ASSERT(res);
+	bool res = QObject::connect(Settings::instance(), SIGNAL(alphaSortingChanged(bool)), this, SLOT(sortChildren())); Q_ASSERT(res);
 }
 
 PwGroup::~PwGroup() {
@@ -42,11 +41,12 @@ void PwGroup::clear() {
     Util::safeClear(_name);
     Util::safeClear(_notes);
     sortedGroups.clear();
-	qDeleteAll(_subGroups);
+    qDeleteAll(_subGroups);
 	_subGroups.clear();
 	sortedEntries.clear();
 	qDeleteAll(_entries);
 	_entries.clear();
+	emit childCountChanged(0);
     _creationTime.setMSecsSinceEpoch(0L);
     _lastModificationTime.setMSecsSinceEpoch(0L);
     _lastAccessTime.setMSecsSinceEpoch(0L);
@@ -64,6 +64,7 @@ void PwGroup::addSubGroup(PwGroup* subGroup) {
 	}
 	subGroup->setParentGroup(this);
 	_subGroups.append(subGroup);
+	emit childCountChanged(immediateChildCount());
 	_isChildrenModified = true;
 }
 
@@ -75,6 +76,7 @@ void PwGroup::addEntry(PwEntry* entry) {
     }
     entry->setParentGroup(this);
 	_entries.append(entry);
+	emit childCountChanged(immediateChildCount());
 	_isChildrenModified = true;
 }
 

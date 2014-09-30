@@ -74,6 +74,11 @@ public:
 	QList<PwEntry*> getEntries() const { return _entries; }
     Q_INVOKABLE bool isEmpty() const { return immediateChildCount() == 0;};
 
+    /**
+     * Creates an entry in the group and returns a reference to it.
+     */
+    Q_INVOKABLE virtual PwEntry* createEntry() = 0;
+
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();
 

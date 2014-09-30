@@ -8,6 +8,7 @@ import org.keepassb 1.0
 import "common.js" as Common
 
 Page {
+    id: viewGroupPage
     property PwGroup group
     property bool autofocus: false
     
@@ -62,7 +63,11 @@ Page {
         return (database.isEditable() && !database.isRoot(group)); 
     }
     function createEntry() {
-        //TODO implement this
+        var newEntry = group.createEntry(); // add an entry to the current group
+        var editEntryPageComponent = Qt.createComponent("EditEntryV3Page.qml");
+        var editEntryPage = editEntryPageComponent.createObject(viewGroupPage, {"entry": newEntry, "creationMode": true});
+        editEntryPage.open();
+        editEntryPage.autofocus();
     }
     function createGroupt() {
         //TODO implement this

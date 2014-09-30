@@ -37,6 +37,11 @@ public:
     virtual ~PwGroupV3();
 
     /**
+     * Creates an entry in the group and returns a reference to it.
+     */
+    virtual PwEntry* createEntry();
+
+    /**
      * Recursively iterates through all the children groups and entries of this group
      * and adds them to the given lists. The group itself is excluded.
      */
