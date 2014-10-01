@@ -117,7 +117,7 @@ Page {
         if (!group.parentGroup) {
             backButton.imageSource = "asset:///images/ic_lock.png";
             backButton.title = qsTr("Lock", "A button/action which locks/closes the database.");
-        } 
+        }
     }
     
     Container {
@@ -273,7 +273,7 @@ Page {
                                     } 
                                 }
                                 Label {
-                                    text: "(" + ListItemData.childCount + ")"
+                                    text: "(" + ListItemData.itemsCount + ")"
                                     horizontalAlignment: HorizontalAlignment.Right
                                     verticalAlignment: VerticalAlignment.Center 
                                 }

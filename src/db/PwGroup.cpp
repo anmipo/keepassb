@@ -11,6 +11,7 @@
 #include <QStringBuilder>
 #include <bb/cascades/ItemGrouping>
 #include <bb/cascades/DataModel>
+#include <bb/cascades/DataModelChangeType>
 #include "util/Settings.h"
 #include "util/Util.h"
 
@@ -29,6 +30,7 @@ PwGroup::PwGroup(QObject* parent) :
 	_parentGroup = NULL;
 
 	bool res = QObject::connect(Settings::instance(), SIGNAL(alphaSortingChanged(bool)), this, SLOT(sortChildren())); Q_ASSERT(res);
+	res = QObject::connect(this, SIGNAL(itemsChanged()), this, SLOT(itemsCountChangedAdapter())); Q_ASSERT(res);
 }
 
 PwGroup::~PwGroup() {
@@ -46,7 +48,7 @@ void PwGroup::clear() {
 	sortedEntries.clear();
 	qDeleteAll(_entries);
 	_entries.clear();
-	emit childCountChanged(0);
+	emit itemsChanged(bb::cascades::DataModelChangeType::Init);
     _creationTime.setMSecsSinceEpoch(0L);
     _lastModificationTime.setMSecsSinceEpoch(0L);
     _lastAccessTime.setMSecsSinceEpoch(0L);
@@ -64,7 +66,7 @@ void PwGroup::addSubGroup(PwGroup* subGroup) {
 	}
 	subGroup->setParentGroup(this);
 	_subGroups.append(subGroup);
-	emit childCountChanged(immediateChildCount());
+	emit itemsChanged(bb::cascades::DataModelChangeType::Init);
 	_isChildrenModified = true;
 }
 
@@ -76,7 +78,7 @@ void PwGroup::addEntry(PwEntry* entry) {
     }
     entry->setParentGroup(this);
 	_entries.append(entry);
-	emit childCountChanged(immediateChildCount());
+	emit itemsChanged(bb::cascades::DataModelChangeType::Init);
 	_isChildrenModified = true;
 }
 
@@ -187,6 +189,11 @@ void PwGroup::renewTimestamps() {
     QDateTime now = QDateTime::currentDateTime();
     setLastAccessTime(now);
     setLastModificationTime(now);
+}
+
+// matches signatures of the itemsChanged() signal with the itemsCountChanged()
+void PwGroup::itemsCountChangedAdapter() {
+    emit itemsCountChanged(immediateChildCount());
 }
 
 void PwGroup::setUuid(const PwUuid& uuid) {

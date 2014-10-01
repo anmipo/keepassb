@@ -57,6 +57,8 @@ Sheet {
                 onTriggered: {
                     saveChanges();
                     entryEditSheet.close();
+                    // force ListView refresh
+                    entry.parentGroup.itemsChanged(DataModelChangeType.Update, null);
                 } 
             }
             dismissAction: ActionItem {

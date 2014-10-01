@@ -30,7 +30,7 @@ class PwGroup : public bb::cascades::DataModel {
 	Q_PROPERTY(int iconId READ getIconId WRITE setIconId NOTIFY iconIdChanged)
 	Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
 	Q_PROPERTY(QString notes READ getNotes WRITE setNotes NOTIFY notesChanged)
-	Q_PROPERTY(int childCount READ immediateChildCount NOTIFY childCountChanged)
+	Q_PROPERTY(int itemsCount READ immediateChildCount NOTIFY itemsCountChanged)
     Q_PROPERTY(QDateTime creationTime READ getCreationTime WRITE setCreationTime NOTIFY creationTimeChanged)
     Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
     Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
@@ -56,6 +56,9 @@ private:
 	QList<PwEntry*> _entries, sortedEntries;
 	PwGroup* _parentGroup;
 
+private slots:
+	// Relays itemsChanged to itemsCountChanged; needed to match signatures of the two signals.
+	void itemsCountChangedAdapter();
 protected slots:
 	/**
 	 * Sorts subgroups and entries accoring to the settings
@@ -76,8 +79,10 @@ public:
 
     /**
      * Creates an entry in the group and returns a reference to it.
+     * (This method should actually be pure virtual, but that makes PwGroup abstract and which causes problems in QML.
+     *  So PwGroup's implementation simply returns null; subclasses should return appropriate versions of entry instances.)
      */
-    Q_INVOKABLE virtual PwEntry* createEntry() = 0;
+    Q_INVOKABLE virtual PwEntry* createEntry() { return NULL; }
 
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();
@@ -127,7 +132,7 @@ signals:
     void iconIdChanged(int);
     void nameChanged(QString);
     void notesChanged(QString);
-    void childCountChanged(int);
+    void itemsCountChanged(int);
     void creationTimeChanged(QDateTime);
     void lastModificationTimeChanged(QDateTime);
     void lastAccessTimeChanged(QDateTime);
