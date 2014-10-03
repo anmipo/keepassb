@@ -191,7 +191,7 @@ Page {
                 
                 objectName: "groupList"
                 dataModel: group
-                visible: !group.isEmpty()
+                visible: group.itemsCount > 0
                 horizontalAlignment: HorizontalAlignment.Right
                 scrollRole: ScrollRole.Main
                 onTriggered: {
@@ -302,7 +302,7 @@ Page {
         }
         Container {
             layout: StackLayout { }
-            visible: group.isEmpty()
+            visible: group.itemsCount == 0
             horizontalAlignment: HorizontalAlignment.Center
             verticalAlignment: VerticalAlignment.Center
             ImageView {

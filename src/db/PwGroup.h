@@ -78,8 +78,6 @@ public:
 	void removeEntry(PwEntry* entry);
 	QList<PwEntry*> getEntries() const { return _entries; }
 
-    Q_INVOKABLE bool isEmpty() const { return immediateChildCount() == 0;};
-
     /**
      * Creates an entry in the group and returns a reference to it.
      * (This method should actually be pure virtual, but that makes PwGroup abstract and which causes problems in QML.

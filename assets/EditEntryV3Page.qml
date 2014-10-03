@@ -40,10 +40,21 @@ Sheet {
     function updateIconId(newIconId) {
         iconId = newIconId;
     }
+    
+    function dismissAndClose() {
+        if (creationMode) {
+            var parentGroup = entry.parentGroup; 
+            entry.deleteWithoutBackup();
+            parentGroup.itemsChanged(DataModelChangeType.AddRemove, 0);
+        }
+        entryEditSheet.close();
+    }
+    
     onCreationCompleted: {
         // close without saving when DB is being locked
         database.dbLocked.connect(function() {
-                close()
+                //FIXME delete created entry, if needed (but should be before dbLocked)
+                close();
             });
     }
     onClosed: {
@@ -56,9 +67,8 @@ Sheet {
                 title: qsTr("Save", "A button/action to save current item") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
                     saveChanges();
+                    entry.parentGroup.itemsChanged(DataModelChangeType.Init, 0);
                     entryEditSheet.close();
-                    // force ListView refresh
-                    entry.parentGroup.itemsChanged(DataModelChangeType.Init, null);
                 } 
             }
             dismissAction: ActionItem {
@@ -68,14 +78,7 @@ Sheet {
                     if (isModified()) {
                         dismissChangesDialog.show();
                     } else {
-                        if (creationMode) {
-                            //entry.parentGroup is cleared on delete, but we'll need to call refresh
-                            var group = entry.parentGroup;   
-                            entry.deleteWithoutBackup();
-                            // force ListView refresh
-                            group.itemsChanged(DataModelChangeType.Init, null);
-                        }
-                        entryEditSheet.close();
+                        dismissAndClose();
                     }
                 }
             }
@@ -189,7 +192,7 @@ Sheet {
             confirmButton.label: qsTr("Edit", "A button/action to return to edit mode") + Retranslate.onLocaleOrLanguageChanged
             onFinished: {
                 if (value == SystemUiResult.CancelButtonSelection) {
-                    entryEditSheet.close();
+                    dismissAndClose();
                 }
             }
         },
