@@ -66,8 +66,20 @@ void PwGroup::addSubGroup(PwGroup* subGroup) {
 	}
 	subGroup->setParentGroup(this);
 	_subGroups.append(subGroup);
-	emit itemsChanged(bb::cascades::DataModelChangeType::Init);
+	emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
 	_isChildrenModified = true;
+}
+
+void PwGroup::removeSubGroup(PwGroup* subGroup) {
+    Q_ASSERT(subGroup);
+    if (this == subGroup->getParentGroup()) {
+        _subGroups.removeOne(subGroup);
+        subGroup->setParentGroup(NULL);
+        // but this group remains the entry's QObject parent, i.e. responsible for memory cleanup
+
+        emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
+        _isChildrenModified = true;
+    }
 }
 
 void PwGroup::addEntry(PwEntry* entry) {
@@ -78,8 +90,20 @@ void PwGroup::addEntry(PwEntry* entry) {
     }
     entry->setParentGroup(this);
 	_entries.append(entry);
-	emit itemsChanged(bb::cascades::DataModelChangeType::Init);
+	emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
 	_isChildrenModified = true;
+}
+
+void PwGroup::removeEntry(PwEntry* entry) {
+    Q_ASSERT(entry);
+    if (this == entry->getParentGroup()) {
+        _entries.removeOne(entry);
+        entry->setParentGroup(NULL);
+        // but this group remains the entry's QObject parent, i.e. responsible for memory cleanup
+
+        emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
+        _isChildrenModified = true;
+    }
 }
 
 bool PwGroup::lessThan(const PwGroup* g1, const PwGroup* g2) {

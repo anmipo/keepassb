@@ -95,6 +95,9 @@ public:
 
 	virtual void clear();
 
+    /** Removes the entry from the parent group. Does NOT make a copy in Backup/Recycle bin. */
+    Q_INVOKABLE void deleteWithoutBackup();
+
 	virtual void addAttachment(PwAttachment* attachment);
     Q_INVOKABLE bb::cascades::DataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 

@@ -58,7 +58,7 @@ Sheet {
                     saveChanges();
                     entryEditSheet.close();
                     // force ListView refresh
-                    entry.parentGroup.itemsChanged(DataModelChangeType.Update, null);
+                    entry.parentGroup.itemsChanged(DataModelChangeType.Init, null);
                 } 
             }
             dismissAction: ActionItem {
@@ -68,8 +68,13 @@ Sheet {
                     if (isModified()) {
                         dismissChangesDialog.show();
                     } else {
-                        if (creationMode)
+                        if (creationMode) {
+                            //entry.parentGroup is cleared on delete, but we'll need to call refresh
+                            var group = entry.parentGroup;   
                             entry.deleteWithoutBackup();
+                            // force ListView refresh
+                            group.itemsChanged(DataModelChangeType.Init, null);
+                        }
                         entryEditSheet.close();
                     }
                 }

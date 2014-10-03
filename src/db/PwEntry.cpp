@@ -223,3 +223,10 @@ void PwEntry::addAttachment(PwAttachment* attachment) {
         emit attachmentCountChanged(newSize);
     }
 }
+
+/** Removes the entry from the parent group. Does NOT make a copy in Backup/Recycle bin. */
+void PwEntry::deleteWithoutBackup() {
+    if (_parentGroup) {
+        _parentGroup->removeEntry(this);
+    }
+}

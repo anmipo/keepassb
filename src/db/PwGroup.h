@@ -71,10 +71,13 @@ public:
 	virtual void clear();
 
 	void addSubGroup(PwGroup* subGroup);
+	void removeSubGroup(PwGroup* subGroup);
 	QList<PwGroup*> getSubGroups() const { return _subGroups; }
 
 	void addEntry(PwEntry* entry);
+	void removeEntry(PwEntry* entry);
 	QList<PwEntry*> getEntries() const { return _entries; }
+
     Q_INVOKABLE bool isEmpty() const { return immediateChildCount() == 0;};
 
     /**
