@@ -54,7 +54,7 @@ Sheet {
         // close without saving when DB is being locked
         database.dbLocked.connect(function() {
                 //FIXME delete created entry, if needed (but should be before dbLocked)
-                close();
+                entryEditSheet.close();
             });
     }
     onClosed: {

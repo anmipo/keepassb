@@ -15,6 +15,7 @@
 #include "util/Settings.h"
 #include "util/Util.h"
 
+
 PwGroup::PwGroup(QObject* parent) :
         bb::cascades::DataModel(parent), _uuid(),
         _creationTime(), _lastModificationTime(),
@@ -30,7 +31,8 @@ PwGroup::PwGroup(QObject* parent) :
 	_parentGroup = NULL;
 
 	bool res = QObject::connect(Settings::instance(), SIGNAL(alphaSortingChanged(bool)), this, SLOT(sortChildren())); Q_ASSERT(res);
-	res = QObject::connect(this, SIGNAL(itemsChanged()), this, SLOT(itemsCountChangedAdapter())); Q_ASSERT(res);
+	res = QObject::connect(this, SIGNAL(itemsChanged(bb::cascades::DataModelChangeType::Type, QSharedPointer<bb::cascades::DataModel::IndexMapper>)),
+	        this, SLOT(itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type))); Q_ASSERT(res);
 }
 
 PwGroup::~PwGroup() {
@@ -65,6 +67,8 @@ void PwGroup::addSubGroup(PwGroup* subGroup) {
 		subGroup->setParent(this);
 	}
 	subGroup->setParentGroup(this);
+	// re-sort children when subgroup name changed
+	bool res = QObject::connect(subGroup, SIGNAL(nameChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res);
 	_subGroups.append(subGroup);
 	emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
 	_isChildrenModified = true;
@@ -75,6 +79,7 @@ void PwGroup::removeSubGroup(PwGroup* subGroup) {
     if (this == subGroup->getParentGroup()) {
         _subGroups.removeOne(subGroup);
         subGroup->setParentGroup(NULL);
+        bool res = QObject::disconnect(subGroup, SIGNAL(nameChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res);
         // but this group remains the entry's QObject parent, i.e. responsible for memory cleanup
 
         emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
@@ -89,6 +94,9 @@ void PwGroup::addEntry(PwEntry* entry) {
         entry->setParent(this);
     }
     entry->setParentGroup(this);
+    // re-sort children when entry title changed
+    bool res = QObject::connect(entry, SIGNAL(titleChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res);
+
 	_entries.append(entry);
 	emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
 	_isChildrenModified = true;
@@ -99,8 +107,8 @@ void PwGroup::removeEntry(PwEntry* entry) {
     if (this == entry->getParentGroup()) {
         _entries.removeOne(entry);
         entry->setParentGroup(NULL);
+        bool res = QObject::disconnect(entry, SIGNAL(titleChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res);
         // but this group remains the entry's QObject parent, i.e. responsible for memory cleanup
-
         emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
         _isChildrenModified = true;
     }
@@ -117,7 +125,7 @@ void PwGroup::sortChildren() {
         qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::lessThan);
         qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::lessThan);
     }
-    emit itemsChanged(bb::cascades::DataModelChangeType::Update, QSharedPointer<IndexMapper>());
+    emit itemsChanged(bb::cascades::DataModelChangeType::Update);
     _isChildrenModified = false;
 }
 
@@ -216,8 +224,10 @@ void PwGroup::renewTimestamps() {
 }
 
 // matches signatures of the itemsChanged() signal with the itemsCountChanged()
-void PwGroup::itemsCountChangedAdapter() {
-    emit itemsCountChanged(immediateChildCount());
+void PwGroup::itemsCountChangedAdapter(DataModelChangeType::Type changeType) {
+    if (changeType != DataModelChangeType::Update) {
+        emit itemsCountChanged(immediateChildCount());
+    }
 }
 
 void PwGroup::setUuid(const PwUuid& uuid) {

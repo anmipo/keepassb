@@ -16,6 +16,8 @@
 
 class PwEntry;
 
+using namespace bb::cascades;
+
 /**
  * Parameters for search/filtering
  */
@@ -58,10 +60,10 @@ private:
 
 private slots:
 	// Relays itemsChanged to itemsCountChanged; needed to match signatures of the two signals.
-	void itemsCountChangedAdapter();
+	void itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type changeType);
 protected slots:
 	/**
-	 * Sorts subgroups and entries accoring to the settings
+	 * Sorts subgroups and entries according to the settings
 	 */
 	virtual void sortChildren();
 public:
