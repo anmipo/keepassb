@@ -17,7 +17,7 @@
 
 
 PwGroup::PwGroup(QObject* parent) :
-        bb::cascades::DataModel(parent), _uuid(),
+        bb::cascades::DataModel(parent), _database(NULL), _uuid(),
         _creationTime(), _lastModificationTime(),
         _lastAccessTime(), _expiryTime(),
         _subGroups(), sortedGroups(),
@@ -58,6 +58,15 @@ void PwGroup::clear() {
     _isChildrenModified = true;
     _expires = false;
     _deleted = false;
+    _parentGroup = NULL;
+    _database = NULL;
+}
+
+void PwGroup::deleteWithoutBackup() {
+    PwGroup* parentGroup = getParentGroup();
+    if (parentGroup) {
+        parentGroup->removeSubGroup(this);
+    }
 }
 
 void PwGroup::addSubGroup(PwGroup* subGroup) {
@@ -303,5 +312,12 @@ void PwGroup::setParentGroup(PwGroup* parentGroup) {
     if (parentGroup != _parentGroup) {
         _parentGroup = parentGroup;
         emit parentGroupChanged(parentGroup);
+    }
+}
+
+void PwGroup::setDatabase(PwDatabase* database) {
+    if (database != _database) {
+        _database = database;
+        emit databaseChanged(database);
     }
 }

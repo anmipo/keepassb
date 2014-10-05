@@ -336,6 +336,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
     groups.clear();
     for (quint32 iGroup = 0; iGroup < header.getGroupCount(); iGroup++) {
         PwGroupV3* group = new PwGroupV3();
+        group->setDatabase(this);
         if (!group->readFromStream(stream))
             return NOT_ENOUGH_GROUPS;
         groups.append(group);
@@ -380,6 +381,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
 
     // restore group hierarchy
     _rootGroup = new PwGroupV3();
+    _rootGroup->setDatabase(this);
     // give the "virtual" root group some meaningful name
     _rootGroup->setName(getDatabaseFileName());
     PwGroupV3* parentGroup = (PwGroupV3*)_rootGroup;
@@ -475,17 +477,9 @@ bool PwDatabaseV3::save(QByteArray& outData) {
 }
 
 /**
- * Puts groups and entries data into the given array (without encryption).
- * Sets groupCount and entryCount to the number of saved groups/entries.
+ * Returns all the DB groups and entries
  */
-PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int& groupCount, int& entryCount) {
-    QDataStream contentStream(&contentData, QIODevice::WriteOnly);
-    contentStream.setByteOrder(QDataStream::LittleEndian);
-
-    // first prepare the content
-    QList<PwGroupV3*> groups;
-    QList<PwEntryV3*> entries;
-
+void PwDatabaseV3::getAllChildren(QList<PwGroupV3*> &groups, QList<PwEntryV3*> &entries) {
     QList<PwGroup*> rootGroups = dynamic_cast<PwGroupV3*>(getRootGroup())->getSubGroups();
     PwGroupV3* generalGroup = dynamic_cast<PwGroupV3*>(rootGroups.first());
     PwGroupV3* backupGroup;
@@ -501,6 +495,21 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
     if (backupGroup)
         groups.append(backupGroup);
 
+}
+
+/**
+ * Puts groups and entries data into the given array (without encryption).
+ * Sets groupCount and entryCount to the number of saved groups/entries.
+ */
+PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int& groupCount, int& entryCount) {
+    QDataStream contentStream(&contentData, QIODevice::WriteOnly);
+    contentStream.setByteOrder(QDataStream::LittleEndian);
+
+    // first prepare the content
+    QList<PwGroupV3*> groups;
+    QList<PwEntryV3*> entries;
+    getAllChildren(groups, entries);
+
     for (int i = 0; i < groups.size(); i++) {
         groups.at(i)->writeToStream(contentStream);
     }
@@ -512,4 +521,28 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
     groupCount = groups.size();
     entryCount = entries.size();
     return SUCCESS;
+}
+
+/**
+ * Generates a new group ID (guaranteeing it is not being used already)
+ */
+qint32 PwDatabaseV3::createNewGroupId() {
+    QList<PwGroupV3*> groups;
+    QList<PwEntryV3*> entries;
+    getAllChildren(groups, entries);
+
+    qint32 candidateId;
+    bool isUnique = false;
+    while (!isUnique) {
+        candidateId = qrand();
+        for (int i = 0; i < groups.size(); i++)
+            if (candidateId == groups.at(i)->getId()) {
+                continue;
+            }
+        isUnique = true;
+    }
+    groups.clear();
+    entries.clear();
+
+    return candidateId;
 }

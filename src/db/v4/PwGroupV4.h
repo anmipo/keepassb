@@ -20,6 +20,10 @@ public:
      * Creates an entry in the group and returns a reference to it.
      */
     virtual PwEntry* createEntry();
+    /**
+     * Creates a subgroup in the group and returns a reference to it.
+     */
+    virtual PwGroup* createGroup();
 };
 
 Q_DECLARE_METATYPE(PwGroupV4*);

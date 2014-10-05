@@ -7,6 +7,7 @@
 
 #include <PwGroupV4.h>
 #include "db/v4/PwEntryV4.h"
+#include "db/v4/PwDatabaseV4.h"
 
 PwGroupV4::PwGroupV4(QObject* parent) : PwGroup(parent) {
     // nothing to do here
@@ -39,4 +40,28 @@ PwEntry* PwGroupV4::createEntry() {
     newEntry->setParentGroup(this);
     this->addEntry(newEntry);
     return newEntry;
+}
+
+/**
+ * Creates a subgroup in the group and returns a reference to it.
+ */
+PwGroup* PwGroupV4::createGroup() {
+    PwGroupV4* newGroup = new PwGroupV4(this);
+    newGroup->setUuid(PwUuid::create());
+
+    // inherit the icon and recycled status
+    newGroup->setIconId(this->getIconId());
+    newGroup->setDeleted(this->isDeleted());
+
+    // set times
+    newGroup->setCreationTime(QDateTime::currentDateTime());
+    newGroup->setLastAccessTime(QDateTime::currentDateTime());
+    newGroup->setLastModificationTime(QDateTime::currentDateTime());
+    newGroup->setExpiryTime(QDateTime::currentDateTime());
+    newGroup->setExpires(false);
+
+    // set parent group
+    newGroup->setParentGroup(this);
+    this->addSubGroup(newGroup);
+    return newGroup;
 }

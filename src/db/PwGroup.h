@@ -15,6 +15,7 @@
 #include "db/PwUuid.h"
 
 class PwEntry;
+class PwDatabase;
 
 using namespace bb::cascades;
 
@@ -42,6 +43,7 @@ class PwGroup : public bb::cascades::DataModel {
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
 private:
+    PwDatabase* _database;
 	PwUuid _uuid;
 	int _iconId;
 	QString _name;
@@ -72,6 +74,9 @@ public:
 
 	virtual void clear();
 
+    /** Removes the group from the parent group, if any. Does NOT make a copy in Backup/Recycle bin. */
+    Q_INVOKABLE void deleteWithoutBackup();
+
 	void addSubGroup(PwGroup* subGroup);
 	void removeSubGroup(PwGroup* subGroup);
 	QList<PwGroup*> getSubGroups() const { return _subGroups; }
@@ -86,6 +91,12 @@ public:
      *  So PwGroup's implementation simply returns null; subclasses should return appropriate versions of entry instances.)
      */
     Q_INVOKABLE virtual PwEntry* createEntry() { return NULL; }
+    /**
+     * Creates a subgroup in the group and returns a reference to it.
+     * (This method should actually be pure virtual, but that makes PwGroup abstract and which causes problems in QML.
+     *  So PwGroup's implementation simply returns null; subclasses should return appropriate versions of group instances.)
+     */
+    Q_INVOKABLE virtual PwGroup* createGroup() { return NULL; }
 
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();
@@ -125,6 +136,8 @@ public:
     void setDeleted(bool deleted);
     PwGroup* getParentGroup() const { return _parentGroup; }
     void setParentGroup(PwGroup* parentGroup);
+    void setDatabase(PwDatabase* database);
+    PwDatabase* getDatabase() const { return _database; }
 
     /** Returns a string representation of the instance */
     virtual QString toString() const;
@@ -143,6 +156,7 @@ signals:
     void expiresChanged(bool);
     void deletedChanged(bool);
     void parentGroupChanged(PwGroup*);
+    void databaseChanged(PwDatabase*);
 };
 
 Q_DECLARE_METATYPE(PwGroup*);

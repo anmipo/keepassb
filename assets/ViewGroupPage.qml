@@ -69,8 +69,12 @@ Page {
         editEntryPage.open();
         editEntryPage.autofocus();
     }
-    function createGroupt() {
-        //TODO implement this
+    function createGroup() {
+        var newGroup = group.createGroup(); // add a subgroup to the current group
+        var editGroupPageComponent = Qt.createComponent("EditGroupPage.qml");
+        var editGroupPage = editGroupPageComponent.createObject(viewGroupPage, {"group": newGroup, "creationMode": true});
+        editGroupPage.open();
+        editGroupPage.autofocus();
     }
     
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Default
@@ -186,7 +190,7 @@ Page {
                     var editGroupPageComponent = Qt.createComponent("EditGroupPage.qml");
                     var editGroupSheet = editGroupPageComponent.createObject(this, {"group": selGroup});
                     editGroupSheet.open();
-                    editGroupSheet.autoFocus();
+                    editGroupSheet.autofocus();
                 }
                 
                 objectName: "groupList"

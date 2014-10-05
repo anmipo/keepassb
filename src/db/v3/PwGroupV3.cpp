@@ -9,6 +9,7 @@
 #include "util/Util.h"
 #include "db/v3/PwStreamUtilsV3.h"
 #include "db/v3/PwEntryV3.h"
+#include "db/v3/PwDatabaseV3.h"
 
 const QString BACKUP_GROUP_NAME = QString("Backup");
 
@@ -53,6 +54,37 @@ PwEntry* PwGroupV3::createEntry() {
     newEntry->setParentGroup(this);
     this->addEntry(newEntry);
     return newEntry;
+}
+
+/**
+ * Creates a subgroup in the group and returns a reference to it.
+ */
+PwGroup* PwGroupV3::createGroup() {
+    PwGroupV3* newGroup = new PwGroupV3(this);
+    newGroup->setUuid(PwUuid::create());
+
+    newGroup->setFlags(0);
+
+    // create an ID that does not exist already
+    qint32 newId = reinterpret_cast<PwDatabaseV3*>(getDatabase())->createNewGroupId();
+    newGroup->setId(newId);
+
+    // inherit the icon and recycled status
+    newGroup->setIconId(this->getIconId());
+    newGroup->setDeleted(this->isDeleted());
+
+    // set times
+    newGroup->setCreationTime(QDateTime::currentDateTime());
+    newGroup->setLastAccessTime(QDateTime::currentDateTime());
+    newGroup->setLastModificationTime(QDateTime::currentDateTime());
+    newGroup->setExpiryTime(QDateTime::currentDateTime());
+    newGroup->setExpires(false);
+
+    // set parent group
+    newGroup->setParentGroup(this);
+    newGroup->setLevel(this->getLevel() + 1);
+    this->addSubGroup(newGroup);
+    return newGroup;
 }
 
 /**

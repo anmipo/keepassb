@@ -541,6 +541,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     }
 
     PwGroupV4* rootV4 = new PwGroupV4(this);
+    rootV4->setDatabase(this);
     rootV4->setParentGroup(NULL); // not Qt parent, but the group containing this one
 
     ErrorCode err;
@@ -636,6 +637,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
                     return err;
             } else if (XML_GROUP == tagName) {
                 PwGroupV4* subGroup = new PwGroupV4(&group);
+                subGroup->setDatabase(this);
                 err = loadGroupFromXml(xml, *subGroup);
                 if (err != SUCCESS) {
                     delete subGroup;

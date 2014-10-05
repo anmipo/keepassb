@@ -9,6 +9,7 @@ import org.keepassb 1.0
 Sheet {
     id: editGroupSheet
     property PwGroup group
+    property bool creationMode: false
     property int iconId: group.iconId 
 
     onGroupChanged: {
@@ -16,7 +17,7 @@ Sheet {
     }
 
     // Sets input focus on group name field. Must be called from the parent component
-    function autoFocus() {
+    function autofocus() {
         nameField.requestFocus();
     }
     
@@ -48,19 +49,25 @@ Sheet {
     Page {
         titleBar: TitleBar {
             title: qsTr("Edit Group", "Title of a page for editing group properties") + Retranslate.onLocaleOrLanguageChanged
-            dismissAction: ActionItem {
-                title: qsTr("Cancel", "A button/action") + Retranslate.onLocaleOrLanguageChanged
-                onTriggered: {
-                    app.restartWatchdog();
-                    close();
-                }
-            }
             acceptAction: ActionItem {
                 title: qsTr("Save", "A button/action to save group changes") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
                     saveChanges();
-                    close();
+                    group.parentGroup.itemsChanged(DataModelChangeType.Init, 0);
+                    editGroupSheet.close();
                 } 
+            }
+            dismissAction: ActionItem {
+                title: qsTr("Cancel", "A button/action") + Retranslate.onLocaleOrLanguageChanged
+                onTriggered: {
+                    app.restartWatchdog();
+                    if (creationMode) {
+                        var parentGroup = group.parentGroup; 
+                        group.deleteWithoutBackup();
+                        parentGroup.itemsChanged(DataModelChangeType.AddRemove, 0);
+                    }
+                    editGroupSheet.close();
+                }
             }
         }
 

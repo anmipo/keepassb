@@ -33,13 +33,17 @@ private:
     const static quint16 FIELD_END                = 0xFFFF;
 
 public:
-    PwGroupV3(QObject* parent = 0);
+    PwGroupV3(QObject* parent=0);
     virtual ~PwGroupV3();
 
     /**
      * Creates an entry in the group and returns a reference to it.
      */
     virtual PwEntry* createEntry();
+    /**
+     * Creates a subgroup in the group and returns a reference to it.
+     */
+    virtual PwGroup* createGroup();
 
     /**
      * Recursively iterates through all the children groups and entries of this group

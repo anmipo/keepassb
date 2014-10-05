@@ -122,6 +122,7 @@ void PwEntry::clear() {
     _attachmentsDataModel.clear();
     _deleted = false;
     _expires = false;
+    _parentGroup = NULL;
 }
 
 QString PwEntry::toString() const {
