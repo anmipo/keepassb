@@ -55,6 +55,11 @@ public:
      */
     void getAllChildren(QList<PwGroupV3*> &childGroups, QList<PwEntryV3*> &childEntries) const;
 
+    /**
+     * Checks if a group name is reserved for internal use and cannot be assigned by the user.
+     */
+    virtual bool isNameReserved(const QString& name);
+
     /** Loads group fields from the stream. Returns true on success, false in case of error. */
     bool readFromStream(QDataStream& stream);
     /** Writes group fields to the stream. Returns true on success, false in case of error. */

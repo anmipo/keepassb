@@ -85,6 +85,11 @@ public:
 	void removeEntry(PwEntry* entry);
 	QList<PwEntry*> getEntries() const { return _entries; }
 
+	/**
+	 * Checks if a group name is reserved for internal use and cannot be assigned by the user.
+	 */
+	Q_INVOKABLE virtual bool isNameReserved(const QString& name) { return false; }
+
     /**
      * Creates an entry in the group and returns a reference to it.
      * (This method should actually be pure virtual, but that makes PwGroup abstract and which causes problems in QML.

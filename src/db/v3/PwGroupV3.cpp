@@ -190,3 +190,10 @@ bool PwGroupV3::writeToStream(QDataStream& stream) {
     qDebug() << "Save group: '" << getName() << "' id:" << getId();
     return (stream.status() == QDataStream::Ok);
 }
+
+/**
+ * Checks if a group name is reserved for internal use and cannot be assigned by the user.
+ */
+bool PwGroupV3::isNameReserved(const QString& name) {
+    return (BACKUP_GROUP_NAME == name);
+}

@@ -52,6 +52,11 @@ Sheet {
             acceptAction: ActionItem {
                 title: qsTr("Save", "A button/action to save group changes") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
+                    if (!nameField.validator.valid) {
+                        nameField.validator.showMessage();
+                        return;
+                    }
+                    
                     saveChanges();
                     group.parentGroup.itemsChanged(DataModelChangeType.Init, 0);
                     editGroupSheet.close();
@@ -87,6 +92,18 @@ Sheet {
             MonoTextField {
                 id: nameField
                 text: group.name
+                validator: Validator {
+                    mode: ValidationMode.Delayed
+                    delay: 500
+                    errorMessage: qsTr("This group name is reserved", "An error message when a group is being given a name which is reserved for internal use only.") + Retranslate.onLocaleOrLanguageChanged
+                    onValidate: {
+                        if (group.isNameReserved(nameField.text)) {
+                            state = ValidationState.Invalid;
+                        } else {
+                            state = ValidationState.Valid;
+                        }
+                    }
+                }
             }
             Container {
                 layout: StackLayout {
