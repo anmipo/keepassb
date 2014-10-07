@@ -133,7 +133,7 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
 
 
 PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
-        header(), combinedKey(), aesKey(), metaStreamEntries() {
+        header(), combinedKey(), aesKey(), metaStreamEntries(), backupGroup(NULL) {
     header.setParent(this);
 }
 
@@ -147,6 +147,7 @@ void PwDatabaseV3::clear() {
     header.clear();
     Util::safeClear(combinedKey);
     Util::safeClear(aesKey);
+    backupGroup = NULL; // this is just a pointer, the actual group will be cleared by the base class
     PwDatabase::clear();
 }
 
@@ -339,6 +340,8 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
         group->setDatabase(this);
         if (!group->readFromStream(stream))
             return NOT_ENOUGH_GROUPS;
+        if (group->isDeleted())
+            backupGroup = group;
         groups.append(group);
     }
     return SUCCESS;
@@ -380,10 +383,12 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
     }
 
     // restore group hierarchy
-    _rootGroup = new PwGroupV3();
-    _rootGroup->setDatabase(this);
+    PwGroupV3* rootGroupV3 = new PwGroupV3();
+    rootGroupV3->setDatabase(this);
+    rootGroupV3->setLevel(-1); // because its children should have level 0
     // give the "virtual" root group some meaningful name
-    _rootGroup->setName(getDatabaseFileName());
+    rootGroupV3->setName(getDatabaseFileName());
+    _rootGroup = rootGroupV3;
     PwGroupV3* parentGroup = (PwGroupV3*)_rootGroup;
     for (quint16 level = 0; level <= maxLevel; level++) {
         quint16 prevLevel = level - 1;
@@ -411,7 +416,9 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
                 qDebug() << "There is an entry " << entry->toString() << " with unknown groupId: " << groupId;
                 return ORPHANED_ENTRY_ERROR;
             }
-            groupById.value(groupId)->addEntry(entry);
+            PwGroupV3* group = groupById.value(groupId);
+            entry->setDeleted(group->isDeleted());
+            group->addEntry(entry);
         }
     }
     return SUCCESS;
@@ -480,21 +487,9 @@ bool PwDatabaseV3::save(QByteArray& outData) {
  * Returns all the DB groups and entries
  */
 void PwDatabaseV3::getAllChildren(QList<PwGroupV3*> &groups, QList<PwEntryV3*> &entries) {
-    QList<PwGroup*> rootGroups = dynamic_cast<PwGroupV3*>(getRootGroup())->getSubGroups();
-    PwGroupV3* generalGroup = dynamic_cast<PwGroupV3*>(rootGroups.first());
-    PwGroupV3* backupGroup;
-    if (rootGroups.size() > 1) {
-        // There is a Backup group, it is second within the root.
-        // It should be last in the list of groups, but its entries are stored first.
-        backupGroup = dynamic_cast<PwGroupV3*>(rootGroups.at(1));
-        backupGroup->getAllChildren(groups, entries);
-    }
-    groups.append(generalGroup);
-    generalGroup->getAllChildren(groups, entries);
-
-    if (backupGroup)
-        groups.append(backupGroup);
-
+    // The original KeePass 1 seems to store items in strange order: (normal groups, backup group, backup entries, normal entries).
+    // We ignore this to save items in their original order.
+    dynamic_cast<PwGroupV3*>(getRootGroup())->getAllChildren(groups, entries);
 }
 
 /**
@@ -545,4 +540,20 @@ qint32 PwDatabaseV3::createNewGroupId() {
     entries.clear();
 
     return candidateId;
+}
+
+/**
+ * Returns the Backup group of this database.
+ * If createIfMissing is true, creates the group if it is missing.
+ */
+PwGroup* PwDatabaseV3::getBackupGroup(bool createIfMissing) {
+    if (!backupGroup && createIfMissing) {
+        // There's no backup group, let's make one
+        PwGroupV3* rootGroupV3 = dynamic_cast<PwGroupV3*>(getRootGroup());
+        backupGroup = dynamic_cast<PwGroupV3*>(rootGroupV3->createGroup());
+        backupGroup->setName(PwGroupV3::BACKUP_GROUP_NAME);
+        backupGroup->setIconId(PwGroupV3::BACKUP_GROUP_ICON_ID);
+        backupGroup->setDeleted(TRUE);
+    }
+    return backupGroup;
 }

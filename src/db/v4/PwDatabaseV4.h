@@ -173,13 +173,19 @@ private:
 protected:
     /** Combines password and key data into one key */
     bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
-
 public:
     PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();
 
     /** Returns the database format version */
     virtual int getFormatVersion() { return 4; };
+
+    /**
+     * Returns the Backup group of this database.
+     * If createIfMissing is true, creates the group if it is missing.
+     * (However, if backup is disabled will not create anything and still return NULL).
+     */
+    virtual PwGroup* getBackupGroup(bool createIfMissing = false);
 
     /**
      * Checks if DB signatures match those of Keepass V4 format.
@@ -201,7 +207,6 @@ public:
      * Erases all loaded/decrypted data
      */
     virtual void clear();
-
 };
 
 #endif /* PWDATABASEV4_H_ */

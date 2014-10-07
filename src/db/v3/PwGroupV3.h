@@ -33,6 +33,10 @@ private:
     const static quint16 FIELD_END                = 0xFFFF;
 
 public:
+    // Fixed values of the Backup/RecycleBin group
+    const static QString BACKUP_GROUP_NAME;
+    const static int BACKUP_GROUP_ICON_ID = 4;
+
     PwGroupV3(QObject* parent=0);
     virtual ~PwGroupV3();
 

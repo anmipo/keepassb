@@ -233,6 +233,16 @@ PwDatabaseV4::~PwDatabaseV4() {
     // nothing to do here
 }
 
+/**
+ * Returns the Backup group of this database.
+ * If createIfMissing is true, creates the group if it is missing.
+ * (However, if backup is disabled will not create anything and still return NULL).
+ */
+PwGroup* PwDatabaseV4::getBackupGroup(bool createIfMissing) {
+    // TODO implement this
+    return NULL;
+}
+
 bool PwDatabaseV4::isSignatureMatch(const QByteArray& rawDbData) {
     QDataStream stream (rawDbData);
     stream.setByteOrder(QDataStream::LittleEndian);

@@ -11,7 +11,7 @@
 #include "db/v3/PwEntryV3.h"
 #include "db/v3/PwDatabaseV3.h"
 
-const QString BACKUP_GROUP_NAME = QString("Backup");
+const QString PwGroupV3::BACKUP_GROUP_NAME = QString("Backup");
 
 PwGroupV3::PwGroupV3(QObject* parent) : PwGroup(parent) {
     _id = -1;

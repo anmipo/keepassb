@@ -113,6 +113,7 @@ private:
     QByteArray combinedKey;
     QByteArray aesKey;
     QList<PwEntryV3*> metaStreamEntries;
+    PwGroupV3* backupGroup;
 
     /** Reads the encrypted DB; in case of errors emits appropriate signals and returns false. */
     bool readDatabase(const QByteArray& dbBytes);
@@ -142,7 +143,6 @@ protected:
     bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
     /** Returns all the DB groups and entries */
     void getAllChildren(QList<PwGroupV3*> &groups, QList<PwEntryV3*> &entries);
-
 public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();
@@ -156,6 +156,11 @@ public:
      * Generates a new group ID (guaranteeing it is not being used already)
      */
     qint32 createNewGroupId();
+    /**
+     * Returns the Backup group of this database.
+     * If createIfMissing is true, creates the group if it is missing.
+     */
+    virtual PwGroup* getBackupGroup(bool createIfMissing = false);
 
     /**
      * Checks if DB signatures match those of Keepass V3 format.
