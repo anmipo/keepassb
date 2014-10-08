@@ -287,7 +287,7 @@ Page {
                                 ActionItem {
                                     title: qsTr("Edit Group", "A button/action to edit the selected group") + Retranslate.onLocaleOrLanguageChanged
                                     imageSource: "asset:///images/ic_edit_group.png"
-                                    enabled: Qt.database.isEditable() 
+                                    enabled: Qt.database.isEditable() && !ListItemData.deleted 
                                     onTriggered: {
                                         groupListGroupItem.ListItem.view.showEditGroupDialog(ListItemData);
                                     }
