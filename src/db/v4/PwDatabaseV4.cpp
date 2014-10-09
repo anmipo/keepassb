@@ -239,7 +239,8 @@ PwDatabaseV4::~PwDatabaseV4() {
  * (However, if backup is disabled will not create anything and still return NULL).
  */
 PwGroup* PwDatabaseV4::getBackupGroup(bool createIfMissing) {
-    // TODO implement this
+    // TODO implement PwDatabaseV4::getBackupGroup
+    Q_UNUSED(createIfMissing); // remove when method is implemented
     return NULL;
 }
 
@@ -890,4 +891,6 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml,
  */
 bool PwDatabaseV4::save(QByteArray& outData) {
     //TODO implement V4 saving
+    Q_UNUSED(outData); // remove when method is implemented
+    return false;
 }

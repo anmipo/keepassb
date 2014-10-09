@@ -27,7 +27,8 @@ Sheet {
     }
     function saveChanges() {
         app.restartWatchdog();
-        group.iconId = iconId
+        // no backup on edit for groups (both V3 and V4)
+        group.iconId = iconId;
         group.name = nameField.text;
         group.renewTimestamps();
         database.save();

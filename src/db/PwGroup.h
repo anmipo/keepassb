@@ -88,7 +88,7 @@ public:
 	/**
 	 * Checks if a group name is reserved for internal use and cannot be assigned by the user.
 	 */
-	Q_INVOKABLE virtual bool isNameReserved(const QString& name) { return false; }
+	Q_INVOKABLE virtual bool isNameReserved(const QString& name) { Q_UNUSED(name); return false; }
 
     /**
      * Creates an entry in the group and returns a reference to it.
