@@ -101,6 +101,22 @@ public:
 	virtual void addAttachment(PwAttachment* attachment);
     Q_INVOKABLE bb::cascades::DataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 
+    /** Returns a new entry instance with the same field values */
+    virtual PwEntry* clone() = 0;
+
+    /**
+     * Makes a backup copy of the current values/state of the entry.
+     * Actual behaviour is DB version-specific.
+     * Returns true if successful.
+     */
+    Q_INVOKABLE virtual bool backupState() = 0;
+
+    /**
+     * Copies the entry to Backup/Recycle group.
+     * Returns true if successful.
+     */
+    Q_INVOKABLE virtual bool backupEntry();
+
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();
 

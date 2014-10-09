@@ -242,3 +242,35 @@ bool PwEntryV3::writeToStream(QDataStream& stream) {
     qDebug() << "Save entry: '" << getTitle() << "' groupId:" << getGroupId();
     return (stream.status() == QDataStream::Ok);
 }
+
+/** Returns a new entry instance with the same field values. */
+PwEntry* PwEntryV3::clone() {
+    QByteArray buffer;
+    QDataStream bufferStream(&buffer, QIODevice::ReadWrite);
+    if (!writeToStream(bufferStream)) {
+        qDebug() << "PwEntryV3::clone() failed on write";
+        return NULL;
+    }
+
+    bufferStream.device()->reset();
+    PwEntryV3* copy = new PwEntryV3(this->parent());
+    if (!copy->readFromStream(bufferStream)) {
+        delete copy;
+        qDebug() << "PwEntryV3::clone() failed on read";
+        return NULL;
+    }
+    // insert copy into the same group (readFromStream does not do that)
+    copy->setParentGroup(getParentGroup());
+
+    return copy;
+}
+
+/**
+ * Makes a backup copy of the current values/state of the entry.
+ * (For V3 is equivalent to backupEntry())
+ * Returns true if successful.
+ */
+bool PwEntryV3::backupState() {
+    // KeePass 1 backups both entry and its state by copying the entry to the Backup group.
+    return backupEntry();
+}

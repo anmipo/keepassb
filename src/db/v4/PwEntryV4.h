@@ -77,6 +77,16 @@ public:
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
 
+    /** Returns a new entry instance with the same field values */
+    virtual PwEntry* clone();
+
+    /**
+     * Makes a backup copy of the current values/state of the entry.
+     * (For V4 adds the current state to entry's history)
+     * Returns true if successful.
+     */
+    virtual bool backupState();
+
     void addExtraField(const QString& name, const QString& value);
     void addHistoryEntry(PwEntryV4* historyEntry);
 

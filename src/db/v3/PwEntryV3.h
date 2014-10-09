@@ -57,10 +57,20 @@ public:
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
 
+    /** Returns a new entry instance with the same field values */
+    virtual PwEntry* clone();
+
     virtual void addAttachment(PwAttachment* attachment);
 
     /** Identifies if this entry is a special internal meta-stream data */
     bool isMetaStream() const;
+
+    /**
+     * Makes a backup copy of the current values/state of the entry.
+     * (For V3 is equivalent to backupEntry())
+     * Returns true if successful.
+     */
+    virtual bool backupState();
 
     // property accessors
     qint32 getGroupId() const { return _groupId; }

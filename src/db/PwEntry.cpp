@@ -10,6 +10,7 @@
 #include <QDateTime>
 #include <QList>
 #include "util/Util.h"
+#include "db/PwDatabase.h"
 
 
 /**************************/
@@ -230,4 +231,34 @@ void PwEntry::deleteWithoutBackup() {
     if (_parentGroup) {
         _parentGroup->removeEntry(this);
     }
+}
+
+/**
+ * Copies the entry to Backup/Recycle group.
+ * Returns true if successful.
+ */
+bool PwEntry::backupEntry() {
+    PwGroup* parentGroup = getParentGroup();
+    if (!parentGroup) {
+        qDebug() << "backupEntry fail - no parent group set";
+        return false;
+    }
+
+    PwDatabase* db = parentGroup->getDatabase();
+    if (!db) {
+        qDebug() << "backupEntry fail - parent group without DB";
+        return false;
+    }
+
+    PwGroup* backupGroup = db->getBackupGroup(true);
+    if (!backupGroup) {
+        qDebug() << "backupEntry fail - no backup group created";
+        return false;
+    }
+
+    PwEntry* entryCopy = this->clone();
+    entryCopy->setParent(backupGroup); // parent in Qt terms, responsible for memory release
+    backupGroup->addEntry(entryCopy);
+    qDebug() << "backupEntry OK";
+    return true;
 }

@@ -138,3 +138,19 @@ QString PwEntryV4::getNotes() const {
 void PwEntryV4::setNotes(const QString& notes) {
     setField(NOTES, notes);
 }
+
+/** Returns a new entry instance with the same field values. */
+PwEntry* PwEntryV4::clone() {
+    // TODO implement PwEntryV4::clone
+    return NULL;
+}
+
+/**
+ * Makes a backup copy of the current values/state of the entry.
+ * (For V4 adds the current state to entry's history)
+ * Returns true if successful.
+ */
+bool PwEntryV4::backupState() {
+    // TODO implement PwEntryV4::backupState()
+    return false;
+}

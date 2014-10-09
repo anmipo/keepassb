@@ -29,12 +29,6 @@ protected:
     /** Combines password and key data into one key */
 	virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const = 0;
 
-    /**
-     * Returns the Backup group of this database.
-     * If createIfMissing is true, creates the group if it is missing.
-     * (However, if backup is disabled (e.g. in V4) will not create anything and still return NULL).
-	 */
-	virtual PwGroup* getBackupGroup(bool createIfMissing = false) = 0;
 public:
     enum Error {
         SUCCESS             = 0,
@@ -70,6 +64,13 @@ public:
     virtual int search(const SearchParams& params, QList<PwEntry*> &searchResult) const;
 
     PwGroup* getRootGroup();
+
+    /**
+     * Returns the Backup group of this database.
+     * If createIfMissing is true, creates the group if it is missing.
+     * (However, if backup is disabled (e.g. in V4) will not create anything and still return NULL).
+     */
+    virtual PwGroup* getBackupGroup(bool createIfMissing = false) = 0;
 
     /** Stores DB file path */
     void setDatabaseFilePath(const QString& dbFilePath);
