@@ -112,10 +112,10 @@ public:
     Q_INVOKABLE virtual bool backupState() = 0;
 
     /**
-     * Copies the entry to Backup/Recycle group.
+     * Moves the entry to Backup/Recycle group.
      * Returns true if successful.
      */
-    Q_INVOKABLE virtual bool backupEntry();
+    Q_INVOKABLE virtual bool moveToBackup();
 
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();

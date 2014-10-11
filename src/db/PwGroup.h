@@ -77,12 +77,12 @@ public:
     /** Removes the group from the parent group, if any. Does NOT make a copy in Backup/Recycle bin. */
     Q_INVOKABLE void deleteWithoutBackup();
 
-	void addSubGroup(PwGroup* subGroup);
-	void removeSubGroup(PwGroup* subGroup);
+	virtual void addSubGroup(PwGroup* subGroup);
+	virtual void removeSubGroup(PwGroup* subGroup);
 	QList<PwGroup*> getSubGroups() const { return _subGroups; }
 
-	void addEntry(PwEntry* entry);
-	void removeEntry(PwEntry* entry);
+	virtual void addEntry(PwEntry* entry);
+	virtual void removeEntry(PwEntry* entry);
 	QList<PwEntry*> getEntries() const { return _entries; }
 
 	/**

@@ -18,7 +18,7 @@ Page {
     actions: [
         ActionItem {
             id: editEntryAction
-            title: qsTr("Edit", "A button/action to edit an entry")
+            title: qsTr("Edit", "A button/action to edit an entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_edit.png"
             enabled: database.isEditable() && !entry.deleted
             ActionBar.placement: ActionBarPlacement.OnBar
@@ -34,6 +34,30 @@ Page {
                 editEntryPage.open();
                 editEntryPage.autofocus();
             }
+        },
+        DeleteActionItem {
+            title: qsTr("Delete", "A button/action to delete an entry.") + Retranslate.onLocaleOrLanguageChanged
+            enabled: database.isEditable() && !entry.deleted
+            onTriggered: {
+                deleteEntryConfirmationDialog.show();
+            }
+            attachedObjects: [
+                SystemDialog {
+                    id: deleteEntryConfirmationDialog
+                    title: qsTr("Delete Entry", "Title of a delete confirmation dialog") + Retranslate.onLocaleOrLanguageChanged
+                    body: qsTr("Really delete this entry?", "A confirmation dialog for deleting entry") + Retranslate.onLocaleOrLanguageChanged
+                    confirmButton.label: qsTr("Delete", "A button/action to confirm deletion of an entry") + Retranslate.onLocaleOrLanguageChanged
+                    onFinished: {
+                        if (value == SystemUiResult.ConfirmButtonSelection) {
+                            naviPane.pop();
+                            var parentGroup = entry.parentGroup;
+                            Common.deleteEntry(entry);
+                            // refresh the parent ListView, otherwise it crashes
+                            parentGroup.itemsChanged(DataModelChangeType.AddRemove, 0);
+                        }
+                    }
+                }
+            ]
         }
     ]   
      

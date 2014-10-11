@@ -192,7 +192,10 @@ Page {
                     editGroupSheet.open();
                     editGroupSheet.autofocus();
                 }
-                
+                function confirmDeleteEntry(selEntry) {
+                    deleteEntryConfirmationDialog.targetEntry = selEntry;
+                    deleteEntryConfirmationDialog.show();
+                }
                 objectName: "groupList"
                 dataModel: group
                 visible: group.itemsCount > 0
@@ -244,6 +247,13 @@ Page {
                                         imageSource: "asset:///images/ic_copy_password.png"
                                         onTriggered: {
                                             Qt.app.copyWithTimeout(ListItemData.password);
+                                        }
+                                    },
+                                    DeleteActionItem {
+                                        title: qsTr("Delete", "A button/action to delete an entry") + Retranslate.onLocaleOrLanguageChanged
+                                        enabled: Qt.database.isEditable() && !ListItemData.deleted
+                                        onTriggered: {
+                                            groupListEntryItem.ListItem.view.confirmDeleteEntry(ListItemData);
                                         }
                                     }
                                 ]
@@ -328,7 +338,21 @@ Page {
             },
             ComponentDefinition {
                 source: "ViewEntryV4Page.qml"
-            }        
+            },
+            SystemDialog {
+                property variant targetEntry
+                id: deleteEntryConfirmationDialog
+                title: qsTr("Delete Entry", "Title of a delete confirmation dialog") + Retranslate.onLocaleOrLanguageChanged
+                body: qsTr("Really delete this entry?", "A confirmation dialog for deleting entry") + Retranslate.onLocaleOrLanguageChanged
+                confirmButton.label: qsTr("Delete", "A button/action to confirm deletion of an entry") + Retranslate.onLocaleOrLanguageChanged
+                onFinished: {
+                    if (value == SystemUiResult.ConfirmButtonSelection) {
+                        Common.deleteEntry(targetEntry);
+                        // refresh the ListView, otherwise it crashes
+                        group.itemsChanged(DataModelChangeType.AddRemove, 0);
+                    }
+                }
+            }
         ]
     }
 }

@@ -267,10 +267,10 @@ PwEntry* PwEntryV3::clone() {
 
 /**
  * Makes a backup copy of the current values/state of the entry.
- * (For V3 is equivalent to backupEntry())
  * Returns true if successful.
  */
 bool PwEntryV3::backupState() {
-    // KeePass 1 backups both entry and its state by copying the entry to the Backup group.
-    return backupEntry();
+    // KeePass 1 backups entry state by copying the whole entry to the Backup group.
+    PwEntry* entryCopy = this->clone();
+    return entryCopy->moveToBackup();
 }

@@ -87,3 +87,14 @@ function prettifyFilePath(path) {
 function timestampToString(timestamp) {
 	return timestamp.toString();
 }
+
+/**
+ * Deletes the given entry (with backup) and saves the database.
+ * @param entry
+ */
+function deleteEntry(entry) {
+    Qt.app.restartWatchdog();
+    entry.renewTimestamps();
+    entry.moveToBackup(); 
+    Qt.database.save();
+}

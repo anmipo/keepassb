@@ -234,31 +234,34 @@ void PwEntry::deleteWithoutBackup() {
 }
 
 /**
- * Copies the entry to Backup/Recycle group.
+ * Moves the entry to Backup/Recycle group.
  * Returns true if successful.
  */
-bool PwEntry::backupEntry() {
+bool PwEntry::moveToBackup() {
     PwGroup* parentGroup = getParentGroup();
     if (!parentGroup) {
-        qDebug() << "backupEntry fail - no parent group set";
+        qDebug() << "moveToBackup fail - no parent group set";
         return false;
     }
 
     PwDatabase* db = parentGroup->getDatabase();
     if (!db) {
-        qDebug() << "backupEntry fail - parent group without DB";
+        qDebug() << "moveToBackup fail - parent group without DB";
         return false;
     }
 
     PwGroup* backupGroup = db->getBackupGroup(true);
     if (!backupGroup) {
-        qDebug() << "backupEntry fail - no backup group created";
+        qDebug() << "moveToBackup fail - no backup group created";
         return false;
     }
 
-    PwEntry* entryCopy = this->clone();
-    entryCopy->setParent(backupGroup); // parent in Qt terms, responsible for memory release
-    backupGroup->addEntry(entryCopy);
-    qDebug() << "backupEntry OK";
+    parentGroup->removeEntry(this);
+    backupGroup->addEntry(this);
+
+    setParent(backupGroup); // parent in Qt terms, responsible for memory release
+    setDeleted(true);
+
+    qDebug() << "moveToBackup OK";
     return true;
 }

@@ -40,6 +40,12 @@ public:
     PwGroupV3(QObject* parent=0);
     virtual ~PwGroupV3();
 
+    // add/remove group/entry are overriden to also handle V3-specific properties: groupID and level
+    virtual void addSubGroup(PwGroup* subGroup);
+    virtual void removeSubGroup(PwGroup* subGroup);
+    virtual void addEntry(PwEntry* entry);
+    virtual void removeEntry(PwEntry* entry);
+
     /**
      * Creates an entry in the group and returns a reference to it.
      */

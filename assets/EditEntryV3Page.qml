@@ -20,7 +20,9 @@ Sheet {
 
     function saveChanges() {
         app.restartWatchdog();
-        entry.backupState();
+        if (!creationMode) {
+            entry.backupState();
+        }
         entry.iconId = iconId;
         entry.title = titleField.text;
         entry.userName = usernameField.text;

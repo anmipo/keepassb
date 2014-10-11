@@ -106,7 +106,7 @@ void PwGroup::addEntry(PwEntry* entry) {
     // re-sort children when entry title changed
     bool res = QObject::connect(entry, SIGNAL(titleChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res);
 
-	_entries.append(entry);
+    _entries.append(entry);
 	emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
 	_isChildrenModified = true;
 }
@@ -235,6 +235,7 @@ void PwGroup::renewTimestamps() {
 // matches signatures of the itemsChanged() signal with the itemsCountChanged()
 void PwGroup::itemsCountChangedAdapter(DataModelChangeType::Type changeType) {
     if (changeType != DataModelChangeType::Update) {
+        qDebug() << "items count changed:" << immediateChildCount();
         emit itemsCountChanged(immediateChildCount());
     }
 }

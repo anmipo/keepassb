@@ -30,6 +30,25 @@ void PwGroupV3::clear() {
     PwGroup::clear();
 }
 
+void PwGroupV3::addSubGroup(PwGroup* subGroup) {
+    PwGroup::addSubGroup(subGroup);
+    dynamic_cast<PwGroupV3*>(subGroup)->setLevel(this->getLevel() + 1);
+}
+void PwGroupV3::removeSubGroup(PwGroup* subGroup) {
+    PwGroup::removeSubGroup(subGroup);
+    // there is no suitable level value, so just reset to zero (root level) to simplify debug
+    dynamic_cast<PwGroupV3*>(subGroup)->setLevel(0);
+}
+void PwGroupV3::addEntry(PwEntry* entry) {
+    PwGroup::addEntry(entry);
+    dynamic_cast<PwEntryV3*>(entry)->setGroupId(this->getId());
+}
+void PwGroupV3::removeEntry(PwEntry* entry) {
+    PwGroup::removeEntry(entry);
+    // there is no suitable groupId, so just reset to zero to simplify debug
+    dynamic_cast<PwEntryV3*>(entry)->setGroupId(0);
+}
+
 /**
  * Creates an entry in the group and returns a reference to it.
  */
