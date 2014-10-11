@@ -8,14 +8,13 @@
 #include <PwEntryV3.h>
 #include "util/Util.h"
 #include "db/v3/PwStreamUtilsV3.h"
+#include "db/v3/PwDatabaseV3.h"
 
 // field values of meta-stream entries
 const QString METASTREAM_ID_TITLE = QString("Meta-Info");
 const QString METASTREAM_ID_USER = QString("SYSTEM");
 const QString METASTREAM_ID_URL = QString("$");
 const QString METASTREAM_ID_BINDESC = QString("bin-stream");
-
-const QDateTime EXPIRY_DATE_NEVER = QDateTime(QDate(2999, 12, 28), QTime(23, 59, 59, 0), Qt::UTC);
 
 PwEntryV3::PwEntryV3(QObject* parent) : PwEntry(parent), _binaryDesc(), _binaryData(),
         _title(), _userName(), _password(), _url(), _notes() {
@@ -119,7 +118,7 @@ void PwEntryV3::setNotes(const QString& notes) {
 
 void PwEntryV3::setExpiryTime(const QDateTime& time) {
     PwEntry::setExpiryTime(time);
-    setExpires(time != EXPIRY_DATE_NEVER);
+    setExpires(time != PwDatabaseV3::EXPIRY_DATE_NEVER);
 }
 
 /** Loads entry fields from the stream. Returns true on success, false in case of error. */

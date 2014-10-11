@@ -64,9 +64,8 @@ PwEntry* PwGroupV3::createEntry() {
     newEntry->setCreationTime(QDateTime::currentDateTime());
     newEntry->setLastAccessTime(QDateTime::currentDateTime());
     newEntry->setLastModificationTime(QDateTime::currentDateTime());
-
-    newEntry->setExpiryTime(QDateTime::currentDateTime());
-    newEntry->setExpires(false);
+    // newEntry->setExpires(false); <- in V3 is managed by setExpiryTime()
+    newEntry->setExpiryTime(PwDatabaseV3::EXPIRY_DATE_NEVER);
 
     // set parent group
     newEntry->setGroupId(this->getId());
@@ -96,8 +95,8 @@ PwGroup* PwGroupV3::createGroup() {
     newGroup->setCreationTime(QDateTime::currentDateTime());
     newGroup->setLastAccessTime(QDateTime::currentDateTime());
     newGroup->setLastModificationTime(QDateTime::currentDateTime());
-    newGroup->setExpiryTime(QDateTime::currentDateTime());
-    newGroup->setExpires(false);
+    // newGroup->setExpires(false); <- in V3 is managed by setExpiryTime()
+    newGroup->setExpiryTime(PwDatabaseV3::EXPIRY_DATE_NEVER);
 
     // set parent group
     newGroup->setParentGroup(this);

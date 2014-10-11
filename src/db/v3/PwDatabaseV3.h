@@ -147,6 +147,9 @@ public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();
 
+    /** Magic timestamp value for never-expiring groups/entries */
+    const static QDateTime EXPIRY_DATE_NEVER;
+
     /** Returns the database format version */
     virtual int getFormatVersion() { return 3; };
 
