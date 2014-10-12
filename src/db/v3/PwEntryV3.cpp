@@ -259,7 +259,7 @@ PwEntry* PwEntryV3::clone() {
         return NULL;
     }
     // insert copy into the same group (readFromStream does not do that)
-    copy->setParentGroup(getParentGroup());
+    getParentGroup()->addEntry(copy);
 
     return copy;
 }
