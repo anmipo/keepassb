@@ -85,7 +85,7 @@ function prettifyFilePath(path) {
  * @param timestamp
  */
 function timestampToString(timestamp) {
-	return timestamp.toString();
+	return Qt.formatDateTime(timestamp, Qt.SystemLocaleLongDate);
 }
 
 /**
