@@ -102,25 +102,11 @@ PwGroup* PwGroupV3::createGroup() {
     newGroup->setParentGroup(this);
     newGroup->setLevel(this->getLevel() + 1);
     this->addSubGroup(newGroup);
+
+    newGroup->setDatabase(getDatabase());
     return newGroup;
 }
 
-/**
- * Recursively iterates through all the children groups and entries of this group
- * and adds them to the given lists. The group itself is excluded.
- */
-void PwGroupV3::getAllChildren(QList<PwGroupV3*> &childGroups, QList<PwEntryV3*> &childEntries) const {
-    QList<PwGroup*> groups = this->getSubGroups();
-    for (int i = 0; i < groups.size(); i++) {
-        PwGroupV3* gr = dynamic_cast<PwGroupV3*>(groups.at(i));
-        childGroups.append(gr);
-        gr->getAllChildren(childGroups, childEntries);
-    }
-    QList<PwEntry*> entries = this->getEntries();
-    for (int i = 0; i < entries.size(); i++) {
-        childEntries.append(reinterpret_cast<PwEntryV3*>(entries.at(i)));
-    }
-}
 
 /** Loads group fields from the stream. Returns true on success, false in case of error. */
 bool PwGroupV3::readFromStream(QDataStream& stream) {

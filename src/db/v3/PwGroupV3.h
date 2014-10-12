@@ -56,12 +56,6 @@ public:
     virtual PwGroup* createGroup();
 
     /**
-     * Recursively iterates through all the children groups and entries of this group
-     * and adds them to the given lists. The group itself is excluded.
-     */
-    void getAllChildren(QList<PwGroupV3*> &childGroups, QList<PwEntryV3*> &childEntries) const;
-
-    /**
      * Checks if a group name is reserved for internal use and cannot be assigned by the user.
      */
     virtual bool isNameReserved(const QString& name);

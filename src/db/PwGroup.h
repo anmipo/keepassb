@@ -42,6 +42,9 @@ class PwGroup : public bb::cascades::DataModel {
     // indicates whether the group is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
+
+    friend class PwDatabase;
+
 private:
     PwDatabase* _database;
 	PwUuid _uuid;
@@ -59,7 +62,6 @@ private:
 	QList<PwGroup*> _subGroups, sortedGroups;
 	QList<PwEntry*> _entries, sortedEntries;
 	PwGroup* _parentGroup;
-
 private slots:
 	// Relays itemsChanged to itemsCountChanged; needed to match signatures of the two signals.
 	void itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type changeType);
@@ -74,8 +76,21 @@ public:
 
 	virtual void clear();
 
+    /**
+     * Recursively iterates through all the children groups and entries of this group
+     * and adds them to the given lists. The group itself is excluded.
+     */
+    virtual void getAllChildren(QList<PwGroup*> &childGroups, QList<PwEntry*> &childEntries) const;
+
     /** Removes the group from the parent group, if any. Does NOT make a copy in Backup/Recycle bin. */
     Q_INVOKABLE void deleteWithoutBackup();
+
+    /**
+     * Moves the group and all of its children to Backup group.
+     * (Exact behaviour is DB-version specific).
+     * Returns true if successful.
+     */
+    Q_INVOKABLE bool moveToBackup();
 
 	virtual void addSubGroup(PwGroup* subGroup);
 	virtual void removeSubGroup(PwGroup* subGroup);

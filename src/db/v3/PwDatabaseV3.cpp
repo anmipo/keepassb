@@ -487,15 +487,6 @@ bool PwDatabaseV3::save(QByteArray& outData) {
 }
 
 /**
- * Returns all the DB groups and entries
- */
-void PwDatabaseV3::getAllChildren(QList<PwGroupV3*> &groups, QList<PwEntryV3*> &entries) {
-    // The original KeePass 1 seems to store items in strange order: (normal groups, backup group, backup entries, normal entries).
-    // We ignore this to save items in their original order.
-    dynamic_cast<PwGroupV3*>(getRootGroup())->getAllChildren(groups, entries);
-}
-
-/**
  * Puts groups and entries data into the given array (without encryption).
  * Sets groupCount and entryCount to the number of saved groups/entries.
  */
@@ -504,20 +495,28 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
     contentStream.setByteOrder(QDataStream::LittleEndian);
 
     // first prepare the content
-    QList<PwGroupV3*> groups;
-    QList<PwEntryV3*> entries;
-    getAllChildren(groups, entries);
+    QList<PwGroup*> groups;
+    QList<PwEntry*> entries;
+    getRootGroup()->getAllChildren(groups, entries);
 
     for (int i = 0; i < groups.size(); i++) {
-        groups.at(i)->writeToStream(contentStream);
+        dynamic_cast<PwGroupV3*>(groups.at(i))->writeToStream(contentStream);
     }
-    entries.append(metaStreamEntries);
+
     for (int i = 0; i < entries.size(); i++) {
-        entries.at(i)->writeToStream(contentStream);
+        dynamic_cast<PwEntryV3*>(entries.at(i))->writeToStream(contentStream);
+    }
+    // also write the meta-stream entries (which are not included in the above list)
+    for (int i = 0; i < metaStreamEntries.size(); i++) {
+        metaStreamEntries.at(i)->writeToStream(contentStream);
     }
 
     groupCount = groups.size();
     entryCount = entries.size();
+
+    groups.clear();
+    entries.clear();
+
     return SUCCESS;
 }
 
@@ -525,16 +524,18 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
  * Generates a new group ID (guaranteeing it is not being used already)
  */
 qint32 PwDatabaseV3::createNewGroupId() {
-    QList<PwGroupV3*> groups;
-    QList<PwEntryV3*> entries;
-    getAllChildren(groups, entries);
+    QList<PwGroup*> groups;
+    QList<PwEntry*> entries;
+    getRootGroup()->getAllChildren(groups, entries);
 
     qint32 candidateId;
     bool isUnique = false;
+    PwGroupV3* groupV3;
     while (!isUnique) {
         candidateId = qrand();
         for (int i = 0; i < groups.size(); i++)
-            if (candidateId == groups.at(i)->getId()) {
+            groupV3 = dynamic_cast<PwGroupV3*>(groups.at(i));
+            if (candidateId == groupV3->getId()) {
                 continue;
             }
         isUnique = true;

@@ -141,8 +141,6 @@ private:
 protected:
     /** Combines password and key data into one key */
     bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
-    /** Returns all the DB groups and entries */
-    void getAllChildren(QList<PwGroupV3*> &groups, QList<PwEntryV3*> &entries);
 public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();

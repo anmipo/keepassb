@@ -12,6 +12,7 @@
 #include <bb/cascades/ItemGrouping>
 #include <bb/cascades/DataModel>
 #include <bb/cascades/DataModelChangeType>
+#include "db/PwDatabase.h"
 #include "util/Settings.h"
 #include "util/Util.h"
 
@@ -321,4 +322,60 @@ void PwGroup::setDatabase(PwDatabase* database) {
         _database = database;
         emit databaseChanged(database);
     }
+}
+
+/**
+ * Recursively iterates through all the children groups and entries of this group
+ * and adds them to the given lists. The group itself is excluded.
+ */
+void PwGroup::getAllChildren(QList<PwGroup*> &childGroups, QList<PwEntry*> &childEntries) const {
+    QList<PwGroup*> groups = this->getSubGroups();
+    for (int i = 0; i < groups.size(); i++) {
+        PwGroup* gr = groups.at(i);
+        childGroups.append(gr);
+        gr->getAllChildren(childGroups, childEntries);
+    }
+    QList<PwEntry*> entries = this->getEntries();
+    for (int i = 0; i < entries.size(); i++) {
+        childEntries.append(entries.at(i));
+    }
+}
+
+/**
+ * Moves the group and all of its children to Backup group.
+ * (Exact behaviour is DB-version specific).
+ * Returns true if successful.
+ */
+bool PwGroup::moveToBackup() {
+    PwGroup* parentGroup = this->getParentGroup();
+    if (!parentGroup) {
+        qDebug() << "PwGroup::moveToBackup fail - no parent group";
+        return false;
+    }
+
+    PwGroup* backupGroup = getDatabase()->getBackupGroup(true);
+    if (!backupGroup) {
+        qDebug() << "PwGroup::moveToBackup fail - no backup group created";
+        return false;
+    }
+
+    parentGroup->removeSubGroup(this);
+    backupGroup->addSubGroup(this);
+    setParent(backupGroup); // parent in Qt terms, responsible for memory release
+
+    // flag the group and all its children deleted
+    setDeleted(true);
+    QList<PwGroup*> childGroups;
+    QList<PwEntry*> childEntries;
+    getAllChildren(childGroups, childEntries);
+    for (int i = 0; i < childGroups.size(); i++) {
+        childGroups.at(i)->setDeleted(true);
+    }
+    for (int i = 0; i < childEntries.size(); i++) {
+        childEntries.at(i)->setDeleted(true);
+    }
+    childGroups.clear();
+    childEntries.clear();
+    qDebug() << "PwGroup::moveToBackup OK";
+    return true;
 }
