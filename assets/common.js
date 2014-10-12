@@ -98,3 +98,14 @@ function deleteEntry(entry) {
     entry.moveToBackup(); 
     Qt.database.save();
 }
+
+/**
+ * Deletes the given group (with backup) and saves the database.
+ * @param group
+ */
+function deleteGroup(group) {
+    Qt.app.restartWatchdog();
+    group.renewTimestamps();
+    group.moveToBackup(); 
+    Qt.database.save();
+}

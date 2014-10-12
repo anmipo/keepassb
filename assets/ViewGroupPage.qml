@@ -192,6 +192,10 @@ Page {
                     editGroupSheet.open();
                     editGroupSheet.autofocus();
                 }
+                function confirmDeleteGroup(selGroup) {
+                    deleteGroupConfirmationDialog.targetGroup = selGroup;
+                    deleteGroupConfirmationDialog.show();
+                }
                 function confirmDeleteEntry(selEntry) {
                     deleteEntryConfirmationDialog.targetEntry = selEntry;
                     deleteEntryConfirmationDialog.show();
@@ -302,6 +306,13 @@ Page {
                                         groupListGroupItem.ListItem.view.showEditGroupDialog(ListItemData);
                                     }
                                 }
+                                DeleteActionItem {
+                                    title: qsTr("Delete", "A button/action to delete a group") + Retranslate.onLocaleOrLanguageChanged
+                                    enabled: Qt.database.isEditable() && !ListItemData.deleted
+                                    onTriggered: {
+                                        groupListGroupItem.ListItem.view.confirmDeleteGroup(ListItemData);
+                                    }
+                                }
                             }
                         }
                     },
@@ -348,6 +359,20 @@ Page {
                 onFinished: {
                     if (value == SystemUiResult.ConfirmButtonSelection) {
                         Common.deleteEntry(targetEntry);
+                        // refresh the ListView, otherwise it crashes
+                        group.itemsChanged(DataModelChangeType.AddRemove, 0);
+                    }
+                }
+            },
+            SystemDialog {
+                property variant targetGroup
+                id: deleteGroupConfirmationDialog
+                title: qsTr("Delete Group", "Title of a delete confirmation dialog") + Retranslate.onLocaleOrLanguageChanged
+                body: qsTr("Really delete this group, its subgroups and entries?", "A confirmation dialog for deleting a group") + Retranslate.onLocaleOrLanguageChanged
+                confirmButton.label: qsTr("Delete", "A button/action to confirm deletion of a group") + Retranslate.onLocaleOrLanguageChanged
+                onFinished: {
+                    if (value == SystemUiResult.ConfirmButtonSelection) {
+                        Common.deleteGroup(targetGroup);
                         // refresh the ListView, otherwise it crashes
                         group.itemsChanged(DataModelChangeType.AddRemove, 0);
                     }
