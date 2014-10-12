@@ -57,10 +57,10 @@ Page {
         searchField.text = "";
     }
     function canCreateEntryHere() {
-        return (database.isEditable() && !database.isRoot(group)); 
+        return (database.isEditable() && !database.isRoot(group) && !group.deleted); 
     }
     function canCreateGroupHere() {
-        return (database.isEditable() && !database.isRoot(group)); 
+        return (database.isEditable() && !group.deleted); 
     }
     function createEntry() {
         var newEntry = group.createEntry(); // add an entry to the current group

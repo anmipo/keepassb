@@ -355,12 +355,22 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
     }
     outDbFile.close();
 
-    // Ok, QFile::rename() cannot replace an existing file, so we need to remove the original DB first
+    // Ok, QFile::rename() cannot replace an existing file, so we need to remove/rename the original DB first
     QFile origDbFile(db->getDatabaseFilePath());
-    if (!origDbFile.remove()) {
-        qDebug() << "Failed to remove original DB" << origDbFile.errorString();
-        emit fileSaveError(tr("Cannot replace database file", "An error message shown when the database file cannot be replaced by another file."), origDbFile.errorString());
-        return;
+    if (Settings::instance()->isBackupDatabaseOnSave()) {
+        // rename the original DB to a timestamped backup
+        QString bakFileName = db->getDatabaseFilePath() + "_" + QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd-hh.mm.ss") + ".bak";
+        if (!origDbFile.rename(bakFileName)) {
+            qDebug() << "Failed to backup the original DB" << origDbFile.errorString();
+            emit fileSaveError(tr("Cannot backup database file. Saving cancelled.", "An error message: failed to make a backup copy of the database file."), origDbFile.errorString());
+            return;
+        }
+    } else {
+        if (!origDbFile.remove()) {
+            qDebug() << "Failed to remove the original DB" << origDbFile.errorString();
+            emit fileSaveError(tr("Cannot replace database file", "An error message: failed to replace database file with another file."), origDbFile.errorString());
+            return;
+        }
     }
     if (!outDbFile.rename(db->getDatabaseFilePath())) {
         qDebug() << "Failed to rename tmp file: " << outDbFile.errorString();

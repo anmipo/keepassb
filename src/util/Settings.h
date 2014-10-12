@@ -63,6 +63,10 @@ class Settings: public QObject {
      * Password generation features (includes and excluded character sets)
      */
     Q_PROPERTY(int pwGenFlags READ getPwGenFlags WRITE setPwGenFlags NOTIFY pwGenFlagsChanged)
+    /**
+     * Backup original database on save.
+     */
+    Q_PROPERTY(bool backupDatabaseOnSave READ isBackupDatabaseOnSave WRITE setBackupDatabaseOnSave NOTIFY backupDatabaseOnSaveChanged)
 public:
     enum EntryListDetail {
         ENTRY_DETAIL_NONE      = 0x00,
@@ -98,6 +102,7 @@ private:
     PasswordGenerator::PwGenPreset _pwGenPreset;
     int _pwGenLength;
     int _pwGenFlags;
+    bool _backupDatabaseOnSave;
     QStringList _recentFiles;
     QMap<QString, QString> _recentDbToKey;
 
@@ -127,6 +132,7 @@ public:
     PasswordGenerator::PwGenPreset getPwGenPreset() const { return _pwGenPreset; }
     int getPwGenLength() const { return _pwGenLength; }
     int getPwGenFlags() const { return _pwGenFlags; }
+    bool isBackupDatabaseOnSave() const { return _backupDatabaseOnSave; }
 
     /**
      * Adds paths to the top of the recent files list
@@ -160,6 +166,7 @@ public slots:
     void setPwGenPreset(PasswordGenerator::PwGenPreset preset);
     void setPwGenLength(int length);
     void setPwGenFlags(int flags);
+    void setBackupDatabaseOnSave(bool doBackup);
 signals:
     void searchInDeletedChanged(bool);
     void searchAfterUnlockChanged(bool);
@@ -173,6 +180,7 @@ signals:
     void pwGenPresetChanged(PasswordGenerator::PwGenPreset);
     void pwGenLengthChanged(int);
     void pwGenFlagsChanged(int);
+    void backupDatabaseOnSaveChanged(bool);
 };
 
 #endif /* SETTINGS_H_ */

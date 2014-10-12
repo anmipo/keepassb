@@ -11,6 +11,8 @@ Page {
         searchInDeleted.checkedChanged.connect(appSettings.setSearchInDeleted);
         searchAfterUnlock.checked = appSettings.searchAfterUnlock;
         searchAfterUnlock.checkedChanged.connect(appSettings.setSearchAfterUnlock);
+        backupDatabaseOnSave.checked = appSettings.backupDatabaseOnSave;
+        backupDatabaseOnSave.checkedChanged.connect(appSettings.setBackupDatabaseOnSave);
     }
     ScrollView {
         scrollRole: ScrollRole.Main
@@ -225,6 +227,46 @@ Page {
                     selected: appSettings.alphaSorting
                 }
             }
+            Header {
+                title: qsTr("Saving", "Title of a group of settings related to database editing/saving function") + Retranslate.onLocaleOrLanguageChanged
+            }
+            Container {
+                topMargin: 10
+                layout: StackLayout { 
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                horizontalAlignment: HorizontalAlignment.Fill
+                Label {
+                    horizontalAlignment: HorizontalAlignment.Left
+                    verticalAlignment: VerticalAlignment.Center
+                    text: qsTr("Backup Database on Save", "An on/off setting to make backup copies of the database everytime it is saved.") + Retranslate.onLocaleOrLanguageChanged
+                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                    layoutProperties: StackLayoutProperties {
+                        spaceQuota: 1
+                    }
+                }
+                ToggleButton {
+                    id: backupDatabaseOnSave
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Top
+                }
+            }
+            Label {
+                horizontalAlignment: HorizontalAlignment.Fill
+                text: qsTr("Backup the database file before saving any changes. Backup copies are timestamped and stored along with the original database.", "Description of the 'Backup Database on Save' setting.")
+                textStyle.base: SystemDefaults.TextStyles.SubtitleText
+                textStyle.color: Color.Gray
+                multiline: true
+            }
+            Label {
+                horizontalAlignment: HorizontalAlignment.Fill
+                text: qsTr("Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.", "Description of the 'Backup Database on Save' setting.")
+                textStyle.base: SystemDefaults.TextStyles.SubtitleText
+                textStyle.fontStyle: FontStyle.Italic
+                textStyle.color: Color.Red
+                multiline: true
+            }
+            Divider{}
             Header {
                 title: qsTr("Search", "Title of a group of settings related to search function") + Retranslate.onLocaleOrLanguageChanged
             }
