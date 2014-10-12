@@ -90,7 +90,7 @@ public:
      * (Exact behaviour is DB-version specific).
      * Returns true if successful.
      */
-    Q_INVOKABLE bool moveToBackup();
+    Q_INVOKABLE virtual bool moveToBackup() { /* stub to avoid pure abstract PwGroup */ return false; }
 
 	virtual void addSubGroup(PwGroup* subGroup);
 	virtual void removeSubGroup(PwGroup* subGroup);

@@ -65,3 +65,41 @@ PwGroup* PwGroupV4::createGroup() {
     this->addSubGroup(newGroup);
     return newGroup;
 }
+
+/**
+ * Moves the group's whole branch to Backup group.
+ * Returns true if successful.
+ */
+bool PwGroupV4::moveToBackup() {
+    PwGroup* parentGroup = this->getParentGroup();
+    if (!parentGroup) {
+        qDebug() << "PwGroupV4::moveToBackup fail - no parent group";
+        return false;
+    }
+
+    PwGroup* backupGroup = getDatabase()->getBackupGroup(true);
+    if (!backupGroup) {
+        qDebug() << "PwGroupV4::moveToBackup fail - no backup group created";
+        return false;
+    }
+
+    parentGroup->removeSubGroup(this);
+    backupGroup->addSubGroup(this);
+    setParent(backupGroup); // parent in Qt terms, responsible for memory release
+
+    // flag the group and all its children deleted
+    setDeleted(true);
+    QList<PwGroup*> childGroups;
+    QList<PwEntry*> childEntries;
+    getAllChildren(childGroups, childEntries);
+    for (int i = 0; i < childGroups.size(); i++) {
+        childGroups.at(i)->setDeleted(true);
+    }
+    for (int i = 0; i < childEntries.size(); i++) {
+        childEntries.at(i)->setDeleted(true);
+    }
+    childGroups.clear();
+    childEntries.clear();
+    qDebug() << "PwGroupV4::moveToBackup OK";
+    return true;
+}

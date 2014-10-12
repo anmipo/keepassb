@@ -47,6 +47,12 @@ public:
     virtual void removeEntry(PwEntry* entry);
 
     /**
+     * Moves all the group's entries (recursively) to Backup group; subgroups are deleted.
+     * Returns true if successful.
+     */
+    virtual bool moveToBackup();
+
+    /**
      * Creates an entry in the group and returns a reference to it.
      */
     virtual PwEntry* createEntry();

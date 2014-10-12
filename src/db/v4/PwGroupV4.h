@@ -17,6 +17,12 @@ public:
     virtual ~PwGroupV4();
 
     /**
+     * Moves the group's whole branch to Backup group.
+     * Returns true if successful.
+     */
+    virtual bool moveToBackup();
+
+    /**
      * Creates an entry in the group and returns a reference to it.
      */
     virtual PwEntry* createEntry();

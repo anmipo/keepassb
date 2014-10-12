@@ -201,3 +201,41 @@ bool PwGroupV3::writeToStream(QDataStream& stream) {
 bool PwGroupV3::isNameReserved(const QString& name) {
     return (BACKUP_GROUP_NAME == name);
 }
+
+/**
+ * Moves all the group's entries (recursively) to Backup group; subgroups are deleted.
+ * Returns true if successful.
+ */
+bool PwGroupV3::moveToBackup() {
+    PwGroup* parentGroup = this->getParentGroup();
+    if (!parentGroup) {
+        qDebug() << "PwGroupV3::moveToBackup fail - no parent group";
+        return false;
+    }
+
+    PwGroup* backupGroup = getDatabase()->getBackupGroup(true);
+    if (!backupGroup) {
+        qDebug() << "PwGroupV3::moveToBackup fail - no backup group created";
+        return false;
+    }
+
+    parentGroup->removeSubGroup(this);
+    // detach this branch from the parent group; memory will be released later.
+
+    // flag the group and all its children deleted
+    setDeleted(true);
+    QList<PwGroup*> childGroups;
+    QList<PwEntry*> childEntries;
+    getAllChildren(childGroups, childEntries);
+    // V3 does not backup subgroups, so move only entries
+    for (int i = 0; i < childEntries.size(); i++) {
+        if (!childEntries.at(i)->moveToBackup()) {
+            qDebug() << "PwGroupV3::moveToBackup fail on child entry";
+            return false;
+        }
+    }
+    childGroups.clear();
+    childEntries.clear();
+    qDebug() << "PwGroupV3::moveToBackup OK";
+    return true;
+}
