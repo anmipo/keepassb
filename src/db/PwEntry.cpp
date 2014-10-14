@@ -13,13 +13,15 @@
 #include "db/PwDatabase.h"
 
 
-/**************************/
+/*****************************/
+
 PwAttachment::PwAttachment(QObject* parent) :
         QObject(parent),
         name(""),
         data() {
     isCompressed = false;
     isOriginallyCompressed = false;
+    isInitialized = false;
 }
 
 PwAttachment::~PwAttachment() {
@@ -31,6 +33,7 @@ void PwAttachment::clear() {
     Util::safeClear(data);
     isCompressed = false;
     isOriginallyCompressed = false;
+    isInitialized = false;
 }
 
 bool PwAttachment::saveContentToFile(const QString& fileName) {
@@ -55,12 +58,14 @@ bool PwAttachment::saveContentToFile(const QString& fileName) {
 
 void PwAttachment::setName(const QString& name) {
     if (this->name != name) {
+        isInitialized = true;
         this->name = name;
         emit nameChanged(name);
     }
 }
 
 void PwAttachment::setData(const QByteArray& data, const bool isCompressed) {
+    isInitialized = true;
     this->data = data;
     this->isOriginallyCompressed = isCompressed;
     this->isCompressed = isCompressed;
@@ -100,7 +105,46 @@ bool PwAttachment::matchesQuery(const QString& query) const {
 }
 
 
-/**************************/
+/*****************************/
+
+PwAttachmentDataModel::PwAttachmentDataModel(QObject* parent) : QListDataModel<PwAttachment*> () {
+    setParent(parent);
+    _size = 0;
+
+    bool res = QObject::connect(this, SIGNAL(itemAdded(QVariantList)), this, SLOT(updateSize()));
+    res = QObject::connect(this, SIGNAL(itemUpdated(QVariantList)), this, SLOT(updateSize()));
+    res = QObject::connect(this, SIGNAL(itemRemoved(QVariantList)), this, SLOT(updateSize()));
+    res = QObject::connect(this, SIGNAL(itemsChanged(bb::cascades::DataModelChangeType::Type, QSharedPointer<bb::cascades::DataModel::IndexMapper>)),
+            this, SLOT(updateSize()));
+    Q_ASSERT(res);
+}
+
+void PwAttachmentDataModel::updateSize() {
+    if (_size != size()) {
+        _size = size();
+        emit sizeChanged(_size);
+    }
+}
+
+void PwAttachmentDataModel::clear() {
+    int size = this->size();
+    for (int i = 0; i < size; i++) {
+        PwAttachment* att = value(i);
+        att->clear();
+        att->deleteLater();
+    }
+    QListDataModel<PwAttachment*>::clear();
+}
+
+void PwAttachmentDataModel::removeAt(int index) {
+    PwAttachment* att = this->value(index);
+    QListDataModel<PwAttachment*>::removeAt(index);
+    att->clear();
+    att->deleteLater();
+}
+
+/*****************************/
+
 PwEntry::PwEntry(QObject* parent) : QObject(parent), _uuid(), _iconId(0),
         _creationTime(), _lastModificationTime(),
         _lastAccessTime(), _expiryTime(),
@@ -217,13 +261,9 @@ void PwEntry::setParentGroup(PwGroup* parentGroup) {
     }
 }
 
-void PwEntry::addAttachment(PwAttachment* attachment) {
-    int prevSize = _attachmentsDataModel.size();
+bool PwEntry::addAttachment(PwAttachment* attachment) {
     _attachmentsDataModel.append(attachment); // implicitly takes ownership
-    int newSize = _attachmentsDataModel.size();
-    if (newSize != prevSize) {
-        emit attachmentCountChanged(newSize);
-    }
+    return true;
 }
 
 /** Removes the entry from the parent group. Does NOT make a copy in Backup/Recycle bin. */

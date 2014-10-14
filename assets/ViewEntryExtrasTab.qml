@@ -34,18 +34,44 @@ Container {
     }
     Label {
         text: qsTr("There are no attached files.", "Explanation for the empty list of attached files.")
-        visible: entry.attachmentCount == 0
+        visible: (entryFileList.dataModel.size == 0)
     }
     ListView {
+        property bool entryEditable: database.isEditable() && !entry.deleted
+        
+        function removeAttachmentAt(index) {
+            entry.renewTimestamps();
+            entry.backupState();
+            dataModel.removeAt(index);
+            
+            app.restartWatchdog();
+            database.save();
+        }
+        
         id: entryFileList
         dataModel: entry.getAttachmentsDataModel()
-        visible: entry.attachmentCount > 0
+        visible: (entryFileList.dataModel.size > 0)
         listItemComponents: [
             ListItemComponent {
                 StandardListItem {
+                    id: entryFileListItem
                     title: ListItemData.name
                     imageSource: "asset:///images/ic_attach.png" 
                     description: qsTr("%n byte(s)", "File size in bytes; please specify the required plural forms.", ListItemData.size) + Retranslate.onLocaleOrLanguageChanged
+                    contextActions: ActionSet {
+                        title: ListItemData.name
+                        actions: [
+                            DeleteActionItem {
+                                title: qsTr("Remove File", "A button/action to remove/delete the selected file") + Retranslate.onLocaleOrLanguageChanged
+                                enabled: entryFileListItem.ListItem.view.entryEditable
+                                onTriggered: {
+                                    var selIndex = entryFileListItem.ListItem.indexInSection;
+                                    var listView = entryFileListItem.ListItem.view;
+                                    listView.removeAttachmentAt(selIndex);
+                                }
+                            }
+                        ]
+                    }
                 }
             }
         ]

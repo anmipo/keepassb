@@ -16,7 +16,7 @@ const QString METASTREAM_ID_USER = QString("SYSTEM");
 const QString METASTREAM_ID_URL = QString("$");
 const QString METASTREAM_ID_BINDESC = QString("bin-stream");
 
-PwEntryV3::PwEntryV3(QObject* parent) : PwEntry(parent), _binaryDesc(), _binaryData(),
+PwEntryV3::PwEntryV3(QObject* parent) : PwEntry(parent),
         _title(), _userName(), _password(), _url(), _notes() {
     _groupId = 0;
 }
@@ -27,8 +27,6 @@ PwEntryV3::~PwEntryV3() {
 
 void PwEntryV3::clear() {
     _groupId = 0;
-    Util::safeClear(_binaryDesc);
-    Util::safeClear(_binaryData);
     Util::safeClear(_title);
     Util::safeClear(_userName);
     Util::safeClear(_password);
@@ -38,21 +36,39 @@ void PwEntryV3::clear() {
 }
 
 bool PwEntryV3::matchesQuery(const QString& query) const {
-    return PwEntry::matchesQuery(query) ||
-            getBinaryDesc().contains(query, Qt::CaseInsensitive);
+    if (PwEntry::matchesQuery(query))
+        return true;
+    PwAttachment* att = getAttachment();
+    return (att && att->getName().contains(query, Qt::CaseInsensitive));
 }
 
-void PwEntryV3::addAttachment(PwAttachment* attachment) {
+bool PwEntryV3::addAttachment(PwAttachment* attachment) {
+    PwAttachmentDataModel* dataModel = getAttachmentsDataModel();
     // V3 entries can only have one attachment
-    Q_ASSERT(getAttachmentCount() == 0);
-    PwEntry::addAttachment(attachment);
+    if (dataModel->isEmpty()) {
+        PwEntry::addAttachment(attachment);
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/** Returns a PwAttachment object for this entry. If there is none, returns NULL. */
+PwAttachment* PwEntryV3::getAttachment() const {
+    const PwAttachmentDataModel* dataModel = getConstAttachmentsDataModel();
+    if (dataModel->isEmpty()) {
+        return NULL;
+    } else {
+        return dataModel->value(0);
+    }
 }
 
 bool PwEntryV3::isMetaStream() const {
-    if (_notes.isEmpty() || _binaryData.isNull() || _binaryDesc.isEmpty())
+    PwAttachment* att = getAttachment();
+    if (_notes.isEmpty() || !att || att->isEmpty())
         return false;
 
-    bool cond1 = (_binaryDesc == METASTREAM_ID_BINDESC);
+    bool cond1 = (att->getName() == METASTREAM_ID_BINDESC);
     bool cond2 = (_userName == METASTREAM_ID_USER);
     bool cond3 = (_url == METASTREAM_ID_URL);
     bool cond4 = (_title == METASTREAM_ID_TITLE);
@@ -64,20 +80,6 @@ void PwEntryV3::setGroupId(qint32 groupId) {
     if (groupId != _groupId) {
         _groupId = groupId;
         emit groupIdChanged(groupId);
-    }
-}
-
-void PwEntryV3::setBinaryDesc(QString desc) {
-    if (desc != _binaryDesc) {
-        _binaryDesc = desc;
-        emit binaryDescChanged(desc);
-    }
-}
-
-void PwEntryV3::setBinaryData(const QByteArray& data) {
-    if (data != _binaryData) {
-        _binaryData = data;
-        emit binaryDataChanged(data);
     }
 }
 
@@ -124,6 +126,10 @@ void PwEntryV3::setExpiryTime(const QDateTime& time) {
 /** Loads entry fields from the stream. Returns true on success, false in case of error. */
 bool PwEntryV3::readFromStream(QDataStream& stream) {
     clear();
+
+    QByteArray binaryData;
+    QString binaryDesc;
+
     quint16 fieldType;
     qint32 fieldSize;
     while (!stream.atEnd()) {
@@ -169,20 +175,20 @@ bool PwEntryV3::readFromStream(QDataStream& stream) {
             this->setExpiryTime(PwStreamUtilsV3::readTimestamp(stream));
             break;
         case FIELD_BINARY_DESC:
-            this->setBinaryDesc(PwStreamUtilsV3::readString(stream, fieldSize));
+            binaryDesc = PwStreamUtilsV3::readString(stream, fieldSize);
             break;
         case FIELD_BINARY_DATA: {
-            this->setBinaryData(PwStreamUtilsV3::readData(stream, fieldSize));
+            binaryData = PwStreamUtilsV3::readData(stream, fieldSize);
             break;
         }
         case FIELD_END:
             // group fields finished
             stream.skipRawData(fieldSize);
-            if (!this->getBinaryData().isEmpty()) {
+            if (!binaryData.isEmpty()) {
                 // make the binary data available via the common 'attachment' interface
                 PwAttachment* attachment = new PwAttachment(this);
-                attachment->setName(this->getBinaryDesc());
-                attachment->setData(this->getBinaryData(), false);
+                attachment->setName(binaryDesc);
+                attachment->setData(binaryData, false);
                 this->addAttachment(attachment);
             }
             qDebug() << "Load entry: '" << getTitle() << "' groupId:" << getGroupId();
@@ -230,11 +236,18 @@ bool PwEntryV3::writeToStream(QDataStream& stream) {
     stream << FIELD_EXPIRATION_TIME;
     PwStreamUtilsV3::writeTimestamp(stream, getExpiryTime());
 
+    QByteArray binaryData;
+    QString binaryDesc;
+    PwAttachment* att = getAttachment();
+    if (att) {
+        binaryData = att->getData();
+        binaryDesc = att->getName();
+    }
     stream << FIELD_BINARY_DESC;
-    PwStreamUtilsV3::writeString(stream, getBinaryDesc());
+    PwStreamUtilsV3::writeString(stream, binaryDesc);
 
     stream << FIELD_BINARY_DATA;
-    PwStreamUtilsV3::writeData(stream, getBinaryData());
+    PwStreamUtilsV3::writeData(stream, binaryData);
 
     stream << FIELD_END << (qint32)0;
 

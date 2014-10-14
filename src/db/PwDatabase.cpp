@@ -161,6 +161,7 @@ void PwDatabaseFacade::registerQmlTypes() {
     qmlRegisterType<PwEntryV4>("org.keepassb", 1, 0, "PwEntryV4");
     qmlRegisterType<PwExtraField>("org.keepassb", 1, 0, "PwExtraField");
     qmlRegisterType<PwAttachment>("org.keepassb", 1, 0, "PwAttachment");
+    qmlRegisterType<PwAttachmentDataModel>("org.keepassb", 1, 0, "PwAttachmentDataModel");
 }
 
 void PwDatabaseFacade::setLocked(bool locked) {

@@ -16,6 +16,8 @@
 #include <bb/cascades/DataModel>
 #include <bb/cascades/QListDataModel>
 
+using namespace bb::cascades;
+
 /**
  * Binary attachment of a database entry
  */
@@ -24,6 +26,7 @@ class PwAttachment: public QObject {
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
     Q_PROPERTY(int size READ getSize NOTIFY sizeChanged)
 private:
+    bool isInitialized;
     QString name;
     bool isOriginallyCompressed; // 'compressed' flag of the original data
     bool isCompressed;  // lazy-uncompress helper flag
@@ -48,8 +51,14 @@ public:
 
     /** Sets attachment content */
     void setData(const QByteArray& data, const bool isCompressed);
+    QByteArray getData() const { return data; }
 
     void clear();
+
+    /**
+     * Returns true if neither name nor data have been set.
+     */
+    bool isEmpty() const { return !isInitialized; }
 
     // property accessors
     void setName(const QString& name);
@@ -59,6 +68,33 @@ signals:
     void nameChanged(QString);
     void sizeChanged(int);
 };
+
+/*****************************/
+
+class PwAttachmentDataModel: public bb::cascades::QListDataModel<PwAttachment*> {
+    Q_OBJECT
+    Q_PROPERTY(int size READ size NOTIFY sizeChanged)
+private:
+    int _size;
+private slots:
+    void updateSize();
+public:
+    PwAttachmentDataModel(QObject* parent=0);
+    virtual ~PwAttachmentDataModel() {}
+
+    /**
+     * Clears and disposes of each attachment before calling base class' method.
+     */
+    void clear();
+
+    // by default QListDataModel's removeAt is not available to QML, so we expose it
+    Q_INVOKABLE void removeAt(int index);
+
+signals:
+    void sizeChanged(int);
+};
+
+/*****************************/
 
 class PwEntry: public QObject {
 	Q_OBJECT
@@ -76,7 +112,6 @@ class PwEntry: public QObject {
     // indicates whether the entry is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
-    Q_PROPERTY(int attachmentCount READ getAttachmentCount NOTIFY attachmentCountChanged)
 private:
 	PwUuid _uuid;
 	int _iconId;
@@ -87,7 +122,11 @@ private:
     bool _expires;
     bool _deleted;
     PwGroup* _parentGroup;
-    bb::cascades::QListDataModel<PwAttachment*> _attachmentsDataModel;
+    PwAttachmentDataModel _attachmentsDataModel;
+
+protected:
+    // const pointer to attachments' data model for child classes
+    const PwAttachmentDataModel* getConstAttachmentsDataModel() const { return &_attachmentsDataModel; }
 
 public:
 	PwEntry(QObject* parent=0);
@@ -98,8 +137,10 @@ public:
     /** Removes the entry from the parent group. Does NOT make a copy in Backup/Recycle bin. */
     Q_INVOKABLE void deleteWithoutBackup();
 
-	virtual void addAttachment(PwAttachment* attachment);
-    Q_INVOKABLE bb::cascades::DataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
+    /** Adds an attachment, if possible. Returns true if successful. */
+	virtual bool addAttachment(PwAttachment* attachment);
+
+    Q_INVOKABLE PwAttachmentDataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 
     /** Returns a new entry instance with the same field values */
     virtual PwEntry* clone() = 0;
@@ -139,7 +180,6 @@ public:
     void setDeleted(bool deleted);
     PwGroup* getParentGroup() const { return _parentGroup; }
     void setParentGroup(PwGroup* parentGroup);
-    int getAttachmentCount() { return _attachmentsDataModel.size(); }
 	// pure virtual getters/setters
 	virtual QString getTitle() const = 0;
 	virtual void setTitle(const QString& title) = 0;
@@ -174,10 +214,10 @@ signals:
     void expiresChanged(bool);
     void deletedChanged(bool);
     void parentGroupChanged(PwGroup*);
-    void attachmentCountChanged(int);
 };
 
 Q_DECLARE_METATYPE(PwAttachment*);
+Q_DECLARE_METATYPE(PwAttachmentDataModel*);
 Q_DECLARE_METATYPE(PwEntry*);
 
 #endif /* PWENTRY_H_ */

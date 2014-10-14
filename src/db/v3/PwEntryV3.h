@@ -18,8 +18,6 @@ class PwEntryV3: public PwEntry {
     Q_PROPERTY(qint32 groupId READ getGroupId WRITE setGroupId NOTIFY groupIdChanged)
 private:
     qint32 _groupId;
-    QString _binaryDesc;
-    QByteArray _binaryData;
     QString _title;
     QString _userName;
     QString _password;
@@ -43,6 +41,9 @@ private:
     const static quint16 FIELD_BINARY_DATA        = 0x000E;
     const static quint16 FIELD_END                = 0xFFFF;
 
+    /** Returns a PwAttachment object for this entry. If there is none, returns NULL. */
+    PwAttachment* getAttachment() const;
+
 public:
     PwEntryV3(QObject* parent=0);
     virtual ~PwEntryV3();
@@ -60,7 +61,8 @@ public:
     /** Returns a new entry instance with the same field values */
     virtual PwEntry* clone();
 
-    virtual void addAttachment(PwAttachment* attachment);
+    /** Adds an attachment (if there is none already). Returns true if successful. */
+    virtual bool addAttachment(PwAttachment* attachment);
 
     /** Identifies if this entry is a special internal meta-stream data */
     bool isMetaStream() const;
@@ -75,10 +77,6 @@ public:
     // property accessors
     qint32 getGroupId() const { return _groupId; }
     void setGroupId(qint32 groupId);
-    QString getBinaryDesc() const { return _binaryDesc; }
-    void setBinaryDesc(QString desc);
-    QByteArray getBinaryData() const { return _binaryData; }
-    void setBinaryData(const QByteArray& data);
     virtual QString getTitle() const { return _title; }
     virtual void setTitle(const QString& title);
     virtual QString getUserName() const { return _userName; }
@@ -93,8 +91,6 @@ public:
     virtual void setExpiryTime(const QDateTime& time);
 signals:
     void groupIdChanged(qint32 groupId);
-    void binaryDescChanged(QString binaryDesc);
-    void binaryDataChanged(QByteArray binaryData);
     // other ***Changed signals are defined in the parent class
 };
 
