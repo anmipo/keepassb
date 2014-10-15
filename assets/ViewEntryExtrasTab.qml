@@ -21,8 +21,11 @@ Container {
 
     // appends given file to the current entry
     function attachFile(fileName) {
-        // when we are here, we already have user's permission to replace current attachment if necessary 
+        // when we are here, we already have user's permission to replace current attachment if necessary
+        attachmentReadingProgressToast.show(); 
         var success = entry.attachFile(fileName); //append (or replace) file to the entry
+        attachmentReadingProgressToast.cancel();
+         
         addAttachmentToast.success = success;
         addAttachmentToast.show();
         if (success) {
@@ -157,6 +160,11 @@ Container {
                 body: success ? 
                         qsTr("File attached", "A confirmation message once the file has been successfully attached to the entry") :
                         qsTr("Could not attach file", "Error message")
+            },
+            SystemProgressToast {
+                id: attachmentReadingProgressToast
+                progress: -1
+                body: qsTr("Loading file", "Status message about ongoing process") + Retranslate.onLocaleOrLanguageChanged
             },
             SystemDialog {
                 property string fileName
