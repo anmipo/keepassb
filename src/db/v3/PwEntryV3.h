@@ -64,6 +64,14 @@ public:
     /** Adds an attachment (if there is none already). Returns true if successful. */
     virtual bool addAttachment(PwAttachment* attachment);
 
+    /**
+     * Loads the given file and attaches it to the entry.
+     * Makes a backup of the initial entry state.
+     * Replaces the current attachment, if any.
+     * Returns true if successful, false in case of any error.
+     */
+    virtual bool attachFile(const QString& filePath);
+
     /** Identifies if this entry is a special internal meta-stream data */
     bool isMetaStream() const;
 

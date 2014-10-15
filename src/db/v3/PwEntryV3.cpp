@@ -286,3 +286,26 @@ bool PwEntryV3::backupState() {
     PwEntry* entryCopy = this->clone();
     return entryCopy->moveToBackup();
 }
+
+/**
+ * Loads the given file and attaches it to the entry.
+ * Makes a backup of the initial entry state.
+ * Replaces the current attachment, if any.
+ * Returns true if successful, false in case of any error.
+ */
+bool PwEntryV3::attachFile(const QString& filePath) {
+    PwAttachment* newAtt = PwAttachment::createFromFile(filePath);
+    if (!newAtt)
+        return false;
+
+    this->renewTimestamps();
+    this->backupState();
+
+    PwAttachmentDataModel* dataModel = getAttachmentsDataModel();
+    if (!dataModel->isEmpty()) {
+        // V3 allows only one attachment.
+        // QML made sure the user agrees to remove the old one.
+        dataModel->clear();
+    }
+    return addAttachment(newAtt);
+}

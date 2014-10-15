@@ -154,3 +154,13 @@ bool PwEntryV4::backupState() {
     // TODO implement PwEntryV4::backupState()
     return false;
 }
+
+/**
+ * Loads the given file and attaches it to the entry.
+ * Makes a backup of the initial entry state.
+ * Returns true if successful, false in case of any error.
+ */
+bool PwEntryV4::attachFile(const QString& filePath) {
+    // TODO implement PwEntryV4::attachFile
+    return false;
+}

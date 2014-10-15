@@ -45,6 +45,12 @@ public:
     virtual bool matchesQuery(const QString& query) const;
 
     /**
+     * Loads the given file and returns the corresponding PwAttachment instance.
+     * In case of error returns NULL.
+     */
+    static PwAttachment* createFromFile(const QString& filePath);
+
+    /**
      * Stores attachment contents to the specified file (creates or overwrites as necessary)
      */
     Q_INVOKABLE bool saveContentToFile(const QString& fileName);
@@ -139,6 +145,13 @@ public:
 
     /** Adds an attachment, if possible. Returns true if successful. */
 	virtual bool addAttachment(PwAttachment* attachment);
+
+	/**
+	 * Loads the given file and attaches it to the entry.
+     * Makes a backup of the initial entry state.
+	 * Returns true if successful, false in case of any error.
+	 */
+	Q_INVOKABLE virtual bool attachFile(const QString& filePath) = 0;
 
     Q_INVOKABLE PwAttachmentDataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 

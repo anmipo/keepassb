@@ -18,7 +18,7 @@ Page {
     actions: [
         ActionItem {
             id: editEntryAction
-            title: qsTr("Edit", "A button/action to edit an entry") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Edit Entry", "A button/action to edit an entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_edit.png"
             enabled: database.isEditable() && !entry.deleted
             ActionBar.placement: ActionBarPlacement.OnBar
@@ -33,6 +33,17 @@ Page {
                 var editEntryPage = editEntryPageComponent.createObject(viewEntryPage, {"entry": entry});
                 editEntryPage.open();
                 editEntryPage.autofocus();
+            }
+        },
+        ActionItem {
+            id: attachFileAction
+            title: qsTr("Attach File", "A button/action to attach a file to an entry") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_add_attachment.png"
+            enabled: database.isEditable() && !entry.deleted
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                setCurrentView("extra");
+                viewEntryExtrasTab.onAddAttachment();
             }
         },
         DeleteActionItem {

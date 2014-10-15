@@ -87,6 +87,13 @@ public:
      */
     virtual bool backupState();
 
+    /**
+     * Loads the given file and attaches it to the entry.
+     * Makes a backup of the initial entry state.
+     * Returns true if successful, false in case of any error.
+     */
+    virtual bool attachFile(const QString& filePath);
+
     void addExtraField(const QString& name, const QString& value);
     void addHistoryEntry(PwEntryV4* historyEntry);
 

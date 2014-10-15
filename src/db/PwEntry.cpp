@@ -104,6 +104,32 @@ bool PwAttachment::matchesQuery(const QString& query) const {
     return getName().contains(query, Qt::CaseInsensitive);
 }
 
+PwAttachment* PwAttachment::createFromFile(const QString& filePath) {
+    // Load the file to memory
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Cannot open attachment file: '" << filePath << "' Error: " << file.error() << ". Message: " << file.errorString();
+        return NULL;
+    }
+    QByteArray fileData = file.readAll();
+    if (file.error() != QFile::NoError) {
+        qDebug() << "Cannot read attachment file: '" << filePath << "' Error: " << file.error() << ". Message: " << file.errorString();
+        file.close();
+        return NULL;
+    }
+    file.close();
+
+    // allow empty files, since we won't be able to show a meaningful error
+    QFileInfo fileInfo(file);
+    QString fileName = fileInfo.fileName();
+
+    PwAttachment* result = new PwAttachment();
+    // the ownership will be later taken by the data model
+    result->setData(fileData, false);
+    result->setName(fileName);
+
+    return result;
+}
 
 /*****************************/
 
