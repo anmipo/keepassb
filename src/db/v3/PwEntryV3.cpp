@@ -184,7 +184,8 @@ bool PwEntryV3::readFromStream(QDataStream& stream) {
         case FIELD_END:
             // group fields finished
             stream.skipRawData(fieldSize);
-            if (!binaryData.isEmpty()) {
+            bool hasAttachment = (!binaryData.isEmpty() || !binaryDesc.isEmpty());
+            if (hasAttachment) {
                 // make the binary data available via the common 'attachment' interface
                 PwAttachment* attachment = new PwAttachment(this);
                 attachment->setName(binaryDesc);
