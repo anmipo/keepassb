@@ -9,8 +9,6 @@ import bb.cascades.pickers 1.0
 import org.keepassb 1.0
 
 Container {
-    property PwAttachment selectedAttachment
-    property string savedFileName
     property bool hasExtraStrings: (database.getFormatVersion() == 4)
     
     // called when the user wants to attach a file
@@ -98,20 +96,23 @@ Container {
         ]
         onTriggered: {
             var attachment = dataModel.data(indexPath);
-            selectedAttachment = attachment;
+            saveAttachmentFilePicker.attachment = attachment;
             saveAttachmentFilePicker.defaultSaveFileNames = [attachment.name];
             saveAttachmentFilePicker.open();
         }
         attachedObjects: [
             FilePicker {
+                property PwAttachment attachment
+                
                 id: saveAttachmentFilePicker
                 title: qsTr("Save File", "Title of a file saving dialog.") + Retranslate.onLocaleOrLanguageChanged
                 mode: FilePickerMode.Saver
                 type: FileType.Other
                 allowOverwrite: true
                 onFileSelected: {
-                    savedFileName = selectedFiles[0]; // full path
-                    var success = selectedAttachment.saveContentToFile(savedFileName); 
+                    var savedFilePath = selectedFiles[0]; // full path
+                    attachmentFileToast.filePath = savedFilePath 
+                    var success = attachment.saveContentToFile(savedFilePath); 
                     if (success) {
                         attachmentFileToast.body = qsTr("File saved", "A confirmation message once the file has been successfully saved")
                         attachmentFileToast.button.enabled = true;
@@ -146,11 +147,12 @@ Container {
                 }
             },
             SystemToast {
+                property string filePath 
                 id: attachmentFileToast
                 button.label: qsTr("Open", "A button/action which opens (or launches) a file (see related error message with reference INVOKE_ATTACHMENT)") + Retranslate.onLocaleOrLanguageChanged
                 onFinished: {
                     if (value == SystemUiResult.ButtonSelection) {
-                        app.invokeFile("file://" + savedFileName);
+                        app.invokeFile("file://" + filePath);
                     }
                 }
             },
@@ -170,7 +172,7 @@ Container {
                 property string fileName
                 
                 id: singleAttachmentWarningDialog
-                title: qtTr("Warning", "Title of an window with important question") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Warning", "Title of an window with an important notification") + Retranslate.onLocaleOrLanguageChanged
                 body: qsTr("KDB format allows only one attachment per entry. Replace the current attachment?", "KDB is a file format, do not translate") + Retranslate.onLocaleOrLanguageChanged
                 confirmButton.label: qsTr("Replace", "A button/action to confirm that the old attachment should be replaced by the new one") + Retranslate.onLocaleOrLanguageChanged
                 onFinished: {
