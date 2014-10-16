@@ -1,5 +1,6 @@
 import bb.cascades 1.2
 import bb.system 1.2
+import bb.cascades.pickers 1.0
 import org.keepassb 1.0
 
 Sheet {
@@ -15,7 +16,9 @@ Sheet {
                 (entry.userName != usernameField.text) ||
                 (entry.password != passwordField.text) ||
                 (entry.url != urlField.text) ||
-                (entry.notes != notesField.text);
+                (entry.notes != notesField.text) ||
+                (entry.expires != expiryDateEnabledCheckbox.checked) ||
+                (entry.expiryTime != expiryDateField.value);
     }
 
     function saveChanges() {
@@ -33,6 +36,10 @@ Sheet {
         entry.url = urlField.text;
         entry.notes = notesField.text;
         
+        // "expires" must be set after the date, as the former may affect the latter
+        entry.expiryTime = expiryDateField.value;
+        entry.expires = expiryDateEnabledCheckbox.checked;
+         
         database.save();
     }
     function autofocus() {
@@ -183,6 +190,29 @@ Sheet {
                     inputMode: TextAreaInputMode.Text
                     textFormat: TextFormat.Plain
                     textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
+                }
+                Divider{}
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    Label {
+                        text: qsTr("Entry Expires", "On/off option which enables entry expiration deadline") + Retranslate.onLocaleOrLanguageChanged
+                        layoutProperties: StackLayoutProperties {
+                            spaceQuota: 1
+                        }
+                    }
+                    ToggleButton {
+                        id: expiryDateEnabledCheckbox
+                        checked: entry.expires
+                    }
+                }
+                DateTimePicker {
+                    id: expiryDateField
+                    title: qsTr("Expiry Date", "Label of the entry expiration/best before date") + Retranslate.onLocaleOrLanguageChanged
+                    mode: DateTimePickerMode.Date
+                    enabled: expiryDateEnabledCheckbox.checked
+                    value: entry.expiryTime
                 }
             }
         }

@@ -96,6 +96,7 @@ public:
     virtual QString getNotes() const { return _notes; }
     virtual void setNotes(const QString& notes);
     // override to handle the "Never" magic const
+    virtual void setExpires(bool expires);
     virtual void setExpiryTime(const QDateTime& time);
 signals:
     void groupIdChanged(qint32 groupId);

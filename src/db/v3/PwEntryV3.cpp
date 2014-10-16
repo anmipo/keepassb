@@ -120,7 +120,14 @@ void PwEntryV3::setNotes(const QString& notes) {
 
 void PwEntryV3::setExpiryTime(const QDateTime& time) {
     PwEntry::setExpiryTime(time);
-    setExpires(time != PwDatabaseV3::EXPIRY_DATE_NEVER);
+    PwEntry::setExpires(time != PwDatabaseV3::EXPIRY_DATE_NEVER);
+}
+
+void PwEntryV3::setExpires(bool expires) {
+    PwEntry::setExpires(expires);
+    if (!expires) {
+        PwEntry::setExpiryTime(PwDatabaseV3::EXPIRY_DATE_NEVER);
+    }
 }
 
 /** Loads entry fields from the stream. Returns true on success, false in case of error. */
