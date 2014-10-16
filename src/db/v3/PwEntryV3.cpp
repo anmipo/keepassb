@@ -285,6 +285,8 @@ PwEntry* PwEntryV3::clone() {
 bool PwEntryV3::backupState() {
     // KeePass 1 backups entry state by copying the whole entry to the Backup group.
     PwEntry* entryCopy = this->clone();
+    // Backup copies must have unique IDs, so make one
+    entryCopy->setUuid(PwUuid::create());
     return entryCopy->moveToBackup();
 }
 
