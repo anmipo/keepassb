@@ -56,8 +56,13 @@ PwEntry* PwGroupV3::createEntry() {
     PwEntryV3* newEntry = new PwEntryV3(this);
     newEntry->setUuid(PwUuid::create());
 
-    // inherit the icon and recycled status
-    newEntry->setIconId(this->getIconId());
+    // inherit the icon (or use default for default)
+    int newEntryIcon = this->getIconId();
+    if (newEntryIcon == PwGroup::DEFAULT_ICON_ID)
+        newEntryIcon = PwEntry::DEFAULT_ICON_ID;
+    newEntry->setIconId(newEntryIcon);
+
+    // inherit the recycled status
     newEntry->setDeleted(this->isDeleted());
 
     // set times

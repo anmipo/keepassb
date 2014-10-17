@@ -16,6 +16,7 @@
 #include "util/Settings.h"
 #include "util/Util.h"
 
+const int PwGroup::DEFAULT_ICON_ID = 48; // "folder"
 
 PwGroup::PwGroup(QObject* parent) :
         bb::cascades::DataModel(parent), _database(NULL), _uuid(),
@@ -236,7 +237,6 @@ void PwGroup::renewTimestamps() {
 // matches signatures of the itemsChanged() signal with the itemsCountChanged()
 void PwGroup::itemsCountChangedAdapter(DataModelChangeType::Type changeType) {
     if (changeType != DataModelChangeType::Update) {
-        qDebug() << "items count changed:" << immediateChildCount();
         emit itemsCountChanged(immediateChildCount());
     }
 }

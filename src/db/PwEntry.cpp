@@ -13,6 +13,8 @@
 #include "db/PwDatabase.h"
 
 
+const int PwEntry::DEFAULT_ICON_ID = 0; // "key"
+
 /*****************************/
 
 PwAttachment::PwAttachment(QObject* parent) :

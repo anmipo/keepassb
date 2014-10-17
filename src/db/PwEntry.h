@@ -135,6 +135,8 @@ protected:
     const PwAttachmentDataModel* getConstAttachmentsDataModel() const { return &_attachmentsDataModel; }
 
 public:
+    static const int DEFAULT_ICON_ID;
+
 	PwEntry(QObject* parent=0);
 	virtual ~PwEntry();
 

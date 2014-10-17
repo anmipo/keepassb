@@ -389,6 +389,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
     PwGroupV3* rootGroupV3 = new PwGroupV3();
     rootGroupV3->setDatabase(this);
     rootGroupV3->setLevel(-1); // because its children should have level 0
+    rootGroupV3->setIconId(PwGroup::DEFAULT_ICON_ID); // created subgroups will use this icon
     // give the "virtual" root group some meaningful name
     rootGroupV3->setName(getDatabaseFileName());
     _rootGroup = rootGroupV3;
