@@ -11,6 +11,12 @@ Sheet {
 
     // Checks if the user edited any of the fields
     function isModified() {
+        var oldExpDate = entry.expiryTime;
+        var newExpDate = expiryDateField.value;
+        var expiryDateChanged = 
+                (oldExpDate.getYear()  != newExpDate.getYear()) || 
+                (oldExpDate.getMonth() != newExpDate.getMonth()) || 
+                (oldExpDate.getDay()   != newExpDate.getDay()); 
         return (entry.iconId != iconId) || 
                 (entry.title != titleField.text) ||
                 (entry.userName != usernameField.text) ||
@@ -18,7 +24,7 @@ Sheet {
                 (entry.url != urlField.text) ||
                 (entry.notes != notesField.text) ||
                 (entry.expires != expiryDateEnabledCheckbox.checked) ||
-                (entry.expiryTime != expiryDateField.value);
+                expiryDateChanged;
     }
 
     function saveChanges() {
@@ -36,10 +42,17 @@ Sheet {
         entry.url = urlField.text;
         entry.notes = notesField.text;
         
-        // "expires" must be set after the date, as the former may affect the latter
-        entry.expiryTime = expiryDateField.value;
+        var expiryTime = expiryDateField.value;
+        // expiryDateField resets time to 00:00, so we re-assign the time part to original.
+        expiryTime.setHours(entry.expiryTime.getHours());
+        expiryTime.setMinutes(entry.expiryTime.getMinutes());
+        expiryTime.setSeconds(entry.expiryTime.getSeconds());
+        entry.expiryTime = expiryTime;
+        
+        // "expires" must be set after the date, as the flag may affect the timestamp.
+        // In particular, it will reset the date/time to EXPIRY_DATE_NEVER (if expires is false) 
         entry.expires = expiryDateEnabledCheckbox.checked;
-         
+
         database.save();
     }
     function autofocus() {
