@@ -313,6 +313,18 @@ Q_INVOKABLE QString PwDatabaseFacade::getDatabaseFilePath() const {
     }
 }
 
+/** Returns a timestamped backup file path for the given DB file path. */
+QString PwDatabaseFacade::makeBackupFilePath(QString dbFilePath) {
+    QString timestamp = QDateTime::currentDateTimeUtc().toString("yyyy-MM-ddThhmmss");
+    if (dbFilePath.endsWith(".kdbx") || dbFilePath.endsWith(".kdb")) {
+        int pos = dbFilePath.lastIndexOf(".");
+        return dbFilePath.insert(pos, "_" + timestamp + ".bak");
+    } else {
+        // unknown file extension (or none) - so just append the timestamp
+        return dbFilePath + "_" + timestamp + ".bak";
+    }
+}
+
 /**
  * Saves changes in the current database.
  */
@@ -360,7 +372,7 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
     QFile origDbFile(db->getDatabaseFilePath());
     if (Settings::instance()->isBackupDatabaseOnSave()) {
         // rename the original DB to a timestamped backup
-        QString bakFileName = db->getDatabaseFilePath() + "_" + QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd-hh.mm.ss") + ".bak";
+        QString bakFileName = makeBackupFilePath(db->getDatabaseFilePath());
         if (!origDbFile.rename(bakFileName)) {
             qDebug() << "Failed to backup the original DB" << origDbFile.errorString();
             emit fileSaveError(tr("Cannot backup database file. Saving cancelled.", "An error message: failed to make a backup copy of the database file."), origDbFile.errorString());

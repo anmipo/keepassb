@@ -144,6 +144,9 @@ private:
     // Clears the current DB instance and search results, if any.
     void clear();
 
+    /** Returns a timestamped backup file path for the given DB file path. */
+    static QString makeBackupFilePath(QString dbFilePath);
+
     void setLocked(bool locked);
 private slots:
     // called whenever the contained DB locks/unlocks
