@@ -157,7 +157,6 @@ bool PwGroupV3::readFromStream(QDataStream& stream) {
             if ((this->getLevel() == 0) && (BACKUP_GROUP_NAME == this->getName())) {
                 this->setDeleted(true);
             }
-            qDebug() << "Load group: '" << getName() << "' id:" << getId();
             return true;
         }
     }
@@ -196,7 +195,6 @@ bool PwGroupV3::writeToStream(QDataStream& stream) {
 
     stream << FIELD_END << (qint32)0;
 
-    qDebug() << "Save group: '" << getName() << "' id:" << getId();
     return (stream.status() == QDataStream::Ok);
 }
 
