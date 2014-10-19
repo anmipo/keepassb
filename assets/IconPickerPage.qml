@@ -6,11 +6,17 @@ Sheet {
     signal iconPicked(int iconId)
     
     onCreationCompleted: {
-        database.dbLocked.connect(function() {
-                // close without saving when DB is being locked
-                iconPickerSheet.close();
-        });
+        // close without saving when DB is being locked
+        database.dbLocked.connect(_close);
     }
+    onClosed: {
+        database.dbLocked.disconnect(_close);
+        destroy();
+    }
+    function _close() {
+        close();
+    }
+
     Page {
         titleBar: TitleBar {
             title: qsTr("Choose Icon", "Title of a page for selecting an icon image") + Retranslate.onLocaleOrLanguageChanged

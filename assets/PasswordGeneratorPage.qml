@@ -36,15 +36,20 @@ Sheet {
     }
     
     onCreationCompleted: {
-        database.dbLocked.connect(function() {
-                // close without saving when DB is being locked
-                pwGenSheet.close();
-            });
+        // close without saving when DB is being locked
+        database.dbLocked.connect(_close);
         updatePassword();
     }
+    
     onClosed: {
+        database.dbLocked.disconnect(_close);
         destroy();
     }
+    
+    function _close() {
+        close();
+    }
+    
     Page {
         titleBar: TitleBar {
             title: qsTr("Password Generator", "Title of a page which helps the user to create random passwords")

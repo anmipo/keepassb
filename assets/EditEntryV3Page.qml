@@ -76,14 +76,17 @@ Sheet {
     
     onCreationCompleted: {
         // close without saving when DB is being locked
-        database.dbLocked.connect(function() {
-                //FIXME delete created entry, if needed (but should be before dbLocked)
-                entryEditSheet.close();
-            });
+        database.dbLocked.connect(_close);
     }
     onClosed: {
+        database.dbLocked.disconnect(_close);
         destroy();
     }
+    
+    function _close() {
+        close();
+    }
+    
     Page {
         titleBar: TitleBar {
             title: qsTr("Edit Entry", "Title of a dialog box") + Retranslate.onLocaleOrLanguageChanged
@@ -143,7 +146,7 @@ Sheet {
                             spaceQuota: 1.0
                         }
                         onClicked: {
-                            var iconPickerSheet = iconPickerSheetComponent.createObject(this);
+                            var iconPickerSheet = iconPickerSheetComponent.createObject(entryEditSheet);
                             iconPickerSheet.iconPicked.connect(updateIconId);
                             iconPickerSheet.open();
                         }
@@ -176,7 +179,7 @@ Sheet {
                         verticalAlignment: VerticalAlignment.Top
                         horizontalAlignment: HorizontalAlignment.Right
                         onClicked: {
-                            var generatorSheet = passwordGeneratorSheetComponent.createObject(this);
+                            var generatorSheet = passwordGeneratorSheetComponent.createObject(entryEditSheet);
                             generatorSheet.newPasswordReady.connect(updatePassword);
                             generatorSheet.open();
                         }

@@ -39,14 +39,17 @@ Sheet {
     }
 
     onCreationCompleted: {
-        database.dbLocked.connect(function() {
-                // close without saving when DB is being locked
-                editGroupSheet.close();
-            });
+        // close without saving when DB is being locked
+        database.dbLocked.connect(_close);
     }
     onClosed: {
+        database.dbLocked.disconnect(_close);
         destroy();
     }
+    function _close() {
+        close();
+    }
+
     Page {
         titleBar: TitleBar {
             title: qsTr("Edit Group", "Title of a page for editing group properties") + Retranslate.onLocaleOrLanguageChanged
@@ -123,7 +126,7 @@ Sheet {
                         spaceQuota: 1.0
                     }
                     onClicked: {
-                        var iconPickerSheet = iconPickerSheetComponent.createObject(this);
+                        var iconPickerSheet = iconPickerSheetComponent.createObject(editGroupSheet);
                         iconPickerSheet.iconPicked.connect(updateIconId);
                         iconPickerSheet.open();
                     }
