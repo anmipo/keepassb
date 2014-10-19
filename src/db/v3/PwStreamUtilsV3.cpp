@@ -23,7 +23,7 @@ QDateTime PwStreamUtilsV3::readTimestamp(QDataStream& stream) {
     int second = dw5 & 0x0000003F; // 18
     QTime time(hour, minute, second, 0);
 
-    QDateTime result(date, time, Qt::UTC);
+    QDateTime result(date, time, Qt::LocalTime);
     return result;
 }
 

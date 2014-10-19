@@ -31,7 +31,7 @@ const int INITIAL_VECTOR_SIZE = 16;
 const int CONTENT_HASH_SIZE = 32;
 const int TRANSFORM_SEED_SIZE = 32;
 
-const QDateTime PwDatabaseV3::EXPIRY_DATE_NEVER = QDateTime(QDate(2999, 12, 28), QTime(23, 59, 59, 0), Qt::UTC);
+const QDateTime PwDatabaseV3::EXPIRY_DATE_NEVER = QDateTime(QDate(2999, 12, 28), QTime(23, 59, 59, 0), Qt::LocalTime);
 
 
 PwHeaderV3::PwHeaderV3(QObject* parent) : QObject(parent),
