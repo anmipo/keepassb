@@ -37,7 +37,7 @@ Page {
                         //description: Common.getEntryDescription(ListItemData)
                         description: qsTr("Group: %1", "Describes the group of the selected entry. Example: 'Group:  Internet'").arg(ListItemData.parentGroup.name)
                         imageSpaceReserved: true
-                        imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
+                        imageSource: ListItemData.isExpired() ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                     }
                 }
             ]
