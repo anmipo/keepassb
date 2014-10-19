@@ -120,6 +120,11 @@ public:
      */
     Q_INVOKABLE virtual PwGroup* createGroup() { return NULL; }
 
+    /**
+     * Returns true if the group has expired.
+     */
+    Q_INVOKABLE virtual bool isExpired() const;
+
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();
 

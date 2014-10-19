@@ -227,6 +227,10 @@ void PwEntry::renewTimestamps() {
     setLastModificationTime(now);
 }
 
+bool PwEntry::isExpired() const {
+    return (QDateTime::currentDateTime() > getExpiryTime());
+}
+
 void PwEntry::setUuid(const PwUuid& uuid) {
     if (uuid != _uuid) {
         _uuid = uuid;

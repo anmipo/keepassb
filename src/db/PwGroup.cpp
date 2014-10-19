@@ -227,6 +227,13 @@ QString PwGroup::toString() const {
     return "PwGroup[" + _name + "]";
 }
 
+/**
+ * Returns true if the group has expired.
+ */
+bool PwGroup::isExpired() const {
+    return (QDateTime::currentDateTime() > getExpiryTime());
+}
+
 /** Updates modification and last access timestamps to current time */
 void PwGroup::renewTimestamps() {
     QDateTime now = QDateTime::currentDateTime();

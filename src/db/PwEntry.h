@@ -173,6 +173,11 @@ public:
      */
     Q_INVOKABLE virtual bool moveToBackup();
 
+    /**
+     * Returns true if the entry has expired.
+     */
+    Q_INVOKABLE virtual bool isExpired() const;
+
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();
 

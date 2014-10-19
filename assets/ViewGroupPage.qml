@@ -188,9 +188,15 @@ Page {
                 
                 function showEditGroupDialog(selGroup) {
                     var editGroupPageComponent = Qt.createComponent("EditGroupPage.qml");
-                    var editGroupSheet = editGroupPageComponent.createObject(this, {"group": selGroup});
+                    var editGroupSheet = editGroupPageComponent.createObject(viewGroupPage, {"group": selGroup});
                     editGroupSheet.open();
                     editGroupSheet.autofocus();
+                }
+                function showEditEntryDialog(selEntry) {
+                    var editEntryPageComponent = Qt.createComponent("EditEntryV3Page.qml");
+                    var editEntrySheet = editEntryPageComponent.createObject(viewGroupPage, {"entry": selEntry});
+                    editEntrySheet.open();
+                    editEntrySheet.autofocus()
                 }
                 function confirmDeleteGroup(selGroup) {
                     deleteGroupConfirmationDialog.targetGroup = selGroup;
@@ -235,7 +241,7 @@ Page {
                             title: ListItemData.title
                             description: Common.getEntryDescription(ListItemData)
                             imageSpaceReserved: true
-                            imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
+                            imageSource: ListItemData.isExpired() ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                             contextActions: ActionSet {
                                 title: ListItemData.title
                                 actions: [
@@ -251,6 +257,14 @@ Page {
                                         imageSource: "asset:///images/ic_copy_password.png"
                                         onTriggered: {
                                             Qt.app.copyWithTimeout(ListItemData.password);
+                                        }
+                                    },
+                                    ActionItem {
+                                        title: qsTr("Edit Entry", "A button/action to edit the selected entry") + Retranslate.onLocaleOrLanguageChanged
+                                        imageSource: "asset:///images/ic_edit.png"
+                                        enabled: Qt.database.isEditable() && !ListItemData.deleted 
+                                        onTriggered: {
+                                            groupListEntryItem.ListItem.view.showEditEntryDialog(ListItemData);
                                         }
                                     },
                                     DeleteActionItem {
@@ -275,7 +289,7 @@ Page {
                                     orientation: LayoutOrientation.LeftToRight
                                 }
                                 ImageView {
-                                    imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
+                                    imageSource: ListItemData.isExpired() ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                                     horizontalAlignment: HorizontalAlignment.Left
                                     verticalAlignment: VerticalAlignment.Center
                                 }
