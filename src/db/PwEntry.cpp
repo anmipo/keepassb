@@ -228,7 +228,7 @@ void PwEntry::renewTimestamps() {
 }
 
 bool PwEntry::isExpired() const {
-    return (QDateTime::currentDateTime() > getExpiryTime());
+    return isExpires() && (QDateTime::currentDateTime() > getExpiryTime());
 }
 
 void PwEntry::setUuid(const PwUuid& uuid) {

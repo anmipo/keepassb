@@ -231,7 +231,7 @@ QString PwGroup::toString() const {
  * Returns true if the group has expired.
  */
 bool PwGroup::isExpired() const {
-    return (QDateTime::currentDateTime() > getExpiryTime());
+    return isExpires() && (QDateTime::currentDateTime() > getExpiryTime());
 }
 
 /** Updates modification and last access timestamps to current time */
