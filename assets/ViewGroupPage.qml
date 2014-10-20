@@ -241,7 +241,7 @@ Page {
                             title: ListItemData.title
                             description: Common.getEntryDescription(ListItemData)
                             imageSpaceReserved: true
-                            imageSource: ListItemData.isExpired() ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
+                            imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                             contextActions: ActionSet {
                                 title: ListItemData.title
                                 actions: [
@@ -289,7 +289,7 @@ Page {
                                     orientation: LayoutOrientation.LeftToRight
                                 }
                                 ImageView {
-                                    imageSource: ListItemData.isExpired() ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
+                                    imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                                     horizontalAlignment: HorizontalAlignment.Left
                                     verticalAlignment: VerticalAlignment.Center
                                 }

@@ -267,8 +267,12 @@ void PwEntry::setLastAccessTime(const QDateTime& time) {
 
 void PwEntry::setExpiryTime(const QDateTime& time) {
     if (time != _expiryTime) {
+        bool wasExpired = isExpired();
         _expiryTime = time;
         emit expiryTimeChanged(time);
+        if (wasExpired != isExpired()) {
+            emit expiredChanged(isExpired());
+        }
     }
 }
 
@@ -281,8 +285,12 @@ void PwEntry::setDeleted(bool deleted) {
 
 void PwEntry::setExpires(bool expires) {
     if (expires != _expires) {
+        bool wasExpired = isExpired();
         _expires = expires;
         emit expiresChanged(expires);
+        if (wasExpired != isExpired()) {
+            emit expiredChanged(isExpired());
+        }
     }
 }
 

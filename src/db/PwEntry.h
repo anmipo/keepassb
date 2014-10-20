@@ -114,7 +114,10 @@ class PwEntry: public QObject {
 	Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
 	Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
 	Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
+	// defines whether the entry can expire
 	Q_PROPERTY(bool expires READ isExpires WRITE setExpires NOTIFY expiresChanged)
+	// indicates whether the entry has already expired (change signal is linked with expiryTime changes)
+	Q_PROPERTY(bool expired READ isExpired NOTIFY expiredChanged)
     // indicates whether the entry is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
@@ -173,11 +176,6 @@ public:
      */
     Q_INVOKABLE virtual bool moveToBackup();
 
-    /**
-     * Returns true if the entry has expired.
-     */
-    Q_INVOKABLE virtual bool isExpired() const;
-
     /** Updates modification and last access timestamps to current time */
     Q_INVOKABLE void renewTimestamps();
 
@@ -196,6 +194,7 @@ public:
     virtual void setExpiryTime(const QDateTime& time);
     virtual bool isExpires() const { return _expires; }
     virtual void setExpires(bool expires);
+    virtual bool isExpired() const;
     bool isDeleted() const { return _deleted; }
     void setDeleted(bool deleted);
     PwGroup* getParentGroup() const { return _parentGroup; }
@@ -232,6 +231,7 @@ signals:
     void lastAccessTimeChanged(QDateTime);
     void expiryTimeChanged(QDateTime);
     void expiresChanged(bool);
+    void expiredChanged(bool);
     void deletedChanged(bool);
     void parentGroupChanged(PwGroup*);
 };
