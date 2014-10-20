@@ -228,7 +228,7 @@ Sheet {
                     title: qsTr("Expiry Date", "Label of the entry expiration/best before date") + Retranslate.onLocaleOrLanguageChanged
                     mode: DateTimePickerMode.Date
                     enabled: expiryDateEnabledCheckbox.checked
-                    value: entry.expiryTime
+                    value: Qt.formatDateTime(entry.expiryTime, "yyyy-MM-dd") // must remove time, otherwise 23:59:59 rounds up to next day
                 }
             }
         }
