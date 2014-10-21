@@ -26,6 +26,9 @@ Page {
         }
     ]
     Container {
+        onTouchCapture: {
+            app.restartWatchdog();
+        }
         layout: DockLayout { }
         ScrollView {
             verticalAlignment: VerticalAlignment.Top

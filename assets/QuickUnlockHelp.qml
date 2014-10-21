@@ -9,6 +9,9 @@ Page {
     ScrollView {
         scrollRole: ScrollRole.Main
         Container {
+            onTouchCapture: {
+                app.restartWatchdog();
+            }
             topPadding: 20
             leftPadding: 20
             rightPadding: 20

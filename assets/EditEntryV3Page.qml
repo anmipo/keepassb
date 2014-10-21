@@ -206,6 +206,9 @@ Sheet {
                     inputMode: TextAreaInputMode.Text
                     textFormat: TextFormat.Plain
                     textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
+                    onTextChanging: {
+                        app.restartWatchdog();
+                    }
                 }
                 Divider{}
                 Container {
