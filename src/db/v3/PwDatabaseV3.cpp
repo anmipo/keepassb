@@ -538,20 +538,20 @@ qint32 PwDatabaseV3::createNewGroupId() {
     getRootGroup()->getAllChildren(groups, entries);
 
     qint32 candidateId;
-    bool isUnique = false;
     PwGroupV3* groupV3;
+    bool isUnique = false;
     while (!isUnique) {
         candidateId = qrand();
-        for (int i = 0; i < groups.size(); i++)
+        for (int i = 0; i < groups.size(); i++) {
             groupV3 = dynamic_cast<PwGroupV3*>(groups.at(i));
             if (candidateId == groupV3->getId()) {
                 continue;
             }
+        }
         isUnique = true;
     }
     groups.clear();
     entries.clear();
-
     return candidateId;
 }
 
