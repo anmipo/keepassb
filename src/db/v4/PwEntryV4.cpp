@@ -162,5 +162,6 @@ bool PwEntryV4::backupState() {
  */
 bool PwEntryV4::attachFile(const QString& filePath) {
     // TODO implement PwEntryV4::attachFile
+    Q_UNUSED(filePath);
     return false;
 }

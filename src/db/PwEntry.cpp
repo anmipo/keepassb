@@ -139,12 +139,12 @@ PwAttachmentDataModel::PwAttachmentDataModel(QObject* parent) : QListDataModel<P
     setParent(parent);
     _size = 0;
 
-    bool res = QObject::connect(this, SIGNAL(itemAdded(QVariantList)), this, SLOT(updateSize()));
-    res = QObject::connect(this, SIGNAL(itemUpdated(QVariantList)), this, SLOT(updateSize()));
-    res = QObject::connect(this, SIGNAL(itemRemoved(QVariantList)), this, SLOT(updateSize()));
+    bool res = QObject::connect(this, SIGNAL(itemAdded(QVariantList)), this, SLOT(updateSize())); Q_ASSERT(res);
+    res = QObject::connect(this, SIGNAL(itemUpdated(QVariantList)), this, SLOT(updateSize())); Q_ASSERT(res);
+    res = QObject::connect(this, SIGNAL(itemRemoved(QVariantList)), this, SLOT(updateSize())); Q_ASSERT(res);
     res = QObject::connect(this, SIGNAL(itemsChanged(bb::cascades::DataModelChangeType::Type, QSharedPointer<bb::cascades::DataModel::IndexMapper>)),
-            this, SLOT(updateSize()));
-    Q_ASSERT(res);
+            this, SLOT(updateSize())); Q_ASSERT(res);
+    Q_UNUSED(res);
 }
 
 void PwAttachmentDataModel::updateSize() {

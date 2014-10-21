@@ -37,6 +37,7 @@ Q_DECL_EXPORT int main(int argc, char **argv)
             &invokeManager, SIGNAL(invoked(const bb::system::InvokeRequest&)),
             appUi, SLOT(onInvoke(const bb::system::InvokeRequest&)));
     Q_ASSERT(res);
+    Q_UNUSED(res);
 
     // Enter the application main event loop.
     return Application::exec();
