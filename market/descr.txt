@@ -40,6 +40,12 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
 
 Changelog:
+v2.2.0
+Added v1/kdb editing support (beta): groups, entries, icons, attached files. The database is automatically backed up before saving (configurable option, enabled by default).
+Added password generator
+Added database unlocking with a key file only (no password)
+Expired entries are shown with a special red "X" icon
+
 v2.1.2 beta
 Fixed the "Unsupported database version" error occuring with some v2 (.kdbx) databases. 
 
