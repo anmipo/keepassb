@@ -177,12 +177,10 @@ void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, c
 
 bool PwDatabaseV3::buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const {
     CryptoManager* cm = CryptoManager::instance();
-
     int err;
     // if no key file were supplied, the keyFileData will be empty
-    if (keyFileData.isEmpty()) {
-        err = cm->sha256(passwordKey, combinedKey);
-    } else {
+    if (!passwordKey.isEmpty() && !keyFileData.isEmpty()) {
+        qDebug() << "using password and key file";
         QByteArray passwordHash, fKey;
         err = cm->sha256(passwordKey, passwordHash);
         if (err != SB_SUCCESS)
@@ -193,8 +191,18 @@ bool PwDatabaseV3::buildCompositeKey(const QByteArray& passwordKey, const QByteA
         passwordHash.append(fKey);
 
         err = cm->sha256(passwordHash, combinedKey);
+        return (err == SB_SUCCESS);
+    } else if (keyFileData.isEmpty()) {
+        qDebug() << "using password only";
+        err = cm->sha256(passwordKey, combinedKey);
+        return (err == SB_SUCCESS);
+    } else if (passwordKey.isEmpty()) {
+        qDebug() << "using key file only";
+        return processKeyFile(keyFileData, combinedKey);
+    } else {
+        qDebug() << "empty keys provided (should not happen)";
+        return false;
     }
-    return (err == SB_SUCCESS);
 }
 
 bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {

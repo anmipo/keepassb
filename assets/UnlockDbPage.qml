@@ -298,6 +298,13 @@ Page {
                     enableQuickUnlock.checked = false;
                 } else {
                     var password = passwordEdit.text;
+                    
+                    if ((password.length == 0) && (keyFilePath.length == 0)) {
+                        dbErrorToast.body = qsTr("Please provide a password or a key file.", "Notification message when the user tries to open a database without providing any credentials"); 
+                        dbErrorToast.show();
+                        return;
+                    }
+                    
                     // disable Quick Unlock when using only key file
                     if (password.length == 0) {
                         appSettings.quickUnlockEnabled = false;
