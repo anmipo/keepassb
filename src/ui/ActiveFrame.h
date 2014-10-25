@@ -11,6 +11,7 @@
 #define ACTIVEFRAME_H_
 
 #include <bb/cascades/SceneCover>
+#include "db/PwDatabase.h"
 
 namespace bb {
     namespace cascades {
@@ -20,7 +21,7 @@ namespace bb {
 
 class ActiveFrame : public bb::cascades::SceneCover {
 public:
-    ActiveFrame(QObject* parent=0);
+    ActiveFrame(QObject* parent, PwDatabaseFacade* database);
 };
 
 #endif /* ACTIVEFRAME_H_ */

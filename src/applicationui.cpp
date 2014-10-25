@@ -53,10 +53,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     passwordGenerator = PasswordGenerator::instance();
     passwordGenerator->setParent(app);
 
-    Application::instance()->setCover(new ActiveFrame(app));
-    res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
-
     database = new PwDatabaseFacade(this);
+
+    Application::instance()->setCover(new ActiveFrame(app, database));
+    res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
 
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
