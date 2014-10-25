@@ -1,5 +1,5 @@
 1
-270
+272
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -9,6 +9,8 @@ EditEntryV3Page.qml
 EditGroupPage.qml
 IconPickerPage.qml
 icons_data_model.xml
+images/cover-locked.png
+images/cover-unlocked.png
 images/cover.png
 images/ic_about.png
 images/ic_add_attachment.png
