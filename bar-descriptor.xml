@@ -102,7 +102,7 @@
 			<action>bb.action.OPEN</action>
 			<mime-type>*</mime-type>
 			<property var="uris" value="file://"/>
-			<property var="exts" value="kdbx"/>
+			<property var="exts" value="kdb,kdbx"/>
 		</filter>
 	</invoke-target>
 </qnx>
