@@ -1097,7 +1097,7 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryGeneralTab.qml" line="54"/>
+        <location filename="../assets/ViewEntryGeneralTab.qml" line="55"/>
         <source>Notes</source>
         <comment>Label of the entry field containing comments or additional text information.</comment>
         <translation type="unfinished"></translation>
