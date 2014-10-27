@@ -51,6 +51,7 @@ ScrollView {
         }
         LabelTextButton {
             id: notesText
+            autoSize.maxLineCount: -1
             labelText: qsTr("Notes", "Label of the entry field containing comments or additional text information.") + Retranslate.onLocaleOrLanguageChanged
             valueText: entry.notes
         }

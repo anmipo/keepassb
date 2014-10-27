@@ -7,6 +7,7 @@ Container {
     property alias inputMode: edit.inputMode
     // sets visibility of the "show/hide password" switch  
     property bool passwordMasking: false
+    property alias autoSize: edit.autoSize
     
     leftMargin: 10
     topMargin: 10
