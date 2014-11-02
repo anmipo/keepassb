@@ -309,7 +309,7 @@ Page {
                 Label {
                     horizontalAlignment: HorizontalAlignment.Left
                     verticalAlignment: VerticalAlignment.Center
-                    text: qsTr("Search in deleted entries", "An on/off setting which defines whether the Search should look into entries marked as deleted.") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Search in Deleted Entries", "An on/off setting which defines whether the Search should look into entries marked as deleted.") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     multiline: true
                     layoutProperties: StackLayoutProperties {
