@@ -15,12 +15,51 @@
 #include "huaes.h"
 #include "db/PwUuid.h"
 #include "util/Util.h"
+#include "db/v4/PwStreamUtilsV4.h"
 
 // KeePass2 XML tag names
 const QString XML_META = QString("Meta");
 const QString XML_ROOT = QString("Root");
 const QString XML_GROUP = QString("Group");
 const QString XML_ENTRY = QString("Entry");
+
+const QString XML_GENERATOR                       = QString("Generator");
+const QString XML_DATABASE_NAME                   = QString("DatabaseName");
+const QString XML_DATABASE_NAME_CHANGED           = QString("DatabaseNameChanged");
+const QString XML_DATABASE_DESCRIPTION            = QString("DatabaseDescription");
+const QString XML_DATABASE_DESCRIPTION_CHANGED    = QString("DatabaseDescriptionChanged");
+const QString XML_DEFAULT_USERNAME                = QString("DefaultUserName");
+const QString XML_DEFAULT_USERNAME_CHANGED        = QString("DefaultUserNameChanged");
+const QString XML_MAINTENANCE_HISTORY_DAYS        = QString("MaintenanceHistoryDays");
+const QString XML_COLOR                           = QString("Color");
+const QString XML_MASTER_KEY_CHANGED              = QString("MasterKeyChanged");
+const QString XML_MASTER_KEY_CHANGE_REC           = QString("MasterKeyChangeRec");
+const QString XML_MASTER_KEY_CHANGE_FORCE         = QString("MasterKeyChangeForce");
+const QString XML_MEMORY_PROTECTION               = QString("MemoryProtection");
+const QString XML_MEMORY_PROTECTION_PROTECT_TITLE = QString("ProtectTitle");
+const QString XML_MEMORY_PROTECTION_PROTECT_USERNAME = QString("ProtectUserName");
+const QString XML_MEMORY_PROTECTION_PROTECT_PASSWORD = QString("ProtectPassword");
+const QString XML_MEMORY_PROTECTION_PROTECT_URL   = QString("ProtectURL");
+const QString XML_MEMORY_PROTECTION_PROTECT_NOTES = QString("ProtectNotes");
+const QString XML_RECYCLE_BIN_ENABLED             = QString("RecycleBinEnabled");
+const QString XML_RECYCLE_BIN_UUID                = QString("RecycleBinUUID");
+const QString XML_RECYCLE_BIN_CHANGED             = QString("RecycleBinChanged");
+const QString XML_ENTRY_TEMPLATES_GROUP           = QString("EntryTemplatesGroup");
+const QString XML_ENTRY_TEMPLATES_GROUP_CHANGED   = QString("EntryTemplatesGroupChanged");
+const QString XML_HISTORY_MAX_ITEMS               = QString("HistoryMaxItems");
+const QString XML_HISTORY_MAX_SIZE                = QString("HistoryMaxSize");
+const QString XML_LAST_SELECTED_GROUP             = QString("LastSelectedGroup");
+const QString XML_LAST_TOP_VISIBLE_GROUP          = QString("LastTopVisibleGroup");
+const QString XML_CUSTOM_ICONS                    = QString("CustomIcons");
+const QString XML_CUSTOM_ICON_ITEM                = QString("Icon");
+const QString XML_CUSTOM_ICON_ITEM_ID             = QString("UUID");
+const QString XML_CUSTOM_ICON_ITEM_DATA           = QString("Data");
+const QString XML_BINARIES                        = QString("Binaries");
+const QString XML_BINARY_ID                       = QString("ID");
+const QString XML_BINARY_COMPRESSED               = QString("Compressed");
+const QString XML_CUSTOM_DATA                     = QString("CustomData");
+const QString XML_CUSTOM_DATA_ITEM                = QString("Item");
+const QString XML_BINARY                          = QString("Binary");
 
 const QString XML_TITLE = QString("Title");
 const QString XML_USERNAME = QString("UserName");
@@ -37,10 +76,6 @@ const QString XML_KEY = QString("Key");
 const QString XML_VALUE = QString("Value");
 const QString XML_PROTECTED = QString("Protected");
 const QString XML_TRUE = QString("True"); // Since Qt/Cascades does not have string-to-bool conversion, we need this
-const QString XML_BINARY = QString("Binary");
-const QString XML_BINARY_ID = QString("ID");
-const QString XML_BINARY_COMPRESSED = QString("Compressed");
-const QString XML_RECYCLE_BIN_UUID = QString("RecycleBinUUID");
 const QString XML_REF = QString("Ref");
 
 const QString XML_TIMES = QString("Times");
@@ -55,6 +90,11 @@ const QString XML_KEYFILE = "KeyFile";
 const QString XML_KEYFILE_META = "Meta";
 const QString XML_KEYFILE_KEY = "Key";
 const QString XML_KEYFILE_DATA = "Data";
+
+// Some database defaults
+int DEFAULT_HISTORY_MAX_ITEMS = 10; // -1 for unlimited
+int DEFAULT_HISTORY_MAX_SIZE = 6 * 1024 * 1024; // -1 for unlimited
+int DEFAULT_MAINTENANCE_HISTORY_DAYS = 365;
 
 // Cypher parameters and signatures
 const QByteArray SALSA_20_ID = QByteArray("\x02\x00\x00\x00", 4);
@@ -223,16 +263,430 @@ int PwHeaderV4::sizeInBytes() const {
 
 
 /****************************/
+MemoryProtection::MemoryProtection(QObject* parent) : QObject(parent) {
+    clear(); // reset to default values
+}
+
+MemoryProtection::~MemoryProtection() {
+    // empty
+}
+
+void MemoryProtection::clear() {
+    protectTitle = false;
+    protectUserName = false;
+    protectPassword = true;
+    protectUrl = false;
+    protectNotes = false;
+}
+
+QString MemoryProtection::toString() const {
+    return QString("{title: %1, username: %2, password: %3, url: %4, notes: %5}")
+            .arg(protectTitle)
+            .arg(protectUserName)
+            .arg(protectPassword)
+            .arg(protectUrl)
+            .arg(protectNotes);
+}
+
+ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_MEMORY_PROTECTION);
+
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_MEMORY_PROTECTION == tagName))) {
+        if (xml.isStartElement()) {
+            if (XML_MEMORY_PROTECTION_PROTECT_TITLE == tagName) {
+                protectTitle = PwStreamUtilsV4::readBool(xml, false);
+            } else if (XML_MEMORY_PROTECTION_PROTECT_USERNAME == tagName) {
+                protectUserName = PwStreamUtilsV4::readBool(xml, false);
+            } else if (XML_MEMORY_PROTECTION_PROTECT_PASSWORD == tagName) {
+                protectPassword = PwStreamUtilsV4::readBool(xml, true);
+            } else if (XML_MEMORY_PROTECTION_PROTECT_URL == tagName) {
+                protectUrl = PwStreamUtilsV4::readBool(xml, false);
+            } else if (XML_MEMORY_PROTECTION_PROTECT_NOTES == tagName) {
+                protectNotes = PwStreamUtilsV4::readBool(xml, false);
+            } else {
+                qDebug() << "WARN: unknown MemoryProtection tag " << tagName;
+            }
+        }
+        xml.readNext();
+        tagName = xml.name();
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_MEMORY_PROTECTION_PARSING_ERROR;
+    else
+        return ErrorCodesV4::SUCCESS;
+}
+
+/****************************/
+PwBinaryV4::PwBinaryV4(QObject* parent) : QObject(parent) {
+    // nothing to do
+}
+PwBinaryV4::~PwBinaryV4() {
+    clear();
+}
+void PwBinaryV4::clear() {
+    _isCompressed = false;
+    Util::safeClear(_data);
+}
+
+bool PwBinaryV4::readFromStream(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_BINARY);
+
+    if (xml.isStartElement() && (xml.name() == XML_BINARY)) {
+        QXmlStreamAttributes attrs = xml.attributes();
+        _id = attrs.value(XML_BINARY_ID).toString();
+        _isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
+        _data = PwStreamUtilsV4::readBase64(xml);
+        // data might probably be empty
+    } else {
+        qDebug() << "invalid Binary structure, got" << xml.name() << "tag";
+        return false;
+    }
+    return (!xml.hasError() && !_id.isEmpty());
+}
+
+QString PwBinaryV4::toString() const {
+    return QString("{ID: %1, compressed: %2, data.size: %3}")
+            .arg(_id).arg(_isCompressed).arg(_data.size());
+}
+/****************************/
+PwCustomIconV4::PwCustomIconV4(QObject* parent) : QObject(parent) {
+    // nothing to do here
+}
+
+PwCustomIconV4::~PwCustomIconV4() {
+    clear();
+}
+
+void PwCustomIconV4::clear() {
+    uuid.clear();
+    Util::safeClear(data);
+}
+
+PwUuid PwCustomIconV4::getUuid() const {
+    return uuid;
+}
+
+QByteArray PwCustomIconV4::getData() const {
+    return data;
+}
+
+bool PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_CUSTOM_ICON_ITEM);
+
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_CUSTOM_ICON_ITEM == tagName))) {
+        if (xml.isStartElement()) {
+            if (tagName == XML_CUSTOM_ICON_ITEM_ID) {
+                uuid = PwStreamUtilsV4::readUuid(xml);
+            } else if (tagName == XML_CUSTOM_ICON_ITEM_DATA) {
+                data = PwStreamUtilsV4::readBase64(xml);
+            }
+        }
+        xml.readNext();
+        tagName = xml.name();
+    }
+
+    return (!xml.hasError() && !data.isEmpty());
+}
+
+QString PwCustomIconV4::toString() const {
+    return QString("{UUID: %1, data.size: %2}")
+            .arg(uuid.toString())
+            .arg(data.size());
+}
+/****************************/
+PwDatabaseV4Meta::PwDatabaseV4Meta(QObject* parent) : QObject(parent) {
+    clear(); // reset fields to default values
+}
+
+PwDatabaseV4Meta::~PwDatabaseV4Meta() {
+    clear();
+}
+
+void PwDatabaseV4Meta::clear() {
+    QDateTime now = QDateTime::currentDateTime();
+
+    Util::safeClear(generator);
+    Util::safeClear(databaseName);
+    databaseNameChangedTime = now;
+    Util::safeClear(databaseDescription);
+    databaseDescriptionChangedTime = now;
+    Util::safeClear(defaultUserName);
+    defaultUserNameChangedTime = now;
+    maintenanceHistoryDays = DEFAULT_MAINTENANCE_HISTORY_DAYS;
+    Util::safeClear(colorString);
+    masterKeyChangedTime = now;
+    masterKeyChangeRec = -1;
+    masterKeyChangeForce = -1;
+    memoryProtection.clear();
+    recycleBinEnabled = true;
+    recycleBinGroupUuid.clear();
+    recycleBinChangedTime = now;
+    entryTemplatesGroupUuid.clear();
+    entryTemplatesGroupChangedTime = now;
+    historyMaxItems = DEFAULT_HISTORY_MAX_ITEMS;
+    historyMaxSize = DEFAULT_HISTORY_MAX_SIZE;
+    lastSelectedGroupUuid.clear();
+    lastTopVisibleGroupUuid.clear();
+
+    qDeleteAll(customIcons);
+    customIcons.clear();
+    //qDeleteAll(customData); - no need to, QString items are stored by value and will be deleted automagically
+    customData.clear();
+    qDeleteAll(binaries);
+    binaries.clear();
+}
+
+ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readFromStream(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_META);
+
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_META == tagName))) {
+        if (xml.isStartElement()) {
+            if (XML_GENERATOR == tagName) {
+                generator = PwStreamUtilsV4::readString(xml);
+            } else if (XML_DATABASE_NAME == tagName) {
+                databaseName = PwStreamUtilsV4::readString(xml);
+            } else if (XML_DATABASE_NAME_CHANGED == tagName) {
+                databaseNameChangedTime = PwStreamUtilsV4::readTime(xml);
+            } else if (XML_DATABASE_DESCRIPTION == tagName) {
+                databaseDescription = PwStreamUtilsV4::readString(xml);
+            } else if (XML_DATABASE_DESCRIPTION_CHANGED == tagName) {
+                databaseDescriptionChangedTime = PwStreamUtilsV4::readTime(xml);
+            } else if (XML_DEFAULT_USERNAME == tagName) {
+                defaultUserName = PwStreamUtilsV4::readString(xml);
+            } else if (XML_DEFAULT_USERNAME_CHANGED == tagName) {
+                defaultUserNameChangedTime = PwStreamUtilsV4::readTime(xml);
+            } else if (XML_MAINTENANCE_HISTORY_DAYS == tagName) {
+                maintenanceHistoryDays = PwStreamUtilsV4::readInt32(xml, DEFAULT_MAINTENANCE_HISTORY_DAYS);
+            } else if (XML_COLOR == tagName) {
+                colorString = PwStreamUtilsV4::readString(xml);
+            } else if (XML_MASTER_KEY_CHANGED == tagName) {
+                masterKeyChangedTime = PwStreamUtilsV4::readTime(xml);
+            } else if (XML_MASTER_KEY_CHANGE_REC == tagName) {
+                masterKeyChangeRec = PwStreamUtilsV4::readInt64(xml, -1L);
+            } else if (XML_MASTER_KEY_CHANGE_FORCE == tagName) {
+                masterKeyChangeForce = PwStreamUtilsV4::readInt64(xml, -1L);
+            } else if (XML_MEMORY_PROTECTION == tagName) {
+                ErrorCodesV4::ErrorCode err = memoryProtection.readFromStream(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else if (XML_CUSTOM_ICONS == tagName) {
+                ErrorCodesV4::ErrorCode err = readCustomIcons(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else if (XML_RECYCLE_BIN_ENABLED == tagName) {
+                recycleBinEnabled = PwStreamUtilsV4::readBool(xml, true);
+            } else if (XML_RECYCLE_BIN_UUID == tagName) {
+                recycleBinGroupUuid = PwStreamUtilsV4::readUuid(xml);
+            } else if (XML_RECYCLE_BIN_CHANGED == tagName) {
+                recycleBinChangedTime = PwStreamUtilsV4::readTime(xml);
+            } else if (XML_ENTRY_TEMPLATES_GROUP == tagName) {
+                entryTemplatesGroupUuid = PwStreamUtilsV4::readUuid(xml);
+            } else if (XML_ENTRY_TEMPLATES_GROUP_CHANGED == tagName) {
+                entryTemplatesGroupChangedTime = PwStreamUtilsV4::readTime(xml);
+            } else if (XML_HISTORY_MAX_ITEMS == tagName) {
+                historyMaxItems = PwStreamUtilsV4::readInt32(xml, -1);
+            } else if (XML_HISTORY_MAX_SIZE == tagName) {
+                historyMaxSize = PwStreamUtilsV4::readInt64(xml, -1);
+            } else if (XML_LAST_SELECTED_GROUP == tagName) {
+                lastSelectedGroupUuid = PwStreamUtilsV4::readUuid(xml);
+            } else if (XML_LAST_TOP_VISIBLE_GROUP == tagName) {
+                lastTopVisibleGroupUuid = PwStreamUtilsV4::readUuid(xml);
+            } else if (XML_BINARIES == tagName) {
+                ErrorCodesV4::ErrorCode err = readBinaries(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else if (XML_CUSTOM_DATA == tagName) {
+                ErrorCodesV4::ErrorCode err = readCustomData(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else {
+                qDebug() << "unexpected XML tag in Meta:" << tagName;
+                //PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_META_UNKNOWN_TAG_ERROR;
+            }
+        }
+        xml.readNext();
+        tagName = xml.name();
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_PARSING_ERROR;
+
+    debugPrint(); // TODO remove this after debug
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomIcons(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_CUSTOM_ICONS);
+
+    xml.readNext();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_CUSTOM_ICONS == xml.name()))) {
+        if (xml.isStartElement()) {
+            QStringRef tagName = xml.name();
+            if (tagName == XML_CUSTOM_ICON_ITEM) {
+                PwCustomIconV4* icon = new PwCustomIconV4(this);
+                if (!icon->readFromStream(xml)) {
+                    return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR;
+                }
+                customIcons.insert(icon->getUuid(), icon);
+            } else {
+                qDebug() << "unexpected XML tag in CustomIcons: " << tagName;
+                //PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR;
+            }
+        }
+        xml.readNext();
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readBinaries(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_BINARIES);
+
+    xml.readNext();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_BINARIES == xml.name()))) {
+        if (xml.isStartElement()) {
+            QStringRef tagName = xml.name();
+            if (tagName == XML_BINARY) {
+                PwBinaryV4* binary = new PwBinaryV4(this);
+                if (!binary->readFromStream(xml)) {
+                    return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
+                }
+                binaries.insert(binary->getId(), binary);
+            } else {
+                qDebug() << "unexpected XML tag in Binaries: " << tagName;
+                //PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
+            }
+        }
+        xml.readNext();
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomData(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_CUSTOM_DATA);
+
+    xml.readNext();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_CUSTOM_DATA == xml.name()))) {
+        if (xml.isStartElement()) {
+            QStringRef tagName = xml.name();
+            if (tagName == XML_CUSTOM_DATA_ITEM) {
+                // read the item
+                ErrorCodesV4::ErrorCode err = readCustomDataItem(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else {
+                qDebug() << "unexpected XML tag in CustomData:" << tagName;
+                //PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+            }
+        }
+        xml.readNext();
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomDataItem(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_CUSTOM_DATA_ITEM);
+
+    QString key, value;
+
+    xml.readNext();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_CUSTOM_DATA_ITEM == xml.name()))) {
+        if (xml.isStartElement()) {
+            QStringRef tagName = xml.name();
+            if (tagName == XML_KEY) {
+                key = PwStreamUtilsV4::readString(xml);
+            } else if (tagName == XML_VALUE) {
+                value = PwStreamUtilsV4::readString(xml);
+            } else {
+                qDebug() << "unexpected XML tag in CustomData item:" << tagName;
+                //PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+            }
+        }
+        xml.readNext();
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+
+    customData.insert(key, value);
+    return ErrorCodesV4::SUCCESS;
+}
+
+
+const PwUuid& PwDatabaseV4Meta::getRecycleBinGroupUuid() const {
+    return recycleBinGroupUuid;
+}
+
+PwBinaryV4* PwDatabaseV4Meta::getBinaryByReference(const QString& ref) const {
+    if (binaries.contains(ref))
+        return binaries.value(ref);
+    else
+        return NULL;
+}
+
+void PwDatabaseV4Meta::debugPrint() const {
+    qDebug() << "Meta header:";
+    qDebug() << "  generator:" << generator;
+    qDebug() << "  databaseName:" << databaseName;
+    qDebug() << "  databaseNameChangedTime:" << databaseNameChangedTime;
+    qDebug() << "  databaseDescription:" << databaseDescription;
+    qDebug() << "  databaseDescriptionChangedTime:" << databaseDescriptionChangedTime;
+    qDebug() << "  defaultUserName:" << defaultUserName;
+    qDebug() << "  defaultUserNameChangedTime:" << defaultUserNameChangedTime;
+    qDebug() << "  maintenanceHistoryDays:" << maintenanceHistoryDays;
+    qDebug() << "  colorString:" << colorString;
+    qDebug() << "  masterKeyChangedTime:" << masterKeyChangedTime;
+    qDebug() << "  masterKeyChangeRec:" << masterKeyChangeRec;
+    qDebug() << "  masterKeyChangeForce:" << masterKeyChangeForce;
+    qDebug() << "  memoryProtection:" << memoryProtection.toString();
+    qDebug() << "  customIcons.size():" << customIcons.size();
+    foreach (PwCustomIconV4* it, customIcons.values()) {
+        qDebug() << "    " << it->toString();
+    }
+    qDebug() << "  recycleBinEnabled:" << recycleBinEnabled;
+    qDebug() << "  recycleBinGroupUuid:" << recycleBinGroupUuid.toString();
+    qDebug() << "  recycleBinChangedTime:" << recycleBinChangedTime;
+    qDebug() << "  entryTemplatesGroupUuid:" << entryTemplatesGroupUuid.toString();
+    qDebug() << "  entryTemplatesGroupChangedTime:" << entryTemplatesGroupChangedTime;
+    qDebug() << "  historyMaxItems:" << historyMaxItems;
+    qDebug() << "  historyMaxSize:" << historyMaxSize;
+    qDebug() << "  lastSelectedGroupUuid:" << lastSelectedGroupUuid.toString();
+    qDebug() << "  lastTopVisibleGroupUuid:" << lastTopVisibleGroupUuid.toString();
+    qDebug() << "  customData.size():" << customData.size();
+    qDebug() << "  binaries.size():" << binaries.size();
+    foreach (PwBinaryV4* it, binaries.values()) {
+        qDebug() << "    " << it->toString();
+    }
+    qDebug() << "--- end of Meta ---";
+}
+/****************************/
 
 PwDatabaseV4::PwDatabaseV4(QObject* parent) :
         PwDatabase(parent),
         header(),
+        meta(),
         combinedKey(SB_SHA256_DIGEST_LEN, 0),
         aesKey(SB_SHA256_DIGEST_LEN, 0),
-        salsa20(),
-        binaries(),
-        recycleBinGroupUuid() {
+        salsa20() {
     header.setParent(this);
+    meta.setParent(this);
 }
 
 PwDatabaseV4::~PwDatabaseV4() {
@@ -261,12 +715,10 @@ bool PwDatabaseV4::isSignatureMatch(const QByteArray& rawDbData) {
 }
 
 void PwDatabaseV4::clear() {
-    qDeleteAll(binaries);
-    binaries.clear();
     header.clear();
+    meta.clear();
     Util::safeClear(combinedKey);
     Util::safeClear(aesKey);
-    recycleBinGroupUuid.clear();
     PwDatabase::clear(); // ancestor's cleaning
 }
 
@@ -292,8 +744,9 @@ bool PwDatabaseV4::processXmlKeyFile(const QByteArray& keyFileData, QByteArray& 
                 xml.skipCurrentElement(); // skip the Meta element
                 if (xml.readNextStartElement() && (xml.name() == XML_KEYFILE_KEY)) {
                     if (xml.readNextStartElement() && (xml.name() == XML_KEYFILE_DATA)) {
-                        QString keyText = xml.readElementText();
-                        key = QByteArray::fromBase64(keyText.toLatin1());
+                        // QString keyText = xml.readElementText();
+                        // key = QByteArray::fromBase64(keyText.toLatin1());
+                        key = PwStreamUtilsV4::readBase64(xml);
                         if (!xml.hasError()) {
                             return true;
                         }
@@ -344,7 +797,7 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
     return true;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
+ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
         const int progressFrom, const int progressTo) {
 //    aesKey.clear();
 
@@ -366,7 +819,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
 
     // prepare key transform
     if (cm->beginKeyTransform(key, SB_AES_128_KEY_BYTES) != SB_SUCCESS)
-        return KEY_TRANSFORM_INIT_ERROR;
+        return ErrorCodesV4::KEY_TRANSFORM_INIT_ERROR;
 
     unsigned char* origKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
     unsigned char* origKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
@@ -388,10 +841,10 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
         }
     }
     if (ec != SB_SUCCESS)
-        return KEY_TRANSFORM_ERROR_1;
+        return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
 
     if (cm->endKeyTransform() != SB_SUCCESS)
-        return KEY_TRANSFORM_END_ERROR;
+        return ErrorCodesV4::KEY_TRANSFORM_END_ERROR;
 
 
     QByteArray step2key;
@@ -403,7 +856,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     Util::safeClear(subKey2);
     Util::safeClear(step2key);
     if (ec != SB_SUCCESS)
-        return KEY_TRANSFORM_ERROR_2;
+        return ErrorCodesV4::KEY_TRANSFORM_ERROR_2;
 
     QByteArray step3key(header.getMasterSeed());
     step3key.append(transformedKey);
@@ -411,9 +864,9 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     Util::safeClear(transformedKey);
     Util::safeClear(step3key);
     if (ec != SB_SUCCESS)
-        return KEY_TRANSFORM_ERROR_3;
+        return ErrorCodesV4::KEY_TRANSFORM_ERROR_3;
 
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
 bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
@@ -432,8 +885,8 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     emit progressChanged(UNLOCK_PROGRESS_HEADER_READ);
 
     /* Calculate the AES key */
-    ErrorCode err = transformKey(header, combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
-    if (err != SUCCESS) {
+    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
         emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
@@ -447,7 +900,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     // DB header not needed for decryption
     QByteArray dbBytesWithoutHeader = dbBytes.right(dataSize);
     err = decryptData(dbBytesWithoutHeader, decryptedData);
-    if (err != SUCCESS) {
+    if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Cannot decrypt database - decryptData" << err;
         emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
@@ -471,7 +924,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     QByteArray blocksData;
     err = readBlocks(decryptedStream, blocksData);
     Util::safeClear(decryptedData); // not needed any further
-    if (err != SUCCESS) {
+    if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Cannot decrypt database - readBlocks" << err;
         emit dbLoadError(tr("Error reading database", "An error message"), err);
         return false;
@@ -497,7 +950,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
 
     /* Init Salsa20 for reading protected values */
     err = initSalsa20();
-    if (err != SUCCESS) {
+    if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Cannot decrypt database - initSalsa20" << err;
         emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
@@ -508,7 +961,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = parseXml(xmlString);
     Util::safeClear(xmlData);
     Util::safeClear(xmlString);
-    if (err != SUCCESS) {
+    if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Error parsing database" << err;
         emit dbLoadError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
@@ -520,38 +973,37 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     return true;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::initSalsa20() {
+ErrorCodesV4::ErrorCode PwDatabaseV4::initSalsa20() {
     CryptoManager* cm = CryptoManager::instance();
 
     QByteArray salsaKey;
     int err = cm->sha256(header.getProtectedStreamKey(), salsaKey);
     if (err != SB_SUCCESS)
-        return CANNOT_INIT_SALSA20;
+        return ErrorCodesV4::CANNOT_INIT_SALSA20;
 
     salsa20.init(salsaKey, SALSA_20_INIT_VECTOR);
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
 /**
- * Decrypts the DB's data using current keys;
- * ReturnsKPB_* status code.
+ * Decrypts the DB's data using current keys.
  */
-PwDatabaseV4::ErrorCode PwDatabaseV4::decryptData(const QByteArray& encryptedData, QByteArray& decryptedData) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::decryptData(const QByteArray& encryptedData, QByteArray& decryptedData) {
     // assert encryptedData.size is multiple of 16 bytes
 
     CryptoManager* cm = CryptoManager::instance();
     int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData);
     if (err != SB_SUCCESS) {
         qDebug() << "decryptAES error: " << err;
-        return CANNOT_DECRYPT_DB;
+        return ErrorCodesV4::CANNOT_DECRYPT_DB;
     }
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
 /**
  * Extracts data blocks from the decrypted data stream, verifying hashes.
  */
-PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByteArray& blocksData) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByteArray& blocksData) {
     quint32 blockSize, readBlockId;
     QByteArray blockHash(SB_SHA256_DIGEST_LEN, 0);
     QByteArray computedHash(SB_SHA256_DIGEST_LEN, 0);
@@ -564,7 +1016,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
         inputStream >> readBlockId;
         if (readBlockId != blockId) {
             qDebug() << "readBlocks wrong block ID";
-            return WRONG_BLOCK_ID;
+            return ErrorCodesV4::WRONG_BLOCK_ID;
         }
         blockId++;
 
@@ -575,7 +1027,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
                 break;
             } else {
                 qDebug() << "readBlocks block hash is not all-zeros";
-                return BLOCK_HASH_NON_ZERO;
+                return ErrorCodesV4::BLOCK_HASH_NON_ZERO;
             }
         }
         QByteArray blockData(blockSize, 0);
@@ -583,15 +1035,15 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
         int err = cm->sha256(blockData, computedHash);
         if ((err != SB_SUCCESS) || (computedHash != blockHash)) {
             qDebug() << "readBlocks block hash mismatch";
-            return BLOCK_HASH_MISMATCH;
+            return ErrorCodesV4::BLOCK_HASH_MISMATCH;
         }
         blocksData.append(blockData);
         Util::safeClear(blockData);
     }
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     if (_rootGroup) {
         delete _rootGroup;
         _rootGroup = NULL;
@@ -601,84 +1053,52 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     rootV4->setDatabase(this);
     rootV4->setParentGroup(NULL); // not Qt parent, but the group containing this one
 
-    ErrorCode err;
+    ErrorCodesV4::ErrorCode err;
     QXmlStreamReader xml(xmlString);
     QStringRef tagName;
     while (!xml.atEnd() && !xml.hasError()) {
         if (xml.readNextStartElement()) {
             tagName = xml.name();
             if (tagName == XML_META) {
-                err = loadXmlMetaData(xml);
-                if (err != SUCCESS)
+                err = meta.readFromStream(xml);
+                if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else if (tagName == XML_ROOT) {
                 if (xml.readNextStartElement() && (xml.name() == XML_GROUP)) {
                     err = loadGroupFromXml(xml, *rootV4);
-                    if (err != SUCCESS)
+                    if (err != ErrorCodesV4::SUCCESS)
                         return err;
                 } else {
                     qDebug() << "SEVERE: there is no group in the root";
-                    return XML_NO_ROOT_GROUP;
+                    return ErrorCodesV4::XML_NO_ROOT_GROUP;
                 }
             }
         }
     }
     xml.clear();
     if (xml.hasError())
-        return XML_PARSING_ERROR;
+        return ErrorCodesV4::XML_PARSING_ERROR;
 
     _rootGroup = rootV4;
 //    debugPrint(_rootGroup, 2);
-    return SUCCESS;
-}
-
-// loads metadata of a database
-PwDatabaseV4::ErrorCode PwDatabaseV4::loadXmlMetaData(QXmlStreamReader& xml) {
-    Q_ASSERT(xml.name() == XML_META);
-
-    xml.readNext();
-    QStringRef tagName = xml.name();
-    while (!xml.hasError() && !(xml.isEndElement() && (XML_META == tagName))) {
-        if (xml.isStartElement()) {
-            if (XML_RECYCLE_BIN_UUID == tagName) {
-                QString recycleBinUuidBase64Str = xml.readElementText();
-                recycleBinGroupUuid = PwUuid::fromBase64(recycleBinUuidBase64Str);
-            } else if (tagName == XML_BINARY) {
-                PwBinaryV4* binary = new PwBinaryV4();
-                QXmlStreamAttributes attrs = xml.attributes();
-                QString id = attrs.value(XML_BINARY_ID).toString();
-                binary->isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
-                binary->data = QByteArray::fromBase64(xml.readElementText().toLatin1());
-                binaries.insert(id, binary);
-            } else {
-                // space for future extensions
-            }
-        }
-        xml.readNext();
-        tagName = xml.name();
-    }
-    if (xml.hasError())
-        return XML_PARSING_ERROR;
-    else
-        return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
 // loads the group and its children
-PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, PwGroupV4& group) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, PwGroupV4& group) {
     Q_ASSERT(xml.name() == XML_GROUP);
 
-    ErrorCode err;
+    ErrorCodesV4::ErrorCode err;
     xml.readNext();
     QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (XML_GROUP == tagName))) {
         if (xml.isStartElement()) {
             if (XML_UUID == tagName) {
-                QString uuidBase64Str = xml.readElementText();
-                PwUuid uuid = PwUuid::fromBase64(uuidBase64Str);
-                Util::safeClear(uuidBase64Str);
+                PwUuid uuid = PwStreamUtilsV4::readUuid(xml);
                 group.setUuid(uuid);
-                if (uuid == recycleBinGroupUuid)
+                if (uuid == meta.getRecycleBinGroupUuid()) {
                     group.setDeleted(true); // may also be set higher in call stack
+                }
             } else if (XML_ICON_ID == tagName) {
                 QString iconIdStr = xml.readElementText();
                 group.setIconId(iconIdStr.toInt(NULL));
@@ -690,13 +1110,13 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
                 group.setNotes(notes);
             } else if (XML_TIMES == tagName) {
                 err = readGroupTimes(xml, group);
-                if (err != SUCCESS)
+                if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else if (XML_GROUP == tagName) {
                 PwGroupV4* subGroup = new PwGroupV4(&group);
                 subGroup->setDatabase(this);
                 err = loadGroupFromXml(xml, *subGroup);
-                if (err != SUCCESS) {
+                if (err != ErrorCodesV4::SUCCESS) {
                     delete subGroup;
                     return err;
                 }
@@ -706,7 +1126,7 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
             } else if (XML_ENTRY == tagName) {
                 PwEntryV4* entry = new PwEntryV4(&group);
                 err = loadEntryFromXml(xml, *entry);
-                if (err != SUCCESS) {
+                if (err != ErrorCodesV4::SUCCESS) {
                     delete entry;
                     return err;
                 }
@@ -719,32 +1139,32 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadGroupFromXml(QXmlStreamReader& xml, Pw
     }
 
     if (xml.hasError())
-        return XML_PARSING_ERROR;
+        return ErrorCodesV4::XML_PARSING_ERROR;
     else
-        return SUCCESS;
+        return ErrorCodesV4::SUCCESS;
 }
 
 // loads the entry
-PwDatabaseV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, PwEntryV4& entry) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, PwEntryV4& entry) {
     Q_ASSERT(xml.name() == XML_ENTRY);
 
     entry.clear();
     bool isConversionOk;
-    ErrorCode err = SUCCESS;
+    ErrorCodesV4::ErrorCode err = ErrorCodesV4::SUCCESS;
 
     xml.readNext();
     QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (XML_ENTRY == tagName))) {
         if (xml.isStartElement()) {
             if (XML_UUID == tagName) {
-                QString uuidBase64Str = xml.readElementText();
-                entry.setUuid(PwUuid::fromBase64(uuidBase64Str));
+                PwUuid uuid = PwStreamUtilsV4::readUuid(xml);
+                entry.setUuid(uuid);
             } else if (XML_ICON_ID == tagName) {
                 int iconId = xml.readElementText().toInt(&isConversionOk, 10);
                 if (isConversionOk)
                     entry.setIconId(iconId);
                 else
-                    return ICON_ID_IS_NOT_INTEGER;
+                    return ErrorCodesV4::ICON_ID_IS_NOT_INTEGER;
             } else if (XML_STRING == tagName) {
                 err = readEntryString(xml, entry);
             } else if (XML_BINARY == tagName) {
@@ -757,18 +1177,18 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::loadEntryFromXml(QXmlStreamReader& xml, Pw
                 err = readEntryHistory(xml, entry);
             }
         }
-        if (err != SUCCESS)
+        if (err != ErrorCodesV4::SUCCESS)
             return err;
         xml.readNext();
         tagName = xml.name();
     }
     if (xml.hasError())
-        return XML_PARSING_ERROR;
+        return ErrorCodesV4::XML_PARSING_ERROR;
     else
-        return SUCCESS;
+        return ErrorCodesV4::SUCCESS;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::readGroupTimes(QXmlStreamReader& xml, PwGroupV4& group) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readGroupTimes(QXmlStreamReader& xml, PwGroupV4& group) {
     Q_ASSERT(XML_TIMES == xml.name());
 
     QString text;
@@ -797,12 +1217,12 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readGroupTimes(QXmlStreamReader& xml, PwGr
         tagName = xml.name();
     }
     if (xml.hasError())
-        return XML_TIMES_PARSING_ERROR;
+        return ErrorCodesV4::XML_TIMES_PARSING_ERROR;
     else
-        return SUCCESS;
+        return ErrorCodesV4::SUCCESS;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryTimes(QXmlStreamReader& xml, PwEntryV4& entry) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readEntryTimes(QXmlStreamReader& xml, PwEntryV4& entry) {
     Q_ASSERT(XML_TIMES == xml.name());
 
     QString text;
@@ -831,21 +1251,21 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryTimes(QXmlStreamReader& xml, PwEn
         tagName = xml.name();
     }
     if (xml.hasError())
-        return XML_TIMES_PARSING_ERROR;
+        return ErrorCodesV4::XML_TIMES_PARSING_ERROR;
     else
-        return SUCCESS;
+        return ErrorCodesV4::SUCCESS;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryHistory(QXmlStreamReader& xml, PwEntryV4& hostEntry) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readEntryHistory(QXmlStreamReader& xml, PwEntryV4& hostEntry) {
     Q_ASSERT(XML_HISTORY == xml.name());
 
-    ErrorCode err;
+    ErrorCodesV4::ErrorCode err;
     QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_HISTORY))) {
         if (xml.isStartElement() && (tagName == XML_ENTRY)) {
             PwEntryV4* historyEntry = new PwEntryV4(&hostEntry); // hostEntry is a parent, not a copy source
             err = loadEntryFromXml(xml, *historyEntry);
-            if (err != SUCCESS) {
+            if (err != ErrorCodesV4::SUCCESS) {
                 delete historyEntry;
                 return err;
             }
@@ -854,10 +1274,10 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryHistory(QXmlStreamReader& xml, Pw
         xml.readNext();
         tagName = xml.name();
     }
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryString(QXmlStreamReader& xml, PwEntryV4& entry) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readEntryString(QXmlStreamReader& xml, PwEntryV4& entry) {
     Q_ASSERT(XML_STRING == xml.name());
 
     QString key, value;
@@ -870,26 +1290,24 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryString(QXmlStreamReader& xml, PwE
             if (tagName == XML_KEY) {
                 key = xml.readElementText();
             } else if (tagName == XML_VALUE) {
-                ErrorCode err = readEntryStringValue(xml, value);
-                if (err != SUCCESS)
+                ErrorCodesV4::ErrorCode err = readEntryStringValue(xml, value);
+                if (err != ErrorCodesV4::SUCCESS)
                     return err;
             }
         }
     }
     entry.setField(key, value);
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
 // read a value from XML, decrypting it if necessary
-PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryStringValue(QXmlStreamReader& xml, QString& value) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readEntryStringValue(QXmlStreamReader& xml, QString& value) {
     Q_ASSERT(xml.name() == XML_VALUE);
 
     QXmlStreamAttributes attr = xml.attributes();
 
     if (attr.value(XML_PROTECTED) == XML_TRUE) {
-        QString valueStr = xml.readElementText();
-        QByteArray valueBytes = QByteArray::fromBase64(valueStr.toLatin1());
-        Util::safeClear(valueStr);
+        QByteArray valueBytes = PwStreamUtilsV4::readBase64(xml);
         int size = valueBytes.length();
 
         QByteArray salsaBytes;
@@ -905,10 +1323,10 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryStringValue(QXmlStreamReader& xml
         value = xml.readElementText();
     }
 
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
-PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml, PwAttachment& attachment) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml, PwAttachment& attachment) {
     Q_ASSERT(XML_BINARY == xml.name());
 
     QStringRef tagName = xml.name();
@@ -921,15 +1339,15 @@ PwDatabaseV4::ErrorCode PwDatabaseV4::readEntryAttachment(QXmlStreamReader& xml,
                 attachment.setName(fileName);
             } else if (tagName == XML_VALUE) {
                 QString binaryRef = xml.attributes().value(XML_REF).toString();
-                PwBinaryV4* binary = this->binaries.value(binaryRef);
+                PwBinaryV4* binary = meta.getBinaryByReference(binaryRef);
                 if (!binary) {
-                    return INVALID_ATTACHMENT_REFERENCE;
+                    return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE;
                 }
-                attachment.setData(binary->data, binary->isCompressed);
+                attachment.setData(binary->getData(), binary->isCompressed());
             }
         }
     }
-    return SUCCESS;
+    return ErrorCodesV4::SUCCESS;
 }
 
 /**

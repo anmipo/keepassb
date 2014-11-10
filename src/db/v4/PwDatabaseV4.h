@@ -61,6 +61,7 @@ public:
         PROTECTED_STREAM_SIZE_MISMATCH = 9,
         NOT_SALSA20                    = 10
     };
+
     /**
      * Returns a user-friendly error description
      */
@@ -92,16 +93,10 @@ public:
 
 };
 
-/**
- * Class for handling KeePass 2 databases.
- */
-class PwDatabaseV4: public PwDatabase {
-    Q_OBJECT
+
+class ErrorCodesV4 {
 public:
-    const static int UUID_BYTES = 16;
-    /**
-     * Class-specific error codes
-     */
+    /** Version-specific error codes */
     enum ErrorCode {
         SUCCESS = PwDatabase::SUCCESS,
         PASSWORD_HASHING_ERROR_1 = 0x10,
@@ -118,55 +113,179 @@ public:
         BLOCK_HASH_NON_ZERO      = 0x33,
         BLOCK_HASH_MISMATCH      = 0x34,
         XML_PARSING_ERROR        = 0x50,
-        XML_TIMES_PARSING_ERROR  = 0x51,
-        XML_NO_ROOT_GROUP        = 0x52,
-        XML_STRING_VALUE_PARSING_ERROR = 0x53,
-        GROUP_LOADING_ERROR            = 0x60,
-        ICON_ID_IS_NOT_INTEGER         = 0x61,
-        INVALID_ATTACHMENT_REFERENCE   = 0x62,
-    };
+        XML_META_PARSING_ERROR   = 0x51,
+        XML_META_BINARIES_PARSING_ERROR          = 0x52,
+        XML_META_MEMORY_PROTECTION_PARSING_ERROR = 0x53,
+        XML_META_CUSTOM_DATA_PARSING_ERROR       = 0x54,
+        XML_META_CUSTOM_ICONS_PARSING_ERROR      = 0x55,
+        XML_META_UNKNOWN_TAG_ERROR               = 0x56,
 
+        XML_TIMES_PARSING_ERROR  = 0x70,
+        XML_NO_ROOT_GROUP        = 0x71,
+        XML_STRING_VALUE_PARSING_ERROR = 0x72,
+        GROUP_LOADING_ERROR            = 0x73,
+        ICON_ID_IS_NOT_INTEGER         = 0x74,
+        INVALID_ATTACHMENT_REFERENCE   = 0x75,
+    };
+};
+
+class MemoryProtection: public QObject {
+    Q_OBJECT
+private:
+    bool protectTitle;
+    bool protectUserName;
+    bool protectPassword;
+    bool protectUrl;
+    bool protectNotes;
+
+public:
+    MemoryProtection(QObject* parent=0);
+    virtual ~MemoryProtection();
+
+    void clear();
+    QString toString() const;
+
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
+};
+
+/**
+ * Binary data as stored in DB metadata
+ */
+class PwBinaryV4: public QObject {
+    Q_OBJECT
+private:
+    QString _id;
+    bool _isCompressed;
+    QByteArray _data;
+public:
+    PwBinaryV4(QObject* parent=0);
+    virtual ~PwBinaryV4();
+
+    void clear();
+    QString toString() const;
+
+    bool readFromStream(QXmlStreamReader& xml);
+
+    QString getId() const { return _id; }
+    bool isCompressed() const { return _isCompressed; }
+    QByteArray getData() const { return _data; }
+};
+
+/**
+ * Custom icon in a V4 database
+ */
+class PwCustomIconV4: public QObject {
+    Q_OBJECT
+private:
+    PwUuid uuid;
+    QByteArray data;
+public:
+    PwCustomIconV4(QObject* parent=0);
+    virtual ~PwCustomIconV4();
+
+    void clear();
+    QString toString() const;
+
+    /** Reads icon fields from an XML stream. Returns true if successful, false otherwise. */
+    bool readFromStream(QXmlStreamReader& xml);
+
+    PwUuid getUuid() const;
+    QByteArray getData() const;
+};
+
+/**
+ * Metadata of the V4 database
+ */
+class PwDatabaseV4Meta: public QObject {
+    Q_OBJECT
+private:
+    QString generator;
+    QString databaseName;
+    QDateTime databaseNameChangedTime;
+    QString databaseDescription;
+    QDateTime databaseDescriptionChangedTime;
+    QString defaultUserName;
+    QDateTime defaultUserNameChangedTime;
+    quint32 maintenanceHistoryDays;
+    QString colorString; // database color coded as a CSS-format hex string(e.g. #123456), empty string means transparent
+    QDateTime masterKeyChangedTime;
+    qint64 masterKeyChangeRec;
+    qint64 masterKeyChangeForce;
+    MemoryProtection memoryProtection;
+    bool recycleBinEnabled;
+    PwUuid recycleBinGroupUuid;
+    QDateTime recycleBinChangedTime;
+    PwUuid entryTemplatesGroupUuid;
+    QDateTime entryTemplatesGroupChangedTime;
+    qint32 historyMaxItems;
+    qint64 historyMaxSize;
+    PwUuid lastSelectedGroupUuid;
+    PwUuid lastTopVisibleGroupUuid;
+    QMap<QString, QString> customData; // a set of key=value pairs
+
+    QMap<PwUuid, PwCustomIconV4*> customIcons;
+    QMap<QString, PwBinaryV4*> binaries;
+
+    ErrorCodesV4::ErrorCode readCustomData(QXmlStreamReader& xml);
+    ErrorCodesV4::ErrorCode readCustomDataItem(QXmlStreamReader& xml);
+    ErrorCodesV4::ErrorCode readBinaries(QXmlStreamReader& xml);
+    ErrorCodesV4::ErrorCode readCustomIcons(QXmlStreamReader& xml);
+
+    void debugPrint() const;
+public:
+    PwDatabaseV4Meta(QObject* parent=0);
+    virtual ~PwDatabaseV4Meta();
+
+    void clear();
+
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
+    const PwUuid& getRecycleBinGroupUuid() const;
+    PwBinaryV4* getBinaryByReference(const QString& ref) const;
+};
+
+/**
+ * Class for handling KeePass 2 databases.
+ */
+class PwDatabaseV4: public PwDatabase {
+    Q_OBJECT
 private:
     PwHeaderV4 header;
+    PwDatabaseV4Meta meta;
     QByteArray combinedKey;
     QByteArray aesKey;
     Salsa20 salsa20;
-    QMap<QString, PwBinaryV4*> binaries;
-    PwUuid recycleBinGroupUuid;
 
     // Calculates the AES encryption key based on the combined key (password + key data)
     // and current header seed values.
-    ErrorCode transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
+    ErrorCodesV4::ErrorCode transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
             const int progressFrom, const int progressTo);
 
     // Reads the encrypted DB; in case of errors emits appropriate signals and returns false.
     bool readDatabase(const QByteArray& dbBytes);
     // Decrypts the DB's data using current keys.
-    ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
+    ErrorCodesV4::ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
     // Extracts data blocks from the decrypted data stream, verifying hashes.
-    ErrorCode readBlocks(QDataStream& inputStream, QByteArray& gzipData);
+    ErrorCodesV4::ErrorCode readBlocks(QDataStream& inputStream, QByteArray& gzipData);
     // Configures Salsa20 instance for reading protected values
-    ErrorCode initSalsa20();
+    ErrorCodesV4::ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.
-    ErrorCode parseXml(const QString& xmlString);
-    // loads metadata of a database
-    ErrorCode loadXmlMetaData(QXmlStreamReader& xml);
+    ErrorCodesV4::ErrorCode parseXml(const QString& xmlString);
     // loads a group and its children.
-    ErrorCode loadGroupFromXml(QXmlStreamReader& xml, PwGroupV4& group);
+    ErrorCodesV4::ErrorCode loadGroupFromXml(QXmlStreamReader& xml, PwGroupV4& group);
     // Loads an entry.
-    ErrorCode loadEntryFromXml(QXmlStreamReader& xml, PwEntryV4& entry);
+    ErrorCodesV4::ErrorCode loadEntryFromXml(QXmlStreamReader& xml, PwEntryV4& entry);
     // Loads timestamps of a group
-    ErrorCode readGroupTimes(QXmlStreamReader& xml, PwGroupV4& group);
+    ErrorCodesV4::ErrorCode readGroupTimes(QXmlStreamReader& xml, PwGroupV4& group);
     // Loads timestamps of an entry
-    ErrorCode readEntryTimes(QXmlStreamReader& xml, PwEntryV4& entry);
+    ErrorCodesV4::ErrorCode readEntryTimes(QXmlStreamReader& xml, PwEntryV4& entry);
     // Loads the history tag of an entry and fills entry's history list
-    ErrorCode readEntryHistory(QXmlStreamReader& xml, PwEntryV4& hostEntry);
+    ErrorCodesV4::ErrorCode readEntryHistory(QXmlStreamReader& xml, PwEntryV4& hostEntry);
     // Loads a "String" field of an entry.
-    ErrorCode readEntryString(QXmlStreamReader& xml, PwEntryV4& entry);
+    ErrorCodesV4::ErrorCode readEntryString(QXmlStreamReader& xml, PwEntryV4& entry);
     // Loads the value of a "String" field of an entry; decrypts protected values.
-    ErrorCode readEntryStringValue(QXmlStreamReader& xml, QString& value);
+    ErrorCodesV4::ErrorCode readEntryStringValue(QXmlStreamReader& xml, QString& value);
     // Loads an entry's binary attachment ("Binary" field of an entry).
-    ErrorCode readEntryAttachment(QXmlStreamReader& xml, PwAttachment& attachment);
+    ErrorCodesV4::ErrorCode readEntryAttachment(QXmlStreamReader& xml, PwAttachment& attachment);
 
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;
@@ -214,5 +333,6 @@ public:
      */
     virtual void clear();
 };
+
 
 #endif /* PWDATABASEV4_H_ */

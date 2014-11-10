@@ -43,14 +43,6 @@ signals:
     void valueChanged(QString value);
 };
 
-/**
- * Binary data as stored in DB metadata
- */
-struct PwBinaryV4 {
-    bool isCompressed;
-    QByteArray data;
-};
-
 
 class PwDatabaseV4;
 

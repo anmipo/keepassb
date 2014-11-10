@@ -27,8 +27,14 @@ public:
     // returns a new instance of PwUuid with the ID specified by a Base64 string
     static PwUuid fromBase64(const QString& base64);
 
+    /** Returns true the UUID has not been set. */
+    bool isEmpty() const { return bytes.isEmpty(); }
+
+    QString toString() const { return bytes.toHex(); }
+
     inline bool operator==(const PwUuid& another) const { return (this->bytes == another.bytes); }
     inline bool operator!=(const PwUuid& another) const { return !operator==(another); }
+    inline bool operator<(const PwUuid& another) const { return (this->bytes < another.bytes); }
 };
 
 #endif /* PWUUID_H_ */
