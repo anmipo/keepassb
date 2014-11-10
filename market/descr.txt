@@ -39,6 +39,10 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
 
 Changelog:
+v2.2.2
+Fixed opening v1 databases with v2 XML key files
+Minor interface fixes
+
 v2.2.1
 Show database locked/unlocked state when minimized  
 Fixed opening .kdb files from File Manager
