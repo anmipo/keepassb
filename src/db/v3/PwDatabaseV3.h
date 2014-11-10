@@ -139,8 +139,14 @@ private:
     ErrorCode writeContent(QByteArray& contentData, int& groupCount, int& entryCount);
 
 protected:
+    /**
+     * Extracts the key from a correctly-formed XML file.
+     * Returns true if successful, false otherwise.
+     */
+    virtual bool processXmlKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
+
     /** Combines password and key data into one key */
-    bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
+    virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
 public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();

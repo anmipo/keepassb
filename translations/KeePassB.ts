@@ -280,7 +280,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="312"/>
-        <source>Search in deleted entries</source>
+        <source>Search in Deleted Entries</source>
         <comment>An on/off setting which defines whether the Search should look into entries marked as deleted.</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -603,67 +603,67 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="226"/>
+        <location filename="../src/db/PwDatabase.cpp" line="204"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="233"/>
+        <location filename="../src/db/PwDatabase.cpp" line="211"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="241"/>
+        <location filename="../src/db/PwDatabase.cpp" line="219"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="251"/>
+        <location filename="../src/db/PwDatabase.cpp" line="229"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="264"/>
+        <location filename="../src/db/PwDatabase.cpp" line="242"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="356"/>
+        <location filename="../src/db/PwDatabase.cpp" line="334"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="379"/>
+        <location filename="../src/db/PwDatabase.cpp" line="357"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="385"/>
+        <location filename="../src/db/PwDatabase.cpp" line="363"/>
         <source>Cannot replace database file</source>
         <comment>An error message: failed to replace database file with another file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="391"/>
+        <location filename="../src/db/PwDatabase.cpp" line="369"/>
         <source>Cannot rename temporary database file</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="362"/>
+        <location filename="../src/db/PwDatabase.cpp" line="340"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="367"/>
+        <location filename="../src/db/PwDatabase.cpp" line="345"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
@@ -678,25 +678,25 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="226"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="236"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="247"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="257"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="257"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="267"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="444"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="454"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
@@ -705,38 +705,38 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="269"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="275"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="392"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="424"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="406"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="456"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="438"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="488"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="430"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="462"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="443"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="475"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="467"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="499"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
@@ -772,31 +772,31 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwHeaderV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="167"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="173"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="169"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="175"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="171"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="177"/>
         <source>Unknown compression algorithm</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="173"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="179"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="175"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="181"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>

@@ -16,12 +16,6 @@
 #include "util/Util.h"
 #include "sbdef.h"
 
-// Tag names for XML-formatted key files
-const QString XML_KEYFILE = "KeyFile";
-const QString XML_META = "Meta";
-const QString XML_KEY = "Key";
-const QString XML_DATA = "Data";
-
 // String added to temporary DB file name when saving
 const QString TMP_SAVE_FILE_NAME_SUFFIX = ".tmp";
 
@@ -73,25 +67,9 @@ bool PwDatabase::processKeyFile(const QByteArray& keyFileData, QByteArray& key) 
     }
 
     // Is it an XML key file?
-    QXmlStreamReader xml(keyFileData);
-    if (!xml.atEnd() && !xml.hasError()) {
-        if (xml.readNextStartElement() && (xml.name() == XML_KEYFILE)) {
-            if (xml.readNextStartElement() && (xml.name() == XML_META)) {
-                xml.skipCurrentElement(); // skip the Meta element
-                if (xml.readNextStartElement() && (xml.name() == XML_KEY)) {
-                    if (xml.readNextStartElement() && (xml.name() == XML_DATA)) {
-                        QString keyText = xml.readElementText();
-                        key = QByteArray::fromBase64(keyText.toLatin1());
-                        if (!xml.hasError() && (key.length() == KEY_LENGTH)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
+    if (processXmlKeyFile(keyFileData, key) && (key.length() == KEY_LENGTH)) {
+        return true;
     }
-    xml.clear();
-
 
     // It is something else, just hash it
     if (CryptoManager::instance()->sha256(keyFileData, key) != SB_SUCCESS) {

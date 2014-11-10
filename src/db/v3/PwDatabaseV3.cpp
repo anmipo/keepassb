@@ -175,6 +175,16 @@ void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, c
     }
 }
 
+/**
+ * Extracts the key from a correctly-formed XML file.
+ * Returns true if successful, false otherwise.
+ */
+bool PwDatabaseV3::processXmlKeyFile(const QByteArray& keyFileData, QByteArray& key) const {
+    Q_UNUSED(keyFileData); Q_UNUSED(key);
+    // By design, V3 does not handle XML key files in any special manner.
+    return false;
+}
+
 bool PwDatabaseV3::buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const {
     CryptoManager* cm = CryptoManager::instance();
     int err;

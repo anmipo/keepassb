@@ -26,6 +26,12 @@ protected:
 	// returns true if successful. If data is invalid/empty, returns an empty key
 	virtual bool processKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
 
+    /**
+     * Extracts the key from a correctly-formed XML file.
+     * Returns true if successful, false otherwise.
+     */
+    virtual bool processXmlKeyFile(const QByteArray& keyFileData, QByteArray& key) const = 0;
+
     /** Combines password and key data into one key */
 	virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const = 0;
 

@@ -50,6 +50,12 @@ const QString XML_LAST_ACCESS_TIME = QString("LastAccessTime");
 const QString XML_EXPIRY_TIME = QString("ExpiryTime");
 const QString XML_EXPIRES = QString("Expires");
 
+// Tag names for XML-formatted key files
+const QString XML_KEYFILE = "KeyFile";
+const QString XML_KEYFILE_META = "Meta";
+const QString XML_KEYFILE_KEY = "Key";
+const QString XML_KEYFILE_DATA = "Data";
+
 // Cypher parameters and signatures
 const QByteArray SALSA_20_ID = QByteArray("\x02\x00\x00\x00", 4);
 const QByteArray AES_ID      = QByteArray("\x31\xC1\xF2\xE6\xBF\x71\x43\x50\xBE\x58\x05\x21\x6A\xFC\x5A\xFF", 16);
@@ -272,6 +278,32 @@ void PwDatabaseV4::load(const QByteArray& dbFileData, const QString& password, c
 
     if (readDatabase(dbFileData))
         emit dbUnlocked();
+}
+
+/**
+ * Extracts the key from a correctly-formed XML file.
+ * Returns true if successful, false otherwise.
+ */
+bool PwDatabaseV4::processXmlKeyFile(const QByteArray& keyFileData, QByteArray& key) const {
+    QXmlStreamReader xml(keyFileData);
+    if (!xml.atEnd() && !xml.hasError()) {
+        if (xml.readNextStartElement() && (xml.name() == XML_KEYFILE)) {
+            if (xml.readNextStartElement() && (xml.name() == XML_KEYFILE_META)) {
+                xml.skipCurrentElement(); // skip the Meta element
+                if (xml.readNextStartElement() && (xml.name() == XML_KEYFILE_KEY)) {
+                    if (xml.readNextStartElement() && (xml.name() == XML_KEYFILE_DATA)) {
+                        QString keyText = xml.readElementText();
+                        key = QByteArray::fromBase64(keyText.toLatin1());
+                        if (!xml.hasError()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    xml.clear();
+    return false;
 }
 
 bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const {
