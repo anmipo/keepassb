@@ -39,16 +39,27 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/AboutPage.qml) \
         $$quote($$BASEDIR/assets/ActiveFrameCover.qml) \
         $$quote($$BASEDIR/assets/AppSettings.qml) \
+        $$quote($$BASEDIR/assets/EditEntryV3Page.qml) \
+        $$quote($$BASEDIR/assets/EditGroupPage.qml) \
+        $$quote($$BASEDIR/assets/IconPickerPage.qml) \
         $$quote($$BASEDIR/assets/LabelTextButton.qml) \
+        $$quote($$BASEDIR/assets/MonoTextField.qml) \
+        $$quote($$BASEDIR/assets/PasswordGeneratorPage.qml) \
+        $$quote($$BASEDIR/assets/QuickUnlockHelp.qml) \
+        $$quote($$BASEDIR/assets/QuickUnlockPage.qml) \
         $$quote($$BASEDIR/assets/ReadOnlyTextField.qml) \
         $$quote($$BASEDIR/assets/SearchResultsPage.qml) \
         $$quote($$BASEDIR/assets/UnlockDbPage.qml) \
-        $$quote($$BASEDIR/assets/ViewEntryV4Files.qml) \
+        $$quote($$BASEDIR/assets/ViewEntryExtrasTab.qml) \
+        $$quote($$BASEDIR/assets/ViewEntryGeneralTab.qml) \
+        $$quote($$BASEDIR/assets/ViewEntryHistoryTab.qml) \
+        $$quote($$BASEDIR/assets/ViewEntryV3Page.qml) \
         $$quote($$BASEDIR/assets/ViewEntryV4Page.qml) \
         $$quote($$BASEDIR/assets/ViewGroupPage.qml) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_browse.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_copy.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_copy_password.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_empty_group.png) \
-        $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_lock.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/password_hidden.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/password_visible.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/pwicons/0.png) \
@@ -121,8 +132,9 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/VisualStyle.bright/pwicons/8.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/pwicons/9.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/images/ic_browse.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.dark/images/ic_copy.png) \
+        $$quote($$BASEDIR/assets/VisualStyle.dark/images/ic_copy_password.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/images/ic_empty_group.png) \
-        $$quote($$BASEDIR/assets/VisualStyle.dark/images/ic_lock.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/images/password_hidden.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/images/password_visible.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/0.png) \
@@ -194,23 +206,107 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/7.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/8.png) \
         $$quote($$BASEDIR/assets/VisualStyle.dark/pwicons/9.png) \
+        $$quote($$BASEDIR/assets/common.js) \
+        $$quote($$BASEDIR/assets/demo.kdbx) \
+        $$quote($$BASEDIR/assets/icons_data_model.xml) \
+        $$quote($$BASEDIR/assets/images/cover-locked.png) \
+        $$quote($$BASEDIR/assets/images/cover-unlocked.png) \
         $$quote($$BASEDIR/assets/images/cover.png) \
         $$quote($$BASEDIR/assets/images/ic_about.png) \
+        $$quote($$BASEDIR/assets/images/ic_add_attachment.png) \
+        $$quote($$BASEDIR/assets/images/ic_add_entry.png) \
+        $$quote($$BASEDIR/assets/images/ic_add_group.png) \
         $$quote($$BASEDIR/assets/images/ic_attach.png) \
-        $$quote($$BASEDIR/assets/images/ic_copy.png) \
-        $$quote($$BASEDIR/assets/images/ic_copy_link.png) \
-        $$quote($$BASEDIR/assets/images/ic_copy_password.png) \
         $$quote($$BASEDIR/assets/images/ic_done.png) \
         $$quote($$BASEDIR/assets/images/ic_edit.png) \
+        $$quote($$BASEDIR/assets/images/ic_edit_group.png) \
+        $$quote($$BASEDIR/assets/images/ic_email.png) \
+        $$quote($$BASEDIR/assets/images/ic_empty_group.png) \
         $$quote($$BASEDIR/assets/images/ic_entry.png) \
+        $$quote($$BASEDIR/assets/images/ic_entry_general.png) \
+        $$quote($$BASEDIR/assets/images/ic_expired_item.png) \
         $$quote($$BASEDIR/assets/images/ic_history.png) \
+        $$quote($$BASEDIR/assets/images/ic_lock.png) \
+        $$quote($$BASEDIR/assets/images/ic_new_password.png) \
         $$quote($$BASEDIR/assets/images/ic_notes.png) \
+        $$quote($$BASEDIR/assets/images/ic_quicklock.png) \
+        $$quote($$BASEDIR/assets/images/ic_refresh.png) \
         $$quote($$BASEDIR/assets/images/ic_rename.png) \
         $$quote($$BASEDIR/assets/images/ic_save.png) \
         $$quote($$BASEDIR/assets/images/ic_search.png) \
+        $$quote($$BASEDIR/assets/images/ic_timestamp.png) \
         $$quote($$BASEDIR/assets/images/ic_unlock.png) \
         $$quote($$BASEDIR/assets/images/ic_view_details.png) \
-        $$quote($$BASEDIR/assets/main.qml)
+        $$quote($$BASEDIR/assets/main.qml) \
+        $$quote($$BASEDIR/assets/pwicons-dark/0.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/1.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/10.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/11.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/12.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/13.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/14.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/15.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/16.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/17.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/18.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/19.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/2.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/20.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/21.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/22.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/23.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/24.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/25.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/26.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/27.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/28.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/29.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/3.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/30.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/31.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/32.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/33.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/34.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/35.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/36.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/37.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/38.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/39.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/4.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/40.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/41.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/42.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/43.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/44.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/45.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/46.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/47.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/48.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/49.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/5.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/50.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/51.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/52.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/53.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/54.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/55.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/56.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/57.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/58.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/59.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/6.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/60.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/61.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/62.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/63.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/64.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/65.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/66.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/67.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/68.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/7.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/8.png) \
+        $$quote($$BASEDIR/assets/pwicons-dark/9.png)
 }
 
 config_pri_source_group1 {
@@ -221,11 +317,16 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/PwEntry.cpp) \
         $$quote($$BASEDIR/src/db/PwGroup.cpp) \
         $$quote($$BASEDIR/src/db/PwUuid.cpp) \
+        $$quote($$BASEDIR/src/db/v3/PwDatabaseV3.cpp) \
+        $$quote($$BASEDIR/src/db/v3/PwEntryV3.cpp) \
+        $$quote($$BASEDIR/src/db/v3/PwGroupV3.cpp) \
+        $$quote($$BASEDIR/src/db/v3/PwStreamUtilsV3.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwDatabaseV4.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwEntryV4.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwGroupV4.cpp) \
         $$quote($$BASEDIR/src/main.cpp) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.cpp) \
+        $$quote($$BASEDIR/src/util/PasswordGenerator.cpp) \
         $$quote($$BASEDIR/src/util/Settings.cpp) \
         $$quote($$BASEDIR/src/util/TimedClipboard.cpp) \
         $$quote($$BASEDIR/src/util/Util.cpp)
@@ -237,10 +338,15 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/PwEntry.h) \
         $$quote($$BASEDIR/src/db/PwGroup.h) \
         $$quote($$BASEDIR/src/db/PwUuid.h) \
+        $$quote($$BASEDIR/src/db/v3/PwDatabaseV3.h) \
+        $$quote($$BASEDIR/src/db/v3/PwEntryV3.h) \
+        $$quote($$BASEDIR/src/db/v3/PwGroupV3.h) \
+        $$quote($$BASEDIR/src/db/v3/PwStreamUtilsV3.h) \
         $$quote($$BASEDIR/src/db/v4/PwDatabaseV4.h) \
         $$quote($$BASEDIR/src/db/v4/PwEntryV4.h) \
         $$quote($$BASEDIR/src/db/v4/PwGroupV4.h) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.h) \
+        $$quote($$BASEDIR/src/util/PasswordGenerator.h) \
         $$quote($$BASEDIR/src/util/Settings.h) \
         $$quote($$BASEDIR/src/util/TimedClipboard.h) \
         $$quote($$BASEDIR/src/util/Util.h)
@@ -249,6 +355,7 @@ config_pri_source_group1 {
 INCLUDEPATH += $$quote($$BASEDIR/src/db/v4) \
     $$quote($$BASEDIR/src/util) \
     $$quote($$BASEDIR/src/db) \
+    $$quote($$BASEDIR/src/db/v3) \
     $$quote($$BASEDIR/src/ui) \
     $$quote($$BASEDIR/src) \
     $$quote($$BASEDIR/src/crypto)
@@ -274,6 +381,11 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/db/*.cc) \
         $$quote($$BASEDIR/../src/db/*.cpp) \
         $$quote($$BASEDIR/../src/db/*.cxx) \
+        $$quote($$BASEDIR/../src/db/v3/*.c) \
+        $$quote($$BASEDIR/../src/db/v3/*.c++) \
+        $$quote($$BASEDIR/../src/db/v3/*.cc) \
+        $$quote($$BASEDIR/../src/db/v3/*.cpp) \
+        $$quote($$BASEDIR/../src/db/v3/*.cxx) \
         $$quote($$BASEDIR/../src/db/v4/*.c) \
         $$quote($$BASEDIR/../src/db/v4/*.c++) \
         $$quote($$BASEDIR/../src/db/v4/*.cc) \
@@ -312,7 +424,10 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../assets/VisualStyle.dark/pwicons/*.qs) \
         $$quote($$BASEDIR/../assets/images/*.qml) \
         $$quote($$BASEDIR/../assets/images/*.js) \
-        $$quote($$BASEDIR/../assets/images/*.qs)
+        $$quote($$BASEDIR/../assets/images/*.qs) \
+        $$quote($$BASEDIR/../assets/pwicons-dark/*.qml) \
+        $$quote($$BASEDIR/../assets/pwicons-dark/*.js) \
+        $$quote($$BASEDIR/../assets/pwicons-dark/*.qs)
 
     HEADERS += \
         $$quote($$BASEDIR/../src/*.h) \

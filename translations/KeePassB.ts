@@ -711,32 +711,32 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="424"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="438"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="438"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="488"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="452"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="502"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="462"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="476"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="475"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="489"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="499"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="513"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
