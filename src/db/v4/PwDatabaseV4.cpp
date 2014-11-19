@@ -309,21 +309,35 @@ bool PwDatabaseV4::processXmlKeyFile(const QByteArray& keyFileData, QByteArray& 
 bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const {
     CryptoManager* cm = CryptoManager::instance();
 
-    QByteArray ba;
-    int ec = cm->sha256(passwordKey, ba);
-    if (ec != SB_SUCCESS)
-        return false;
-
+    QByteArray preKey;
+    int ec;
     // if no key file were supplied, the keyFileData will be empty
-    QByteArray fKey;
-    if (!keyFileData.isEmpty()) {
+    if (!passwordKey.isEmpty() && !keyFileData.isEmpty()) {
+        qDebug() << "using password and key file";
+        ec = cm->sha256(passwordKey, preKey);
+        if (ec != SB_SUCCESS)
+            return false;
+
+        QByteArray fKey;
         if (!processKeyFile(keyFileData, fKey))
             return false;
-        ba.append(fKey);
+        preKey.append(fKey);
+    } else if (keyFileData.isEmpty()) {
+        qDebug() << "using password only";
+        int ec = cm->sha256(passwordKey, preKey);
+        if (ec != SB_SUCCESS)
+            return false;
+    } else if (passwordKey.isEmpty()) {
+        qDebug() << "using key file only";
+        if (!processKeyFile(keyFileData, preKey))
+            return false;
+    } else {
+        qDebug() << "empty keys provided (should not happen)";
+        return false;
     }
 
-    ec = cm->sha256(ba, combinedKey);
-    Util::safeClear(ba);
+    ec = cm->sha256(preKey, combinedKey);
+    Util::safeClear(preKey);
     if (ec != SB_SUCCESS)
         return false;
 
