@@ -31,9 +31,9 @@ void TimedClipboard::timeout() {
 bool TimedClipboard::clear() {
     if (modified && (content == this->value(DATA_TYPE))) {
         qDebug("Clipboard cleared by timeout");
-        this->remove(DATA_TYPE);
+        bool result = bb::system::Clipboard::clear();
         emit cleared();
-        return true;
+        return result;
     } else {
         qDebug("Clipboard NOT cleared by timeout - different content");
         return false;
@@ -43,6 +43,10 @@ bool TimedClipboard::clear() {
 bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMillis) {
     content = text.toUtf8();
     modified = true;
+    // Clearing the complete clipboard is very important, since there could co-exist
+    // different texts in various formats: text/plain, text/rtf, text/html...
+    bb::system::Clipboard::clear();
+
 	bool result = this->insert(DATA_TYPE, content);
 	if (result) {
 		emit inserted();
