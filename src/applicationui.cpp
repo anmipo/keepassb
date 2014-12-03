@@ -63,8 +63,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     res = QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int))); Q_ASSERT(res);
     res = QObject::connect(&watchdog, SIGNAL(timeout()), this, SLOT(lock())); Q_ASSERT(res);
 
-    res = QObject::connect(database, SIGNAL(dbLocked()), &clipboard, SLOT(clear())); Q_ASSERT(res);
-    res = QObject::connect(this, SIGNAL(appLocked()), &clipboard, SLOT(clear())); Q_ASSERT(res);
+    // clear clipboard when leaving the app (since the timeout timer won't fire after that)
+    res = QObject::connect(app, SIGNAL(manualExit()), &clipboard, SLOT(clear())); Q_ASSERT(res);
 
     initQml(app);
 }
