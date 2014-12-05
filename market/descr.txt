@@ -39,6 +39,11 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
 
 Changelog:
+v2.2.4
+Fixed: lists layout on BB Passport
+Fixed: pasting from clipboard did not work in some applications
+Fixed: clipboard is now cleared only on timeout or when KeePassB closes; locking the database does not clear the clipboard anymore. Thus, a password from one database can now be used to unlock another database.
+
 v2.2.3
 Fixed opening v2 databases with key file only
 

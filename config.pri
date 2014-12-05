@@ -41,6 +41,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/AppSettings.qml) \
         $$quote($$BASEDIR/assets/EditEntryV3Page.qml) \
         $$quote($$BASEDIR/assets/EditGroupPage.qml) \
+        $$quote($$BASEDIR/assets/GroupListItem.qml) \
         $$quote($$BASEDIR/assets/IconPickerPage.qml) \
         $$quote($$BASEDIR/assets/LabelTextButton.qml) \
         $$quote($$BASEDIR/assets/MonoTextField.qml) \

@@ -1,5 +1,5 @@
 1
-272
+273
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
@@ -7,6 +7,7 @@ common.js
 demo.kdbx
 EditEntryV3Page.qml
 EditGroupPage.qml
+GroupListItem.qml
 IconPickerPage.qml
 icons_data_model.xml
 images/cover-locked.png

@@ -873,7 +873,7 @@ NOTE: A timeout or the main-menu Lock button will activate the Quick Lock (if en
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="55"/>
+        <location filename="../assets/SearchResultsPage.qml" line="54"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translation type="unfinished"></translation>
@@ -1289,55 +1289,55 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="316"/>
+        <location filename="../assets/ViewGroupPage.qml" line="293"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="324"/>
+        <location filename="../assets/ViewGroupPage.qml" line="301"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="352"/>
+        <location filename="../assets/ViewGroupPage.qml" line="329"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="370"/>
+        <location filename="../assets/ViewGroupPage.qml" line="347"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="371"/>
+        <location filename="../assets/ViewGroupPage.qml" line="348"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="372"/>
+        <location filename="../assets/ViewGroupPage.qml" line="349"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="384"/>
+        <location filename="../assets/ViewGroupPage.qml" line="361"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="385"/>
+        <location filename="../assets/ViewGroupPage.qml" line="362"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="386"/>
+        <location filename="../assets/ViewGroupPage.qml" line="363"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translation type="unfinished"></translation>
