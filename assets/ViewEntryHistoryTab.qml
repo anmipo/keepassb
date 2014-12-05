@@ -50,11 +50,11 @@ ScrollView {
             }
             listItemComponents: [
                 ListItemComponent {
-                    StandardListItem {
+                    GroupListItem {
                         id: entryHistoryListItem
+                        itemType: "entry"
                         title: ListItemData.title
                         description: ListItemData.lastModificationTime.toString()
-                        imageSpaceReserved: true
                         imageSource: "asset:///pwicons/" + ListItemData.iconId + ".png"
                         attachedObjects: [
                             // ensures the list is large enough to fit all the entries, but no more than that

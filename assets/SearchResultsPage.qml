@@ -32,11 +32,10 @@ Page {
             }
             listItemComponents: [
                 ListItemComponent {
-                    StandardListItem {
+                    GroupListItem {
+                        itemType: "entry"
                         title: ListItemData.title
-                        //description: Common.getEntryDescription(ListItemData)
                         description: qsTr("Group: %1", "Describes the group of the selected entry. Example: 'Group:  Internet'").arg(ListItemData.parentGroup.name)
-                        imageSpaceReserved: true
                         imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                     }
                 }

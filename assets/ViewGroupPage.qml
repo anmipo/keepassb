@@ -236,11 +236,11 @@ Page {
                 listItemComponents: [
                     ListItemComponent {
                         type: "entry"
-                        StandardListItem {
+                        GroupListItem {
                             id: groupListEntryItem
+                            itemType: "entry"
                             title: ListItemData.title
                             description: Common.getEntryDescription(ListItemData)
-                            imageSpaceReserved: true
                             imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                             contextActions: ActionSet {
                                 title: ListItemData.title
@@ -280,36 +280,13 @@ Page {
                     },
                     ListItemComponent {
                         type: "group"
-                        CustomListItem {
+                        GroupListItem{
                             id: groupListGroupItem
-                            highlightAppearance: HighlightAppearance.Default
-                            dividerVisible: true
-                            Container {
-                                layout: StackLayout {
-                                    orientation: LayoutOrientation.LeftToRight
-                                }
-                                ImageView {
-                                    imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
-                                    horizontalAlignment: HorizontalAlignment.Left
-                                    verticalAlignment: VerticalAlignment.Center
-                                }
-                                Label {
-                                    text: ListItemData.name
-                                    textFormat: TextFormat.Plain
-                                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
-                                    textStyle.fontWeight: FontWeight.Bold
-                                    horizontalAlignment: HorizontalAlignment.Fill
-                                    verticalAlignment: VerticalAlignment.Center
-                                    layoutProperties: StackLayoutProperties {
-                                        spaceQuota: 1
-                                    } 
-                                }
-                                Label {
-                                    text: "(" + ListItemData.itemsCount + ")"
-                                    horizontalAlignment: HorizontalAlignment.Right
-                                    verticalAlignment: VerticalAlignment.Center 
-                                }
-                            }
+                            itemType: "group"
+                            title: ListItemData.name
+                            imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
+                            counterText: "(" + ListItemData.itemsCount + ")"
+                            
                             contextActions: ActionSet {
                                 title: ListItemData.name
                                 ActionItem {
