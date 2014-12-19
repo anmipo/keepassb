@@ -110,7 +110,7 @@ bool PwGroupV4::moveToBackup() {
  * Loads group fields from the stream.
  * The caller is responsible for clearing any previous values.
  */
-ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_GROUP);
 
     ErrorCodesV4::ErrorCode err;

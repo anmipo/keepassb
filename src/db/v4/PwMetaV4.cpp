@@ -153,15 +153,15 @@ QString PwCustomIconV4::toString() const {
             .arg(data.size());
 }
 /****************************/
-PwDatabaseV4Meta::PwDatabaseV4Meta(QObject* parent) : QObject(parent) {
+PwMetaV4::PwMetaV4(QObject* parent) : QObject(parent) {
     clear(); // reset fields to default values
 }
 
-PwDatabaseV4Meta::~PwDatabaseV4Meta() {
+PwMetaV4::~PwMetaV4() {
     clear();
 }
 
-void PwDatabaseV4Meta::clear() {
+void PwMetaV4::clear() {
     QDateTime now = QDateTime::currentDateTime();
 
     Util::safeClear(generator);
@@ -195,7 +195,7 @@ void PwDatabaseV4Meta::clear() {
     binaries.clear();
 }
 
-ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readFromStream(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_META);
 
     xml.readNext();
@@ -276,7 +276,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readFromStream(QXmlStreamReader& xml) 
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomIcons(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::readCustomIcons(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_CUSTOM_ICONS);
 
     xml.readNext();
@@ -303,7 +303,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomIcons(QXmlStreamReader& xml)
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readBinaries(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::readBinaries(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_BINARIES);
 
     xml.readNext();
@@ -330,7 +330,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readBinaries(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomData(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::readCustomData(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_CUSTOM_DATA);
 
     xml.readNext();
@@ -356,7 +356,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomData(QXmlStreamReader& xml) 
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomDataItem(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::readCustomDataItem(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_CUSTOM_DATA_ITEM);
 
     QString key, value;
@@ -384,14 +384,14 @@ ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomDataItem(QXmlStreamReader& x
     return ErrorCodesV4::SUCCESS;
 }
 
-PwBinaryV4* PwDatabaseV4Meta::getBinaryByReference(const QString& ref) const {
+PwBinaryV4* PwMetaV4::getBinaryByReference(const QString& ref) const {
     if (binaries.contains(ref))
         return binaries.value(ref);
     else
         return NULL;
 }
 
-void PwDatabaseV4Meta::debugPrint() const {
+void PwMetaV4::debugPrint() const {
     qDebug() << "Meta header:";
     qDebug() << "  generator:" << generator;
     qDebug() << "  databaseName:" << databaseName;

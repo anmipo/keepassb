@@ -67,13 +67,13 @@ private:
     // Loads timestamps of an entry
     ErrorCodesV4::ErrorCode readTimes(QXmlStreamReader& xml);
     // Loads the history tag of an entry and fills entry's history list
-    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
     // Loads a "String" field of an entry.
-    ErrorCodesV4::ErrorCode readString(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readString(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
     // Loads the value of a "String" field of an entry; decrypts protected values.
-    ErrorCodesV4::ErrorCode readStringValue(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, QString& value);
+    ErrorCodesV4::ErrorCode readStringValue(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, QString& value);
     // Loads an entry's binary attachment ("Binary" field of an entry).
-    ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, PwAttachment& attachment);
+    ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment);
 
 public:
     PwEntryV4(QObject* parent=0);
@@ -85,7 +85,7 @@ public:
      * Loads entry fields from the stream.
      * The caller is responsible for clearing any previous values.
      */
-    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
 
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;

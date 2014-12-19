@@ -86,7 +86,7 @@ public:
 /**
  * Metadata of the V4 database
  */
-class PwDatabaseV4Meta: public QObject {
+class PwMetaV4: public QObject {
     Q_OBJECT
 private:
     QString generator;
@@ -123,8 +123,8 @@ private:
 
     void debugPrint() const;
 public:
-    PwDatabaseV4Meta(QObject* parent=0);
-    virtual ~PwDatabaseV4Meta();
+    PwMetaV4(QObject* parent=0);
+    virtual ~PwMetaV4();
 
     void clear();
 

@@ -172,7 +172,7 @@ bool PwEntryV4::attachFile(const QString& filePath) {
  * Loads entry fields from the stream.
  * The caller is responsible for clearing any previous values.
  */
-ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_ENTRY);
 
     ErrorCodesV4::ErrorCode err = ErrorCodesV4::SUCCESS;
@@ -243,7 +243,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(XML_HISTORY == xml.name());
 
     ErrorCodesV4::ErrorCode err;
@@ -267,7 +267,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, PwDatabase
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readString(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwEntryV4::readString(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(XML_STRING == xml.name());
 
     QString key, value;
@@ -297,7 +297,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readString(QXmlStreamReader& xml, PwDatabaseV
 }
 
 // read a value from XML, decrypting it if necessary
-ErrorCodesV4::ErrorCode PwEntryV4::readStringValue(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, QString& value) {
+ErrorCodesV4::ErrorCode PwEntryV4::readStringValue(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, QString& value) {
     Q_ASSERT(xml.name() == XML_VALUE);
 
     QXmlStreamAttributes attr = xml.attributes();
@@ -322,7 +322,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readStringValue(QXmlStreamReader& xml, PwData
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, PwAttachment &attachment) {
+ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, PwMetaV4& meta, Salsa20& salsa20, PwAttachment &attachment) {
     Q_ASSERT(XML_BINARY == xml.name());
 
     QStringRef tagName = xml.name();

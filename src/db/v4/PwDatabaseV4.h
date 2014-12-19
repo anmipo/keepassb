@@ -107,7 +107,7 @@ private:
     friend class PwEntryV4;
 
     PwHeaderV4 header;
-    PwDatabaseV4Meta meta;
+    PwMetaV4 meta;
     QByteArray combinedKey;
     QByteArray aesKey;
     Salsa20 salsa20;
@@ -140,7 +140,7 @@ protected:
     /** Combines password and key data into one key */
     virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
 
-    PwDatabaseV4Meta* getMeta() { return &meta; }
+    PwMetaV4* getMeta() { return &meta; }
 public:
     PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();
