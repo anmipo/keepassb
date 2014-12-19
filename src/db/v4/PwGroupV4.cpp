@@ -6,8 +6,10 @@
  */
 
 #include <PwGroupV4.h>
+#include "db/v4/DefsV4.h"
 #include "db/v4/PwEntryV4.h"
 #include "db/v4/PwDatabaseV4.h"
+#include "db/v4/PwStreamUtilsV4.h"
 
 PwGroupV4::PwGroupV4(QObject* parent) : PwGroup(parent) {
     // nothing to do here
@@ -102,4 +104,95 @@ bool PwGroupV4::moveToBackup() {
     childEntries.clear();
     qDebug() << "PwGroupV4::moveToBackup OK";
     return true;
+}
+
+/**
+ * Loads group fields from the stream.
+ * The caller is responsible for clearing any previous values.
+ */
+ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+    Q_ASSERT(xml.name() == XML_GROUP);
+
+    ErrorCodesV4::ErrorCode err;
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_GROUP == tagName))) {
+        if (xml.isStartElement()) {
+            if (XML_UUID == tagName) {
+                PwUuid uuid = PwStreamUtilsV4::readUuid(xml);
+                setUuid(uuid);
+                if ((uuid == meta.getRecycleBinGroupUuid()) && meta.isRecycleBinEnabled()) {
+                    setDeleted(true); // may also be set higher in call stack
+                }
+            } else if (XML_ICON_ID == tagName) {
+                setIconId(PwStreamUtilsV4::readInt32(xml, 0));
+            } else if (XML_NAME == tagName) {
+                setName(PwStreamUtilsV4::readString(xml));
+            } else if (XML_NOTES == tagName) {
+                setNotes(PwStreamUtilsV4::readString(xml));
+            } else if (XML_TIMES == tagName) {
+                err = readTimes(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else if (XML_GROUP == tagName) {
+                PwGroupV4* subGroup = new PwGroupV4(this);
+                subGroup->setDatabase(this->getDatabase());
+                err = subGroup->readFromStream(xml, meta, salsa20);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+
+                if (isDeleted())
+                    subGroup->setDeleted(true); // propagate the deleted flag recursively
+                this->addSubGroup(subGroup);
+            } else if (XML_ENTRY == tagName) {
+                PwEntryV4* entry = new PwEntryV4(this);
+                err = entry->readFromStream(xml, meta, salsa20);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+
+                entry->setDeleted(this->isDeleted()); // propagate the deleted flag recursively
+                this->addEntry(entry);
+            }
+        }
+        xml.readNext();
+        tagName = xml.name();
+    }
+
+    if (xml.hasError())
+        return ErrorCodesV4::XML_GROUP_PARSING_ERROR;
+    else
+        return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
+    Q_ASSERT(XML_TIMES == xml.name());
+
+    QString text;
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    bool conversionOk = true;
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_TIMES))) {
+        if (xml.isStartElement()) {
+            if (tagName == XML_LAST_MODIFICATION_TIME) {
+                setLastModificationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_CREATION_TIME) {
+                setCreationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_LAST_ACCESS_TIME) {
+                setLastAccessTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_EXPIRY_TIME) {
+                setExpiryTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_EXPIRES) {
+                setExpires(PwStreamUtilsV4::readBool(xml, false));
+            }
+        }
+        if (!conversionOk)
+            break;
+        xml.readNext();
+        tagName = xml.name();
+    }
+
+    if (xml.hasError() || !conversionOk)
+        return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR;
+    else
+        return ErrorCodesV4::SUCCESS;
 }

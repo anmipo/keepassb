@@ -9,10 +9,14 @@
 #define PWENTRYV4_H_
 
 #include "db/PwEntry.h"
+#include "db/v4/DefsV4.h"
+#include "db/v4/PwMetaV4.h"
+#include "crypto/CryptoManager.h"
 #include <QMetaType>
 #include <QList>
 #include <bb/cascades/DataModel>
 #include <bb/cascades/QListDataModel>
+#include <QtXml/QXmlStreamReader>
 
 /**
  * Extra (string) field of a V4 database entry
@@ -29,10 +33,10 @@ public:
     PwExtraField(QObject* parent, const QString& name, const QString& value);
     virtual ~PwExtraField();
 
-    Q_INVOKABLE QString toString() const;
-
     /** Returns true if any string contains the query string. */
     virtual bool matchesQuery(const QString& query) const;
+
+    Q_INVOKABLE QString toString() const;
 
     // property accessors
     QString getName() const { return _name; }
@@ -60,11 +64,28 @@ private:
 
     bool isStandardField(const QString& name) const;
 
+    // Loads timestamps of an entry
+    ErrorCodesV4::ErrorCode readTimes(QXmlStreamReader& xml);
+    // Loads the history tag of an entry and fills entry's history list
+    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20);
+    // Loads a "String" field of an entry.
+    ErrorCodesV4::ErrorCode readString(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20);
+    // Loads the value of a "String" field of an entry; decrypts protected values.
+    ErrorCodesV4::ErrorCode readStringValue(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, QString& value);
+    // Loads an entry's binary attachment ("Binary" field of an entry).
+    ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, PwAttachment& attachment);
+
 public:
     PwEntryV4(QObject* parent=0);
     virtual ~PwEntryV4();
 
     virtual void clear();
+
+    /**
+     * Loads entry fields from the stream.
+     * The caller is responsible for clearing any previous values.
+     */
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20);
 
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;

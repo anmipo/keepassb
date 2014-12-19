@@ -103,6 +103,9 @@ public:
 class PwDatabaseV4: public PwDatabase {
     Q_OBJECT
 private:
+    friend class PwGroupV4;
+    friend class PwEntryV4;
+
     PwHeaderV4 header;
     PwDatabaseV4Meta meta;
     QByteArray combinedKey;
@@ -124,22 +127,6 @@ private:
     ErrorCodesV4::ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.
     ErrorCodesV4::ErrorCode parseXml(const QString& xmlString);
-    // loads a group and its children.
-    ErrorCodesV4::ErrorCode loadGroupFromXml(QXmlStreamReader& xml, PwGroupV4& group);
-    // Loads an entry.
-    ErrorCodesV4::ErrorCode loadEntryFromXml(QXmlStreamReader& xml, PwEntryV4& entry);
-    // Loads timestamps of a group
-    ErrorCodesV4::ErrorCode readGroupTimes(QXmlStreamReader& xml, PwGroupV4& group);
-    // Loads timestamps of an entry
-    ErrorCodesV4::ErrorCode readEntryTimes(QXmlStreamReader& xml, PwEntryV4& entry);
-    // Loads the history tag of an entry and fills entry's history list
-    ErrorCodesV4::ErrorCode readEntryHistory(QXmlStreamReader& xml, PwEntryV4& hostEntry);
-    // Loads a "String" field of an entry.
-    ErrorCodesV4::ErrorCode readEntryString(QXmlStreamReader& xml, PwEntryV4& entry);
-    // Loads the value of a "String" field of an entry; decrypts protected values.
-    ErrorCodesV4::ErrorCode readEntryStringValue(QXmlStreamReader& xml, QString& value);
-    // Loads an entry's binary attachment ("Binary" field of an entry).
-    ErrorCodesV4::ErrorCode readEntryAttachment(QXmlStreamReader& xml, PwAttachment& attachment);
 
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;
@@ -152,6 +139,8 @@ protected:
 
     /** Combines password and key data into one key */
     virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
+
+    PwDatabaseV4Meta* getMeta() { return &meta; }
 public:
     PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();

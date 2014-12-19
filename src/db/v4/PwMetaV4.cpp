@@ -384,11 +384,6 @@ ErrorCodesV4::ErrorCode PwDatabaseV4Meta::readCustomDataItem(QXmlStreamReader& x
     return ErrorCodesV4::SUCCESS;
 }
 
-
-const PwUuid& PwDatabaseV4Meta::getRecycleBinGroupUuid() const {
-    return recycleBinGroupUuid;
-}
-
 PwBinaryV4* PwDatabaseV4Meta::getBinaryByReference(const QString& ref) const {
     if (binaries.contains(ref))
         return binaries.value(ref);

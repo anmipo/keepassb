@@ -62,10 +62,18 @@ QString PwStreamUtilsV4::readString(QXmlStreamReader& xml) {
     return xml.readElementText();
 }
 
-/** Reads a UTC timestamp from current XML element; in case of error returns current time. */
-QDateTime PwStreamUtilsV4::readTime(QXmlStreamReader& xml) {
+/**
+ * Reads a UTC timestamp from current XML element; in case of error returns current time.
+ * If okPtr is specified, it will set to indicate the success of the conversion.
+ */
+QDateTime PwStreamUtilsV4::readTime(QXmlStreamReader& xml, bool *okPtr) {
     QString valueStr = xml.readElementText();
     QDateTime result = QDateTime::fromString(valueStr, Qt::ISODate);
+
+    if (okPtr) {
+        *okPtr = result.isValid();
+    }
+
     if (!result.isValid()) {
         result = QDateTime::currentDateTime();
     }

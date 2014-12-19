@@ -113,11 +113,15 @@ public:
         XML_META_CUSTOM_ICONS_PARSING_ERROR      = 0x55,
         XML_META_UNKNOWN_TAG_ERROR               = 0x56,
 
-        XML_TIMES_PARSING_ERROR  = 0x70,
+        XML_GROUP_PARSING_ERROR        = 0x57,
+        XML_ENTRY_PARSING_ERROR        = 0x58,
+        XML_GROUP_TIMES_PARSING_ERROR  = 0x59,
+        XML_ENTRY_TIMES_PARSING_ERROR  = 0x5A,
+
         XML_NO_ROOT_GROUP        = 0x71,
         XML_STRING_VALUE_PARSING_ERROR = 0x72,
         GROUP_LOADING_ERROR            = 0x73,
-        ICON_ID_IS_NOT_INTEGER         = 0x74,
+//        ICON_ID_IS_NOT_INTEGER         = 0x74,
         INVALID_ATTACHMENT_REFERENCE   = 0x75,
     };
 };

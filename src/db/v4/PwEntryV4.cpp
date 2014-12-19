@@ -7,6 +7,8 @@
 
 #include "db/v4/PwEntryV4.h"
 #include "util/Util.h"
+#include "db/v4/PwMetaV4.h"
+#include "db/v4/PwStreamUtilsV4.h"
 
 // Standard entry fields
 const static QString TITLE = QString("Title");
@@ -164,4 +166,186 @@ bool PwEntryV4::attachFile(const QString& filePath) {
     // TODO implement PwEntryV4::attachFile
     Q_UNUSED(filePath);
     return false;
+}
+
+/**
+ * Loads entry fields from the stream.
+ * The caller is responsible for clearing any previous values.
+ */
+ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+    Q_ASSERT(xml.name() == XML_ENTRY);
+
+    ErrorCodesV4::ErrorCode err = ErrorCodesV4::SUCCESS;
+
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_ENTRY == tagName))) {
+        if (xml.isStartElement()) {
+            if (XML_UUID == tagName) {
+                setUuid(PwStreamUtilsV4::readUuid(xml));
+            } else if (XML_ICON_ID == tagName) {
+                setIconId(PwStreamUtilsV4::readInt32(xml, 0));
+            } else if (XML_STRING == tagName) {
+                err = readString(xml, meta, salsa20);
+            } else if (XML_BINARY == tagName) {
+                PwAttachment* attachment = new PwAttachment(this);
+                err = readAttachment(xml, meta, salsa20, *attachment);
+                addAttachment(attachment);
+            } else if (XML_TIMES == tagName) {
+                err = readTimes(xml);
+            } else if (XML_HISTORY == tagName) {
+                err = readHistory(xml, meta, salsa20);
+            }
+        }
+        if (err != ErrorCodesV4::SUCCESS)
+            return err;
+        xml.readNext();
+        tagName = xml.name();
+    }
+
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
+    Q_ASSERT(XML_TIMES == xml.name());
+
+    QString text;
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    bool conversionOk = true;
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_TIMES))) {
+        if (xml.isStartElement()) {
+            if (tagName == XML_LAST_MODIFICATION_TIME) {
+                setLastModificationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_CREATION_TIME) {
+                setCreationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_LAST_ACCESS_TIME) {
+                setLastAccessTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_EXPIRY_TIME) {
+                setExpiryTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else if (tagName == XML_EXPIRES) {
+                setExpires(PwStreamUtilsV4::readBool(xml, false));
+            }
+        }
+        if (!conversionOk)
+            break;
+
+        xml.readNext();
+        tagName = xml.name();
+    }
+
+    if (xml.hasError() || !conversionOk)
+        return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+    Q_ASSERT(XML_HISTORY == xml.name());
+
+    ErrorCodesV4::ErrorCode err;
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_HISTORY))) {
+        if (xml.isStartElement() && (tagName == XML_ENTRY)) {
+            PwEntryV4* historyEntry = new PwEntryV4(this); // 'this' is the parent, not a copy source
+            err = historyEntry->readFromStream(xml, meta, salsa20);
+            if (err != ErrorCodesV4::SUCCESS)
+                return err;
+
+            this->addHistoryEntry(historyEntry);
+        }
+        xml.readNext();
+        tagName = xml.name();
+    }
+
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwEntryV4::readString(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20) {
+    Q_ASSERT(XML_STRING == xml.name());
+
+    QString key, value;
+    QStringRef tagName = xml.name();
+
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_STRING))) {
+        xml.readNext();
+        tagName = xml.name();
+        if (xml.isStartElement()) {
+            if (tagName == XML_KEY) {
+                key = PwStreamUtilsV4::readString(xml);
+            } else if (tagName == XML_VALUE) {
+                ErrorCodesV4::ErrorCode err = readStringValue(xml, meta, salsa20, value);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else {
+                qDebug() << "unknown tag in PwEntryV4::readString():" << tagName;
+                return ErrorCodesV4::XML_ENTRY_PARSING_ERROR;
+            }
+        }
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_PARSING_ERROR;
+
+    setField(key, value);
+    return ErrorCodesV4::SUCCESS;
+}
+
+// read a value from XML, decrypting it if necessary
+ErrorCodesV4::ErrorCode PwEntryV4::readStringValue(QXmlStreamReader& xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, QString& value) {
+    Q_ASSERT(xml.name() == XML_VALUE);
+
+    QXmlStreamAttributes attr = xml.attributes();
+
+    if (attr.value(XML_PROTECTED) == XML_TRUE) {
+        QByteArray valueBytes = PwStreamUtilsV4::readBase64(xml);
+        int size = valueBytes.length();
+
+        QByteArray salsaBytes;
+        salsa20.getBytes(salsaBytes, size);
+
+        const char* xorBuf = salsaBytes.constData();
+        char* valueBuf = valueBytes.data();
+        for (int i = 0; i < size; i++) {
+            valueBuf[i] ^= xorBuf[i];
+        }
+        value = QString::fromUtf8(valueBuf, size);
+    } else {
+        value = PwStreamUtilsV4::readString(xml);
+    }
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, PwDatabaseV4Meta& meta, Salsa20& salsa20, PwAttachment &attachment) {
+    Q_ASSERT(XML_BINARY == xml.name());
+
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_BINARY))) {
+        xml.readNext();
+        tagName = xml.name();
+        if (xml.isStartElement()) {
+            if (tagName == XML_KEY) {
+                attachment.setName(PwStreamUtilsV4::readString(xml));
+            } else if (tagName == XML_VALUE) {
+                QString binaryRef = xml.attributes().value(XML_REF).toString();
+                //parent group is not defined here yet
+
+                PwBinaryV4* binary = meta.getBinaryByReference(binaryRef);
+                if (!binary) {
+                    return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE;
+                }
+                attachment.setData(binary->getData(), binary->isCompressed());
+            }
+        }
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
 }

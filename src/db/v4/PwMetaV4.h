@@ -13,6 +13,7 @@
 #include <QtXml/QXmlStreamReader>
 #include "db/PwUuid.h"
 #include "db/v4/DefsV4.h"
+#include "crypto/CryptoManager.h"
 
 
 /**
@@ -128,8 +129,11 @@ public:
     void clear();
 
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
-    const PwUuid& getRecycleBinGroupUuid() const;
     PwBinaryV4* getBinaryByReference(const QString& ref) const;
+
+    // proprety accessors
+    bool isRecycleBinEnabled() const { return recycleBinEnabled; }
+    PwUuid getRecycleBinGroupUuid() const { return recycleBinGroupUuid; }
 };
 
 

@@ -29,8 +29,11 @@ struct PwStreamUtilsV4
     /** Reads a string from current XML element. */
     static QString readString(QXmlStreamReader& xml);
 
-    /** Reads a UTC timestamp from current XML element; in case of error returns current time. */
-    static QDateTime readTime(QXmlStreamReader& xml);
+    /**
+     * Reads a UTC timestamp from current XML element; in case of error returns current time.
+     * If okPtr is specified, it will set to indicate the success of the conversion.
+     */
+    static QDateTime readTime(QXmlStreamReader& xml, bool *okPtr=NULL);
 
     /** Reads a Base-64 encoded UUID from current XML element; in case of error returns default (all-zero) UUID. */
     static PwUuid readUuid(QXmlStreamReader& xml);
