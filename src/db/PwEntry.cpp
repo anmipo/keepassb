@@ -188,10 +188,13 @@ PwEntry::~PwEntry() {
 void PwEntry::clear() {
     _uuid.clear();
     _iconId = -1;
-    _creationTime.setMSecsSinceEpoch(0L);
-    _lastModificationTime.setMSecsSinceEpoch(0L);
-    _lastAccessTime.setMSecsSinceEpoch(0L);
-    _expiryTime.setMSecsSinceEpoch(0L);
+
+    QDateTime now = QDateTime::currentDateTime();
+    _creationTime = now;
+    _lastModificationTime = now;
+    _lastAccessTime = now;
+    _expiryTime = now;
+
     _attachmentsDataModel.clear();
     _deleted = false;
     _expires = false;

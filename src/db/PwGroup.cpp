@@ -54,10 +54,13 @@ void PwGroup::clear() {
 	qDeleteAll(_entries);
 	_entries.clear();
 	emit itemsChanged(bb::cascades::DataModelChangeType::Init);
-    _creationTime.setMSecsSinceEpoch(0L);
-    _lastModificationTime.setMSecsSinceEpoch(0L);
-    _lastAccessTime.setMSecsSinceEpoch(0L);
-    _expiryTime.setMSecsSinceEpoch(0L);
+
+	QDateTime now = QDateTime::currentDateTime();
+    _creationTime = now;
+    _lastModificationTime = now;
+    _lastAccessTime = now;
+    _expiryTime = now;
+
     _isChildrenModified = true;
     _expires = false;
     _deleted = false;
