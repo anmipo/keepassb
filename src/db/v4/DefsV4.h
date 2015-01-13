@@ -72,6 +72,14 @@ const QString XML_PROTECTED = QString("Protected");
 const QString XML_TRUE = QString("True"); // Since Qt/Cascades does not have string-to-bool conversion, we need this
 const QString XML_REF = QString("Ref");
 
+const QString XML_IS_EXPANDED = QString("IsExpanded");
+const QString XML_DEFAULT_AUTO_TYPE_SEQUENCE = QString("DefaultAutoTypeSequence");
+const QString XML_ENABLE_AUTO_TYPE = QString("EnableAutoType");
+const QString XML_ENABLE_SEARCHING = QString("EnableSearching");
+const QString XML_LAST_TOP_VISIBLE_ENTRY = QString("LastTopVisibleEntry");
+const QString XML_USAGE_COUNT = QString("UsageCount");
+const QString XML_LOCATION_CHANGED_TIME = QString("LocationChanged");
+
 const QString XML_TIMES = QString("Times");
 const QString XML_LAST_MODIFICATION_TIME = QString("LastModificationTime");
 const QString XML_CREATION_TIME = QString("CreationTime");

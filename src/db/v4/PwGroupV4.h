@@ -16,13 +16,27 @@
 
 class PwGroupV4: public PwGroup {
     Q_OBJECT
+    Q_PROPERTY(bool isExpanded READ getIsExpanded WRITE setIsExpanded NOTIFY expandedChanged)
+    Q_PROPERTY(QString defaultAutoTypeSequence READ getDefaultAutoTypeSequence WRITE setDefaultAutoTypeSequence NOTIFY defaultAutoTypeSequenceChanged)
+    Q_PROPERTY(QString enableAutoType READ getEnableAutoType WRITE setEnableAutoType NOTIFY enableAutoTypeChanged)
+    Q_PROPERTY(QString enableSearching READ getEnableSearching WRITE setEnableSearching NOTIFY enableSearchingChanged)
 private:
+    bool _isExpanded;
+    QString _defaultAutoTypeSequence;
+    QString _enableAutoType; // actually a bool, but with possible "null" value
+    QString _enableSearching; // actually a bool, but with possible "null" value
+    PwUuid _lastTopVisibleEntryUuid;
+    quint32 _usageCount;
+    QDateTime _locationChangedTime;
+
     /** Reads group's timestamps from MXL */
     ErrorCodesV4::ErrorCode readTimes(QXmlStreamReader& xml);
 
 public:
     PwGroupV4(QObject* parent=0);
     virtual ~PwGroupV4();
+
+    virtual void clear();
 
     /**
      * Moves the group's whole branch to Backup group.
@@ -44,6 +58,31 @@ public:
      * The caller is responsible for clearing any previous values.
      */
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
+
+    // property getters/setters
+    bool getIsExpanded() const { return _isExpanded; }
+    void setIsExpanded(bool expanded);
+    QString getDefaultAutoTypeSequence() const { return _defaultAutoTypeSequence; }
+    void setDefaultAutoTypeSequence(const QString& defaultAutoTypeSequence);
+    QString getEnableAutoType() const { return _enableAutoType; }
+    void setEnableAutoType(const QString& enableAutoType);
+    QString getEnableSearching() const { return _enableSearching; }
+    void setEnableSearching(const QString& enableSearching);
+    PwUuid getLastTopVisibleEntry() const { return _lastTopVisibleEntryUuid; }
+    void setLastTopVisibleEntry(const PwUuid& uuid);
+    quint32 getUsageCount() const { return _usageCount; }
+    void setUsageCount(const quint32 usageCount);
+    QDateTime getLocationChangedTime() const { return _locationChangedTime; }
+    void setLocationChangedTime(const QDateTime& locationChangedTime);
+
+signals:
+    void expandedChanged(bool);
+    void defaultAutoTypeSequenceChanged(QString);
+    void enableAutoTypeChanged(QString);
+    void enableSearchingChanged(QString);
+    void lastTopVisibleEntryChanged(PwUuid);
+    void usageCountChanged(quint32);
+    void locationChangedTimeChanged(QDateTime);
 };
 
 Q_DECLARE_METATYPE(PwGroupV4*);

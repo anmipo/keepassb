@@ -10,6 +10,7 @@
 #include "db/v4/PwEntryV4.h"
 #include "db/v4/PwDatabaseV4.h"
 #include "db/v4/PwStreamUtilsV4.h"
+#include "util/Util.h"
 
 PwGroupV4::PwGroupV4(QObject* parent) : PwGroup(parent) {
     // nothing to do here
@@ -124,16 +125,26 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 if ((uuid == meta.getRecycleBinGroupUuid()) && meta.isRecycleBinEnabled()) {
                     setDeleted(true); // may also be set higher in call stack
                 }
-            } else if (XML_ICON_ID == tagName) {
-                setIconId(PwStreamUtilsV4::readInt32(xml, 0));
             } else if (XML_NAME == tagName) {
                 setName(PwStreamUtilsV4::readString(xml));
             } else if (XML_NOTES == tagName) {
                 setNotes(PwStreamUtilsV4::readString(xml));
+            } else if (XML_ICON_ID == tagName) {
+                setIconId(PwStreamUtilsV4::readInt32(xml, 0));
             } else if (XML_TIMES == tagName) {
                 err = readTimes(xml);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
+            } else if (XML_IS_EXPANDED == tagName) {
+                setIsExpanded(PwStreamUtilsV4::readBool(xml, true));
+            } else if (XML_DEFAULT_AUTO_TYPE_SEQUENCE == tagName) {
+                setDefaultAutoTypeSequence(PwStreamUtilsV4::readString(xml));
+            } else if (XML_ENABLE_AUTO_TYPE == tagName) {
+                setEnableAutoType(PwStreamUtilsV4::readString(xml)); // actually a bool, possibly "null"
+            } else if (XML_ENABLE_SEARCHING == tagName) {
+                setEnableSearching(PwStreamUtilsV4::readString(xml)); // actually a bool, possibly "null"
+            } else if (XML_LAST_TOP_VISIBLE_ENTRY == tagName) {
+                setLastTopVisibleEntry(PwStreamUtilsV4::readUuid(xml));
             } else if (XML_GROUP == tagName) {
                 PwGroupV4* subGroup = new PwGroupV4(this);
                 subGroup->setDatabase(this->getDatabase());
@@ -183,6 +194,13 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
                 setExpiryTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
             } else if (tagName == XML_EXPIRES) {
                 setExpires(PwStreamUtilsV4::readBool(xml, false));
+            } else if (tagName == XML_USAGE_COUNT) {
+                setUsageCount(PwStreamUtilsV4::readUInt32(xml, 0));
+            } else if (tagName == XML_LOCATION_CHANGED_TIME) {
+                setLocationChangedTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else {
+                qDebug() << "unknown PwGroupV4/Times tag:" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
             }
         }
         if (!conversionOk)
@@ -195,4 +213,67 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
         return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR;
     else
         return ErrorCodesV4::SUCCESS;
+}
+
+void PwGroupV4::clear() {
+    _isExpanded = true;
+    Util::safeClear(_defaultAutoTypeSequence);
+    Util::safeClear(_enableAutoType);
+    Util::safeClear(_enableSearching);
+    _lastTopVisibleEntryUuid.clear();
+    _usageCount = 0;
+
+    QDateTime now = QDateTime::currentDateTime();
+    _locationChangedTime = now;
+
+    PwGroup::clear();
+}
+
+void PwGroupV4::setIsExpanded(bool expanded) {
+    if (expanded != _isExpanded) {
+        _isExpanded = expanded;
+        emit expandedChanged(expanded);
+    }
+}
+
+void PwGroupV4::setDefaultAutoTypeSequence(const QString& defaultAutoTypeSequence) {
+    if (defaultAutoTypeSequence != _defaultAutoTypeSequence) {
+        _defaultAutoTypeSequence = defaultAutoTypeSequence;
+        emit defaultAutoTypeSequenceChanged(defaultAutoTypeSequence);
+    }
+}
+
+void PwGroupV4::setEnableAutoType(const QString& enableAutoType) {
+    if (enableAutoType != _enableAutoType) {
+        _enableAutoType = enableAutoType;
+        emit enableAutoTypeChanged(enableAutoType);
+    }
+}
+
+void PwGroupV4::setEnableSearching(const QString& enableSearching) {
+    if (enableSearching != _enableSearching) {
+        _enableSearching = enableSearching;
+        emit enableSearchingChanged(enableSearching);
+    }
+}
+
+void PwGroupV4::setLastTopVisibleEntry(const PwUuid& uuid) {
+    if (uuid != _lastTopVisibleEntryUuid) {
+        _lastTopVisibleEntryUuid = uuid;
+        emit lastTopVisibleEntryChanged(uuid);
+    }
+}
+
+void PwGroupV4::setUsageCount(const quint32 usageCount) {
+    if (usageCount != _usageCount) {
+        _usageCount = usageCount;
+        emit usageCountChanged(usageCount);
+    }
+}
+
+void PwGroupV4::setLocationChangedTime(const QDateTime& locationChangedTime) {
+    if (locationChangedTime != _locationChangedTime) {
+        _locationChangedTime = locationChangedTime;
+        emit locationChangedTimeChanged(locationChangedTime);
+    }
 }
