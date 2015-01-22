@@ -47,6 +47,26 @@ signals:
     void valueChanged(QString value);
 };
 
+/**
+ * Auto type settings of a V4 entry
+ */
+class PwAutoType: public QObject {
+    Q_OBJECT
+private:
+    bool _enabled;
+    quint32 _obfuscationType;
+    QString _defaultSequence;
+    QList<QStringPair> _associations;
+
+    ErrorCodesV4::ErrorCode readAssociation(QXmlStreamReader& xml);
+public:
+    PwAutoType(QObject* parent=0);
+    virtual ~PwAutoType();
+
+    void clear();
+
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
+};
 
 class PwDatabaseV4;
 
@@ -58,9 +78,17 @@ class PwEntryV4: public PwEntry {
     Q_PROPERTY(int extraSize READ getExtraSize NOTIFY extraSizeChanged)
     Q_PROPERTY(int historySize READ getHistorySize NOTIFY historySizeChanged)
 private:
+    PwAutoType _autoType;
     QMap<QString, QString> fields;
     bb::cascades::QListDataModel<PwExtraField*> _extraFieldsDataModel;
     bb::cascades::QListDataModel<PwEntryV4*> _historyDataModel;
+    quint32 _usageCount;
+    QDateTime _locationChangedTime;
+
+    QString _foregroundColor;
+    QString _backgroundColor;
+    QString _overrideUrl;
+    QString _tags;
 
     bool isStandardField(const QString& name) const;
 
@@ -118,7 +146,7 @@ public:
     Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel();
     Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel();
 
-    // property accessors
+    // overriden property accessors
     virtual QString getTitle() const;
     virtual void setTitle(const QString& title);
     virtual QString getUserName() const;
@@ -129,12 +157,31 @@ public:
     virtual void setUrl(const QString& url);
     virtual QString getNotes() const;
     virtual void setNotes(const QString& notes);
+
+    // own property accessors
     int getHistorySize() { return _historyDataModel.size(); }
     int getExtraSize() { return _extraFieldsDataModel.size(); }
-
+    quint32 getUsageCount() const { return _usageCount; }
+    void setUsageCount(const quint32 usageCount);
+    QDateTime getLocationChangedTime() const { return _locationChangedTime; }
+    void setLocationChangedTime(const QDateTime& locationChangedTime);
+    QString getForegroundColor() const { return _foregroundColor; }
+    void setForegroundColor(const QString& fgColor);
+    QString getBackgroundColor() const { return _backgroundColor; }
+    void setBackgroundColor(const QString& bgColor);
+    QString getOverrideUrl() const { return _overrideUrl; }
+    void setOverrideUrl(const QString& url);
+    QString getTags() const { return _tags; }
+    void setTags(const QString& tags);
 signals:
-    void historySizeChanged(int historySize);
-    void extraSizeChanged(int extraSize);
+    void historySizeChanged(int);
+    void extraSizeChanged(int);
+    void usageCountChanged(quint32);
+    void locationChangedTimeChanged(QDateTime);
+    void foregroundColorChanged(QString);
+    void backgroundColorChanged(QString);
+    void overrideUrlChanged(QString);
+    void tagsChanged(QString);
 };
 
 Q_DECLARE_METATYPE(PwExtraField*);

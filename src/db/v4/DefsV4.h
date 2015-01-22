@@ -79,6 +79,18 @@ const QString XML_ENABLE_SEARCHING = QString("EnableSearching");
 const QString XML_LAST_TOP_VISIBLE_ENTRY = QString("LastTopVisibleEntry");
 const QString XML_USAGE_COUNT = QString("UsageCount");
 const QString XML_LOCATION_CHANGED_TIME = QString("LocationChanged");
+const QString XML_FOREGROUND_COLOR = QString("ForegroundColor");
+const QString XML_BACKGROUND_COLOR = QString("BackgroundColor");
+const QString XML_OVERRIDE_URL = QString("OverrideURL");
+const QString XML_TAGS = QString("Tags");
+
+const QString XML_AUTO_TYPE = QString("AutoType");
+const QString XML_AUTO_TYPE_ENABLED = QString("Enabled");
+const QString XML_AUTO_TYPE_OBFUSCATION = QString("DataTransferObfuscation");
+const QString XML_AUTO_TYPE_DEFAULT_SEQUENCE = QString("DefaultSequence");
+const QString XML_AUTO_TYPE_ITEM = QString("Association");
+const QString XML_AUTO_TYPE_WINDOW = QString("Window");
+const QString XML_AUTO_TYPE_KEYSTROKE_SEQUENCE = QString("KeystrokeSequence");
 
 const QString XML_TIMES = QString("Times");
 const QString XML_LAST_MODIFICATION_TIME = QString("LastModificationTime");
@@ -121,18 +133,21 @@ public:
         XML_META_CUSTOM_ICONS_PARSING_ERROR      = 0x55,
         XML_META_UNKNOWN_TAG_ERROR               = 0x56,
 
-        XML_GROUP_PARSING_ERROR        = 0x57,
-        XML_ENTRY_PARSING_ERROR        = 0x58,
-        XML_GROUP_TIMES_PARSING_ERROR  = 0x59,
-        XML_ENTRY_TIMES_PARSING_ERROR  = 0x5A,
+        XML_GROUP_PARSING_ERROR                  = 0x60,
+        XML_GROUP_TIMES_PARSING_ERROR            = 0x61,
 
-        XML_NO_ROOT_GROUP        = 0x71,
-        XML_STRING_VALUE_PARSING_ERROR = 0x72,
-        GROUP_LOADING_ERROR            = 0x73,
-//        ICON_ID_IS_NOT_INTEGER         = 0x74,
-        INVALID_ATTACHMENT_REFERENCE   = 0x75,
+        XML_ENTRY_PARSING_ERROR                  = 0x70,
+        XML_ENTRY_TIMES_PARSING_ERROR            = 0x71,
+        XML_ENTRY_AUTO_TYPE_PARSING_ERROR        = 0x72,
+
+        XML_NO_ROOT_GROUP              = 0x81,
+        XML_STRING_VALUE_PARSING_ERROR = 0x82,
+        GROUP_LOADING_ERROR            = 0x83,
+//        ICON_ID_IS_NOT_INTEGER         = 0x84,
+        INVALID_ATTACHMENT_REFERENCE   = 0x85,
     };
 };
 
+typedef QPair<QString, QString> QStringPair;
 
 #endif /* DEFSV4_H_ */

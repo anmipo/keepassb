@@ -43,14 +43,88 @@ bool PwExtraField::matchesQuery(const QString& query) const {
 }
 
 /**************************/
+PwAutoType::PwAutoType(QObject* parent) : QObject(parent) {
+    clear();
+}
 
-PwEntryV4::PwEntryV4(QObject* parent) :
-        PwEntry(parent),
-        fields(),
-        _extraFieldsDataModel(),
-        _historyDataModel() {
-    _extraFieldsDataModel.setParent(this);
-    _historyDataModel.setParent(this);
+PwAutoType::~PwAutoType() {
+    clear();
+}
+
+void PwAutoType::clear() {
+    _enabled = true;
+    _obfuscationType = 0;
+    _associations.clear();
+}
+
+ErrorCodesV4::ErrorCode PwAutoType::readFromStream(QXmlStreamReader& xml) {
+    Q_ASSERT(XML_AUTO_TYPE == xml.name());
+
+    QString key, value;
+    ErrorCodesV4::ErrorCode err;
+
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_AUTO_TYPE))) {
+        xml.readNext();
+        tagName = xml.name();
+        if (xml.isStartElement()) {
+            if (tagName == XML_AUTO_TYPE_ENABLED) {
+                _enabled = PwStreamUtilsV4::readBool(xml, true);
+            } else if (tagName == XML_AUTO_TYPE_OBFUSCATION) {
+                _obfuscationType = PwStreamUtilsV4::readUInt32(xml, 0);
+            } else if (tagName == XML_AUTO_TYPE_DEFAULT_SEQUENCE) {
+                _defaultSequence = PwStreamUtilsV4::readString(xml);
+            } else if (tagName == XML_AUTO_TYPE_ITEM) {
+                err = readAssociation(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else {
+                qDebug() << "unknown tag in PwAutoType:" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR;
+            }
+        }
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwAutoType::readAssociation(QXmlStreamReader& xml) {
+    Q_ASSERT(XML_AUTO_TYPE_ITEM == xml.name());
+
+    QString window, sequence;
+    QStringRef tagName = xml.name();
+
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_AUTO_TYPE_ITEM))) {
+        xml.readNext();
+        tagName = xml.name();
+        if (xml.isStartElement()) {
+            if (tagName == XML_AUTO_TYPE_WINDOW) {
+                window = PwStreamUtilsV4::readString(xml);
+            } else if (tagName == XML_AUTO_TYPE_KEYSTROKE_SEQUENCE) {
+                sequence = PwStreamUtilsV4::readString(xml);
+            } else {
+                qDebug() << "unknown tag in PwAutoType/association:" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR;
+            }
+        }
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR;
+
+    _associations.append(QStringPair(window, sequence));
+    return ErrorCodesV4::SUCCESS;
+}
+
+/**************************/
+
+PwEntryV4::PwEntryV4(QObject* parent) : PwEntry(parent) {
+    _extraFieldsDataModel.setParent(this); // TODO do I need this?
+    _historyDataModel.setParent(this); // TODO do I need this?
+    clear();
 }
 
 PwEntryV4::~PwEntryV4() {
@@ -58,6 +132,14 @@ PwEntryV4::~PwEntryV4() {
 }
 
 void PwEntryV4::clear() {
+    _autoType.clear();
+    setUsageCount(0);
+    setLocationChangedTime(QDateTime::currentDateTime());
+    setForegroundColor("");
+    setBackgroundColor("");
+    setOverrideUrl("");
+    setTags("");
+
     _historyDataModel.clear(); // deletes owned objects
     emit historySizeChanged(0);
 
@@ -140,6 +222,43 @@ QString PwEntryV4::getNotes() const {
 void PwEntryV4::setNotes(const QString& notes) {
     setField(NOTES, notes);
 }
+void PwEntryV4::setUsageCount(const quint32 usageCount) {
+    if (usageCount != _usageCount) {
+        _usageCount = usageCount;
+        emit usageCountChanged(usageCount);
+    }
+}
+void PwEntryV4::setLocationChangedTime(const QDateTime& locationChangedTime) {
+    if (locationChangedTime != _locationChangedTime) {
+        _locationChangedTime = locationChangedTime;
+        emit locationChangedTimeChanged(locationChangedTime);
+    }
+}
+void PwEntryV4::setForegroundColor(const QString& fgColor) {
+    if (fgColor != _foregroundColor) {
+        _foregroundColor = fgColor;
+        emit foregroundColorChanged(fgColor);
+    }
+}
+void PwEntryV4::setBackgroundColor(const QString& bgColor) {
+    if (bgColor != _backgroundColor) {
+        _backgroundColor = bgColor;
+        emit backgroundColorChanged(bgColor);
+    }
+}
+void PwEntryV4::setOverrideUrl(const QString& url) {
+    if (url != _overrideUrl) {
+        _overrideUrl = url;
+        emit overrideUrlChanged(url);
+    }
+}
+void PwEntryV4::setTags(const QString& tags) {
+    if (tags != _tags) {
+        _tags = tags;
+        emit tagsChanged(tags);
+    }
+}
+
 
 /** Returns a new entry instance with the same field values. */
 PwEntry* PwEntryV4::clone() {
@@ -185,6 +304,14 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 setUuid(PwStreamUtilsV4::readUuid(xml));
             } else if (XML_ICON_ID == tagName) {
                 setIconId(PwStreamUtilsV4::readInt32(xml, 0));
+            } else if (XML_FOREGROUND_COLOR == tagName) {
+                setForegroundColor(PwStreamUtilsV4::readString(xml));
+            } else if (XML_BACKGROUND_COLOR == tagName) {
+                setBackgroundColor(PwStreamUtilsV4::readString(xml));
+            } else if (XML_OVERRIDE_URL == tagName) {
+                setOverrideUrl(PwStreamUtilsV4::readString(xml));
+            } else if (XML_TAGS == tagName) {
+                setTags(PwStreamUtilsV4::readString(xml));
             } else if (XML_STRING == tagName) {
                 err = readString(xml, meta, salsa20);
             } else if (XML_BINARY == tagName) {
@@ -193,6 +320,8 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 addAttachment(attachment);
             } else if (XML_TIMES == tagName) {
                 err = readTimes(xml);
+            } else if (XML_AUTO_TYPE == tagName) {
+                err = _autoType.readFromStream(xml);
             } else if (XML_HISTORY == tagName) {
                 err = readHistory(xml, meta, salsa20);
             }
@@ -228,6 +357,13 @@ ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
                 setExpiryTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
             } else if (tagName == XML_EXPIRES) {
                 setExpires(PwStreamUtilsV4::readBool(xml, false));
+            } else if (tagName == XML_USAGE_COUNT) {
+                setUsageCount(PwStreamUtilsV4::readUInt32(xml, 0));
+            } else if (tagName == XML_LOCATION_CHANGED_TIME) {
+                setLocationChangedTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+            } else {
+                qDebug() << "unknown PwEntryV4/Times tag:" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
             }
         }
         if (!conversionOk)
