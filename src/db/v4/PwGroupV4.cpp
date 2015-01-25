@@ -13,7 +13,7 @@
 #include "util/Util.h"
 
 PwGroupV4::PwGroupV4(QObject* parent) : PwGroup(parent) {
-    // nothing to do here
+    clear();
 }
 
 PwGroupV4::~PwGroupV4() {
@@ -163,6 +163,10 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
 
                 entry->setDeleted(this->isDeleted()); // propagate the deleted flag recursively
                 this->addEntry(entry);
+            } else {
+                qDebug() << "unknown PwGroupV4 tag:" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_GROUP_PARSING_ERROR;
             }
         }
         xml.readNext();
@@ -201,6 +205,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
             } else {
                 qDebug() << "unknown PwGroupV4/Times tag:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR;
             }
         }
         if (!conversionOk)

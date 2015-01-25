@@ -138,6 +138,10 @@ bool PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
                 uuid = PwStreamUtilsV4::readUuid(xml);
             } else if (tagName == XML_CUSTOM_ICON_ITEM_DATA) {
                 data = PwStreamUtilsV4::readBase64(xml);
+            } else {
+                qDebug() << "unexpected XML tag in CustomIcon: " << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
+                return false;
             }
         }
         xml.readNext();
@@ -265,7 +269,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml) {
                     return err;
             } else {
                 qDebug() << "unexpected XML tag in Meta:" << tagName;
-                //PwStreamUtilsV4::readUnknown(xml);
+                PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_UNKNOWN_TAG_ERROR;
             }
         }
@@ -294,7 +298,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomIcons(QXmlStreamReader& xml) {
                 customIcons.insert(icon->getUuid(), icon);
             } else {
                 qDebug() << "unexpected XML tag in CustomIcons: " << tagName;
-                //PwStreamUtilsV4::readUnknown(xml);
+                PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR;
             }
         }
@@ -321,7 +325,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readBinaries(QXmlStreamReader& xml) {
                 binaries.insert(binary->getId(), binary);
             } else {
                 qDebug() << "unexpected XML tag in Binaries: " << tagName;
-                //PwStreamUtilsV4::readUnknown(xml);
+                PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
             }
         }
@@ -347,7 +351,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomData(QXmlStreamReader& xml) {
                     return err;
             } else {
                 qDebug() << "unexpected XML tag in CustomData:" << tagName;
-                //PwStreamUtilsV4::readUnknown(xml);
+                PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
             }
         }
@@ -374,7 +378,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomDataItem(QXmlStreamReader& xml) {
                 value = PwStreamUtilsV4::readString(xml);
             } else {
                 qDebug() << "unexpected XML tag in CustomData item:" << tagName;
-                //PwStreamUtilsV4::readUnknown(xml);
+                PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
             }
         }
