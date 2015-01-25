@@ -165,6 +165,7 @@ void PwMetaV4::clear() {
     QDateTime now = QDateTime::currentDateTime();
 
     Util::safeClear(generator);
+    Util::safeClear(headerHash);
     Util::safeClear(databaseName);
     databaseNameChangedTime = now;
     Util::safeClear(databaseDescription);
@@ -204,6 +205,8 @@ ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml) {
         if (xml.isStartElement()) {
             if (XML_GENERATOR == tagName) {
                 generator = PwStreamUtilsV4::readString(xml);
+            } else if (XML_HEADER_HASH == tagName) {
+                headerHash = PwStreamUtilsV4::readBase64(xml);
             } else if (XML_DATABASE_NAME == tagName) {
                 databaseName = PwStreamUtilsV4::readString(xml);
             } else if (XML_DATABASE_NAME_CHANGED == tagName) {
@@ -389,6 +392,16 @@ PwBinaryV4* PwMetaV4::getBinaryByReference(const QString& ref) const {
         return binaries.value(ref);
     else
         return NULL;
+}
+
+/**
+ * Checks if the hashes DB file's header hash matches the one specified in Meta data, if any.
+ * If no header hash was specified in Meta, returns true.
+ */
+bool PwMetaV4::isHeaderHashMatch(const QByteArray& dbHeaderHash) const {
+    if (this->headerHash.isEmpty())
+        return true;
+    return (dbHeaderHash == this->headerHash);
 }
 
 void PwMetaV4::debugPrint() const {

@@ -90,6 +90,7 @@ class PwMetaV4: public QObject {
     Q_OBJECT
 private:
     QString generator;
+    QByteArray headerHash;
     QString databaseName;
     QDateTime databaseNameChangedTime;
     QString databaseDescription;
@@ -130,6 +131,12 @@ public:
 
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
     PwBinaryV4* getBinaryByReference(const QString& ref) const;
+
+    /**
+     * Checks if the hashes DB file's header hash matches the one specified in Meta data, if any.
+     * If no header hash was specified in Meta, returns true.
+     */
+    bool isHeaderHashMatch(const QByteArray& dbHeaderHash) const;
 
     // proprety accessors
     bool isRecycleBinEnabled() const { return recycleBinEnabled; }

@@ -18,6 +18,7 @@ const QString XML_GROUP = QString("Group");
 const QString XML_ENTRY = QString("Entry");
 
 const QString XML_GENERATOR                       = QString("Generator");
+const QString XML_HEADER_HASH                     = QString("HeaderHash");
 const QString XML_DATABASE_NAME                   = QString("DatabaseName");
 const QString XML_DATABASE_NAME_CHANGED           = QString("DatabaseNameChanged");
 const QString XML_DATABASE_DESCRIPTION            = QString("DatabaseDescription");
@@ -132,6 +133,7 @@ public:
         XML_META_CUSTOM_DATA_PARSING_ERROR       = 0x54,
         XML_META_CUSTOM_ICONS_PARSING_ERROR      = 0x55,
         XML_META_UNKNOWN_TAG_ERROR               = 0x56,
+        XML_META_HEADER_HASH_MISMATCH            = 0x57,
 
         XML_GROUP_PARSING_ERROR                  = 0x60,
         XML_GROUP_TIMES_PARSING_ERROR            = 0x61,

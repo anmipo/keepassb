@@ -25,6 +25,7 @@ private:
     bool initialized;
     int size;
     QMap<quint8, QByteArray> data;
+    QByteArray hash;
 
     quint64 transformRounds;
     enum Fields {
@@ -61,7 +62,8 @@ public:
         TRANSFORM_SEED_SIZE_MISMATCH   = 7,
         INITIAL_VECTOR_SIZE_MISMATCH   = 8,
         PROTECTED_STREAM_SIZE_MISMATCH = 9,
-        NOT_SALSA20                    = 10
+        NOT_SALSA20                    = 10,
+        HASHING_FAILED                 = 11,
     };
 
     /**
@@ -74,7 +76,7 @@ public:
     /**
      * Reads and parses header data.
      */
-    ErrorCode read(QDataStream& stream);
+    ErrorCode read(const QByteArray& dbBytes);
 
     quint64 getTransformRounds() const;
     QByteArray getTransformSeed() const;
@@ -83,6 +85,11 @@ public:
     QByteArray getStreamStartBytes() const;
     QByteArray getProtectedStreamKey() const;
     bool isCompressed() const;
+
+    /**
+     * Returns SHA-256 hash of the header content
+     */
+    QByteArray getHash() const;
 
     /**
      * Header size in bytes

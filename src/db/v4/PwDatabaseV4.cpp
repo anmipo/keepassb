@@ -45,9 +45,12 @@ PwHeaderV4::~PwHeaderV4() {
     clear();
 }
 
-PwHeaderV4::ErrorCode PwHeaderV4::read(QDataStream& stream) {
+PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
     Q_ASSERT(!initialized);
     clear();
+
+    QDataStream stream (dbBytes);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
     // check file signatures (although probably checked before)
     quint32 sign1, sign2, fileVersion;
@@ -123,6 +126,11 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(QDataStream& stream) {
         qDebug() << "Header" << fieldId << "Value " << fieldValue.toHex();
         data.insert(fieldId, fieldValue);
     }
+
+    const QByteArray headerBytes = dbBytes.left(size);
+    if (CryptoManager::instance()->sha256(headerBytes, hash) != SB_SUCCESS)
+        return HASHING_FAILED;
+
     return SUCCESS;
 }
 
@@ -149,6 +157,7 @@ void PwHeaderV4::clear() {
     data.clear();
     size = 0;
     transformRounds = 0;
+    Util::safeClear(hash);
     initialized = false;
 }
 
@@ -180,6 +189,9 @@ bool PwHeaderV4::isCompressed() const {
     return (data.value(HEADER_COMPRESSION_FLAGS).at(0) != 0);
 }
 
+QByteArray PwHeaderV4::getHash() const {
+    return hash;
+}
 int PwHeaderV4::sizeInBytes() const {
     return size;
 }
@@ -379,12 +391,9 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
 }
 
 bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
-    QDataStream stream (dbBytes);
-    stream.setByteOrder(QDataStream::LittleEndian);
-
     emit progressChanged(UNLOCK_PROGRESS_INIT);
 
-    PwHeaderV4::ErrorCode headerErrCode = header.read(stream);
+    PwHeaderV4::ErrorCode headerErrCode = header.read(dbBytes);
     if (headerErrCode != PwHeaderV4::SUCCESS) {
         qDebug() << PwHeaderV4::getErrorMessage(headerErrCode) << headerErrCode;
         emit dbLoadError(PwHeaderV4::getErrorMessage(headerErrCode), headerErrCode);
@@ -572,6 +581,9 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
                 err = meta.readFromStream(xml);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
+                if (!meta.isHeaderHashMatch(header.getHash()))
+                    return ErrorCodesV4::XML_META_HEADER_HASH_MISMATCH;
+
             } else if (tagName == XML_ROOT) {
                 if (xml.readNextStartElement() && (xml.name() == XML_GROUP)) {
                     err = rootV4->readFromStream(xml, meta, salsa20);
