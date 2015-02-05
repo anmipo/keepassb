@@ -73,6 +73,16 @@ ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) 
         return ErrorCodesV4::SUCCESS;
 }
 
+void MemoryProtection::writeToStream(QXmlStreamWriter& xml) {
+    xml.writeStartElement(XML_MEMORY_PROTECTION);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_TITLE, protectTitle);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_USERNAME, protectUserName);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_PASSWORD, protectPassword);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_URL, protectUrl);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_NOTES, protectNotes);
+    xml.writeEndElement(); // XML_MEMORY_PROTECTION
+}
+
 /****************************/
 PwBinaryV4::PwBinaryV4(QObject* parent) : QObject(parent) {
     // nothing to do
@@ -99,6 +109,14 @@ bool PwBinaryV4::readFromStream(QXmlStreamReader& xml) {
         return false;
     }
     return (!xml.hasError() && !_id.isEmpty());
+}
+
+void PwBinaryV4::writeToStream(QXmlStreamWriter& xml) {
+    xml.writeStartElement(XML_BINARY);
+    xml.writeAttribute(XML_BINARY_ID, _id);
+    xml.writeAttribute(XML_BINARY_COMPRESSED, _isCompressed ? XML_TRUE : XML_FALSE);
+    xml.writeCharacters(_data.toBase64());
+    xml.writeEndElement(); // XML_BINARY
 }
 
 QString PwBinaryV4::toString() const {
@@ -149,6 +167,14 @@ bool PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
     }
 
     return (!xml.hasError() && !data.isEmpty());
+}
+
+/** Writes icon fields to an XML stream.  */
+void PwCustomIconV4::writeToStream(QXmlStreamWriter& xml) {
+    xml.writeStartElement(XML_CUSTOM_ICON_ITEM);
+    PwStreamUtilsV4::writeUuid(xml, XML_CUSTOM_ICON_ITEM_ID, uuid);
+    PwStreamUtilsV4::writeBase64(xml, XML_CUSTOM_ICON_ITEM_DATA, data);
+    xml.writeEndElement(); // XML_CUSTOM_ICON_ITEM
 }
 
 QString PwCustomIconV4::toString() const {
@@ -406,6 +432,81 @@ bool PwMetaV4::isHeaderHashMatch(const QByteArray& dbHeaderHash) const {
     if (this->headerHash.isEmpty())
         return true;
     return (dbHeaderHash == this->headerHash);
+}
+
+ErrorCodesV4::ErrorCode PwMetaV4::writeToStream(QXmlStreamWriter& xml) {
+    xml.writeStartElement(XML_META);
+
+    PwStreamUtilsV4::writeString(xml, XML_GENERATOR, generator);
+    PwStreamUtilsV4::writeBase64(xml, XML_HEADER_HASH, headerHash);
+    PwStreamUtilsV4::writeString(xml, XML_DATABASE_NAME, databaseName);
+    PwStreamUtilsV4::writeTime(xml, XML_DATABASE_NAME_CHANGED, databaseNameChangedTime);
+    PwStreamUtilsV4::writeString(xml, XML_DATABASE_DESCRIPTION, databaseDescription);
+    PwStreamUtilsV4::writeTime(xml, XML_DATABASE_DESCRIPTION_CHANGED, databaseDescriptionChangedTime);
+    PwStreamUtilsV4::writeString(xml, XML_DEFAULT_USERNAME, defaultUserName);
+    PwStreamUtilsV4::writeTime(xml, XML_DEFAULT_USERNAME_CHANGED, defaultUserNameChangedTime);
+    PwStreamUtilsV4::writeUInt32(xml, XML_MAINTENANCE_HISTORY_DAYS, maintenanceHistoryDays);
+    PwStreamUtilsV4::writeString(xml, XML_COLOR, colorString);
+    PwStreamUtilsV4::writeTime(xml, XML_MASTER_KEY_CHANGED, masterKeyChangedTime);
+    PwStreamUtilsV4::writeInt64(xml, XML_MASTER_KEY_CHANGE_REC, masterKeyChangeRec);
+    PwStreamUtilsV4::writeInt64(xml, XML_MASTER_KEY_CHANGE_FORCE, masterKeyChangeForce);
+    memoryProtection.writeToStream(xml);
+    writeCustomIcons(xml);
+    PwStreamUtilsV4::writeBool(xml, XML_RECYCLE_BIN_ENABLED, recycleBinEnabled);
+    PwStreamUtilsV4::writeUuid(xml, XML_RECYCLE_BIN_UUID, recycleBinGroupUuid);
+    PwStreamUtilsV4::writeTime(xml, XML_RECYCLE_BIN_CHANGED, recycleBinChangedTime);
+    PwStreamUtilsV4::writeUuid(xml, XML_ENTRY_TEMPLATES_GROUP, entryTemplatesGroupUuid);
+    PwStreamUtilsV4::writeTime(xml, XML_ENTRY_TEMPLATES_GROUP_CHANGED, entryTemplatesGroupChangedTime);
+    PwStreamUtilsV4::writeInt32(xml, XML_HISTORY_MAX_ITEMS, historyMaxItems);
+    PwStreamUtilsV4::writeInt64(xml, XML_HISTORY_MAX_SIZE, historyMaxSize);
+    PwStreamUtilsV4::writeUuid(xml, XML_LAST_SELECTED_GROUP, lastSelectedGroupUuid);
+    PwStreamUtilsV4::writeUuid(xml, XML_LAST_TOP_VISIBLE_GROUP, lastTopVisibleGroupUuid);
+    writeBinaries(xml);
+    writeCustomData(xml);
+
+    xml.writeEndElement(); //XML_META
+    return ErrorCodesV4::SUCCESS;
+}
+
+void PwMetaV4::writeCustomIcons(QXmlStreamWriter& xml) const {
+    if (customIcons.size() > 0) {
+        xml.writeStartElement(XML_CUSTOM_ICONS);
+        QListIterator<PwCustomIconV4*> iter(customIcons.values());
+        while (iter.hasNext()) {
+            iter.next()->writeToStream(xml);
+        }
+        xml.writeEndElement(); // XML_CUSTOM_ICONS
+    } else {
+        // do not write anything
+    }
+}
+
+void PwMetaV4::writeBinaries(QXmlStreamWriter& xml) const {
+    if (binaries.size() > 0) {
+        xml.writeStartElement(XML_BINARIES);
+        QMapIterator<QString, PwBinaryV4*> iter(binaries);
+        while (iter.hasNext()) {
+            iter.next().value()->writeToStream(xml);
+        }
+        xml.writeEndElement(); // XML_BINARIES
+    } else {
+        // do not write anything
+    }
+}
+
+void PwMetaV4::writeCustomData(QXmlStreamWriter& xml) const {
+    if (customData.size() > 0) {
+        xml.writeStartElement(XML_CUSTOM_DATA);
+        QMapIterator<QString, QString> iter(customData);
+        while (iter.hasNext()) {
+            iter.next();
+            PwStreamUtilsV4::writeString(xml, XML_KEY, iter.key());
+            PwStreamUtilsV4::writeString(xml, XML_VALUE, iter.value());
+        }
+        xml.writeEndElement(); // XML_CUSTOM_DATA
+    } else {
+        xml.writeEmptyElement(XML_CUSTOM_DATA);
+    }
 }
 
 void PwMetaV4::debugPrint() const {

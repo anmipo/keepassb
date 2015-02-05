@@ -17,6 +17,7 @@ const QString XML_ROOT = QString("Root");
 const QString XML_GROUP = QString("Group");
 const QString XML_ENTRY = QString("Entry");
 
+const QString XML_KEEPASS_FILE                    = QString("KeePassFile");
 const QString XML_GENERATOR                       = QString("Generator");
 const QString XML_HEADER_HASH                     = QString("HeaderHash");
 const QString XML_DATABASE_NAME                   = QString("DatabaseName");
@@ -65,12 +66,14 @@ const QString XML_NOTES = QString("Notes");
 const QString XML_UUID = QString("UUID");
 const QString XML_NAME = QString("Name");
 const QString XML_ICON_ID = QString("IconID");
+const QString XML_CUSTOM_ICON_UUID = QString("CustomIconUUID");
 const QString XML_STRING = QString("String");
 const QString XML_HISTORY = QString("History");
 const QString XML_KEY = QString("Key");
 const QString XML_VALUE = QString("Value");
 const QString XML_PROTECTED = QString("Protected");
-const QString XML_TRUE = QString("True"); // Since Qt/Cascades does not have string-to-bool conversion, we need this
+const QString XML_TRUE = QString("True"); // Since Qt/Cascades does not have string-to-bool (and vice versa) conversion, we need this
+const QString XML_FALSE = QString("False"); // Since Qt/Cascades does not have string-to-bool (and vice versa) conversion, we need this
 const QString XML_REF = QString("Ref");
 
 const QString XML_IS_EXPANDED = QString("IsExpanded");
@@ -146,7 +149,7 @@ public:
         XML_ENTRY_STRING_PARSING_ERROR           = 0x75,
         XML_ENTRY_ATTACHMENT_PARSING_ERROR       = 0x76,
 
-        XML_NO_ROOT_GROUP              = 0x81,
+        XML_ROOT_PARSING_ERROR           = 0x81,
         XML_STRING_VALUE_PARSING_ERROR = 0x82,
         GROUP_LOADING_ERROR            = 0x83,
 //        ICON_ID_IS_NOT_INTEGER         = 0x84,

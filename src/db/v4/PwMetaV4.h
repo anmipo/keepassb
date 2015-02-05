@@ -36,6 +36,7 @@ public:
     QString toString() const;
 
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
+    void writeToStream(QXmlStreamWriter& xml);
 };
 
 /**
@@ -55,6 +56,7 @@ public:
     QString toString() const;
 
     bool readFromStream(QXmlStreamReader& xml);
+    void writeToStream(QXmlStreamWriter& xml);
 
     QString getId() const { return _id; }
     bool isCompressed() const { return _isCompressed; }
@@ -78,6 +80,8 @@ public:
 
     /** Reads icon fields from an XML stream. Returns true if successful, false otherwise. */
     bool readFromStream(QXmlStreamReader& xml);
+    /** Writes icon fields to an XML stream. */
+    void writeToStream(QXmlStreamWriter& xml);
 
     PwUuid getUuid() const;
     QByteArray getData() const;
@@ -122,14 +126,20 @@ private:
     ErrorCodesV4::ErrorCode readBinaries(QXmlStreamReader& xml);
     ErrorCodesV4::ErrorCode readCustomIcons(QXmlStreamReader& xml);
 
-    void debugPrint() const;
+    void writeCustomData(QXmlStreamWriter& xml) const;
+    void writeBinaries(QXmlStreamWriter& xml) const;
+    void writeCustomIcons(QXmlStreamWriter& xml) const;
+
 public:
+    void debugPrint() const;
     PwMetaV4(QObject* parent=0);
     virtual ~PwMetaV4();
 
     void clear();
 
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
+    ErrorCodesV4::ErrorCode writeToStream(QXmlStreamWriter& xml);
+
     PwBinaryV4* getBinaryByReference(const QString& ref) const;
 
     /**

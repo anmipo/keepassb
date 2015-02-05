@@ -34,6 +34,11 @@ const int UNLOCK_PROGRESS_BLOCKS_READ = 90;
 const int UNLOCK_PROGRESS_UNPACKED = 95;
 const int UNLOCK_PROGRESS_DONE = 100;
 
+// DB save stages progress percentage
+const int SAVE_PROGRESS_INIT = 0;
+const int SAVE_PROGRESS_CONTENT_PACKED = 5;
+const int SAVE_PROGRESS_KEY_TRANSFORMED = 90;
+const int SAVE_PROGRESS_DONE = 100;
 
 PwHeaderV4::PwHeaderV4(QObject* parent) : QObject(parent), data() {
     initialized = false;
@@ -132,6 +137,37 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
         return HASHING_FAILED;
 
     return SUCCESS;
+}
+
+void PwHeaderV4::write(QByteArray& buffer) {
+    QDataStream outStream(&buffer, QIODevice::WriteOnly);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+
+    outStream << SIGNATURE_1 << SIGNATURE_2 << FILE_VERSION;
+
+    writeHeaderField(outStream, HEADER_CIPHER_ID);
+    writeHeaderField(outStream, HEADER_COMPRESSION_FLAGS);
+    writeHeaderField(outStream, HEADER_MASTER_SEED);
+    writeHeaderField(outStream, HEADER_TRANSFORM_SEED);
+    writeHeaderField(outStream, HEADER_TRANSFORM_ROUNDS);
+    writeHeaderField(outStream, HEADER_ENCRYPTION_IV);
+    writeHeaderField(outStream, HEADER_PROTECTED_STREAM_KEY);
+    writeHeaderField(outStream, HEADER_STREAM_START_BYTES); // TODO should update this depending on content?
+    writeHeaderField(outStream, HEADER_INNER_RANDOM_STREAM_ID);
+    writeHeaderField(outStream, HEADER_END);
+}
+
+void PwHeaderV4::writeHeaderField(QDataStream& stream, quint8 fieldId) {
+    quint16 fieldSize = 0;
+    stream << fieldId;
+    if (data.contains(fieldId)) {
+        QByteArray fieldValue = data.value(fieldId);
+        fieldSize = fieldValue.size();
+        stream << fieldSize;
+        stream.writeRawData(fieldValue.constData(), fieldValue.size());
+    } else {
+        stream << fieldSize;
+    }
 }
 
 QString PwHeaderV4::getErrorMessage(ErrorCode errCode) {
@@ -590,8 +626,9 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
                     if (err != ErrorCodesV4::SUCCESS)
                         return err;
                 } else {
-                    qDebug() << "SEVERE: there is no group in the root";
-                    return ErrorCodesV4::XML_NO_ROOT_GROUP;
+                    qDebug() << "unknown tag in the Root:" << tagName;
+                    PwStreamUtilsV4::readUnknown(xml);
+                    return ErrorCodesV4::XML_ROOT_PARSING_ERROR;
                 }
             }
         }
@@ -611,7 +648,66 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
  * Encrypts and writes DB content to the given array.
  */
 bool PwDatabaseV4::save(QByteArray& outData) {
-    //TODO implement V4 saving
-    Q_UNUSED(outData); // remove when method is implemented
-    return false;
+    QString saveErrorMessage = tr("Cannot save database", "An error message");
+    outData.clear();
+    emit progressChanged(SAVE_PROGRESS_INIT);
+/*
+    // update encryption seeds
+    //TODO make sure to update keys within the header.data map too!
+    //TODO also randomize streamStartBytes and Salsa20
+    header.randomizeInitialVectors();
+
+    ErrorCodesV4::ErrorCode err = transformKey(combinedKey, aesKey, SAVE_PROGRESS_INIT, SAVE_PROGRESS_KEY_TRANSFORMED);
+    if (err != SUCCESS) {
+        qDebug() << "transformKey error while saving: " << err;
+        emit dbSaveError(saveErrorMessage, err);
+        return false;
+    }
+*/
+    QDataStream outStream(&outData, QIODevice::WriteOnly);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+
+    // write the header
+    QByteArray headerData;
+    header.write(headerData); // implicitly updates header's hash
+
+    outStream.writeRawData(headerData.constData(), headerData.size());
+    Util::safeClear(headerData);
+
+    //TODO write header.streamStartBytes - a random vector; should be encrypted
+
+    //TODO update Meta?
+    QByteArray contentData;
+    QXmlStreamWriter xml(&contentData);
+    xml.setCodec("UTF-8");
+
+    xml.writeStartDocument("1.0", true);
+    xml.writeStartElement(XML_KEEPASS_FILE);
+    ErrorCodesV4::ErrorCode err = meta.writeToStream(xml);
+    if (err != ErrorCodesV4::SUCCESS) {
+        qDebug() << "failed to write Meta to XML: " << err;
+        emit dbSaveError(saveErrorMessage, err);
+        return false;
+    }
+
+    xml.setAutoFormatting(true); // for debug only
+    xml.writeStartElement(XML_ROOT);
+    //write groups
+    //TODO wtf is <DeletedObjects/>?
+    xml.writeEndElement(); // XML_ROOT
+    xml.writeEndElement(); // XML_KEEPASS_FILE
+    xml.writeEndDocument();
+
+    //TODO possibly GZip the contentData
+    outStream.writeRawData(contentData.constData(), contentData.size()); // might be packedContentData
+
+    //TODO split in blocks, encode them and write
+
+    //meta.debugPrint(); //debug stuff
+    qDebug() << "*** content to save ***";
+    qDebug() << contentData;
+    qDebug() << "*** end content to save ***";
+
+    Util::safeClear(contentData);
+    return true;
 }

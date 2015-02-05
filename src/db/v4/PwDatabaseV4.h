@@ -41,6 +41,8 @@ private:
         HEADER_STREAM_START_BYTES   = 9,
         HEADER_INNER_RANDOM_STREAM_ID = 10
     };
+
+    void writeHeaderField(QDataStream& stream, quint8 fieldId);
 public:
     const static quint32 SIGNATURE_1 = 0x9AA2D903;
     const static quint32 SIGNATURE_2 = 0xB54BFB67;
@@ -77,6 +79,11 @@ public:
      * Reads and parses header data.
      */
     ErrorCode read(const QByteArray& dbBytes);
+    /**
+     * Writes header data to the given buffer.
+     * Implicitly updates header's hash value.
+     */
+    void write(QByteArray& buffer);
 
     quint64 getTransformRounds() const;
     QByteArray getTransformSeed() const;
