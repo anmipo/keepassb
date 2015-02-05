@@ -131,6 +131,8 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 setNotes(PwStreamUtilsV4::readString(xml));
             } else if (XML_ICON_ID == tagName) {
                 setIconId(PwStreamUtilsV4::readInt32(xml, 0));
+            } else if (XML_CUSTOM_ICON_UUID == tagName) {
+                setCustomIconUuid(PwStreamUtilsV4::readUuid(xml));
             } else if (XML_TIMES == tagName) {
                 err = readTimes(xml);
                 if (err != ErrorCodesV4::SUCCESS)
@@ -222,6 +224,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
 
 void PwGroupV4::clear() {
     _isExpanded = true;
+    _customIconUuid.clear();
     Util::safeClear(_defaultAutoTypeSequence);
     Util::safeClear(_enableAutoType);
     Util::safeClear(_enableSearching);
@@ -238,6 +241,13 @@ void PwGroupV4::setIsExpanded(bool expanded) {
     if (expanded != _isExpanded) {
         _isExpanded = expanded;
         emit expandedChanged(expanded);
+    }
+}
+
+void PwGroupV4::setCustomIconUuid(const PwUuid& uuid) {
+    if (_customIconUuid != uuid) {
+        _customIconUuid = uuid;
+        emit customIconUuidChanged(_customIconUuid);
     }
 }
 

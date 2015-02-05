@@ -132,6 +132,7 @@ PwEntryV4::~PwEntryV4() {
 }
 
 void PwEntryV4::clear() {
+    _customIconUuid.clear();
     _autoType.clear();
     setUsageCount(0);
     setLocationChangedTime(QDateTime::currentDateTime());
@@ -222,6 +223,14 @@ QString PwEntryV4::getNotes() const {
 void PwEntryV4::setNotes(const QString& notes) {
     setField(NOTES, notes);
 }
+
+void PwEntryV4::setCustomIconUuid(const PwUuid& uuid) {
+    if (_customIconUuid != uuid) {
+        _customIconUuid = uuid;
+        emit customIconUuidChanged(_customIconUuid);
+    }
+}
+
 void PwEntryV4::setUsageCount(const quint32 usageCount) {
     if (usageCount != _usageCount) {
         _usageCount = usageCount;
@@ -304,6 +313,8 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 setUuid(PwStreamUtilsV4::readUuid(xml));
             } else if (XML_ICON_ID == tagName) {
                 setIconId(PwStreamUtilsV4::readInt32(xml, 0));
+            } else if (XML_CUSTOM_ICON_UUID == tagName) {
+                setCustomIconUuid(PwStreamUtilsV4::readUuid(xml));
             } else if (XML_FOREGROUND_COLOR == tagName) {
                 setForegroundColor(PwStreamUtilsV4::readString(xml));
             } else if (XML_BACKGROUND_COLOR == tagName) {

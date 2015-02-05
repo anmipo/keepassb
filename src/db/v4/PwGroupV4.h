@@ -17,11 +17,13 @@
 class PwGroupV4: public PwGroup {
     Q_OBJECT
     Q_PROPERTY(bool isExpanded READ getIsExpanded WRITE setIsExpanded NOTIFY expandedChanged)
+    Q_PROPERTY(PwUuid customIconUuid READ getCustomIconUuid WRITE setCustomIconUuid NOTIFY customIconUuidChanged)
     Q_PROPERTY(QString defaultAutoTypeSequence READ getDefaultAutoTypeSequence WRITE setDefaultAutoTypeSequence NOTIFY defaultAutoTypeSequenceChanged)
     Q_PROPERTY(QString enableAutoType READ getEnableAutoType WRITE setEnableAutoType NOTIFY enableAutoTypeChanged)
     Q_PROPERTY(QString enableSearching READ getEnableSearching WRITE setEnableSearching NOTIFY enableSearchingChanged)
 private:
     bool _isExpanded;
+    PwUuid _customIconUuid;
     QString _defaultAutoTypeSequence;
     QString _enableAutoType; // actually a bool, but with possible "null" value
     QString _enableSearching; // actually a bool, but with possible "null" value
@@ -62,6 +64,8 @@ public:
     // property getters/setters
     bool getIsExpanded() const { return _isExpanded; }
     void setIsExpanded(bool expanded);
+    PwUuid getCustomIconUuid() const { return _customIconUuid; }
+    void setCustomIconUuid(const PwUuid& uuid);
     QString getDefaultAutoTypeSequence() const { return _defaultAutoTypeSequence; }
     void setDefaultAutoTypeSequence(const QString& defaultAutoTypeSequence);
     QString getEnableAutoType() const { return _enableAutoType; }
@@ -77,6 +81,7 @@ public:
 
 signals:
     void expandedChanged(bool);
+    void customIconUuidChanged(PwUuid);
     void defaultAutoTypeSequenceChanged(QString);
     void enableAutoTypeChanged(QString);
     void enableSearchingChanged(QString);

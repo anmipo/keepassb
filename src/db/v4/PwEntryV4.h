@@ -75,9 +75,11 @@ class PwDatabaseV4;
  */
 class PwEntryV4: public PwEntry {
     Q_OBJECT
+    Q_PROPERTY(PwUuid customIconUuid READ getCustomIconUuid WRITE setCustomIconUuid NOTIFY customIconUuidChanged)
     Q_PROPERTY(int extraSize READ getExtraSize NOTIFY extraSizeChanged)
     Q_PROPERTY(int historySize READ getHistorySize NOTIFY historySizeChanged)
 private:
+    PwUuid _customIconUuid;
     PwAutoType _autoType;
     QMap<QString, QString> fields;
     bb::cascades::QListDataModel<PwExtraField*> _extraFieldsDataModel;
@@ -159,6 +161,8 @@ public:
     virtual void setNotes(const QString& notes);
 
     // own property accessors
+    PwUuid getCustomIconUuid() const { return _customIconUuid; }
+    void setCustomIconUuid(const PwUuid& uuid);
     int getHistorySize() { return _historyDataModel.size(); }
     int getExtraSize() { return _extraFieldsDataModel.size(); }
     quint32 getUsageCount() const { return _usageCount; }
@@ -174,6 +178,7 @@ public:
     QString getTags() const { return _tags; }
     void setTags(const QString& tags);
 signals:
+    void customIconUuidChanged(PwUuid);
     void historySizeChanged(int);
     void extraSizeChanged(int);
     void usageCountChanged(quint32);
