@@ -130,6 +130,8 @@ private:
     void writeBinaries(QXmlStreamWriter& xml) const;
     void writeCustomIcons(QXmlStreamWriter& xml) const;
 
+    void setHeaderHash(const QByteArray& headerHash);
+    friend class PwDatabaseV4; // to give access to setHeaderHash;
 public:
     void debugPrint() const;
     PwMetaV4(QObject* parent=0);

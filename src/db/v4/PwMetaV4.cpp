@@ -424,6 +424,12 @@ PwBinaryV4* PwMetaV4::getBinaryByReference(const QString& ref) const {
         return NULL;
 }
 
+void PwMetaV4::setHeaderHash(const QByteArray& headerHash) {
+    if (this->headerHash != headerHash) {
+        this->headerHash = QByteArray(headerHash);
+    }
+}
+
 /**
  * Checks if the hashes DB file's header hash matches the one specified in Meta data, if any.
  * If no header hash was specified in Meta, returns true.

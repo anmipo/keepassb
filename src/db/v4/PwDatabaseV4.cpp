@@ -139,22 +139,30 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
     return SUCCESS;
 }
 
-void PwHeaderV4::write(QByteArray& buffer) {
-    QDataStream outStream(&buffer, QIODevice::WriteOnly);
-    outStream.setByteOrder(QDataStream::LittleEndian);
+PwHeaderV4::ErrorCode PwHeaderV4::write(QDataStream& outStream) {
+    QByteArray headerBytes;
+    QDataStream stream(&headerBytes, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
-    outStream << SIGNATURE_1 << SIGNATURE_2 << FILE_VERSION;
+    stream << SIGNATURE_1 << SIGNATURE_2 << FILE_VERSION;
 
-    writeHeaderField(outStream, HEADER_CIPHER_ID);
-    writeHeaderField(outStream, HEADER_COMPRESSION_FLAGS);
-    writeHeaderField(outStream, HEADER_MASTER_SEED);
-    writeHeaderField(outStream, HEADER_TRANSFORM_SEED);
-    writeHeaderField(outStream, HEADER_TRANSFORM_ROUNDS);
-    writeHeaderField(outStream, HEADER_ENCRYPTION_IV);
-    writeHeaderField(outStream, HEADER_PROTECTED_STREAM_KEY);
-    writeHeaderField(outStream, HEADER_STREAM_START_BYTES); // TODO should update this depending on content?
-    writeHeaderField(outStream, HEADER_INNER_RANDOM_STREAM_ID);
-    writeHeaderField(outStream, HEADER_END);
+    writeHeaderField(stream, HEADER_CIPHER_ID);
+    writeHeaderField(stream, HEADER_COMPRESSION_FLAGS);
+    writeHeaderField(stream, HEADER_MASTER_SEED);
+    writeHeaderField(stream, HEADER_TRANSFORM_SEED);
+    writeHeaderField(stream, HEADER_TRANSFORM_ROUNDS);
+    writeHeaderField(stream, HEADER_ENCRYPTION_IV);
+    writeHeaderField(stream, HEADER_PROTECTED_STREAM_KEY);
+    writeHeaderField(stream, HEADER_STREAM_START_BYTES); // TODO should update this depending on content?
+    writeHeaderField(stream, HEADER_INNER_RANDOM_STREAM_ID);
+    writeHeaderField(stream, HEADER_END);
+
+    // update header hash value
+    if (CryptoManager::instance()->sha256(headerBytes, hash) != SB_SUCCESS)
+        return HASHING_FAILED;
+
+    outStream.writeRawData(headerBytes.constData(), headerBytes.size());
+    return SUCCESS;
 }
 
 void PwHeaderV4::writeHeaderField(QDataStream& stream, quint8 fieldId) {
@@ -667,16 +675,19 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     QDataStream outStream(&outData, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
 
-    // write the header
-    QByteArray headerData;
-    header.write(headerData); // implicitly updates header's hash
-
-    outStream.writeRawData(headerData.constData(), headerData.size());
-    Util::safeClear(headerData);
+    // write the header, this implicitly updates header's hash
+    PwHeaderV4::ErrorCode headerErr = header.write(outStream);
+    if (headerErr != PwHeaderV4::SUCCESS) {
+        qDebug() << "error writing PwHeaderV4: " << headerErr;
+        emit dbSaveError(saveErrorMessage, headerErr);
+        return false;
+    }
 
     //TODO write header.streamStartBytes - a random vector; should be encrypted
 
-    //TODO update Meta?
+    //TODO update Meta: header hash / modification dates?
+    meta.setHeaderHash(header.getHash());
+
     QByteArray contentData;
     QXmlStreamWriter xml(&contentData);
     xml.setCodec("UTF-8");

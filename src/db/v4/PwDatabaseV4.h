@@ -83,7 +83,7 @@ public:
      * Writes header data to the given buffer.
      * Implicitly updates header's hash value.
      */
-    void write(QByteArray& buffer);
+    ErrorCode write(QDataStream& outStream);
 
     quint64 getTransformRounds() const;
     QByteArray getTransformSeed() const;
