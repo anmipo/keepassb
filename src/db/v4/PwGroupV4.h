@@ -61,6 +61,11 @@ public:
      */
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
 
+    /**
+     * Writes the group with all its entries, subgroups and their subentries to the stream.
+     */
+    ErrorCodesV4::ErrorCode writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);
+
     // property getters/setters
     bool getIsExpanded() const { return _isExpanded; }
     void setIsExpanded(bool expanded);

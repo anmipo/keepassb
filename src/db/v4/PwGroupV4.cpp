@@ -222,6 +222,54 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
         return ErrorCodesV4::SUCCESS;
 }
 
+/**
+ * Writes the group with all its entries, subgroups and their subentries to the stream.
+ */
+ErrorCodesV4::ErrorCode PwGroupV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20) {
+    xml.writeStartElement(XML_GROUP);
+    PwStreamUtilsV4::writeUuid(xml, XML_UUID, getUuid());
+    PwStreamUtilsV4::writeString(xml, XML_NAME, getName());
+    PwStreamUtilsV4::writeString(xml, XML_NOTES, getNotes());
+    PwStreamUtilsV4::writeInt32(xml, XML_ICON_ID, getIconId());
+    if (!_customIconUuid.isEmpty())
+        PwStreamUtilsV4::writeUuid(xml, XML_CUSTOM_ICON_UUID, getCustomIconUuid());
+
+    xml.writeStartElement(XML_TIMES);
+    PwStreamUtilsV4::writeTime(xml, XML_LAST_MODIFICATION_TIME, getLastModificationTime());
+    PwStreamUtilsV4::writeTime(xml, XML_CREATION_TIME, getCreationTime());
+    PwStreamUtilsV4::writeTime(xml, XML_LAST_ACCESS_TIME, getLastAccessTime());
+    PwStreamUtilsV4::writeTime(xml, XML_EXPIRY_TIME, getExpiryTime());
+    PwStreamUtilsV4::writeBool(xml, XML_EXPIRES, isExpires());
+    PwStreamUtilsV4::writeUInt32(xml, XML_USAGE_COUNT, getUsageCount());
+    PwStreamUtilsV4::writeTime(xml, XML_LOCATION_CHANGED_TIME, getLocationChangedTime());
+    xml.writeEndElement(); // XML_TIMES
+
+    PwStreamUtilsV4::writeBool(xml, XML_IS_EXPANDED, _isExpanded);
+    PwStreamUtilsV4::writeString(xml, XML_DEFAULT_AUTO_TYPE_SEQUENCE, _defaultAutoTypeSequence);
+    PwStreamUtilsV4::writeString(xml, XML_ENABLE_AUTO_TYPE, _enableAutoType); // actually a bool, possibly "null"
+    PwStreamUtilsV4::writeString(xml, XML_ENABLE_SEARCHING, _enableSearching); // actually a bool, possibly "null"
+    PwStreamUtilsV4::writeUuid(xml, XML_LAST_TOP_VISIBLE_ENTRY, _lastTopVisibleEntryUuid);
+
+    // write subgroups
+    QList<PwGroup*> subGroups = this->getSubGroups();
+    for (int i = 0; i < subGroups.size(); i++) {
+        ErrorCodesV4::ErrorCode err = dynamic_cast<PwGroupV4*>(subGroups.at(i))->writeToStream(xml, meta, salsa20);
+        if (err != ErrorCodesV4::SUCCESS)
+            return err;
+    }
+
+    // write entries
+    QList<PwEntry*> entries = this->getEntries();
+    for (int i = 0; i < entries.size(); i++) {
+        ErrorCodesV4::ErrorCode err = dynamic_cast<PwEntryV4*>(entries.at(i))->writeToStream(xml, meta, salsa20);
+        if (err != ErrorCodesV4::SUCCESS)
+            return err;
+    }
+
+    xml.writeEndElement(); // XML_GROUP
+    return ErrorCodesV4::SUCCESS;
+}
+
 void PwGroupV4::clear() {
     _isExpanded = true;
     _customIconUuid.clear();

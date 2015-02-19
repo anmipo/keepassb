@@ -703,6 +703,8 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
     xml.setAutoFormatting(true); // for debug only
     xml.writeStartElement(XML_ROOT);
+    dynamic_cast<PwGroupV4*>(getRootGroup())->writeToStream(xml, meta, salsa20);
+
     //write groups
     //TODO wtf is <DeletedObjects/>?
     xml.writeEndElement(); // XML_ROOT
