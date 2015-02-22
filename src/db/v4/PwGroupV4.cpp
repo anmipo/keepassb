@@ -225,7 +225,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
 /**
  * Writes the group with all its entries, subgroups and their subentries to the stream.
  */
-ErrorCodesV4::ErrorCode PwGroupV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20) {
+void PwGroupV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20) {
     xml.writeStartElement(XML_GROUP);
     PwStreamUtilsV4::writeUuid(xml, XML_UUID, getUuid());
     PwStreamUtilsV4::writeString(xml, XML_NAME, getName());
@@ -250,24 +250,19 @@ ErrorCodesV4::ErrorCode PwGroupV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4
     PwStreamUtilsV4::writeString(xml, XML_ENABLE_SEARCHING, _enableSearching); // actually a bool, possibly "null"
     PwStreamUtilsV4::writeUuid(xml, XML_LAST_TOP_VISIBLE_ENTRY, _lastTopVisibleEntryUuid);
 
-    // write subgroups
-    QList<PwGroup*> subGroups = this->getSubGroups();
-    for (int i = 0; i < subGroups.size(); i++) {
-        ErrorCodesV4::ErrorCode err = dynamic_cast<PwGroupV4*>(subGroups.at(i))->writeToStream(xml, meta, salsa20);
-        if (err != ErrorCodesV4::SUCCESS)
-            return err;
-    }
-
     // write entries
     QList<PwEntry*> entries = this->getEntries();
     for (int i = 0; i < entries.size(); i++) {
-        ErrorCodesV4::ErrorCode err = dynamic_cast<PwEntryV4*>(entries.at(i))->writeToStream(xml, meta, salsa20);
-        if (err != ErrorCodesV4::SUCCESS)
-            return err;
+        dynamic_cast<PwEntryV4*>(entries.at(i))->writeToStream(xml, meta, salsa20);
+    }
+
+    // write subgroups
+    QList<PwGroup*> subGroups = this->getSubGroups();
+    for (int i = 0; i < subGroups.size(); i++) {
+        dynamic_cast<PwGroupV4*>(subGroups.at(i))->writeToStream(xml, meta, salsa20);
     }
 
     xml.writeEndElement(); // XML_GROUP
-    return ErrorCodesV4::SUCCESS;
 }
 
 void PwGroupV4::clear() {
