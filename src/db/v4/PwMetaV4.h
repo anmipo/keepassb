@@ -22,11 +22,11 @@
 class MemoryProtection: public QObject {
     Q_OBJECT
 private:
-    bool protectTitle;
-    bool protectUserName;
-    bool protectPassword;
-    bool protectUrl;
-    bool protectNotes;
+    bool _protectTitle;
+    bool _protectUserName;
+    bool _protectPassword;
+    bool _protectUrl;
+    bool _protectNotes;
 
 public:
     MemoryProtection(QObject* parent=0);
@@ -37,6 +37,13 @@ public:
 
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
     void writeToStream(QXmlStreamWriter& xml);
+
+    //property accessors
+    bool isProtectTitle() const { return _protectTitle; }
+    bool isProtectUserName() const { return _protectUserName; }
+    bool isProtectPassword() const { return _protectPassword; }
+    bool isProtectUrl() const { return _protectUrl; }
+    bool isProtectNotes() const { return _protectNotes; }
 };
 
 /**
@@ -153,6 +160,7 @@ public:
     // proprety accessors
     bool isRecycleBinEnabled() const { return recycleBinEnabled; }
     PwUuid getRecycleBinGroupUuid() const { return recycleBinGroupUuid; }
+    const MemoryProtection* getMemoryProtection() const { return &memoryProtection; }
 };
 
 

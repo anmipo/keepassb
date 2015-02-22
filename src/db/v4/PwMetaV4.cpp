@@ -27,20 +27,20 @@ MemoryProtection::~MemoryProtection() {
 }
 
 void MemoryProtection::clear() {
-    protectTitle = false;
-    protectUserName = false;
-    protectPassword = true;
-    protectUrl = false;
-    protectNotes = false;
+    _protectTitle = false;
+    _protectUserName = false;
+    _protectPassword = true;
+    _protectUrl = false;
+    _protectNotes = false;
 }
 
 QString MemoryProtection::toString() const {
     return QString("{title: %1, username: %2, password: %3, url: %4, notes: %5}")
-            .arg(protectTitle)
-            .arg(protectUserName)
-            .arg(protectPassword)
-            .arg(protectUrl)
-            .arg(protectNotes);
+            .arg(_protectTitle)
+            .arg(_protectUserName)
+            .arg(_protectPassword)
+            .arg(_protectUrl)
+            .arg(_protectNotes);
 }
 
 ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) {
@@ -51,15 +51,15 @@ ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) 
     while (!xml.hasError() && !(xml.isEndElement() && (XML_MEMORY_PROTECTION == tagName))) {
         if (xml.isStartElement()) {
             if (XML_MEMORY_PROTECTION_PROTECT_TITLE == tagName) {
-                protectTitle = PwStreamUtilsV4::readBool(xml, false);
+                _protectTitle = PwStreamUtilsV4::readBool(xml, false);
             } else if (XML_MEMORY_PROTECTION_PROTECT_USERNAME == tagName) {
-                protectUserName = PwStreamUtilsV4::readBool(xml, false);
+                _protectUserName = PwStreamUtilsV4::readBool(xml, false);
             } else if (XML_MEMORY_PROTECTION_PROTECT_PASSWORD == tagName) {
-                protectPassword = PwStreamUtilsV4::readBool(xml, true);
+                _protectPassword = PwStreamUtilsV4::readBool(xml, true);
             } else if (XML_MEMORY_PROTECTION_PROTECT_URL == tagName) {
-                protectUrl = PwStreamUtilsV4::readBool(xml, false);
+                _protectUrl = PwStreamUtilsV4::readBool(xml, false);
             } else if (XML_MEMORY_PROTECTION_PROTECT_NOTES == tagName) {
-                protectNotes = PwStreamUtilsV4::readBool(xml, false);
+                _protectNotes = PwStreamUtilsV4::readBool(xml, false);
             } else {
                 qDebug() << "WARN: unknown MemoryProtection tag " << tagName;
             }
@@ -75,11 +75,11 @@ ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) 
 
 void MemoryProtection::writeToStream(QXmlStreamWriter& xml) {
     xml.writeStartElement(XML_MEMORY_PROTECTION);
-    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_TITLE, protectTitle);
-    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_USERNAME, protectUserName);
-    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_PASSWORD, protectPassword);
-    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_URL, protectUrl);
-    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_NOTES, protectNotes);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_TITLE, _protectTitle);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_USERNAME, _protectUserName);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_PASSWORD, _protectPassword);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_URL, _protectUrl);
+    PwStreamUtilsV4::writeBool(xml, XML_MEMORY_PROTECTION_PROTECT_NOTES, _protectNotes);
     xml.writeEndElement(); // XML_MEMORY_PROTECTION
 }
 
