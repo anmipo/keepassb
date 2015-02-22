@@ -131,6 +131,10 @@ public:
      * Fills the buffer with "count" bytes of Salsa20 stream.
      */
     void getBytes(QByteArray& buf, int count);
+    /**
+     * XORs the buffer with required number of bytes of Salsa20 stream.
+     */
+    void xorWithNextBytes(QByteArray& buf);
 };
 
 #endif /* CRYPTOMANAGER_H_ */

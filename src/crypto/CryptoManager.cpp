@@ -486,3 +486,19 @@ void Salsa20::getBytes(QByteArray& buf, int count) {
         posInBlock++;
     }
 }
+
+/**
+ * XORs the buffer with required number of bytes of Salsa20 stream.
+ */
+void Salsa20::xorWithNextBytes(QByteArray& buf) {
+    int size = buf.length();
+
+    QByteArray salsaBytes;
+    getBytes(salsaBytes, size);
+
+    const char* xorBuf = salsaBytes.constData();
+    char* valueBuf = buf.data();
+    for (int i = 0; i < size; i++) {
+        valueBuf[i] ^= xorBuf[i];
+    }
+}
