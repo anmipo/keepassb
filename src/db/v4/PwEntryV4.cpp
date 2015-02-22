@@ -18,28 +18,136 @@ const static QString URL = QString("URL");
 const static QString NOTES = QString("Notes");
 
 
-PwExtraField::PwExtraField(QObject* parent) : QObject(parent),
-        _name(""), _value("") {
+PwField::PwField(QObject* parent) : QObject(parent),
+        _name(""), _value(""), _isProtected(false) {
     // left empty
 }
 
-PwExtraField::PwExtraField(QObject* parent, const QString& name, const QString& value) : QObject(parent),
-        _name(name), _value(value) {
+PwField::PwField(QObject* parent, const QString& name, const QString& value, const bool isProtected) : QObject(parent),
+        _name(name), _value(value), _isProtected(isProtected) {
     // left empty
 }
 
-PwExtraField::~PwExtraField() {
+PwField::~PwField() {
+    clear();
+}
+
+void PwField::clear() {
     Util::safeClear(_name);
     Util::safeClear(_value);
+    _isProtected = false;
 }
 
-QString PwExtraField::toString() const {
-    return _name + " = " + _value;
+QString PwField::toString() const {
+    return (_isProtected ? "<protected> " : "<not protected> ") + _name + " = " + _value;
 }
 
-bool PwExtraField::matchesQuery(const QString& query) const {
+bool PwField::matchesQuery(const QString& query) const {
     return getName().contains(query, Qt::CaseInsensitive) ||
             getValue().contains(query, Qt::CaseInsensitive);
+}
+
+void PwField::setName(const QString& name) {
+    if (_name != name) {
+        _name = name;
+        emit nameChanged(name);
+    }
+}
+
+void PwField::setValue(const QString& value) {
+    if (_value != value) {
+        _value = value;
+        emit valueChanged(value);
+    }
+}
+void PwField::setProtected(const bool isProtected) {
+    if (_isProtected != isProtected) {
+        _isProtected = isProtected;
+        emit protectedChanged(isProtected);
+    }
+}
+
+bool PwField::isStandardField() const {
+    return (_name == TITLE) || (_name == USERNAME) || (_name == PASSWORD) || (_name == URL) || (_name == NOTES);
+}
+
+/**
+ * Sets field's in memory protection flag to that specified in Meta's properties.
+ * Only applies for standard fields, does nothing for the others.
+ */
+void PwField::updateProtectionFlag(const PwMetaV4& meta) {
+    const MemoryProtection* mp = meta.getMemoryProtection();
+    if (_name == TITLE) {
+        setProtected(mp->isProtectTitle());
+    } else if (_name == USERNAME) {
+        setProtected(mp->isProtectUserName());
+    } else if (_name == PASSWORD) {
+        setProtected(mp->isProtectPassword());
+    } else if (_name == URL) {
+        setProtected(mp->isProtectUrl());
+    } else if (_name == NOTES) {
+        setProtected(mp->isProtectNotes());
+    }
+}
+
+ErrorCodesV4::ErrorCode PwField::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
+    Q_ASSERT(XML_STRING == xml.name());
+
+    QString key, value;
+    bool protect = false;
+
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_STRING))) {
+        xml.readNext();
+        tagName = xml.name();
+        if (xml.isStartElement()) {
+            if (tagName == XML_KEY) {
+                key = PwStreamUtilsV4::readString(xml);
+            } else if (tagName == XML_VALUE) {
+                if (xml.attributes().value(XML_PROTECTED) == XML_TRUE) {
+                    // the value is encrypted, need to decrypt it first
+                    protect = true;
+                    QByteArray valueBytes = PwStreamUtilsV4::readBase64(xml);
+                    salsa20.xorWithNextBytes(valueBytes);
+                    value = QString::fromUtf8(valueBytes, valueBytes.length());
+                } else {
+                    // simple plain-text value
+                    protect = false;
+                    value = PwStreamUtilsV4::readString(xml);
+                }
+            } else {
+                qDebug() << "unknown tag in PwField::readFromStream():" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_ENTRY_FIELD_PARSING_ERROR;
+            }
+        }
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_FIELD_PARSING_ERROR;
+
+    // Even if either XML_KEY or XML_VALUE were missing in the stream, (re)init the field anyway
+    setName(key);
+    setValue(value);
+    setProtected(protect);
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+void PwField::writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) const {
+    xml.writeStartElement(XML_STRING);
+    PwStreamUtilsV4::writeString(xml, XML_KEY, getName());
+    if (isProtected()) {
+        xml.writeStartElement(XML_VALUE);
+        xml.writeAttribute(XML_PROTECTED, XML_TRUE);
+
+        QByteArray encValue = getValue().toUtf8();
+        salsa20.xorWithNextBytes(encValue);
+        xml.writeCharacters(encValue.toBase64());
+        xml.writeEndElement(); // XML_VALUE
+    } else {
+        PwStreamUtilsV4::writeString(xml, XML_VALUE, getValue());
+    }
+    xml.writeEndElement(); // XML_STRING
 }
 
 /**************************/
@@ -119,6 +227,24 @@ ErrorCodesV4::ErrorCode PwAutoType::readAssociation(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
+void PwAutoType::writeToStream(QXmlStreamWriter& xml) const {
+    xml.writeStartElement(XML_AUTO_TYPE);
+    PwStreamUtilsV4::writeBool(xml, XML_AUTO_TYPE_ENABLED, _enabled);
+    PwStreamUtilsV4::writeUInt32(xml, XML_AUTO_TYPE_OBFUSCATION, _obfuscationType);
+    if (!_defaultSequence.isEmpty())
+        PwStreamUtilsV4::writeString(xml, XML_AUTO_TYPE_DEFAULT_SEQUENCE, _defaultSequence);
+
+    for (int i = 0; i < _associations.size(); i++) {
+        QPair<QString, QString> item = _associations.at(i);
+        xml.writeStartElement(XML_AUTO_TYPE_ITEM);
+        PwStreamUtilsV4::writeString(xml, XML_AUTO_TYPE_WINDOW, item.first);
+        PwStreamUtilsV4::writeString(xml, XML_AUTO_TYPE_KEYSTROKE_SEQUENCE, item.second);
+        xml.writeEndElement(); // XML_AUTO_TYPE_ITEM
+    }
+    xml.writeEndElement(); // XML_AUTO_TYPE
+}
+
+
 /**************************/
 
 PwEntryV4::PwEntryV4(QObject* parent) : PwEntry(parent) {
@@ -151,10 +277,6 @@ void PwEntryV4::clear() {
     PwEntry::clear();
 }
 
-bool PwEntryV4::isStandardField(const QString& name) const {
-    return (name == TITLE) || (name == USERNAME) || (name == PASSWORD) || (name == URL) || (name == NOTES);
-}
-
 /** Search helper. Returns true if any of the fields contain the query string. */
 bool PwEntryV4::matchesQuery(const QString& query) const {
     if (PwEntry::matchesQuery(query))
@@ -167,17 +289,27 @@ bool PwEntryV4::matchesQuery(const QString& query) const {
     return false;
 }
 
-void PwEntryV4::setField(const QString& name, const QString& value) {
-    fields.insert(name, value);
-    if (!isStandardField(name)) {
-        addExtraField(name, value);
+void PwEntryV4::addField(PwField* field) {
+    fields.insert(field->getName(), field);
+    if (!field->isStandardField()) {
+        // both fields and _extraFieldsDataModel contain pointer to the same PwField instance
+        _extraFieldsDataModel.append(field);
+        emit extraSizeChanged(_extraFieldsDataModel.size());
     }
 }
 
-void PwEntryV4::addExtraField(const QString& name, const QString& value) {
-    PwExtraField* ef = new PwExtraField(this, name, value);
-    _extraFieldsDataModel.append(ef); // implicitly takes ownership
-    emit extraSizeChanged(_extraFieldsDataModel.size());
+void PwEntryV4::setField(const QString& name, const QString& value) {
+    PwField* field = fields.value(name);
+    if (field != NULL) {
+        field->setValue(value);
+        // Memory protection flag remains unchanged.
+    } else {
+        // Set memory protection off by default:
+        // - for standard fields it will be updated according to DB Meta protection flags
+        // - for other fields, it will be changed by some other method.
+        field = new PwField(this, name, value, false);
+        addField(field);
+    }
 }
 
 void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
@@ -194,34 +326,54 @@ bb::cascades::DataModel* PwEntryV4::getHistoryDataModel() {
 }
 
 QString PwEntryV4::getTitle() const {
-    return fields.value(TITLE);
+    PwField* field = fields.value(TITLE);
+    return (field == NULL) ? "" : field->getValue();
 }
 void PwEntryV4::setTitle(const QString& title) {
-    setField(TITLE, title);
+    if (title != getTitle()) {
+        setField(TITLE, title);
+        emit titleChanged(title);
+    }
 }
 QString PwEntryV4::getUserName() const {
-    return fields.value(USERNAME);
+    PwField* field = fields.value(USERNAME);
+    return (field == NULL) ? "" : field->getValue();
 }
 void PwEntryV4::setUserName(const QString& userName) {
-    setField(USERNAME, userName);
+    if (userName != getUserName()) {
+        setField(USERNAME, userName);
+        emit userNameChanged(userName);
+    }
 }
 QString PwEntryV4::getPassword() const {
-    return fields.value(PASSWORD);
+    PwField* field = fields.value(PASSWORD);
+    return (field == NULL) ? "" : field->getValue();
 }
 void PwEntryV4::setPassword(const QString& password) {
-    setField(PASSWORD, password);
+    if (password != getPassword()) {
+        setField(PASSWORD, password);
+        emit passwordChanged(password);
+    }
 }
 QString PwEntryV4::getUrl() const {
-    return fields.value(URL);
+    PwField* field = fields.value(URL);
+    return (field == NULL) ? "" : field->getValue();
 }
 void PwEntryV4::setUrl(const QString& url) {
-    setField(URL, url);
+    if (url != getUrl()) {
+        setField(URL, url);
+        emit urlChanged(url);
+    }
 }
 QString PwEntryV4::getNotes() const {
-    return fields.value(NOTES);
+    PwField* field = fields.value(NOTES);
+    return (field == NULL) ? "" : field->getValue();
 }
 void PwEntryV4::setNotes(const QString& notes) {
-    setField(NOTES, notes);
+    if (notes != getNotes()) {
+        setField(NOTES, notes);
+        emit notesChanged(notes);
+    }
 }
 
 void PwEntryV4::setCustomIconUuid(const PwUuid& uuid) {
@@ -300,7 +452,7 @@ bool PwEntryV4::attachFile(const QString& filePath) {
  * Loads entry fields from the stream.
  * The caller is responsible for clearing any previous values.
  */
-ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_ENTRY);
 
     ErrorCodesV4::ErrorCode err = ErrorCodesV4::SUCCESS;
@@ -324,9 +476,11 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, PwMetaV
             } else if (XML_TAGS == tagName) {
                 setTags(PwStreamUtilsV4::readString(xml));
             } else if (XML_STRING == tagName) {
-                err = readString(xml, meta, salsa20);
+                PwField* field = new PwField(this);
+                err = field->readFromStream(xml, salsa20);
+                addField(field);
             } else if (XML_BINARY == tagName) {
-                PwAttachment* attachment = new PwAttachment(this);
+                PwAttachmentV4* attachment = new PwAttachmentV4(this);
                 err = readAttachment(xml, meta, salsa20, *attachment);
                 addAttachment(attachment);
             } else if (XML_TIMES == tagName) {
@@ -391,7 +545,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(XML_HISTORY == xml.name());
 
     ErrorCodesV4::ErrorCode err;
@@ -415,63 +569,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, PwMetaV4& 
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readString(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
-    Q_ASSERT(XML_STRING == xml.name());
-
-    QString key, value;
-    QStringRef tagName = xml.name();
-
-    while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_STRING))) {
-        xml.readNext();
-        tagName = xml.name();
-        if (xml.isStartElement()) {
-            if (tagName == XML_KEY) {
-                key = PwStreamUtilsV4::readString(xml);
-            } else if (tagName == XML_VALUE) {
-                ErrorCodesV4::ErrorCode err = readStringValue(xml, meta, salsa20, value);
-                if (err != ErrorCodesV4::SUCCESS)
-                    return err;
-            } else {
-                qDebug() << "unknown tag in PwEntryV4::readString():" << tagName;
-                PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_ENTRY_STRING_PARSING_ERROR;
-            }
-        }
-    }
-    if (xml.hasError())
-        return ErrorCodesV4::XML_ENTRY_STRING_PARSING_ERROR;
-
-    setField(key, value);
-    return ErrorCodesV4::SUCCESS;
-}
-
-// read a value from XML, decrypting it if necessary
-ErrorCodesV4::ErrorCode PwEntryV4::readStringValue(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, QString& value) {
-    Q_ASSERT(xml.name() == XML_VALUE);
-
-    QXmlStreamAttributes attr = xml.attributes();
-
-    if (attr.value(XML_PROTECTED) == XML_TRUE) {
-        QByteArray valueBytes = PwStreamUtilsV4::readBase64(xml);
-        int size = valueBytes.length();
-
-        QByteArray salsaBytes;
-        salsa20.getBytes(salsaBytes, size);
-
-        const char* xorBuf = salsaBytes.constData();
-        char* valueBuf = valueBytes.data();
-        for (int i = 0; i < size; i++) {
-            valueBuf[i] ^= xorBuf[i];
-        }
-        value = QString::fromUtf8(valueBuf, size);
-    } else {
-        value = PwStreamUtilsV4::readString(xml);
-    }
-
-    return ErrorCodesV4::SUCCESS;
-}
-
-ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, PwMetaV4& meta, Salsa20& salsa20, PwAttachment &attachment) {
+ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment &attachment) {
     Q_ASSERT(XML_BINARY == xml.name());
 
     QStringRef tagName = xml.name();
@@ -497,4 +595,69 @@ ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, PwMetaV
         return ErrorCodesV4::XML_ENTRY_ATTACHMENT_PARSING_ERROR;
 
     return ErrorCodesV4::SUCCESS;
+}
+
+/**
+ * Writes the entry to the stream.
+ */
+void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20) {
+    qDebug() << "writing entry UUID" << getUuid().toString();
+    xml.writeStartElement(XML_ENTRY);
+    PwStreamUtilsV4::writeUuid(xml, XML_UUID, getUuid());
+    PwStreamUtilsV4::writeInt32(xml, XML_ICON_ID, getIconId());
+    PwUuid customIconUuid = getCustomIconUuid();
+    if (!customIconUuid.isEmpty())
+        PwStreamUtilsV4::writeUuid(xml, XML_CUSTOM_ICON_UUID, customIconUuid);
+    PwStreamUtilsV4::writeString(xml, XML_FOREGROUND_COLOR, getForegroundColor());
+    PwStreamUtilsV4::writeString(xml, XML_BACKGROUND_COLOR, getBackgroundColor());
+    PwStreamUtilsV4::writeString(xml, XML_OVERRIDE_URL, getOverrideUrl());
+    PwStreamUtilsV4::writeString(xml, XML_TAGS, getTags());
+
+    // write times
+    xml.writeStartElement(XML_TIMES);
+    PwStreamUtilsV4::writeTime(xml, XML_LAST_MODIFICATION_TIME, getLastModificationTime());
+    PwStreamUtilsV4::writeTime(xml, XML_CREATION_TIME, getCreationTime());
+    PwStreamUtilsV4::writeTime(xml, XML_LAST_ACCESS_TIME, getLastAccessTime());
+    PwStreamUtilsV4::writeTime(xml, XML_EXPIRY_TIME, getExpiryTime());
+    PwStreamUtilsV4::writeBool(xml, XML_EXPIRES, isExpires());
+    PwStreamUtilsV4::writeUInt32(xml, XML_USAGE_COUNT, getUsageCount());
+    PwStreamUtilsV4::writeTime(xml, XML_LOCATION_CHANGED_TIME, getLocationChangedTime());
+    xml.writeEndElement(); // XML_TIMES
+
+    // write <String> fields
+    QMapIterator<QString, PwField*> iter(fields);
+    while (iter.hasNext()) {
+        iter.next();
+        QString key = iter.key();
+        PwField* field = iter.value();
+        field->updateProtectionFlag(meta);
+        field->writeToStream(xml, salsa20);
+    }
+
+    writeAttachments(xml, meta, salsa20);
+
+    _autoType.writeToStream(xml);
+
+    int historySize = _historyDataModel.size();
+    if (historySize > 0) {
+        xml.writeStartElement(XML_HISTORY);
+        for (int i = 0; i < historySize; i++) {
+            PwEntryV4* historyEntry = _historyDataModel.value(i);
+            historyEntry->writeToStream(xml, meta, salsa20);
+        }
+        xml.writeEndElement(); // XML_HISTORY
+    }
+
+    xml.writeEndElement(); // XML_ENTRY
+}
+
+void PwEntryV4::writeAttachments(QXmlStreamWriter& xml, const PwMetaV4& meta, Salsa20& salsa20) {
+    //TODO implement PwEntryV4::writeAttachments
+    PwAttachmentDataModel* attachDataModel = getAttachmentsDataModel();
+    for (int i = 0; i < attachDataModel.size(); i++) {
+        PwAttachment* att = attachDataModel->value(i);
+        xml.writeStartElement(XML_BINARY);
+        //TODO write the attachment here
+        xml.writeEndElement(); // XML_BINARY
+    }
 }

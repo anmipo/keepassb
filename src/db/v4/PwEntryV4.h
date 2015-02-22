@@ -19,19 +19,36 @@
 #include <QtXml/QXmlStreamReader>
 
 /**
- * Extra (string) field of a V4 database entry
+ * Field of a V4 database entry
  */
-class PwExtraField: public QObject {
+class PwField: public QObject {
     Q_OBJECT
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
     Q_PROPERTY(QString value READ getValue NOTIFY valueChanged)
+    Q_PROPERTY(QString protected READ isProtected NOTIFY protectedChanged)
 private:
     QString _name;
     QString _value;
+    bool _isProtected;
+
 public:
-    PwExtraField(QObject* parent=0);
-    PwExtraField(QObject* parent, const QString& name, const QString& value);
-    virtual ~PwExtraField();
+    PwField(QObject* parent=0);
+    PwField(QObject* parent, const QString& name, const QString& value, const bool isProtected);
+    virtual ~PwField();
+
+    /** True if field's name corresponds to one of the fixed/standard V4 fields. */
+    bool isStandardField() const;
+
+    void clear();
+
+    /**
+     * Sets field's in memory protection flag to that specified in Meta's properties.
+     * Only applies for standard fields, does nothing for the others.
+     */
+    void updateProtectionFlag(const PwMetaV4& meta);
+
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, Salsa20& salsa20);
+    void writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) const;
 
     /** Returns true if any string contains the query string. */
     virtual bool matchesQuery(const QString& query) const;
@@ -41,10 +58,15 @@ public:
     // property accessors
     QString getName() const { return _name; }
     QString getValue() const { return _value; }
+    bool isProtected() const { return _isProtected; }
+    void setName(const QString& name);
+    void setValue(const QString& value);
+    void setProtected(const bool isProtected);
 signals:
     // nameChanged and valueChanged are never emitted
     void nameChanged(QString name);
     void valueChanged(QString value);
+    void protectedChanged(bool prot);
 };
 
 /**
@@ -66,6 +88,7 @@ public:
     void clear();
 
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
+    void writeToStream(QXmlStreamWriter& xml) const;
 };
 
 class PwDatabaseV4;
@@ -81,8 +104,8 @@ class PwEntryV4: public PwEntry {
 private:
     PwUuid _customIconUuid;
     PwAutoType _autoType;
-    QMap<QString, QString> fields;
-    bb::cascades::QListDataModel<PwExtraField*> _extraFieldsDataModel;
+    QMap<QString, PwField*> fields;
+    bb::cascades::QListDataModel<PwField*> _extraFieldsDataModel;
     bb::cascades::QListDataModel<PwEntryV4*> _historyDataModel;
     quint32 _usageCount;
     QDateTime _locationChangedTime;
@@ -92,19 +115,25 @@ private:
     QString _overrideUrl;
     QString _tags;
 
-    bool isStandardField(const QString& name) const;
-
     // Loads timestamps of an entry
     ErrorCodesV4::ErrorCode readTimes(QXmlStreamReader& xml);
     // Loads the history tag of an entry and fills entry's history list
-    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
-    // Loads a "String" field of an entry.
-    ErrorCodesV4::ErrorCode readString(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
-    // Loads the value of a "String" field of an entry; decrypts protected values.
-    ErrorCodesV4::ErrorCode readStringValue(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, QString& value);
+    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20);
     // Loads an entry's binary attachment ("Binary" field of an entry).
-    ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment);
+    ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment);
+    // Writes all entry's attachments to an XML stream.
+    void writeAttachments(QXmlStreamWriter& xml, const PwMetaV4& meta, Salsa20& salsa20);
 
+    /**
+     * Adds a named field value to the entry.
+     */
+    void addField(PwField* field);
+    /**
+     * Updates a named field's value (adding if necessary).
+     */
+    void setField(const QString& name, const QString& value);
+
+    void addHistoryEntry(PwEntryV4* historyEntry);
 public:
     PwEntryV4(QObject* parent=0);
     virtual ~PwEntryV4();
@@ -115,7 +144,11 @@ public:
      * Loads entry fields from the stream.
      * The caller is responsible for clearing any previous values.
      */
-    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20);
+    /**
+     * Writes the entry to the stream.
+     */
+    void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);
 
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
@@ -136,14 +169,6 @@ public:
      * Returns true if successful, false in case of any error.
      */
     virtual bool attachFile(const QString& filePath);
-
-    void addExtraField(const QString& name, const QString& value);
-    void addHistoryEntry(PwEntryV4* historyEntry);
-
-    /**
-     * Adds a named field value to the entry.
-     */
-    void setField(const QString& name, const QString& value);
 
     Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel();
     Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel();
@@ -189,7 +214,7 @@ signals:
     void tagsChanged(QString);
 };
 
-Q_DECLARE_METATYPE(PwExtraField*);
+Q_DECLARE_METATYPE(PwField*);
 Q_DECLARE_METATYPE(PwEntryV4*);
 
 #endif /* PWENTRYV4_H_ */
