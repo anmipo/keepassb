@@ -66,6 +66,21 @@ Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& ou
 }
 
 /**
+ * Given a GZipped buffer, returns the size of its unpacked content.
+ * In case of error returns -1.
+ */
+int Util::getInflatedGZipSize(const QByteArray& gzipData) {
+    // TODO optimise this by getting rid of memory allocation/cleaning.
+    QByteArray inflatedData;
+    int result = -1;
+    if (Util::inflateGZipData(gzipData, inflatedData) == SUCCESS) {
+        result = inflatedData.size();
+    }
+    safeClear(inflatedData);
+    return result;
+}
+
+/**
  * Checks if data contains only zeros.
  */
 bool Util::isAllZero(const QByteArray& data) {

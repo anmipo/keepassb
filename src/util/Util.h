@@ -28,6 +28,12 @@ public:
     static ErrorCode inflateGZipData(const QByteArray& gzipData, QByteArray& outData);
 
     /**
+     * Given a GZipped buffer, returns the size of its unpacked content.
+     * In case of error returns -1.
+     */
+    static int getInflatedGZipSize(const QByteArray& gzipData);
+
+    /**
      * Checks if data contains only zeros.
      */
     static bool isAllZero(const QByteArray& data);
