@@ -19,11 +19,13 @@ const int PwEntry::DEFAULT_ICON_ID = 0; // "key"
 
 PwAttachment::PwAttachment(QObject* parent) :
         QObject(parent),
-        name(""),
-        data() {
-    isCompressed = false;
-    isOriginallyCompressed = false;
-    isInitialized = false;
+        _isInitialized(false),
+        _id(-1),
+        _name(""),
+        _isCompressed(false),
+        _uncompressedSize(-1),
+        _data() {
+     // nothing else to do
 }
 
 PwAttachment::~PwAttachment() {
@@ -31,27 +33,45 @@ PwAttachment::~PwAttachment() {
 }
 
 void PwAttachment::clear() {
-    Util::safeClear(name);
-    Util::safeClear(data);
-    isCompressed = false;
-    isOriginallyCompressed = false;
-    isInitialized = false;
+    _id = -1;
+    Util::safeClear(_name);
+    Util::safeClear(_data);
+    _uncompressedSize = -1;
+    _isCompressed = false;
+    _isInitialized = false;
 }
 
 bool PwAttachment::saveContentToFile(const QString& fileName) {
     qDebug() << "Saving attachment to file: " << fileName;
-
-    if (!inflateData())
-        return false;
 
     QFile outFile(fileName);
     if (!outFile.open(QIODevice::WriteOnly)) {
         qDebug() << "Cannot open file for writing: " << fileName;
         return false;
     }
-    qint64 sizeWritten = outFile.write(data);
-    if (sizeWritten != data.size()) {
-        qDebug("%d bytes written out of %d total", (int)sizeWritten, data.size());
+
+    int dataSize, sizeWritten;
+    if (_isCompressed) {
+        QByteArray unpackedData;
+        Util::ErrorCode err = Util::inflateGZipData(_data, unpackedData);
+        if (err != Util::SUCCESS) {
+            qDebug() << "Attachment inflate error" << err;
+            return false;
+        }
+        qDebug() << "Data unpacked";
+
+        dataSize = unpackedData.size();
+        sizeWritten = outFile.write(unpackedData);
+        // safely clean up temporary data from memory
+        Util::safeClear(unpackedData);
+    } else {
+        dataSize = _data.size();
+        sizeWritten = outFile.write(_data);
+        // do not clear data -- it is a class field
+    }
+
+    if (sizeWritten != dataSize) {
+        qDebug("%d bytes written out of %d total", sizeWritten, dataSize);
         return false;
     }
     outFile.close();
@@ -59,46 +79,39 @@ bool PwAttachment::saveContentToFile(const QString& fileName) {
 }
 
 void PwAttachment::setName(const QString& name) {
-    if (this->name != name) {
-        isInitialized = true;
-        this->name = name;
+    if (_name != name) {
+        _isInitialized = true;
+        _name = name;
         emit nameChanged(name);
     }
 }
 
 void PwAttachment::setData(const QByteArray& data, const bool isCompressed) {
-    isInitialized = true;
-    this->data = data;
-    this->isOriginallyCompressed = isCompressed;
-    this->isCompressed = isCompressed;
-    emit sizeChanged(data.size()); // FIXME wrong value for compressed data
+    _isInitialized = true;
+    // Store a clone copy to avoid surprises if external data is changed/cleared
+    this->_data = QByteArray::fromRawData(data.constData(), data.size());
+    this->_isCompressed = isCompressed;
+    emit sizeChanged(getSize());
 }
 
+void PwAttachment::setId(const int newId) {
+    if (_id != newId) {
+        _id = newId;
+        emit idChanged(newId);
+    }
+}
+
+/** Returns size of _uncompressed_ data. */
 int PwAttachment::getSize() {
-    if (isCompressed) {
-        bool inflateOk = inflateData();
-        if (!inflateOk)
-            return -1;
-    }
-    return data.size();
-}
-
-bool PwAttachment::inflateData() {
-    if (isCompressed) {
-        QByteArray unpackedData;
-        Util::ErrorCode err = Util::inflateGZipData(data, unpackedData);
-        if (err != Util::SUCCESS) {
-            qDebug() << "Attachment inflate error" << err;
-            return false;
+    if (_uncompressedSize < 0) {
+        if (_isCompressed) {
+            // estimate the size once and cache the value
+            _uncompressedSize = Util::getInflatedGZipSize(_data);
+        } else {
+            _uncompressedSize = _data.size();
         }
-        data = unpackedData;
-        isCompressed = false;
-        // the original 'compressed' flag stays in isOriginallyCompressed
-        qDebug() << "Data unpacked";
-    } else {
-        qDebug() << "Data not compressed, no need to inflate";
     }
-    return true;
+    return _uncompressedSize;
 }
 
 /** Returns true if any string contains the query string. */
@@ -124,6 +137,8 @@ PwAttachment* PwAttachment::createFromFile(const QString& filePath) {
     // allow empty files, since we won't be able to show a meaningful error
     QFileInfo fileInfo(file);
     QString fileName = fileInfo.fileName();
+
+    //TODO try compressing data here
 
     PwAttachment* result = new PwAttachment();
     // the ownership will be later taken by the data model

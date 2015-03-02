@@ -26,17 +26,13 @@ class PwAttachment: public QObject {
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
     Q_PROPERTY(int size READ getSize NOTIFY sizeChanged)
 private:
-    bool isInitialized;
-    QString name;
-    bool isOriginallyCompressed; // 'compressed' flag of the original data
-    bool isCompressed;  // lazy-uncompress helper flag
-    QByteArray data;
+    bool _isInitialized;
+    int _id;
+    QString _name;
+    bool _isCompressed;
+    int _uncompressedSize; // cached value of unpacked data size; set to -1 while not initialized
+    QByteArray _data;
 
-    /**
-     * Unpacks content.data if it is compressed.
-     * Returns true if successful.
-     */
-    bool inflateData();
 public:
     PwAttachment(QObject* parent=0);
     virtual ~PwAttachment();
@@ -57,20 +53,25 @@ public:
 
     /** Sets attachment content */
     void setData(const QByteArray& data, const bool isCompressed);
-    QByteArray getData() const { return data; }
+    QByteArray getData() const { return _data; }
 
     void clear();
 
     /**
      * Returns true if neither name nor data have been set.
      */
-    bool isEmpty() const { return !isInitialized; }
+    bool isEmpty() const { return !_isInitialized; }
 
     // property accessors
     void setName(const QString& name);
-    QString getName() const { return name; }
+    QString getName() const { return _name; }
+    int getId() const { return _id; }
+    void setId(const int newId);
+    bool isCompressed() const { return _isCompressed; }
+    /** Returns size of _uncompressed_ data. */
     int getSize();
 signals:
+    void idChanged(int);
     void nameChanged(QString);
     void sizeChanged(int);
 };
