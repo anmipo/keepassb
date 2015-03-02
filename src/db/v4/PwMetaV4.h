@@ -15,6 +15,9 @@
 #include "db/v4/DefsV4.h"
 #include "crypto/CryptoManager.h"
 
+// forward declarations
+class PwGroupV4;
+class PwEntryV4;
 
 /**
  * Memory protection configuration of a V4 database.
@@ -52,11 +55,12 @@ public:
 class PwBinaryV4: public QObject {
     Q_OBJECT
 private:
-    QString _id;
-    bool _isCompressed;
+    int _id;
     QByteArray _data;
+    bool _isCompressed;
 public:
     PwBinaryV4(QObject* parent=0);
+    PwBinaryV4(QObject* parent, const int id, const QByteArray& data, const bool isCompressed);
     virtual ~PwBinaryV4();
 
     void clear();
@@ -65,7 +69,7 @@ public:
     bool readFromStream(QXmlStreamReader& xml);
     void writeToStream(QXmlStreamWriter& xml);
 
-    QString getId() const { return _id; }
+    int getId() const { return _id; }
     bool isCompressed() const { return _isCompressed; }
     QByteArray getData() const { return _data; }
 };
@@ -126,7 +130,7 @@ private:
     QMap<QString, QString> customData; // a set of key=value pairs
 
     QMap<PwUuid, PwCustomIconV4*> customIcons;
-    QMap<QString, PwBinaryV4*> binaries;
+    QMap<int, PwBinaryV4*> binaries;
 
     ErrorCodesV4::ErrorCode readCustomData(QXmlStreamReader& xml);
     ErrorCodesV4::ErrorCode readCustomDataItem(QXmlStreamReader& xml);
@@ -137,8 +141,20 @@ private:
     void writeBinaries(QXmlStreamWriter& xml) const;
     void writeCustomIcons(QXmlStreamWriter& xml) const;
 
+    friend class PwDatabaseV4; // to give access to setHeaderHash & updateBinaries;
     void setHeaderHash(const QByteArray& headerHash);
-    friend class PwDatabaseV4; // to give access to setHeaderHash;
+    /**
+     * Updates the list of binaries by traversing all the entries and their histories.
+     * Previously stored binaries are cleared.
+     */
+    void updateBinaries(PwGroupV4* root);
+    void updateBinaries(PwEntryV4* entry);
+    /**
+     * Finds the binary with given data/compression flag within the binary pool.
+     * Returns NULL if nothing found.
+     */
+    PwBinaryV4* findBinary(const QByteArray& data, bool isCompressed) const;
+
 public:
     void debugPrint() const;
     PwMetaV4(QObject* parent=0);
@@ -149,7 +165,7 @@ public:
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
     ErrorCodesV4::ErrorCode writeToStream(QXmlStreamWriter& xml);
 
-    PwBinaryV4* getBinaryByReference(const QString& ref) const;
+    PwBinaryV4* getBinaryById(const int id) const;
 
     /**
      * Checks if the hashes DB file's header hash matches the one specified in Meta data, if any.

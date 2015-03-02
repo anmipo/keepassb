@@ -480,7 +480,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const P
                 err = field->readFromStream(xml, salsa20);
                 addField(field);
             } else if (XML_BINARY == tagName) {
-                PwAttachmentV4* attachment = new PwAttachmentV4(this);
+                PwAttachment* attachment = new PwAttachment(this);
                 err = readAttachment(xml, meta, salsa20, *attachment);
                 addAttachment(attachment);
             } else if (XML_TIMES == tagName) {
@@ -569,7 +569,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMe
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment &attachment) {
+ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment) {
     Q_ASSERT(XML_BINARY == xml.name());
 
     QStringRef tagName = xml.name();
@@ -580,14 +580,20 @@ ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const P
             if (tagName == XML_KEY) {
                 attachment.setName(PwStreamUtilsV4::readString(xml));
             } else if (tagName == XML_VALUE) {
-                QString binaryRef = xml.attributes().value(XML_REF).toString();
-                //parent group is not defined here yet
-
-                PwBinaryV4* binary = meta.getBinaryByReference(binaryRef);
-                if (!binary) {
+                QString binaryIdStr = xml.attributes().value(XML_REF).toString();
+                bool convOk;
+                int binaryId = binaryIdStr.toInt(&convOk);
+                if (convOk) {
+                    //parent group is not defined here yet
+                    PwBinaryV4* binary = meta.getBinaryById(binaryId);
+                    if (!binary) {
+                        return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE;
+                    }
+                    attachment.setData(binary->getData(), binary->isCompressed());
+                    attachment.setId(binaryId);
+                } else {
                     return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE;
                 }
-                attachment.setData(binary->getData(), binary->isCompressed());
             }
         }
     }
@@ -652,12 +658,16 @@ void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& sa
 }
 
 void PwEntryV4::writeAttachments(QXmlStreamWriter& xml, const PwMetaV4& meta, Salsa20& salsa20) {
-    //TODO implement PwEntryV4::writeAttachments
     PwAttachmentDataModel* attachDataModel = getAttachmentsDataModel();
-    for (int i = 0; i < attachDataModel.size(); i++) {
+    for (int i = 0; i < attachDataModel->size(); i++) {
         PwAttachment* att = attachDataModel->value(i);
         xml.writeStartElement(XML_BINARY);
-        //TODO write the attachment here
+
+        PwStreamUtilsV4::writeString(xml, XML_KEY, att->getName());
+
+        xml.writeEmptyElement(XML_VALUE);
+        xml.writeAttribute(XML_REF, QString::number(att->getId()));
+
         xml.writeEndElement(); // XML_BINARY
     }
 }

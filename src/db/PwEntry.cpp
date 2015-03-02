@@ -88,8 +88,8 @@ void PwAttachment::setName(const QString& name) {
 
 void PwAttachment::setData(const QByteArray& data, const bool isCompressed) {
     _isInitialized = true;
-    // Store a clone copy to avoid surprises if external data is changed/cleared
-    this->_data = QByteArray::fromRawData(data.constData(), data.size());
+    // Store a deep copy to avoid surprises when PwMetaV4::updateBinaries() clears the original data
+    this->_data = QByteArray(data.constData(), data.size());
     this->_isCompressed = isCompressed;
     emit sizeChanged(getSize());
 }

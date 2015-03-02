@@ -9,6 +9,8 @@
 #include "db/v4/PwMetaV4.h"
 #include "db/PwUuid.h"
 #include "util/Util.h"
+#include "db/v4/PwGroupV4.h"
+#include "db/v4/PwEntryV4.h"
 #include "db/v4/PwStreamUtilsV4.h"
 
 
@@ -87,6 +89,10 @@ void MemoryProtection::writeToStream(QXmlStreamWriter& xml) {
 PwBinaryV4::PwBinaryV4(QObject* parent) : QObject(parent) {
     // nothing to do
 }
+PwBinaryV4::PwBinaryV4(QObject* parent, const int id, const QByteArray& data, const bool isCompressed) :
+            QObject(parent), _id(id), _data(data), _isCompressed(isCompressed) {
+    //nothing else to do
+}
 PwBinaryV4::~PwBinaryV4() {
     clear();
 }
@@ -100,7 +106,13 @@ bool PwBinaryV4::readFromStream(QXmlStreamReader& xml) {
 
     if (xml.isStartElement() && (xml.name() == XML_BINARY)) {
         QXmlStreamAttributes attrs = xml.attributes();
-        _id = attrs.value(XML_BINARY_ID).toString();
+        bool convOk;
+        _id = attrs.value(XML_BINARY_ID).toString().toInt(&convOk);
+        if (!convOk) {
+            qDebug() << "PwBinaryV4::readFromStream() int conversion failed";
+            // We cannot fix this, so fail
+            _id = -1;
+        }
         _isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
         _data = PwStreamUtilsV4::readBase64(xml);
         // data might probably be empty
@@ -108,12 +120,12 @@ bool PwBinaryV4::readFromStream(QXmlStreamReader& xml) {
         qDebug() << "invalid Binary structure, got" << xml.name() << "tag";
         return false;
     }
-    return (!xml.hasError() && !_id.isEmpty());
+    return (!xml.hasError() && (_id >= 0));
 }
 
 void PwBinaryV4::writeToStream(QXmlStreamWriter& xml) {
     xml.writeStartElement(XML_BINARY);
-    xml.writeAttribute(XML_BINARY_ID, _id);
+    xml.writeAttribute(XML_BINARY_ID, QString::number(_id));
     xml.writeAttribute(XML_BINARY_COMPRESSED, _isCompressed ? XML_TRUE : XML_FALSE);
     xml.writeCharacters(_data.toBase64());
     xml.writeEndElement(); // XML_BINARY
@@ -417,11 +429,78 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomDataItem(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
-PwBinaryV4* PwMetaV4::getBinaryByReference(const QString& ref) const {
-    if (binaries.contains(ref))
-        return binaries.value(ref);
+PwBinaryV4* PwMetaV4::getBinaryById(const int id) const {
+    if (binaries.contains(id))
+        return binaries.value(id);
     else
         return NULL;
+}
+
+/**
+ * Updates the list of binaries by traversing all the entries and their histories.
+ * Previously stored binaries are cleared.
+ */
+void PwMetaV4::updateBinaries(PwGroupV4* root) {
+    Q_ASSERT(root != NULL);
+
+    QList<PwGroup*> allGroups;
+    QList<PwEntry*> allEntries;
+    root->getAllChildren(allGroups, allEntries);
+
+    qDeleteAll(binaries);
+    binaries.clear();
+
+    QListIterator<PwEntry*> iter(allEntries);
+    while (iter.hasNext()) {
+        PwEntryV4* entry = dynamic_cast<PwEntryV4*>(iter.next());
+        updateBinaries(entry);
+    }
+}
+
+/**
+ * Adds entry's attachments to the binary pool and updates attachment referenceIDs accordingly.
+ * Also looks into entry's history.
+ */
+void PwMetaV4::updateBinaries(PwEntryV4* entry) {
+    Q_ASSERT(entry != NULL);
+
+    // Process previous versions of the entry, if any
+    QListDataModel<PwEntryV4*>* historyModel = dynamic_cast<QListDataModel<PwEntryV4*>*>(entry->getHistoryDataModel());
+    for (int i = 0; i < historyModel->size(); i++) {
+        PwEntryV4* historyEntry = historyModel->value(i);
+        updateBinaries(historyEntry);
+    }
+
+    // Process the entry itself
+    PwAttachmentDataModel* dataModel = entry->getAttachmentsDataModel();
+    for (int i = 0; i < dataModel->size(); i++) {
+        PwAttachment* att = dataModel->value(i);
+
+        // was the attachment already added to the binary pool?
+        PwBinaryV4* binary = findBinary(att->getData(), att->isCompressed());
+        if (!binary) {
+            int nextId = binaries.size();
+            // create new item in Meta's binary pool
+            binary = new PwBinaryV4(this, nextId, att->getData(), att->isCompressed());
+            binaries.insert(nextId, binary);
+        }
+        // update attachment's reference to the binary
+        att->setId(binary->getId());
+    }
+}
+
+/**
+ * Finds the binary with given data/compression flag within the binary pool.
+ * Returns NULL if nothing found.
+ */
+PwBinaryV4* PwMetaV4::findBinary(const QByteArray& data, bool isCompressed) const {
+    QMapIterator<int, PwBinaryV4*> iter(binaries);
+    while (iter.hasNext()) {
+        PwBinaryV4* binary = iter.next().value();
+        if ((binary->isCompressed() == isCompressed) && (binary->getData() == data))
+            return binary;
+    }
+    return NULL;
 }
 
 void PwMetaV4::setHeaderHash(const QByteArray& headerHash) {
@@ -490,7 +569,7 @@ void PwMetaV4::writeCustomIcons(QXmlStreamWriter& xml) const {
 void PwMetaV4::writeBinaries(QXmlStreamWriter& xml) const {
     if (binaries.size() > 0) {
         xml.writeStartElement(XML_BINARIES);
-        QMapIterator<QString, PwBinaryV4*> iter(binaries);
+        QMapIterator<int, PwBinaryV4*> iter(binaries);
         while (iter.hasNext()) {
             iter.next().value()->writeToStream(xml);
         }

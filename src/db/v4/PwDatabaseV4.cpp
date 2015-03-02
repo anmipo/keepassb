@@ -520,6 +520,19 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
 
     /* Parse XML */
     QString xmlString = QString::fromUtf8(xmlData.data(), xmlData.size());
+
+    //******************************** start debug
+    // write raw XML for debug
+    //TODO remove after debug!!
+    QFile inXmlFile("/accounts/1000/shared/documents/kpb-in.xml");
+    if (inXmlFile.open(QIODevice::WriteOnly)) {
+        inXmlFile.write(xmlString.toUtf8());
+        inXmlFile.close();
+    } else {
+        qDebug() << "Failed to open inXmlFile";
+    }
+    //******************************** end debug
+
     err = parseXml(xmlString);
     Util::safeClear(xmlData);
     Util::safeClear(xmlString);
@@ -672,6 +685,10 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         return false;
     }
 */
+
+    // Reset Salsa20 state and apply new keys
+    initSalsa20();
+
     QDataStream outStream(&outData, QIODevice::WriteOnly);
     outStream.setByteOrder(QDataStream::LittleEndian);
 
@@ -687,10 +704,16 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
     //TODO update Meta: header hash / modification dates?
     meta.setHeaderHash(header.getHash());
+    // Move all the entry attachment data to Meta
+    meta.updateBinaries(dynamic_cast<PwGroupV4*>(getRootGroup()));
 
     QByteArray contentData;
     QXmlStreamWriter xml(&contentData);
     xml.setCodec("UTF-8");
+
+    // KeePass 2 uses pretty-printed XML in DBs, so shall we.
+    xml.setAutoFormatting(true);
+    xml.setAutoFormattingIndent(-1); // one tab
 
     xml.writeStartDocument("1.0", true);
     xml.writeStartElement(XML_KEEPASS_FILE);
@@ -701,7 +724,6 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         return false;
     }
 
-    xml.setAutoFormatting(true); // for debug only
     xml.writeStartElement(XML_ROOT);
     dynamic_cast<PwGroupV4*>(getRootGroup())->writeToStream(xml, meta, salsa20);
 
