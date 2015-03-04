@@ -93,6 +93,8 @@ public:
     QByteArray getProtectedStreamKey() const;
     bool isCompressed() const;
 
+    void setStreamStartBytes(const QByteArray& bytes);
+
     /**
      * Returns SHA-256 hash of the header content
      */
@@ -141,6 +143,17 @@ private:
     ErrorCodesV4::ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.
     ErrorCodesV4::ErrorCode parseXml(const QString& xmlString);
+
+    /** Splits data to hashed blocks. */
+    ErrorCodesV4::ErrorCode splitToBlocks(const QByteArray& inData, QDataStream& blockStream) const;
+    // Helper for splitToBlocks()
+    static void writeBlock(QDataStream& blockStream, quint32 blockId, const QByteArray& blockHash, quint32 blockSize, const QByteArray& blockData);
+
+    /**
+     * Encrypts DB's data using current keys.
+     * Changes input raw data by adding padding.
+     */
+    ErrorCodesV4::ErrorCode encryptData(QByteArray& rawData, QByteArray& encryptedData) const;
 
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;

@@ -116,6 +116,7 @@ class ErrorCodesV4 {
 public:
     enum ErrorCode {
         SUCCESS = PwDatabase::SUCCESS,
+        // key transform errors
         PASSWORD_HASHING_ERROR_1 = 0x10,
         PASSWORD_HASHING_ERROR_2 = 0x11,
         PASSWORD_HASHING_ERROR_3 = 0x12,
@@ -124,11 +125,15 @@ public:
         KEY_TRANSFORM_ERROR_2    = 0x22,
         KEY_TRANSFORM_ERROR_3    = 0x23,
         KEY_TRANSFORM_END_ERROR  = 0x24,
+
+        // loading errors
         CANNOT_DECRYPT_DB        = 0x30,
         CANNOT_INIT_SALSA20      = 0x31,
         WRONG_BLOCK_ID           = 0x32,
         BLOCK_HASH_NON_ZERO      = 0x33,
         BLOCK_HASH_MISMATCH      = 0x34,
+
+        // xml parsing errors
         XML_PARSING_ERROR        = 0x50,
         XML_META_PARSING_ERROR   = 0x51,
         XML_META_BINARIES_PARSING_ERROR          = 0x52,
@@ -146,7 +151,7 @@ public:
         XML_ENTRY_AUTO_TYPE_PARSING_ERROR        = 0x72,
         XML_ENTRY_AUTO_TYPE_ASSOCIATION_PARSING_ERROR = 0x73,
         XML_ENTRY_HISTORY_PARSING_ERROR          = 0x74,
-        XML_ENTRY_FIELD_PARSING_ERROR           = 0x75,
+        XML_ENTRY_FIELD_PARSING_ERROR            = 0x75,
         XML_ENTRY_ATTACHMENT_PARSING_ERROR       = 0x76,
 
         XML_ROOT_PARSING_ERROR           = 0x81,
@@ -154,6 +159,12 @@ public:
         GROUP_LOADING_ERROR            = 0x83,
 //        ICON_ID_IS_NOT_INTEGER         = 0x84,
         INVALID_ATTACHMENT_REFERENCE   = 0x85,
+
+        // saving errors
+        BLOCK_HASHING_ERROR            = 0x90,
+        GZIP_COMPRESS_ERROR            = 0x91,
+        CANNOT_ENCRYPT_DB              = 0x92,
+        RNG_ERROR_1                    = 0x93,
     };
 };
 

@@ -26,19 +26,21 @@ const QByteArray SALSA_20_INIT_VECTOR = QByteArray("\xE8\x30\x09\x4B\x97\x20\x5D
 
 
 // DB unlock stages progress percentage
-const int UNLOCK_PROGRESS_INIT = 0;
-const int UNLOCK_PROGRESS_HEADER_READ = 5;
+const int UNLOCK_PROGRESS_INIT          = 0;
+const int UNLOCK_PROGRESS_HEADER_READ   = 5;
 const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
-const int UNLOCK_PROGRESS_DECRYPTED = 80;
-const int UNLOCK_PROGRESS_BLOCKS_READ = 90;
-const int UNLOCK_PROGRESS_UNPACKED = 95;
-const int UNLOCK_PROGRESS_DONE = 100;
+const int UNLOCK_PROGRESS_DECRYPTED     = 80;
+const int UNLOCK_PROGRESS_BLOCKS_READ   = 90;
+const int UNLOCK_PROGRESS_UNPACKED      = 95;
+const int UNLOCK_PROGRESS_DONE          = 100;
 
 // DB save stages progress percentage
-const int SAVE_PROGRESS_INIT = 0;
-const int SAVE_PROGRESS_CONTENT_PACKED = 5;
-const int SAVE_PROGRESS_KEY_TRANSFORMED = 90;
-const int SAVE_PROGRESS_DONE = 100;
+const int SAVE_PROGRESS_INIT            = 0;
+const int SAVE_PROGRESS_KEY_TRANSFORMED = 70;
+const int SAVE_PROGRESS_XML_READY       = 80;
+const int SAVE_PROGRESS_DATA_COMPRESSED = 85;
+const int SAVE_PROGRESS_BLOCKS_READY    = 90;
+const int SAVE_PROGRESS_DONE            = 100;
 
 PwHeaderV4::PwHeaderV4(QObject* parent) : QObject(parent), data() {
     initialized = false;
@@ -223,6 +225,10 @@ QByteArray PwHeaderV4::getInitialVector() const {
 
 QByteArray PwHeaderV4::getStreamStartBytes() const {
     return data.value(HEADER_STREAM_START_BYTES);
+}
+
+void PwHeaderV4::setStreamStartBytes(const QByteArray& bytes) {
+    data.insert(HEADER_STREAM_START_BYTES, bytes);
 }
 
 QByteArray PwHeaderV4::getProtectedStreamKey() const {
@@ -520,19 +526,6 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
 
     /* Parse XML */
     QString xmlString = QString::fromUtf8(xmlData.data(), xmlData.size());
-
-    //******************************** start debug
-    // write raw XML for debug
-    //TODO remove after debug!!
-    QFile inXmlFile("/accounts/1000/shared/documents/kpb-in.xml");
-    if (inXmlFile.open(QIODevice::WriteOnly)) {
-        inXmlFile.write(xmlString.toUtf8());
-        inXmlFile.close();
-    } else {
-        qDebug() << "Failed to open inXmlFile";
-    }
-    //******************************** end debug
-
     err = parseXml(xmlString);
     Util::safeClear(xmlData);
     Util::safeClear(xmlString);
@@ -675,7 +668,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 /*
     // update encryption seeds
     //TODO make sure to update keys within the header.data map too!
-    //TODO also randomize streamStartBytes and Salsa20
+    //TODO also randomize Salsa20 vectors
     header.randomizeInitialVectors();
 
     ErrorCodesV4::ErrorCode err = transformKey(combinedKey, aesKey, SAVE_PROGRESS_INIT, SAVE_PROGRESS_KEY_TRANSFORMED);
@@ -685,6 +678,15 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         return false;
     }
 */
+    emit progressChanged(SAVE_PROGRESS_KEY_TRANSFORMED);
+
+    // Generate random stream start bytes (for verifying correct decryption after loading the DB)
+    QByteArray streamStartBytes;
+    CryptoManager* cm = CryptoManager::instance();
+    if (cm->getRandomBytes(streamStartBytes, SB_SHA256_DIGEST_LEN) != SB_SUCCESS)
+        return ErrorCodesV4::RNG_ERROR_1;
+    header.setStreamStartBytes(streamStartBytes);
+
 
     // Reset Salsa20 state and apply new keys
     initSalsa20();
@@ -700,15 +702,13 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         return false;
     }
 
-    //TODO write header.streamStartBytes - a random vector; should be encrypted
-
     //TODO update Meta: header hash / modification dates?
     meta.setHeaderHash(header.getHash());
     // Move all the entry attachment data to Meta
     meta.updateBinaries(dynamic_cast<PwGroupV4*>(getRootGroup()));
 
-    QByteArray contentData;
-    QXmlStreamWriter xml(&contentData);
+    QByteArray xmlContentData;
+    QXmlStreamWriter xml(&xmlContentData);
     xml.setCodec("UTF-8");
 
     // KeePass 2 uses pretty-printed XML in DBs, so shall we.
@@ -733,16 +733,115 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     xml.writeEndElement(); // XML_KEEPASS_FILE
     xml.writeEndDocument();
 
-    //TODO possibly GZip the contentData
-    outStream.writeRawData(contentData.constData(), contentData.size()); // might be packedContentData
+    emit progressChanged(SAVE_PROGRESS_XML_READY);
 
-    //TODO split in blocks, encode them and write
+    // compress the data if necessary
+    QByteArray dataToSplit;
+    if (header.isCompressed()) {
+        QByteArray gzipData;
+        Util::ErrorCode gzErr = Util::compressToGZip(xmlContentData, gzipData);
+        Util::safeClear(xmlContentData);
+        if (gzErr != Util::SUCCESS) {
+            qDebug() << "PwDatabaseV4::save() gzip compression failed: " << gzErr;
+            return ErrorCodesV4::GZIP_COMPRESS_ERROR;
+        }
+        dataToSplit = gzipData;
+        emit progressChanged(SAVE_PROGRESS_DATA_COMPRESSED);
+    } else {
+        dataToSplit = xmlContentData;
+    }
 
-    //meta.debugPrint(); //debug stuff
-    qDebug() << "*** content to save ***";
-    qDebug() << contentData;
-    qDebug() << "*** end content to save ***";
 
-    Util::safeClear(contentData);
+    // split data to hashed blocks
+    QByteArray dataInBlocks;
+    QDataStream blockStream(&dataInBlocks, QIODevice::WriteOnly);
+    blockStream.setByteOrder(QDataStream::LittleEndian);
+
+    // random stream start bytes must go before any blocks
+    blockStream.writeRawData(streamStartBytes.constData(), streamStartBytes.size());
+
+    err = splitToBlocks(dataToSplit, blockStream);
+    Util::safeClear(dataToSplit);
+    if (err != ErrorCodesV4::SUCCESS) {
+        qDebug() << "PwDatabaseV4::save() failed to make hashed blocks: " << err;
+        return err;
+    }
+
+    emit progressChanged(SAVE_PROGRESS_BLOCKS_READY);
+
+    // finally, encrypt everything
+    QByteArray encryptedData;
+    err = encryptData(dataInBlocks, encryptedData);
+    Util::safeClear(dataInBlocks);
+    if (err != ErrorCodesV4::SUCCESS) {
+        Util::safeClear(encryptedData);
+        qDebug() << "PwDatabaseV4::save() failed to encrypt data: " << err;
+        emit dbSaveError(saveErrorMessage, err);
+        return false;
+    }
+
+    outStream.writeRawData(encryptedData.constData(), encryptedData.size());
+    Util::safeClear(encryptedData);
+
+    emit progressChanged(SAVE_PROGRESS_DONE);
     return true;
+}
+
+/**
+ * Splits data to hashed blocks.
+ */
+ErrorCodesV4::ErrorCode PwDatabaseV4::splitToBlocks(const QByteArray& inData, QDataStream& blockStream) const {
+    static const int DEFAULT_BLOCK_SIZE = 1024 * 1024; // KeePass' default block size
+
+    CryptoManager* cm = CryptoManager::instance();
+
+    QByteArray blockHash(SB_SHA256_DIGEST_LEN, 0);
+    int blockStart = 0;
+    quint32 blockSize;
+    quint32 blockId = 0;
+    QByteArray blockData;
+    while (blockStart != inData.size()) {
+        // write sequence: blockId, hash, size, block data;
+        // end of data => zero size & all-zero hash
+
+        blockSize = qMin(DEFAULT_BLOCK_SIZE, inData.size() - blockStart);
+
+        blockData.setRawData(inData.data() + blockStart, blockSize); // reuses allocated memory, does not copy bytes
+        if (cm->sha256(blockData, blockHash) != SB_SUCCESS)
+            return ErrorCodesV4::BLOCK_HASHING_ERROR;
+
+        writeBlock(blockStream, blockId, blockHash, blockSize, blockData);
+
+        blockStart += blockSize;
+        blockId++;
+    }
+
+    // finally, write the terminating block
+    writeBlock(blockStream, blockId, QByteArray(SB_SHA256_DIGEST_LEN, 0), 0, QByteArray(/*empty*/));
+
+    return ErrorCodesV4::SUCCESS;
+}
+
+// Helper for splitToBlocks()
+void PwDatabaseV4::writeBlock(QDataStream& blockStream, quint32 blockId, const QByteArray& blockHash, quint32 blockSize, const QByteArray& blockData) {
+    blockStream << blockId;
+    blockStream.writeRawData(blockHash.constData(), blockHash.size());
+    blockStream << blockSize;
+    blockStream.writeRawData(blockData, blockSize);
+}
+
+/**
+ * Encrypts DB's data using current keys.
+ * Changes input raw data by adding padding.
+ */
+ErrorCodesV4::ErrorCode PwDatabaseV4::encryptData(QByteArray& rawData, QByteArray& encryptedData) const {
+    CryptoManager* cm = CryptoManager::instance();
+
+    cm->addPadding16(rawData);
+    int err = cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), rawData, encryptedData);
+    if (err != SB_SUCCESS) {
+        qDebug() << "encryptAES error: " << err;
+        return ErrorCodesV4::CANNOT_ENCRYPT_DB;
+    }
+    return ErrorCodesV4::SUCCESS;
 }

@@ -165,6 +165,7 @@ public:
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
     ErrorCodesV4::ErrorCode writeToStream(QXmlStreamWriter& xml);
 
+    /** Returns a binary from the binary pool (or NULL if not found). */
     PwBinaryV4* getBinaryById(const int id) const;
 
     /**
