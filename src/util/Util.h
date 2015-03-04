@@ -17,10 +17,16 @@ public:
      */
     enum ErrorCode {
         SUCCESS             = 0,
-        GZIP_DATA_TOO_SHORT = 1,
-        GZIP_INIT_FAIL      = 2,
-        GZIP_INFLATE_ERROR  = 3
+        GZIP_INFLATE_DATA_TOO_SHORT = 1,
+        GZIP_INFLATE_INIT_FAIL      = 2,
+        GZIP_INFLATE_ERROR          = 3,
+        GZIP_DEFLATE_INIT_FAIL      = 4,
     };
+    /**
+     * Compresses data to GZip format.
+     */
+    static ErrorCode compressToGZip(const QByteArray& inData, QByteArray& gzipData);
+
     /**
      * Unpacks GZip data.
      * This method is derived from http://stackoverflow.com/questions/13679592/gzip-in-blackberry-10
@@ -38,6 +44,10 @@ public:
      */
     static bool isAllZero(const QByteArray& data);
 
+    /**
+     * Fills the array with a random byte value.
+     */
+    static void randomFill(char* data, int size);
     /**
      * Fills the array with a random byte value, then clears.
      */
