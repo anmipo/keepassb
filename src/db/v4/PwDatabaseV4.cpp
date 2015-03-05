@@ -123,7 +123,6 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
                 return PROTECTED_STREAM_SIZE_MISMATCH; // Hashed protected stream key size is not 32 bytes
             break;
         case HEADER_STREAM_START_BYTES:
-            //TODO check these
             break;
         case HEADER_INNER_RANDOM_STREAM_ID:
             if (fieldValue != SALSA_20_ID)

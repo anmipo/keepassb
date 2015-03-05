@@ -248,8 +248,6 @@ void PwAutoType::writeToStream(QXmlStreamWriter& xml) const {
 /**************************/
 
 PwEntryV4::PwEntryV4(QObject* parent) : PwEntry(parent) {
-    _extraFieldsDataModel.setParent(this); // TODO do I need this?
-    _historyDataModel.setParent(this); // TODO do I need this?
     clear();
 }
 

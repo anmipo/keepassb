@@ -137,7 +137,7 @@ void PwDatabaseFacade::registerQmlTypes() {
     qmlRegisterType<PwGroupV4>("org.keepassb", 1, 0, "PwGroupV4");
     qmlRegisterType<PwEntryV3>("org.keepassb", 1, 0, "PwEntryV3");
     qmlRegisterType<PwEntryV4>("org.keepassb", 1, 0, "PwEntryV4");
-    qmlRegisterType<PwExtraField>("org.keepassb", 1, 0, "PwExtraField");
+    qmlRegisterType<PwField>("org.keepassb", 1, 0, "PwField");
     qmlRegisterType<PwAttachment>("org.keepassb", 1, 0, "PwAttachment");
     qmlRegisterType<PwAttachmentDataModel>("org.keepassb", 1, 0, "PwAttachmentDataModel");
 }
