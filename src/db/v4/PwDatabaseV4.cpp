@@ -663,7 +663,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
         if (xml.readNextStartElement()) {
             tagName = xml.name();
             if (tagName == XML_META) {
-                err = meta.readFromStream(xml);
+                err = meta.readFromStream(xml, salsa20);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
                 if (!meta.isHeaderHashMatch(header.getHash()))
@@ -747,7 +747,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
     xml.writeStartDocument("1.0", true);
     xml.writeStartElement(XML_KEEPASS_FILE);
-    err = meta.writeToStream(xml);
+    err = meta.writeToStream(xml, salsa20);
     if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "failed to write Meta to XML: " << err;
         emit dbSaveError(saveErrorMessage, err);

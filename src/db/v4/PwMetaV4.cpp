@@ -89,8 +89,8 @@ void MemoryProtection::writeToStream(QXmlStreamWriter& xml) {
 PwBinaryV4::PwBinaryV4(QObject* parent) : QObject(parent) {
     // nothing to do
 }
-PwBinaryV4::PwBinaryV4(QObject* parent, const int id, const QByteArray& data, const bool isCompressed) :
-            QObject(parent), _id(id), _data(data), _isCompressed(isCompressed) {
+PwBinaryV4::PwBinaryV4(QObject* parent, const int id, const QByteArray& data, const bool isCompressed, bool isProtected) :
+            QObject(parent), _id(id), _data(data), _isCompressed(isCompressed), _isProtected(isProtected) {
     //nothing else to do
 }
 PwBinaryV4::~PwBinaryV4() {
@@ -98,10 +98,11 @@ PwBinaryV4::~PwBinaryV4() {
 }
 void PwBinaryV4::clear() {
     _isCompressed = false;
+    _isProtected = false;
     Util::safeClear(_data);
 }
 
-bool PwBinaryV4::readFromStream(QXmlStreamReader& xml) {
+bool PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_BINARY);
 
     if (xml.isStartElement() && (xml.name() == XML_BINARY)) {
@@ -114,8 +115,13 @@ bool PwBinaryV4::readFromStream(QXmlStreamReader& xml) {
             _id = -1;
         }
         _isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
+        _isProtected = (attrs.value(XML_PROTECTED) == XML_TRUE);
         _data = PwStreamUtilsV4::readBase64(xml);
         // data might probably be empty
+        if (_isProtected) {
+            // remove protection but keep the flag for saving
+            salsa20.xorWithNextBytes(_data);
+        }
     } else {
         qDebug() << "invalid Binary structure, got" << xml.name() << "tag";
         return false;
@@ -123,17 +129,25 @@ bool PwBinaryV4::readFromStream(QXmlStreamReader& xml) {
     return (!xml.hasError() && (_id >= 0));
 }
 
-void PwBinaryV4::writeToStream(QXmlStreamWriter& xml) {
+void PwBinaryV4::writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) {
     xml.writeStartElement(XML_BINARY);
     xml.writeAttribute(XML_BINARY_ID, QString::number(_id));
     xml.writeAttribute(XML_BINARY_COMPRESSED, _isCompressed ? XML_TRUE : XML_FALSE);
-    xml.writeCharacters(_data.toBase64());
+    if (_isProtected) {
+        xml.writeAttribute(XML_PROTECTED, XML_TRUE);
+        QByteArray protectedData(_data.constData(), _data.size()); // deep copy
+        salsa20.xorWithNextBytes(protectedData);
+        xml.writeCharacters(protectedData.toBase64());
+        Util::safeClear(protectedData);
+    } else {
+        xml.writeCharacters(_data.toBase64());
+    }
     xml.writeEndElement(); // XML_BINARY
 }
 
 QString PwBinaryV4::toString() const {
-    return QString("{ID: %1, compressed: %2, data.size: %3}")
-            .arg(_id).arg(_isCompressed).arg(_data.size());
+    return QString("{ID: %1, compressed: %2, protected: %3, data.size: %4}")
+            .arg(_id).arg(_isCompressed).arg(_isProtected).arg(_data.size());
 }
 /****************************/
 PwCustomIconV4::PwCustomIconV4(QObject* parent) : QObject(parent) {
@@ -238,7 +252,7 @@ void PwMetaV4::clear() {
     binaries.clear();
 }
 
-ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_META);
 
     xml.readNext();
@@ -298,7 +312,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml) {
             } else if (XML_LAST_TOP_VISIBLE_GROUP == tagName) {
                 lastTopVisibleGroupUuid = PwStreamUtilsV4::readUuid(xml);
             } else if (XML_BINARIES == tagName) {
-                ErrorCodesV4::ErrorCode err = readBinaries(xml);
+                ErrorCodesV4::ErrorCode err = readBinaries(xml, salsa20);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else if (XML_CUSTOM_DATA == tagName) {
@@ -348,7 +362,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomIcons(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwMetaV4::readBinaries(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::readBinaries(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_BINARIES);
 
     xml.readNext();
@@ -357,7 +371,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readBinaries(QXmlStreamReader& xml) {
             QStringRef tagName = xml.name();
             if (tagName == XML_BINARY) {
                 PwBinaryV4* binary = new PwBinaryV4(this);
-                if (!binary->readFromStream(xml)) {
+                if (!binary->readFromStream(xml, salsa20)) {
                     return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
                 }
                 binaries.insert(binary->getId(), binary);
@@ -519,7 +533,7 @@ bool PwMetaV4::isHeaderHashMatch(const QByteArray& dbHeaderHash) const {
     return (dbHeaderHash == this->headerHash);
 }
 
-ErrorCodesV4::ErrorCode PwMetaV4::writeToStream(QXmlStreamWriter& xml) {
+ErrorCodesV4::ErrorCode PwMetaV4::writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) {
     xml.writeStartElement(XML_META);
 
     PwStreamUtilsV4::writeString(xml, XML_GENERATOR, generator);
@@ -546,7 +560,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::writeToStream(QXmlStreamWriter& xml) {
     PwStreamUtilsV4::writeInt64(xml, XML_HISTORY_MAX_SIZE, historyMaxSize);
     PwStreamUtilsV4::writeUuid(xml, XML_LAST_SELECTED_GROUP, lastSelectedGroupUuid);
     PwStreamUtilsV4::writeUuid(xml, XML_LAST_TOP_VISIBLE_GROUP, lastTopVisibleGroupUuid);
-    writeBinaries(xml);
+    writeBinaries(xml, salsa20);
     writeCustomData(xml);
 
     xml.writeEndElement(); //XML_META
@@ -566,12 +580,12 @@ void PwMetaV4::writeCustomIcons(QXmlStreamWriter& xml) const {
     }
 }
 
-void PwMetaV4::writeBinaries(QXmlStreamWriter& xml) const {
+void PwMetaV4::writeBinaries(QXmlStreamWriter& xml, Salsa20& salsa20) const {
     if (binaries.size() > 0) {
         xml.writeStartElement(XML_BINARIES);
         QMapIterator<int, PwBinaryV4*> iter(binaries);
         while (iter.hasNext()) {
-            iter.next().value()->writeToStream(xml);
+            iter.next().value()->writeToStream(xml, salsa20);
         }
         xml.writeEndElement(); // XML_BINARIES
     } else {

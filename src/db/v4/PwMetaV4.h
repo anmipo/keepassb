@@ -58,16 +58,17 @@ private:
     int _id;
     QByteArray _data;
     bool _isCompressed;
+    bool _isProtected;
 public:
     PwBinaryV4(QObject* parent=0);
-    PwBinaryV4(QObject* parent, const int id, const QByteArray& data, const bool isCompressed);
+    PwBinaryV4(QObject* parent, const int id, const QByteArray& data, const bool isCompressed, bool isProtected=false);
     virtual ~PwBinaryV4();
 
     void clear();
     QString toString() const;
 
-    bool readFromStream(QXmlStreamReader& xml);
-    void writeToStream(QXmlStreamWriter& xml);
+    bool readFromStream(QXmlStreamReader& xml, Salsa20& salsa20);
+    void writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20);
 
     int getId() const { return _id; }
     bool isCompressed() const { return _isCompressed; }
@@ -134,11 +135,11 @@ private:
 
     ErrorCodesV4::ErrorCode readCustomData(QXmlStreamReader& xml);
     ErrorCodesV4::ErrorCode readCustomDataItem(QXmlStreamReader& xml);
-    ErrorCodesV4::ErrorCode readBinaries(QXmlStreamReader& xml);
+    ErrorCodesV4::ErrorCode readBinaries(QXmlStreamReader& xml, Salsa20& salsa20);
     ErrorCodesV4::ErrorCode readCustomIcons(QXmlStreamReader& xml);
 
     void writeCustomData(QXmlStreamWriter& xml) const;
-    void writeBinaries(QXmlStreamWriter& xml) const;
+    void writeBinaries(QXmlStreamWriter& xml, Salsa20& salsa20) const;
     void writeCustomIcons(QXmlStreamWriter& xml) const;
 
     friend class PwDatabaseV4; // to give access to setHeaderHash & updateBinaries;
@@ -162,8 +163,8 @@ public:
 
     void clear();
 
-    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
-    ErrorCodesV4::ErrorCode writeToStream(QXmlStreamWriter& xml);
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20);
 
     /** Returns a binary from the binary pool (or NULL if not found). */
     PwBinaryV4* getBinaryById(const int id) const;
