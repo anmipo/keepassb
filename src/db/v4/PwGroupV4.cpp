@@ -20,6 +20,12 @@ PwGroupV4::~PwGroupV4() {
     clear();
 }
 
+/** Updates timestamps to current time and changes usage counter */
+void PwGroupV4::renewTimestamps() {
+    PwGroup::renewTimestamps();
+    setUsageCount(getUsageCount() + 1);
+}
+
 /**
  * Creates an entry in the group and returns a reference to it.
  */
@@ -42,6 +48,7 @@ PwEntry* PwGroupV4::createEntry() {
     // set parent group
     newEntry->setParentGroup(this);
     this->addEntry(newEntry);
+
     return newEntry;
 }
 
@@ -56,16 +63,13 @@ PwGroup* PwGroupV4::createGroup() {
     newGroup->setIconId(this->getIconId());
     newGroup->setDeleted(this->isDeleted());
 
-    // set times
-    newGroup->setCreationTime(QDateTime::currentDateTime());
-    newGroup->setLastAccessTime(QDateTime::currentDateTime());
-    newGroup->setLastModificationTime(QDateTime::currentDateTime());
-    newGroup->setExpiryTime(QDateTime::currentDateTime());
-    newGroup->setExpires(false);
+    // timestamps and expiration flag are already set by the constructor
 
-    // set parent group
+    // set parents
+    newGroup->setDatabase(getDatabase());
     newGroup->setParentGroup(this);
     this->addSubGroup(newGroup);
+
     return newGroup;
 }
 

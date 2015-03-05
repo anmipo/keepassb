@@ -40,6 +40,10 @@ public:
 
     virtual void clear();
 
+
+    /** Updates timestamps to current time and changes usage counter */
+    virtual void renewTimestamps();
+
     /**
      * Moves the group's whole branch to Backup group.
      * Returns true if successful.

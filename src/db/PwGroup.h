@@ -126,7 +126,7 @@ public:
     Q_INVOKABLE virtual bool isExpired() const;
 
     /** Updates modification and last access timestamps to current time */
-    Q_INVOKABLE void renewTimestamps();
+    Q_INVOKABLE virtual void renewTimestamps();
 
     /**
      * Finds entries which contain the query substring, and adds them to the result.

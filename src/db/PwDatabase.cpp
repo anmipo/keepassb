@@ -169,7 +169,7 @@ void PwDatabaseFacade::clear() {
   * Indicates whether the DB can be edited/saved.
   */
 bool PwDatabaseFacade::isEditable() const {
-    return (!isDemoDatabase()) && (getFormatVersion() == 3);
+    return !isDemoDatabase();
 }
 
 bool PwDatabaseFacade::isDemoDatabase() const {
