@@ -24,6 +24,8 @@ const QByteArray SALSA_20_ID = QByteArray("\x02\x00\x00\x00", 4);
 const QByteArray AES_ID      = QByteArray("\x31\xC1\xF2\xE6\xBF\x71\x43\x50\xBE\x58\x05\x21\x6A\xFC\x5A\xFF", 16);
 const QByteArray SALSA_20_INIT_VECTOR = QByteArray("\xE8\x30\x09\x4B\x97\x20\x5D\x2A");
 
+// Size of encryption initial vector in bytes
+const int INITIAL_VECTOR_SIZE = 16;
 
 // DB unlock stages progress percentage
 const int UNLOCK_PROGRESS_INIT          = 0;
@@ -113,7 +115,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
             transformRounds = *(quint64*)fieldValue.constData();
             break;
         case HEADER_ENCRYPTION_IV:
-            if (fieldSize != 16)
+            if (fieldSize != INITIAL_VECTOR_SIZE)
                 return INITIAL_VECTOR_SIZE_MISMATCH; // Initial vector size is not 16 bytes
             break;
         case HEADER_PROTECTED_STREAM_KEY:
@@ -121,6 +123,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
                 return PROTECTED_STREAM_SIZE_MISMATCH; // Hashed protected stream key size is not 32 bytes
             break;
         case HEADER_STREAM_START_BYTES:
+            //TODO check these
             break;
         case HEADER_INNER_RANDOM_STREAM_ID:
             if (fieldValue != SALSA_20_ID)
@@ -155,7 +158,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::write(QDataStream& outStream) {
     writeHeaderField(stream, HEADER_TRANSFORM_ROUNDS);
     writeHeaderField(stream, HEADER_ENCRYPTION_IV);
     writeHeaderField(stream, HEADER_PROTECTED_STREAM_KEY);
-    writeHeaderField(stream, HEADER_STREAM_START_BYTES); // TODO should update this depending on content?
+    writeHeaderField(stream, HEADER_STREAM_START_BYTES);
     writeHeaderField(stream, HEADER_INNER_RANDOM_STREAM_ID);
     writeHeaderField(stream, HEADER_END);
 
@@ -207,6 +210,42 @@ void PwHeaderV4::clear() {
     initialized = false;
 }
 
+/**
+ * Resets encryption seeds to random values.
+ * Returns false in case of RNG error;
+ */
+bool PwHeaderV4::randomizeInitialVectors() {
+    CryptoManager* cm = CryptoManager::instance();
+
+    QByteArray masterSeed;
+    QByteArray transformSeed;
+    QByteArray initialVector;
+    QByteArray protectedStreamKey;
+    QByteArray streamStartBytes;
+
+    if (cm->getRandomBytes(masterSeed, SB_SHA256_DIGEST_LEN) != SB_SUCCESS)
+        return false;
+
+    if (cm->getRandomBytes(transformSeed, SB_SHA256_DIGEST_LEN) != SB_SUCCESS)
+        return false;
+
+    if (cm->getRandomBytes(initialVector, INITIAL_VECTOR_SIZE) != SB_SUCCESS)
+        return false;
+
+    if (cm->getRandomBytes(protectedStreamKey, SB_SHA256_DIGEST_LEN) != SB_SUCCESS)
+        return false;
+
+    if (cm->getRandomBytes(streamStartBytes, SB_SHA256_DIGEST_LEN) != SB_SUCCESS)
+        return false;
+
+    data.insert(HEADER_MASTER_SEED, masterSeed);
+    data.insert(HEADER_TRANSFORM_SEED, transformSeed);
+    data.insert(HEADER_ENCRYPTION_IV, initialVector);
+    data.insert(HEADER_PROTECTED_STREAM_KEY, protectedStreamKey);
+    data.insert(HEADER_STREAM_START_BYTES, streamStartBytes);
+    return true;
+}
+
 quint64 PwHeaderV4::getTransformRounds() const {
     return transformRounds;
 }
@@ -225,10 +264,6 @@ QByteArray PwHeaderV4::getInitialVector() const {
 
 QByteArray PwHeaderV4::getStreamStartBytes() const {
     return data.value(HEADER_STREAM_START_BYTES);
-}
-
-void PwHeaderV4::setStreamStartBytes(const QByteArray& bytes) {
-    data.insert(HEADER_STREAM_START_BYTES, bytes);
 }
 
 QByteArray PwHeaderV4::getProtectedStreamKey() const {
@@ -453,7 +488,8 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     emit progressChanged(UNLOCK_PROGRESS_HEADER_READ);
 
     /* Calculate the AES key */
-    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey,
+            UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
     if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
         emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
@@ -665,28 +701,22 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     QString saveErrorMessage = tr("Cannot save database", "An error message");
     outData.clear();
     emit progressChanged(SAVE_PROGRESS_INIT);
-/*
-    // update encryption seeds
-    //TODO make sure to update keys within the header.data map too!
-    //TODO also randomize Salsa20 vectors
-    header.randomizeInitialVectors();
 
-    ErrorCodesV4::ErrorCode err = transformKey(combinedKey, aesKey, SAVE_PROGRESS_INIT, SAVE_PROGRESS_KEY_TRANSFORMED);
-    if (err != SUCCESS) {
+    // Randomize encryption seeds
+    if (!header.randomizeInitialVectors()) {
+        qDebug() << "PwDatabaseV4::save() failed to randomize header seeds";
+        emit dbSaveError(saveErrorMessage, ErrorCodesV4::RNG_ERROR_1);
+        return false;
+    }
+
+    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey, SAVE_PROGRESS_INIT, SAVE_PROGRESS_KEY_TRANSFORMED);
+    if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "transformKey error while saving: " << err;
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
-*/
+
     emit progressChanged(SAVE_PROGRESS_KEY_TRANSFORMED);
-
-    // Generate random stream start bytes (for verifying correct decryption after loading the DB)
-    QByteArray streamStartBytes;
-    CryptoManager* cm = CryptoManager::instance();
-    if (cm->getRandomBytes(streamStartBytes, SB_SHA256_DIGEST_LEN) != SB_SUCCESS)
-        return ErrorCodesV4::RNG_ERROR_1;
-    header.setStreamStartBytes(streamStartBytes);
-
 
     // Reset Salsa20 state and apply new keys
     initSalsa20();
@@ -702,11 +732,12 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         return false;
     }
 
-    //TODO update Meta: header hash / modification dates?
+    // Update Meta data
     meta.setHeaderHash(header.getHash());
-    // Move all the entry attachment data to Meta
-    meta.updateBinaries(dynamic_cast<PwGroupV4*>(getRootGroup()));
+    meta.updateBinaries(dynamic_cast<PwGroupV4*>(getRootGroup())); // Rebuild binary pool from attachments
 
+
+    // Prepare XML content
     QByteArray xmlContentData;
     QXmlStreamWriter xml(&xmlContentData);
     xml.setCodec("UTF-8");
@@ -717,7 +748,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
     xml.writeStartDocument("1.0", true);
     xml.writeStartElement(XML_KEEPASS_FILE);
-    ErrorCodesV4::ErrorCode err = meta.writeToStream(xml);
+    err = meta.writeToStream(xml);
     if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "failed to write Meta to XML: " << err;
         emit dbSaveError(saveErrorMessage, err);
@@ -758,6 +789,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     blockStream.setByteOrder(QDataStream::LittleEndian);
 
     // random stream start bytes must go before any blocks
+    QByteArray streamStartBytes = header.getStreamStartBytes();
     blockStream.writeRawData(streamStartBytes.constData(), streamStartBytes.size());
 
     err = splitToBlocks(dataToSplit, blockStream);

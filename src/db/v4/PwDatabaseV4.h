@@ -93,10 +93,9 @@ public:
     QByteArray getProtectedStreamKey() const;
     bool isCompressed() const;
 
-    void setStreamStartBytes(const QByteArray& bytes);
-
     /**
-     * Returns SHA-256 hash of the header content
+     * Returns SHA-256 hash of the header content.
+     * The value is updated only by read() or write().
      */
     QByteArray getHash() const;
 
@@ -109,6 +108,11 @@ public:
      */
     void clear();
 
+    /**
+     * Resets encryption seeds to random values.
+     * Returns false in case of RNG error;
+     */
+    bool randomizeInitialVectors();
 };
 
 
