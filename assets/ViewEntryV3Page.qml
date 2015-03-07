@@ -15,6 +15,10 @@ Page {
     property string currentView
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
 
+    onCreationCompleted: {
+        entry.registerAccessEvent();
+    }
+    
     actions: [
         ActionItem {
             id: editEntryAction

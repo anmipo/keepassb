@@ -62,6 +62,10 @@ Page {
         }
     }
 
+    onCreationCompleted: {
+        entry.registerAccessEvent();
+    }
+    
     Container {
         onTouchCapture: {
             app.restartWatchdog();

@@ -306,7 +306,7 @@ bool PwEntryV3::attachFile(const QString& filePath) {
     if (!newAtt)
         return false;
 
-    this->renewTimestamps();
+    this->registerModificationEvent();
     this->backupState();
 
     PwAttachmentDataModel* dataModel = getAttachmentsDataModel();

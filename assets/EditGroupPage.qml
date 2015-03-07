@@ -30,7 +30,7 @@ Sheet {
         // no backup on edit for groups (both V3 and V4)
         group.iconId = iconId;
         group.name = nameField.text;
-        group.renewTimestamps();
+        group.registerModificationEvent();
         database.save();
     }
     
@@ -41,6 +41,7 @@ Sheet {
     onCreationCompleted: {
         // close without saving when DB is being locked
         database.dbLocked.connect(_close);
+		group.registerAccessEvent();
     }
     onClosed: {
         database.dbLocked.disconnect(_close);

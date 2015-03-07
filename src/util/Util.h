@@ -56,6 +56,15 @@ public:
      * Fills the string data with a random byte, then clears.
      */
     static void safeClear(QString& string);
+
+    /**
+     * Makes a deep copy of the object.
+     */
+    static QString deepCopy(const QString& string);
+    /**
+     * Makes a deep copy of the object.
+     */
+    static QByteArray deepCopy(const QByteArray& data);
 };
 
 #endif /* UTIL_H_ */

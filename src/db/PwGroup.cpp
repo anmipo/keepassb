@@ -240,12 +240,19 @@ bool PwGroup::isExpired() const {
     return isExpires() && (QDateTime::currentDateTime() > getExpiryTime());
 }
 
-/** Updates modification and last access timestamps to current time */
-void PwGroup::renewTimestamps() {
+/** Updates last access timestamp to current time */
+void PwGroup::registerAccessEvent() {
     QDateTime now = QDateTime::currentDateTime();
     setLastAccessTime(now);
+}
+/** Updates modification timestamp to current time */
+void PwGroup::registerModificationEvent() {
+    registerAccessEvent();
+
+    QDateTime now = QDateTime::currentDateTime();
     setLastModificationTime(now);
 }
+
 
 // matches signatures of the itemsChanged() signal with the itemsCountChanged()
 void PwGroup::itemsCountChangedAdapter(DataModelChangeType::Type changeType) {
@@ -269,15 +276,15 @@ void PwGroup::setIconId(int iconId) {
 
 void PwGroup::setName(const QString& name) {
     if (name != _name) {
-        _name = name;
-        emit nameChanged(name);
+        _name = Util::deepCopy(name);
+        emit nameChanged(_name);
     }
 }
 
 void PwGroup::setNotes(const QString& notes) {
     if (notes != _notes) {
-        _notes = notes;
-        emit notesChanged(notes);
+        _notes = Util::deepCopy(notes);
+        emit notesChanged(_notes);
     }
 }
 

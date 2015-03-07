@@ -41,6 +41,19 @@ void PwAttachment::clear() {
     _isInitialized = false;
 }
 
+PwAttachment* PwAttachment::clone() const {
+    PwAttachment* copy = new PwAttachment(this->parent());
+    if (this->_isInitialized) {
+        copy->setId(getId());
+        copy->setName(getName()); // implicitly makes deep copy
+        copy->setData(getData(), isCompressed()); // implicitly makes deep copy of the data
+
+        // Uncompressed size is copied as is because getSize() might force gzip unpacking -> performance impact.
+        copy->_uncompressedSize = this->_uncompressedSize;
+    }
+    return copy;
+}
+
 bool PwAttachment::saveContentToFile(const QString& fileName) {
     qDebug() << "Saving attachment to file: " << fileName;
 
@@ -81,15 +94,15 @@ bool PwAttachment::saveContentToFile(const QString& fileName) {
 void PwAttachment::setName(const QString& name) {
     if (_name != name) {
         _isInitialized = true;
-        _name = name;
-        emit nameChanged(name);
+        _name = Util::deepCopy(name);
+        emit nameChanged(_name);
     }
 }
 
 void PwAttachment::setData(const QByteArray& data, const bool isCompressed) {
     _isInitialized = true;
     // Store a deep copy to avoid surprises when PwMetaV4::updateBinaries() clears the original data
-    this->_data = QByteArray(data.constData(), data.size());
+    this->_data = Util::deepCopy(data);
     this->_isCompressed = isCompressed;
     emit sizeChanged(getSize());
 }
@@ -162,6 +175,10 @@ PwAttachmentDataModel::PwAttachmentDataModel(QObject* parent) : QListDataModel<P
     Q_UNUSED(res);
 }
 
+PwAttachmentDataModel::~PwAttachmentDataModel() {
+    clear();
+}
+
 void PwAttachmentDataModel::updateSize() {
     if (_size != size()) {
         _size = size();
@@ -193,7 +210,6 @@ PwEntry::PwEntry(QObject* parent) : QObject(parent), _uuid(), _iconId(0),
         _lastAccessTime(), _expiryTime(),
         _expires(false), _deleted(false),
         _parentGroup(NULL), _attachmentsDataModel() {
-    _attachmentsDataModel.setParent(this);
 }
 
 PwEntry::~PwEntry() {
@@ -238,10 +254,16 @@ bool PwEntry::matchesQuery(const QString& query) const {
     return false;
 }
 
-/** Updates modification and last access timestamps to current time */
-void PwEntry::renewTimestamps() {
+/** Updates last access timestamp to current time */
+void PwEntry::registerAccessEvent() {
     QDateTime now = QDateTime::currentDateTime();
     setLastAccessTime(now);
+}
+/** Updates modification timestamp to current time */
+void PwEntry::registerModificationEvent() {
+    registerAccessEvent();
+
+    QDateTime now = QDateTime::currentDateTime();
     setLastModificationTime(now);
 }
 

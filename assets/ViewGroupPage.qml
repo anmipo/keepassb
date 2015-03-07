@@ -11,6 +11,10 @@ Page {
     id: viewGroupPage
     property PwGroup group
     property bool autofocus: false
+
+    onCreationCompleted: {
+        group.registerAccessEvent();
+    }    
     
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm

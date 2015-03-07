@@ -16,7 +16,7 @@ PwUuid::PwUuid() : bytes(UUID_SIZE, 0) {
 }
 
 PwUuid::PwUuid(const QByteArray& aBytes) {
-    bytes = aBytes;
+    bytes = Util::deepCopy(aBytes);
 }
 
 PwUuid::~PwUuid() {

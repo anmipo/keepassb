@@ -170,3 +170,19 @@ void Util::safeClear(QString& string) {
     randomFill((char*)string.data(), string.size() * sizeof(QChar));
     string.clear();
 }
+
+/**
+ * Makes a deep copy of the object.
+ */
+QString Util::deepCopy(const QString& string) {
+    QString copy = QString(string.constData(), string.size()); // makes a deep copy
+    return copy; // returns an implicitly-shared copy of the deep copy
+}
+
+/**
+ * Makes a deep copy of the object.
+ */
+QByteArray Util::deepCopy(const QByteArray& data) {
+    QByteArray copy = QByteArray(data.constData(), data.size()); // makes a deep copy
+    return copy; // returns an implicitly-shared copy of the deep copy
+}

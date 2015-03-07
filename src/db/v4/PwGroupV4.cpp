@@ -20,9 +20,9 @@ PwGroupV4::~PwGroupV4() {
     clear();
 }
 
-/** Updates timestamps to current time and changes usage counter */
-void PwGroupV4::renewTimestamps() {
-    PwGroup::renewTimestamps();
+/** Updates last access timestamp to current time and changes usage counter */
+void PwGroupV4::registerAccessEvent() {
+    PwGroup::registerAccessEvent();
     setUsageCount(getUsageCount() + 1);
 }
 
@@ -300,22 +300,22 @@ void PwGroupV4::setCustomIconUuid(const PwUuid& uuid) {
 
 void PwGroupV4::setDefaultAutoTypeSequence(const QString& defaultAutoTypeSequence) {
     if (defaultAutoTypeSequence != _defaultAutoTypeSequence) {
-        _defaultAutoTypeSequence = defaultAutoTypeSequence;
-        emit defaultAutoTypeSequenceChanged(defaultAutoTypeSequence);
+        _defaultAutoTypeSequence = Util::deepCopy(defaultAutoTypeSequence);
+        emit defaultAutoTypeSequenceChanged(_defaultAutoTypeSequence);
     }
 }
 
 void PwGroupV4::setEnableAutoType(const QString& enableAutoType) {
     if (enableAutoType != _enableAutoType) {
-        _enableAutoType = enableAutoType;
-        emit enableAutoTypeChanged(enableAutoType);
+        _enableAutoType = Util::deepCopy(enableAutoType);
+        emit enableAutoTypeChanged(_enableAutoType);
     }
 }
 
 void PwGroupV4::setEnableSearching(const QString& enableSearching) {
     if (enableSearching != _enableSearching) {
-        _enableSearching = enableSearching;
-        emit enableSearchingChanged(enableSearching);
+        _enableSearching = Util::deepCopy(enableSearching);
+        emit enableSearchingChanged(_enableSearching);
     }
 }
 

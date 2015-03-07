@@ -37,6 +37,10 @@ public:
     PwAttachment(QObject* parent=0);
     virtual ~PwAttachment();
 
+    void clear();
+
+    PwAttachment* clone() const;
+
     /** Returns true if any string contains the query string. */
     virtual bool matchesQuery(const QString& query) const;
 
@@ -54,8 +58,6 @@ public:
     /** Sets attachment content */
     void setData(const QByteArray& data, const bool isCompressed);
     QByteArray getData() const { return _data; }
-
-    void clear();
 
     /**
      * Returns true if neither name nor data have been set.
@@ -87,7 +89,7 @@ private slots:
     void updateSize();
 public:
     PwAttachmentDataModel(QObject* parent=0);
-    virtual ~PwAttachmentDataModel() {}
+    virtual ~PwAttachmentDataModel();
 
     /**
      * Clears and disposes of each attachment before calling base class' method.
@@ -156,20 +158,28 @@ public:
 	 * Loads the given file and attaches it to the entry.
      * Makes a backup of the initial entry state.
 	 * Returns true if successful, false in case of any error.
+	 *
+	 * (This method should be pure virtual, but abstract PwEntry causes problems in QML)
 	 */
-	Q_INVOKABLE virtual bool attachFile(const QString& filePath) = 0;
+	Q_INVOKABLE virtual bool attachFile(const QString& filePath) { Q_UNUSED(filePath); return false; };
 
     Q_INVOKABLE PwAttachmentDataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 
-    /** Returns a new entry instance with the same field values */
-    virtual PwEntry* clone() = 0;
+    /**
+     * Returns a new entry instance with the same field values
+     *
+     * (This method should be pure virtual, but abstract PwEntry causes problems in QML)
+     */
+    virtual PwEntry* clone() { return NULL; };
 
     /**
      * Makes a backup copy of the current values/state of the entry.
      * Actual behaviour is DB version-specific.
      * Returns true if successful.
+     *
+     * (This method should be pure virtual, but abstract PwEntry causes problems in QML)
      */
-    Q_INVOKABLE virtual bool backupState() = 0;
+    Q_INVOKABLE virtual bool backupState() { return false; }
 
     /**
      * Moves the entry to Backup/Recycle group.
@@ -177,8 +187,10 @@ public:
      */
     Q_INVOKABLE virtual bool moveToBackup();
 
-    /** Updates modification and last access timestamps to current time */
-    Q_INVOKABLE void renewTimestamps();
+    /** Updates last access timestamp to current time */
+    Q_INVOKABLE virtual void registerAccessEvent();
+    /** Updates modification (and last access) timestamps to current time */
+    Q_INVOKABLE virtual void registerModificationEvent();
 
 	// property getters/setters
 	PwUuid getUuid() const { return _uuid; }

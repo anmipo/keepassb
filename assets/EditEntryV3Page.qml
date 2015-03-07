@@ -30,7 +30,7 @@ Sheet {
     function saveChanges() {
         app.restartWatchdog();
 
-        entry.renewTimestamps();
+        entry.registerModificationEvent();
         if (!creationMode) {
             entry.backupState();
         }
@@ -77,6 +77,7 @@ Sheet {
     onCreationCompleted: {
         // close without saving when DB is being locked
         database.dbLocked.connect(_close);
+		event.registerAccessEvent();
     }
     onClosed: {
         database.dbLocked.disconnect(_close);

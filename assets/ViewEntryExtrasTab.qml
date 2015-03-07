@@ -59,7 +59,7 @@ Container {
         property bool entryEditable: database.isEditable() && !entry.deleted
         
         function removeAttachmentAt(index) {
-            entry.renewTimestamps();
+			entry.registerModificationEvent();
             entry.backupState();
             dataModel.removeAt(index);
             

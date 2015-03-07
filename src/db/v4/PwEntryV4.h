@@ -41,6 +41,8 @@ public:
 
     void clear();
 
+    PwField* clone() const;
+
     /**
      * Sets field's in memory protection flag to that specified in Meta's properties.
      * Only applies for standard fields, does nothing for the others.
@@ -72,8 +74,7 @@ signals:
 /**
  * Auto type settings of a V4 entry
  */
-class PwAutoType: public QObject {
-    Q_OBJECT
+class PwAutoType {
 private:
     bool _enabled;
     quint32 _obfuscationType;
@@ -82,10 +83,13 @@ private:
 
     ErrorCodesV4::ErrorCode readAssociation(QXmlStreamReader& xml);
 public:
-    PwAutoType(QObject* parent=0);
+    PwAutoType();
+    PwAutoType(const PwAutoType& original);
     virtual ~PwAutoType();
 
     void clear();
+
+    PwAutoType* clone() const;
 
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
     void writeToStream(QXmlStreamWriter& xml) const;
@@ -122,7 +126,7 @@ private:
     // Loads an entry's binary attachment ("Binary" field of an entry).
     ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment);
     // Writes all entry's attachments to an XML stream.
-    void writeAttachments(QXmlStreamWriter& xml, const PwMetaV4& meta, Salsa20& salsa20);
+    void writeAttachments(QXmlStreamWriter& xml);
 
     /**
      * Adds a named field value to the entry.
@@ -140,6 +144,29 @@ public:
 
     virtual void clear();
 
+    /** Returns a new entry instance with the same field values */
+    virtual PwEntry* clone();
+
+    /** Search helper. Returns true if any of the fields contain the query string. */
+    virtual bool matchesQuery(const QString& query) const;
+
+    /**
+     * Makes a backup copy of the current values/state of the entry.
+     * (For V4 adds the current state to entry's history)
+     * Returns true if successful.
+     */
+    virtual bool backupState();
+
+    /** Updates last access timestamp to current time and increases usage counter */
+    virtual void registerAccessEvent();
+
+    /**
+     * Loads the given file and attaches it to the entry.
+     * Makes a backup of the initial entry state.
+     * Returns true if successful, false in case of any error.
+     */
+    virtual bool attachFile(const QString& filePath);
+
     /**
      * Loads entry fields from the stream.
      * The caller is responsible for clearing any previous values.
@@ -149,26 +176,6 @@ public:
      * Writes the entry to the stream.
      */
     void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);
-
-    /** Search helper. Returns true if any of the fields contain the query string. */
-    virtual bool matchesQuery(const QString& query) const;
-
-    /** Returns a new entry instance with the same field values */
-    virtual PwEntry* clone();
-
-    /**
-     * Makes a backup copy of the current values/state of the entry.
-     * (For V4 adds the current state to entry's history)
-     * Returns true if successful.
-     */
-    virtual bool backupState();
-
-    /**
-     * Loads the given file and attaches it to the entry.
-     * Makes a backup of the initial entry state.
-     * Returns true if successful, false in case of any error.
-     */
-    virtual bool attachFile(const QString& filePath);
 
     Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel();
     Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel();

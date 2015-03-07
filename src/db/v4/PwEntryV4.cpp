@@ -38,6 +38,11 @@ void PwField::clear() {
     _isProtected = false;
 }
 
+PwField* PwField::clone() const {
+    PwField* copy = new PwField(this->parent(), _name, _value, _isProtected);
+    return copy;
+}
+
 QString PwField::toString() const {
     return (_isProtected ? "<protected> " : "<not protected> ") + _name + " = " + _value;
 }
@@ -49,15 +54,15 @@ bool PwField::matchesQuery(const QString& query) const {
 
 void PwField::setName(const QString& name) {
     if (_name != name) {
-        _name = name;
-        emit nameChanged(name);
+        _name = Util::deepCopy(name);
+        emit nameChanged(_name);
     }
 }
 
 void PwField::setValue(const QString& value) {
     if (_value != value) {
-        _value = value;
-        emit valueChanged(value);
+        _value = Util::deepCopy(value);
+        emit valueChanged(_value);
     }
 }
 void PwField::setProtected(const bool isProtected) {
@@ -151,8 +156,16 @@ void PwField::writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) const {
 }
 
 /**************************/
-PwAutoType::PwAutoType(QObject* parent) : QObject(parent) {
+PwAutoType::PwAutoType() {
     clear();
+}
+
+PwAutoType::PwAutoType(const PwAutoType& original) :
+    _enabled(original._enabled),
+    _obfuscationType(original._obfuscationType),
+    _defaultSequence(Util::deepCopy(original._defaultSequence)), // this is subject to safeClear(), so need a deep copy
+    _associations(original._associations) { // a shallow copy, since we don't safeClear this list
+
 }
 
 PwAutoType::~PwAutoType() {
@@ -162,6 +175,7 @@ PwAutoType::~PwAutoType() {
 void PwAutoType::clear() {
     _enabled = true;
     _obfuscationType = 0;
+    Util::safeClear(_defaultSequence);
     _associations.clear();
 }
 
@@ -275,6 +289,12 @@ void PwEntryV4::clear() {
     PwEntry::clear();
 }
 
+/** Updates last access timestamp to current time and increases usage counter */
+void PwEntryV4::registerAccessEvent() {
+    PwEntry::registerAccessEvent();
+    setUsageCount(getUsageCount() + 1);
+}
+
 /** Search helper. Returns true if any of the fields contain the query string. */
 bool PwEntryV4::matchesQuery(const QString& query) const {
     if (PwEntry::matchesQuery(query))
@@ -291,7 +311,7 @@ void PwEntryV4::addField(PwField* field) {
     fields.insert(field->getName(), field);
     if (!field->isStandardField()) {
         // both fields and _extraFieldsDataModel contain pointer to the same PwField instance
-        _extraFieldsDataModel.append(field);
+        _extraFieldsDataModel.append(field); // takes ownership, if not already set
         emit extraSizeChanged(_extraFieldsDataModel.size());
     }
 }
@@ -303,7 +323,7 @@ void PwEntryV4::setField(const QString& name, const QString& value) {
         // Memory protection flag remains unchanged.
     } else {
         // Set memory protection off by default:
-        // - for standard fields it will be updated according to DB Meta protection flags
+        // - for standard fields it will be updated according to DB Meta protection flags (on save)
         // - for other fields, it will be changed by some other method.
         field = new PwField(this, name, value, false);
         addField(field);
@@ -395,44 +415,92 @@ void PwEntryV4::setLocationChangedTime(const QDateTime& locationChangedTime) {
 }
 void PwEntryV4::setForegroundColor(const QString& fgColor) {
     if (fgColor != _foregroundColor) {
-        _foregroundColor = fgColor;
-        emit foregroundColorChanged(fgColor);
+        _foregroundColor = Util::deepCopy(fgColor);
+        emit foregroundColorChanged(_foregroundColor);
     }
 }
 void PwEntryV4::setBackgroundColor(const QString& bgColor) {
     if (bgColor != _backgroundColor) {
-        _backgroundColor = bgColor;
-        emit backgroundColorChanged(bgColor);
+        _backgroundColor = Util::deepCopy(bgColor);
+        emit backgroundColorChanged(_backgroundColor);
     }
 }
 void PwEntryV4::setOverrideUrl(const QString& url) {
     if (url != _overrideUrl) {
-        _overrideUrl = url;
-        emit overrideUrlChanged(url);
+        _overrideUrl = Util::deepCopy(url);
+        emit overrideUrlChanged(_overrideUrl);
     }
 }
 void PwEntryV4::setTags(const QString& tags) {
     if (tags != _tags) {
-        _tags = tags;
-        emit tagsChanged(tags);
+        _tags = Util::deepCopy(tags);
+        emit tagsChanged(_tags);
     }
 }
 
 
 /** Returns a new entry instance with the same field values. */
 PwEntry* PwEntryV4::clone() {
-    // TODO implement PwEntryV4::clone
-    return NULL;
+    PwEntryV4* entryCopy = new PwEntryV4(this->parent());
+
+    entryCopy->setUuid(getUuid());
+    entryCopy->setIconId(getIconId());
+    entryCopy->setCustomIconUuid(getCustomIconUuid());
+    entryCopy->setForegroundColor(getForegroundColor());
+    entryCopy->setBackgroundColor(getBackgroundColor());
+    entryCopy->setOverrideUrl(getOverrideUrl());
+    entryCopy->setTags(getTags());
+
+    QMapIterator<QString, PwField*> iter(fields);
+    while (iter.hasNext()) {
+        iter.next();
+        PwField* fieldCopy = iter.value()->clone();
+        fieldCopy->setParent(NULL); // will be taken by the container
+        entryCopy->addField(fieldCopy);
+    }
+
+    PwAttachmentDataModel* attachDataModel = getAttachmentsDataModel();
+    for (int i = 0; i < attachDataModel->size(); i++) {
+        PwAttachment* attCopy = attachDataModel->value(i)->clone();
+        attCopy->setParent(NULL); // will be taken by the data model
+        entryCopy->addAttachment(attCopy);
+    }
+
+    entryCopy->_autoType = _autoType;
+
+    entryCopy->setLastModificationTime(getLastModificationTime());
+    entryCopy->setCreationTime(getCreationTime());
+    entryCopy->setLastAccessTime(getLastAccessTime());
+    entryCopy->setExpiryTime(getExpiryTime());
+    entryCopy->setExpires(isExpires());
+    entryCopy->setUsageCount(getUsageCount());
+    entryCopy->setLocationChangedTime(getLocationChangedTime());
+
+    for (int i = 0; i < _historyDataModel.size(); i++) {
+        PwEntryV4* historyCopy = dynamic_cast<PwEntryV4*>(_historyDataModel.value(i)->clone());
+        historyCopy->setParent(NULL); // will be taken by history data model
+        entryCopy->addHistoryEntry(historyCopy);
+    }
+
+    // The clone is not inserted into the parent group because
+    // sometimes the clones are needed in entry history (i.e. no parent group)
+    // getParentGroup()->addEntry(copy);
+
+    return entryCopy;
 }
 
 /**
  * Makes a backup copy of the current values/state of the entry.
- * (For V4 adds the current state to entry's history)
  * Returns true if successful.
  */
 bool PwEntryV4::backupState() {
-    // TODO implement PwEntryV4::backupState()
-    return false;
+    // KeePass 2 backups entry state by adding its copy to history.
+
+    // Also, in V4 historical items preserve the same UUID (unlike in V3)
+    PwEntryV4* entryCopy = dynamic_cast<PwEntryV4*>(this->clone());
+    addHistoryEntry(entryCopy);
+
+    return true;
 }
 
 /**
@@ -638,7 +706,7 @@ void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& sa
         field->writeToStream(xml, salsa20);
     }
 
-    writeAttachments(xml, meta, salsa20);
+    writeAttachments(xml);
 
     _autoType.writeToStream(xml);
 
@@ -655,7 +723,7 @@ void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& sa
     xml.writeEndElement(); // XML_ENTRY
 }
 
-void PwEntryV4::writeAttachments(QXmlStreamWriter& xml, const PwMetaV4& meta, Salsa20& salsa20) {
+void PwEntryV4::writeAttachments(QXmlStreamWriter& xml) {
     PwAttachmentDataModel* attachDataModel = getAttachmentsDataModel();
     for (int i = 0; i < attachDataModel->size(); i++) {
         PwAttachment* att = attachDataModel->value(i);
