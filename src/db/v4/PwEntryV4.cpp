@@ -262,6 +262,10 @@ void PwAutoType::writeToStream(QXmlStreamWriter& xml) const {
 /**************************/
 
 PwEntryV4::PwEntryV4(QObject* parent) : PwEntry(parent) {
+    // without setParent() the app crashes with repeated freeing of free memory
+    _extraFieldsDataModel.setParent(this);
+    _historyDataModel.setParent(this);
+
     clear();
 }
 

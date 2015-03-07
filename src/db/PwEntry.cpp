@@ -210,6 +210,7 @@ PwEntry::PwEntry(QObject* parent) : QObject(parent), _uuid(), _iconId(0),
         _lastAccessTime(), _expiryTime(),
         _expires(false), _deleted(false),
         _parentGroup(NULL), _attachmentsDataModel() {
+    _attachmentsDataModel.setParent(this); // the app crashes without this.
 }
 
 PwEntry::~PwEntry() {
