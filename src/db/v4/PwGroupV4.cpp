@@ -37,13 +37,7 @@ PwEntry* PwGroupV4::createEntry() {
     newEntry->setIconId(this->getIconId());
     newEntry->setDeleted(this->isDeleted());
 
-    // set times
-    newEntry->setCreationTime(QDateTime::currentDateTime());
-    newEntry->setLastAccessTime(QDateTime::currentDateTime());
-    newEntry->setLastModificationTime(QDateTime::currentDateTime());
-
-    newEntry->setExpiryTime(QDateTime::currentDateTime());
-    newEntry->setExpires(false);
+    // timestamps and expiration flag are already set by the constructor
 
     // set parent group
     newEntry->setParentGroup(this);
@@ -100,10 +94,14 @@ bool PwGroupV4::moveToBackup() {
     QList<PwEntry*> childEntries;
     getAllChildren(childGroups, childEntries);
     for (int i = 0; i < childGroups.size(); i++) {
-        childGroups.at(i)->setDeleted(true);
+        PwGroupV4* childGroup = dynamic_cast<PwGroupV4*>(childGroups.at(i));
+        childGroup->setDeleted(true);
+        childGroup->registerModificationEvent();
     }
     for (int i = 0; i < childEntries.size(); i++) {
-        childEntries.at(i)->setDeleted(true);
+        PwEntryV4* childEntry = dynamic_cast<PwEntryV4*>(childEntries.at(i));
+        childEntry->setDeleted(true);
+        childEntry->registerModificationEvent();
     }
     childGroups.clear();
     childEntries.clear();
