@@ -138,6 +138,7 @@ private:
     void setField(const QString& name, const QString& value);
 
     void addHistoryEntry(PwEntryV4* historyEntry);
+    void clearHistory();
 public:
     PwEntryV4(QObject* parent=0);
     virtual ~PwEntryV4();

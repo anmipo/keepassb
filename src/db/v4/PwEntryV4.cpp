@@ -339,6 +339,11 @@ void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
     emit historySizeChanged(_historyDataModel.size());
 }
 
+void PwEntryV4::clearHistory() {
+    _historyDataModel.clear();
+    emit historySizeChanged(_historyDataModel.size());
+}
+
 bb::cascades::DataModel* PwEntryV4::getExtraFieldsDataModel() {
     return &_extraFieldsDataModel;
 }
@@ -502,6 +507,7 @@ bool PwEntryV4::backupState() {
 
     // Also, in V4 historical items preserve the same UUID (unlike in V3)
     PwEntryV4* entryCopy = dynamic_cast<PwEntryV4*>(this->clone());
+    entryCopy->clearHistory(); // historical entries must not have history
     addHistoryEntry(entryCopy);
 
     return true;
