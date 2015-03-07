@@ -212,17 +212,19 @@ public:
     void setDeleted(bool deleted);
     PwGroup* getParentGroup() const { return _parentGroup; }
     void setParentGroup(PwGroup* parentGroup);
-	// pure virtual getters/setters
-	virtual QString getTitle() const = 0;
-	virtual void setTitle(const QString& title) = 0;
-	virtual QString getUserName() const = 0;
-	virtual void setUserName(const QString& userName) = 0;
-	virtual QString getPassword() const = 0;
-	virtual void setPassword(const QString& password) = 0;
-	virtual QString getUrl() const = 0;
-	virtual void setUrl(const QString& url) = 0;
-	virtual QString getNotes() const = 0;
-	virtual void setNotes(const QString& notes) = 0;
+
+	// Virtual property accessors.
+    // (These should be pure virtual, but abstract PwEntry would have complicated the QML quite a bit.)
+    virtual QString getTitle() const { /* stub */ return NULL; };
+    virtual void setTitle(const QString& title) { /* stub */ Q_UNUSED(title); };
+    virtual QString getUserName() const { /* stub */ return NULL; };
+    virtual void setUserName(const QString& userName) { /* stub */ Q_UNUSED(userName); };
+    virtual QString getPassword() const { /* stub */ return NULL; };
+    virtual void setPassword(const QString& password) { /* stub */ Q_UNUSED(password); };
+    virtual QString getUrl() const { /* stub */ return NULL; };
+    virtual void setUrl(const QString& url) { /* stub */ Q_UNUSED(url); };
+    virtual QString getNotes() const { /* stub */ return NULL; };
+    virtual void setNotes(const QString& notes) { /* stub */ Q_UNUSED(notes); };
 
     /** Returns a string representation of the instance */
     virtual QString toString() const;

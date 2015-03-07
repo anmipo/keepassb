@@ -5,7 +5,7 @@ import org.keepassb 1.0
 
 Sheet {
     id: entryEditSheet
-    property PwEntryV3 entry
+    property PwEntry entry
     property bool creationMode: false
     property int iconId: entry.iconId 
 
@@ -77,7 +77,7 @@ Sheet {
     onCreationCompleted: {
         // close without saving when DB is being locked
         database.dbLocked.connect(_close);
-		event.registerAccessEvent();
+		entry.registerAccessEvent();
     }
     onClosed: {
         database.dbLocked.disconnect(_close);

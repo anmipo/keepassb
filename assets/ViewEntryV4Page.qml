@@ -13,6 +13,10 @@ Page {
     property PwEntryV4 entry
     property string currentView
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+
+    onCreationCompleted: {
+        entry.registerAccessEvent();
+    }
     
     titleBar: TitleBar { 
         kind: TitleBarKind.Segmented
@@ -60,10 +64,6 @@ Page {
         } else {
             entryContent.replace(0, newView);
         }
-    }
-
-    onCreationCompleted: {
-        entry.registerAccessEvent();
     }
     
     Container {

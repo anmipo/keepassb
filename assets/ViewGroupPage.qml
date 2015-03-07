@@ -14,7 +14,7 @@ Page {
 
     onCreationCompleted: {
         group.registerAccessEvent();
-    }    
+    }
     
     titleBar: TitleBar {
         kind: TitleBarKind.FreeForm
@@ -68,7 +68,7 @@ Page {
     }
     function createEntry() {
         var newEntry = group.createEntry(); // add an entry to the current group
-        var editEntryPageComponent = Qt.createComponent("EditEntryV3Page.qml");
+        var editEntryPageComponent = Qt.createComponent("EditEntryPage.qml");
         var editEntryPage = editEntryPageComponent.createObject(viewGroupPage, {"entry": newEntry, "creationMode": true});
         editEntryPage.open();
         editEntryPage.autofocus();
@@ -197,7 +197,7 @@ Page {
                     editGroupSheet.autofocus();
                 }
                 function showEditEntryDialog(selEntry) {
-                    var editEntryPageComponent = Qt.createComponent("EditEntryV3Page.qml");
+                    var editEntryPageComponent = Qt.createComponent("EditEntryPage.qml");
                     var editEntrySheet = editEntryPageComponent.createObject(viewGroupPage, {"entry": selEntry});
                     editEntrySheet.open();
                     editEntrySheet.autofocus()
