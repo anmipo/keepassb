@@ -41,7 +41,7 @@ ScrollView {
             dataModel: hasHistory ? entry.getHistoryDataModel() : null
             onTriggered: {
                 var item = dataModel.data(indexPath);
-                var viewHistoryEntryPage = Qt.createComponent("ViewEntryV4Page.qml");
+                var viewHistoryEntryPage = Qt.createComponent("ViewEntryPage.qml");
                 var historyEntryPage = viewHistoryEntryPage.createObject(null, {"entry": item});
                 naviPane.push(historyEntryPage);
             }

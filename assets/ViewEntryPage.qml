@@ -11,7 +11,7 @@ import "common.js" as Common
 
 Page {
     id: viewEntryPage
-    property PwEntryV3 entry
+    property PwEntry entry
     property string currentView
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
 
