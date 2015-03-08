@@ -94,8 +94,7 @@ function timestampToString(timestamp) {
  */
 function deleteEntry(entry) {
     Qt.app.restartWatchdog();
-    entry.renewTimestamps();
-    entry.moveToBackup(); 
+    entry.moveToBackup(); // also updates timestamps 
     Qt.database.save();
 }
 
@@ -105,7 +104,6 @@ function deleteEntry(entry) {
  */
 function deleteGroup(group) {
     Qt.app.restartWatchdog();
-    group.renewTimestamps();
-    group.moveToBackup(); 
+    group.moveToBackup(); // also updates timestamps
     Qt.database.save();
 }
