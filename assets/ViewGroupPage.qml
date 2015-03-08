@@ -61,7 +61,10 @@ Page {
         searchField.text = "";
     }
     function canCreateEntryHere() {
-        return (database.isEditable() && !database.isRoot(group) && !group.deleted); 
+        // In V3, no entries are allowed in the root group. 
+        var rootForbidden = (database.getFormatVersion() == 3);
+        return (database.isEditable() && !group.deleted && 
+                !(database.isRoot(group) && rootForbidden)); 
     }
     function canCreateGroupHere() {
         return (database.isEditable() && !group.deleted); 
