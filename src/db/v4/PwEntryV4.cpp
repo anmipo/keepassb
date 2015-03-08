@@ -519,9 +519,14 @@ bool PwEntryV4::backupState() {
  * Returns true if successful, false in case of any error.
  */
 bool PwEntryV4::attachFile(const QString& filePath) {
-    // TODO implement PwEntryV4::attachFile
-    Q_UNUSED(filePath);
-    return false;
+    PwAttachment* newAtt = PwAttachment::createFromFile(filePath);
+    if (!newAtt)
+        return false;
+
+    registerModificationEvent();
+    backupState();
+
+    return addAttachment(newAtt);
 }
 
 /**
