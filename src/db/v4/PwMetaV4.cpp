@@ -252,6 +252,17 @@ void PwMetaV4::clear() {
     binaries.clear();
 }
 
+void PwMetaV4::setRecycleBinGroupUuid(const PwUuid& uuid) {
+    if (recycleBinGroupUuid != uuid) {
+        recycleBinGroupUuid = uuid;
+        setRecycleBinChangedTime(QDateTime::currentDateTime());
+    }
+}
+
+void PwMetaV4::setRecycleBinChangedTime(const QDateTime& time) {
+    recycleBinChangedTime = time;
+}
+
 ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_META);
 

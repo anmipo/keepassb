@@ -229,6 +229,23 @@ void PwGroup::filterEntries(const SearchParams& params, QList<PwEntry*> &result)
     }
 }
 
+/**
+ * Searches all subgroups recursively, returns the (first) one with the given UUID,
+ * or NULL if none found;
+ */
+PwGroup* PwGroup::findGroupByUuid(const PwUuid& uuid) const {
+    if (this->_uuid == uuid)
+        return const_cast<PwGroup*>(this);
+
+    PwGroup* result = NULL;
+    for (int i = 0; i < _subGroups.size(); i++) {
+        result = _subGroups.at(i)->findGroupByUuid(uuid);
+        if (result)
+            break;
+    }
+    return result;
+}
+
 QString PwGroup::toString() const {
     return "PwGroup[" + _name + "]";
 }

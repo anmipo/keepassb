@@ -35,6 +35,9 @@ private:
     ErrorCodesV4::ErrorCode readTimes(QXmlStreamReader& xml);
 
 public:
+    const static QString RECYCLE_BIN_GROUP_NAME;
+    const static int RECYCLE_BIN_GROUP_ICON_ID = 43;
+
     PwGroupV4(QObject* parent=0);
     virtual ~PwGroupV4();
 

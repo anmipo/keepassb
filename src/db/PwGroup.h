@@ -131,6 +131,11 @@ public:
     Q_INVOKABLE virtual void registerModificationEvent();
 
     /**
+     * Returns the (sub)group with the given UUID (searching the full tree),
+     * or NULL if no such group found.
+     */
+    virtual PwGroup* findGroupByUuid(const PwUuid& uuid) const;
+    /**
      * Finds entries which contain the query substring, and adds them to the result.
      */
     virtual void filterEntries(const SearchParams& params, QList<PwEntry*> &result) const;

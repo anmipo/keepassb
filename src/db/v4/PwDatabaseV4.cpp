@@ -304,9 +304,27 @@ PwDatabaseV4::~PwDatabaseV4() {
  * (However, if backup is disabled will not create anything and still return NULL).
  */
 PwGroup* PwDatabaseV4::getBackupGroup(bool createIfMissing) {
-    // TODO implement PwDatabaseV4::getBackupGroup
-    Q_UNUSED(createIfMissing); // remove when method is implemented
-    return NULL;
+    PwGroup* recycleBinGroup = NULL;
+    if (meta.isRecycleBinEnabled()) {
+        PwUuid recycleBinGroupUuid = meta.getRecycleBinGroupUuid();
+        PwGroupV4* root = dynamic_cast<PwGroupV4*>(getRootGroup());
+
+        // search only if UUID is set to something meaningful
+        if (!recycleBinGroupUuid.isEmpty() && !recycleBinGroupUuid.isAllZero())
+            recycleBinGroup = root->findGroupByUuid(recycleBinGroupUuid);
+
+        if (!recycleBinGroup && createIfMissing) {
+            // no such group - create one
+            recycleBinGroup = root->createGroup();
+            recycleBinGroup->setName(PwGroupV4::RECYCLE_BIN_GROUP_NAME);
+            recycleBinGroup->setIconId(PwGroupV4::RECYCLE_BIN_GROUP_ICON_ID);
+            recycleBinGroup->setDeleted(true);
+
+            meta.setRecycleBinGroupUuid(recycleBinGroup->getUuid());
+            meta.setRecycleBinChangedTime(QDateTime::currentDateTime());
+        }
+    }
+    return recycleBinGroup;
 }
 
 bool PwDatabaseV4::isSignatureMatch(const QByteArray& rawDbData) {

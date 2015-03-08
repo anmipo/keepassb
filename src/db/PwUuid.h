@@ -10,6 +10,8 @@
 #ifndef PWUUID_H_
 #define PWUUID_H_
 
+#include "util/Util.h"
+
 class PwUuid {
 private:
     QByteArray bytes;
@@ -29,6 +31,8 @@ public:
 
     /** Returns true the UUID has not been set. */
     bool isEmpty() const { return bytes.isEmpty(); }
+    /** Returns true the UUID is set to all-zeroes. */
+    bool isAllZero() const { return Util::isAllZero(bytes); }
 
     QString toString() const { return bytes.toHex(); }
 

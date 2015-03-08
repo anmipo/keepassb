@@ -178,6 +178,8 @@ public:
     // proprety accessors
     bool isRecycleBinEnabled() const { return recycleBinEnabled; }
     PwUuid getRecycleBinGroupUuid() const { return recycleBinGroupUuid; }
+    void setRecycleBinGroupUuid(const PwUuid& uuid);
+    void setRecycleBinChangedTime(const QDateTime& time);
     const MemoryProtection* getMemoryProtection() const { return &memoryProtection; }
 };
 

@@ -12,6 +12,8 @@
 #include "db/v4/PwStreamUtilsV4.h"
 #include "util/Util.h"
 
+const QString PwGroupV4::RECYCLE_BIN_GROUP_NAME = QString("Recycle Bin");
+
 PwGroupV4::PwGroupV4(QObject* parent) : PwGroup(parent) {
     clear();
 }
