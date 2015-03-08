@@ -42,7 +42,7 @@ ScrollView {
             onTriggered: {
                 var item = dataModel.data(indexPath);
                 var viewHistoryEntryPage = Qt.createComponent("ViewEntryPage.qml");
-                var historyEntryPage = viewHistoryEntryPage.createObject(null, {"entry": item});
+                var historyEntryPage = viewHistoryEntryPage.createObject(null, {"entry": item, "editable": false});
                 naviPane.push(historyEntryPage);
             }
             function updateHeight(itemHeight) {

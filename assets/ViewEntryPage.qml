@@ -13,22 +13,24 @@ Page {
     id: viewEntryPage
     property PwEntry entry
     property string currentView
-    actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
+    property bool editable: true // set to false to disable editing controls (e.g. for history entries)
 
     onCreationCompleted: {
         entry.registerAccessEvent();
     }
     
+    actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     actions: [
         ActionItem {
             id: editEntryAction
             title: qsTr("Edit Entry", "A button/action to edit an entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_edit.png"
-            enabled: database.isEditable() && !entry.deleted
+            enabled: editable && database.isEditable() && !entry.deleted
             ActionBar.placement: ActionBarPlacement.OnBar
             shortcuts: [
                 SystemShortcut {
                     type: SystemShortcuts.Edit
+                    enabled: editEntryAction.enabled
                     onTriggered: editEntryAction.triggered()
                 }
             ]
@@ -43,7 +45,7 @@ Page {
             id: attachFileAction
             title: qsTr("Attach File", "A button/action to attach a file to an entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_add_attachment.png"
-            enabled: database.isEditable() && !entry.deleted
+            enabled: editable && database.isEditable() && !entry.deleted
             ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
                 setCurrentView("extra");
@@ -52,7 +54,7 @@ Page {
         },
         DeleteActionItem {
             title: qsTr("Delete", "A button/action to delete an entry.") + Retranslate.onLocaleOrLanguageChanged
-            enabled: database.isEditable() && !entry.deleted
+            enabled: editable && database.isEditable() && !entry.deleted
             onTriggered: {
                 deleteEntryConfirmationDialog.show();
             }
