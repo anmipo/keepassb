@@ -381,6 +381,7 @@ bool PwEntry::moveToBackup() {
     backupGroup->addEntry(this);
 
     setParent(backupGroup); // parent in Qt terms, responsible for memory release
+    registerAccessEvent();
     setDeleted(true);
 
     qDebug() << "moveToBackup OK";

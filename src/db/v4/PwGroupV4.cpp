@@ -90,7 +90,11 @@ bool PwGroupV4::moveToBackup() {
     backupGroup->addSubGroup(this);
     setParent(backupGroup); // parent in Qt terms, responsible for memory release
 
-    // flag the group and all its children deleted
+    registerAccessEvent();
+    setLocationChangedTime(QDateTime::currentDateTime());
+
+    // Flag the group and all its children deleted.
+    // But children's timestamps should remain unchanged.
     setDeleted(true);
     QList<PwGroup*> childGroups;
     QList<PwEntry*> childEntries;
@@ -98,12 +102,10 @@ bool PwGroupV4::moveToBackup() {
     for (int i = 0; i < childGroups.size(); i++) {
         PwGroupV4* childGroup = dynamic_cast<PwGroupV4*>(childGroups.at(i));
         childGroup->setDeleted(true);
-        childGroup->registerModificationEvent();
     }
     for (int i = 0; i < childEntries.size(); i++) {
         PwEntryV4* childEntry = dynamic_cast<PwEntryV4*>(childEntries.at(i));
         childEntry->setDeleted(true);
-        childEntry->registerModificationEvent();
     }
     childGroups.clear();
     childEntries.clear();
