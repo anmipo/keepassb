@@ -72,6 +72,7 @@ protected slots:
 	virtual void sortChildren();
 public:
     static const int DEFAULT_ICON_ID;
+    static const int DEFAULT_OPEN_ICON_ID;
 
 	PwGroup(QObject* parent=0);
 	virtual ~PwGroup();

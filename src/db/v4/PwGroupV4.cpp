@@ -35,9 +35,15 @@ PwEntry* PwGroupV4::createEntry() {
     PwEntryV4* newEntry = new PwEntryV4(this);
     newEntry->setUuid(PwUuid::create());
 
-    // inherit the icon and recycled status
-    newEntry->setIconId(this->getIconId());
+    // inherit the recycled status
     newEntry->setDeleted(this->isDeleted());
+
+    // inherit the icon, if it is not a default "folder" one.
+    // Also check the "open folder" icon used by root groups.
+    int iconId = this->getIconId();
+    if ((iconId == DEFAULT_ICON_ID) || (iconId == DEFAULT_OPEN_ICON_ID))
+        iconId = PwEntryV4::DEFAULT_ICON_ID;
+    newEntry->setIconId(iconId);
 
     // timestamps and expiration flag are already set by the constructor
 

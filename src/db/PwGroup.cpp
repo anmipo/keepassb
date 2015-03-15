@@ -17,6 +17,7 @@
 #include "util/Util.h"
 
 const int PwGroup::DEFAULT_ICON_ID = 48; // "folder"
+const int PwGroup::DEFAULT_OPEN_ICON_ID = 49; // "open folder"
 
 PwGroup::PwGroup(QObject* parent) :
         bb::cascades::DataModel(parent), _database(NULL), _uuid(),
