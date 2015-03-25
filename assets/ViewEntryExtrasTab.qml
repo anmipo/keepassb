@@ -9,7 +9,8 @@ import bb.cascades.pickers 1.0
 import org.keepassb 1.0
 
 Container {
-    property bool hasExtraStrings: (database.getFormatVersion() == 4)
+    property bool isExtraFieldsSupported: (database.getFormatVersion() == 4)
+    property bool entryEditable: database.isEditable() && !entry.deleted && viewEntryPage.editable
     
     // called when the user wants to attach a file
     function onAddAttachment() {
@@ -17,6 +18,15 @@ Container {
         addAttachmentFilePicker.open();
     }
 
+    // called when the user wants to add an extra field
+    function onAddExtraField() {
+        console.log("onAddExtraField");
+        var editFieldPageComponent = Qt.createComponent("EditFieldPage.qml");
+        var editFieldPage = editFieldPageComponent.createObject(viewEntryPage, {"entry": entry, "field": null});
+        editFieldPage.open();
+        editFieldPage.autofocus();
+    }
+    
     // appends given file to the current entry
     function attachFile(fileName) {
         // when we are here, we already have user's permission to replace current attachment if necessary
@@ -33,20 +43,61 @@ Container {
     }
     
     ListView {
+        property bool fieldsEditable: entryEditable 
+        
+        function showEditFieldDialog(field) {
+            var editFieldPageComponent = Qt.createComponent("EditFieldPage.qml");
+            var editFieldPage = editFieldPageComponent.createObject(viewEntryPage, {"entry": entry, "field": field});
+            editFieldPage.open();
+            editFieldPage.autofocus();
+        }
+        function removeField(fieldName) {
+            entry.registerModificationEvent();
+            entry.backupState();
+            entry.deleteExtraField(fieldName);
+            app.restartWatchdog();
+            database.save();
+        }
+        
         id: entryExtraList
-        dataModel: hasExtraStrings ? entry.getExtraFieldsDataModel() : null
-        visible: hasExtraStrings && (entry.extraSize > 0)
+        dataModel: isExtraFieldsSupported ? entry.getExtraFieldsDataModel() : null
+        visible: isExtraFieldsSupported && (entry.extraSize > 0)
         listItemComponents: [
             ListItemComponent {
-                LabelTextButton {
-                    labelText: ListItemData.name
-                    valueText: ListItemData.value
+                CustomListItem {
+                    id: entryExtraListItem
+                    content: LabelTextButton {
+                        labelText: ListItemData.name
+                        valueText: ListItemData.value
+                    }
+                    contextActions: ActionSet {
+                        title: ListItemData.name
+                        actions: [
+                            ActionItem {
+                                title: qsTr("Edit Field", "A button/action to edit entry's field.") + Retranslate.onLocaleOrLanguageChanged
+                                enabled: entryExtraListItem.ListItem.view.fieldsEditable
+                                imageSource: "asset:///images/ic_edit.png"
+                                onTriggered: {
+                                    entryExtraListItem.ListItem.view.showEditFieldDialog(ListItemData);
+                                }
+                            },
+                            DeleteActionItem {
+                                title: qsTr("Delete Field", "A button/action to delete entry's field.") + Retranslate.onLocaleOrLanguageChanged
+                                enabled: entryExtraListItem.ListItem.view.fieldsEditable
+                                onTriggered: {
+                                    // Delete without confirmation, as the field will remain in the entry history
+                                    var listView = entryExtraListItem.ListItem.view;
+                                    listView.removeField(ListItemData.name);
+                                }
+                            }
+                        ]
+                    }
                 }
             }
         ]
     }
     Divider { 
-        visible: hasExtraStrings && (entry.extraSize > 0) 
+        visible: isExtraFieldsSupported && (entry.extraSize > 0) 
     }
     Header {
         title: qsTr("Attached Files", "Title of a list with attached files") + Retranslate.onLocaleOrLanguageChanged
@@ -56,9 +107,10 @@ Container {
         visible: (entryFileList.dataModel.size == 0)
     }
     ListView {
-        property bool entryEditable: database.isEditable() && !entry.deleted
+        property bool attachmentsEditable: entryEditable
         
         function removeAttachmentAt(index) {
+            // Delete without confirmation, as the attachment will remain in the entry backup/history
 			entry.registerModificationEvent();
             entry.backupState();
             dataModel.removeAt(index);
@@ -81,8 +133,8 @@ Container {
                         title: ListItemData.name
                         actions: [
                             DeleteActionItem {
-                                title: qsTr("Remove File", "A button/action to remove/delete the selected file") + Retranslate.onLocaleOrLanguageChanged
-                                enabled: entryFileListItem.ListItem.view.entryEditable
+                                title: qsTr("Remove File", "A button/action to remove/delete the selected file attachment from the database (not from the disk)") + Retranslate.onLocaleOrLanguageChanged
+                                enabled: entryFileListItem.ListItem.view.attachmentsEditable
                                 onTriggered: {
                                     var selIndex = entryFileListItem.ListItem.indexInSection;
                                     var listView = entryFileListItem.ListItem.view;

@@ -14,6 +14,7 @@ Page {
     property PwEntry entry
     property string currentView
     property bool editable: true // set to false to disable editing controls (e.g. for history entries)
+    property bool isExtraFieldsSupported: (database.getFormatVersion() == 4)
 
     onCreationCompleted: {
         entry.registerAccessEvent();
@@ -50,6 +51,17 @@ Page {
             onTriggered: {
                 setCurrentView("extra");
                 viewEntryExtrasTab.onAddAttachment();
+            }
+        },
+        ActionItem {
+            id: addExtraField
+            title: qsTr("Add Extra Field", "A button/action to add an extra field to an entry") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_add_field.png"
+            enabled: isExtraFieldsSupported && editable && database.isEditable() && !entry.deleted
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                setCurrentView("extra");
+                viewEntryExtrasTab.onAddExtraField();
             }
         },
         DeleteActionItem {

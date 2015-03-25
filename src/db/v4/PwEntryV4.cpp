@@ -73,7 +73,11 @@ void PwField::setProtected(const bool isProtected) {
 }
 
 bool PwField::isStandardField() const {
-    return (_name == TITLE) || (_name == USERNAME) || (_name == PASSWORD) || (_name == URL) || (_name == NOTES);
+    return isStandardName(_name);
+}
+
+bool PwField::isStandardName(const QString& name) {
+    return (name == TITLE) || (name == USERNAME) || (name == PASSWORD) || (name == URL) || (name == NOTES);
 }
 
 /**
@@ -332,6 +336,35 @@ void PwEntryV4::setField(const QString& name, const QString& value) {
         field = new PwField(this, name, value, false);
         addField(field);
     }
+}
+
+bool PwEntryV4::containsFieldName(const QString& fieldName) const {
+    return PwField::isStandardName(fieldName) || fields.contains(fieldName);
+}
+
+/** Deletes extra field with the given name (ignores errors) without making backup */
+void PwEntryV4::deleteExtraField(const QString& fieldName) {
+    int size = _extraFieldsDataModel.size();
+    for (int i = 0; i < size; i++) {
+        PwField* field = _extraFieldsDataModel.value(i);
+        if (fieldName == field->getName()) {
+            fields.remove(fieldName);
+            _extraFieldsDataModel.removeAt(i); // also deletes objects owned by the model
+            break;
+        }
+    }
+}
+
+/**
+ * Updates the given field with a new name, value and protection flag.
+ * If 'field' is null, creates and adds one.
+ */
+void PwEntryV4::setExtraField(PwField* field, const QString& name, const QString& value, bool protect) {
+    if (field) {
+        deleteExtraField(field->getName());
+    }
+    PwField* newField = new PwField(this, name, value, protect);
+    addField(newField);
 }
 
 void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {

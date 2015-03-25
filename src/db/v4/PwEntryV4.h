@@ -23,9 +23,9 @@
  */
 class PwField: public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
-    Q_PROPERTY(QString value READ getValue NOTIFY valueChanged)
-    Q_PROPERTY(QString protected READ isProtected NOTIFY protectedChanged)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString value READ getValue WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(bool protected READ isProtected WRITE setProtected NOTIFY protectedChanged)
 private:
     QString _name;
     QString _value;
@@ -38,6 +38,7 @@ public:
 
     /** True if field's name corresponds to one of the fixed/standard V4 fields. */
     bool isStandardField() const;
+    Q_INVOKABLE static bool isStandardName(const QString& name);
 
     void clear();
 
@@ -58,12 +59,12 @@ public:
     Q_INVOKABLE QString toString() const;
 
     // property accessors
-    QString getName() const { return _name; }
-    QString getValue() const { return _value; }
-    bool isProtected() const { return _isProtected; }
-    void setName(const QString& name);
-    void setValue(const QString& value);
-    void setProtected(const bool isProtected);
+    Q_INVOKABLE QString getName() const { return _name; }
+    Q_INVOKABLE QString getValue() const { return _value; }
+    Q_INVOKABLE bool isProtected() const { return _isProtected; }
+    Q_INVOKABLE void setName(const QString& name);
+    Q_INVOKABLE void setValue(const QString& value);
+    Q_INVOKABLE void setProtected(const bool isProtected);
 signals:
     // nameChanged and valueChanged are never emitted
     void nameChanged(QString name);
@@ -168,18 +169,25 @@ public:
      */
     virtual bool attachFile(const QString& filePath);
 
-    /**
-     * Loads entry fields from the stream.
-     * The caller is responsible for clearing any previous values.
-     */
+    /** Loads entry fields from the stream. The caller is responsible for clearing any previous values. */
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20);
-    /**
-     * Writes the entry to the stream.
-     */
+    /** Writes the entry to the stream. */
     void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);
 
     Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel();
     Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel();
+
+    /** Checks if the entry contains a field with the given name (comparison is case-sensitive). */
+    Q_INVOKABLE bool containsFieldName(const QString& fieldName) const;
+    /** Deletes extra field with the given name (ignores errors) without making backup */
+    Q_INVOKABLE void deleteExtraField(const QString& fieldName);
+
+    /**
+     * Updates the given field with a new name, value and protection flag.
+     * If 'field' is null, creates and adds one.
+     */
+    Q_INVOKABLE void setExtraField(PwField* field, const QString& name, const QString& value, bool protect);
+
 
     // overriden property accessors
     virtual QString getTitle() const;
