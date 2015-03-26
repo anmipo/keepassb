@@ -721,7 +721,6 @@ ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const P
  * Writes the entry to the stream.
  */
 void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20) {
-    qDebug() << "writing entry UUID" << getUuid().toString();
     xml.writeStartElement(XML_ENTRY);
     PwStreamUtilsV4::writeUuid(xml, XML_UUID, getUuid());
     PwStreamUtilsV4::writeInt32(xml, XML_ICON_ID, getIconId());

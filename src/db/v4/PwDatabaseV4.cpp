@@ -132,7 +132,6 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
         default:
             qDebug() << "Strange header ID: " << fieldId;
         }
-        qDebug() << "Header" << fieldId << "Value " << fieldValue.toHex();
         data.insert(fieldId, fieldValue);
     }
 

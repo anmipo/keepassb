@@ -342,7 +342,6 @@ ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml, Salsa20&
     if (xml.hasError())
         return ErrorCodesV4::XML_META_PARSING_ERROR;
 
-    debugPrint(); // TODO remove this after debug
     return ErrorCodesV4::SUCCESS;
 }
 
