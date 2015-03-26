@@ -161,13 +161,13 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 setLastTopVisibleEntry(PwStreamUtilsV4::readUuid(xml));
             } else if (XML_GROUP == tagName) {
                 PwGroupV4* subGroup = new PwGroupV4(this);
+                if (isDeleted())
+                    subGroup->setDeleted(true); // propagate the deleted flag recursively
                 subGroup->setDatabase(this->getDatabase());
                 err = subGroup->readFromStream(xml, meta, salsa20);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
 
-                if (isDeleted())
-                    subGroup->setDeleted(true); // propagate the deleted flag recursively
                 this->addSubGroup(subGroup);
             } else if (XML_ENTRY == tagName) {
                 PwEntryV4* entry = new PwEntryV4(this);
