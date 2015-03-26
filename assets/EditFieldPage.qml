@@ -38,9 +38,9 @@ Sheet {
     function saveChanges() {
         app.restartWatchdog();
         
+        entry.backupState();
         if (field) { 
             // we're in edit mode
-            entry.backupState();
             entry.setExtraField(field, nameField.text, valueField.text, protectedToggle.checked);
         } else { 
             // we're in creation mode
