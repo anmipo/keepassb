@@ -368,7 +368,8 @@ void PwEntryV4::setExtraField(PwField* field, const QString& name, const QString
 }
 
 void PwEntryV4::addHistoryEntry(PwEntryV4* historyEntry) {
-    _historyDataModel.append(historyEntry); // implicitly takes ownership
+    // most recent entries should be at the top
+    _historyDataModel.insert(0, historyEntry); // implicitly takes ownership
     emit historySizeChanged(_historyDataModel.size());
 }
 
