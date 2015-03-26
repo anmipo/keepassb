@@ -8,6 +8,7 @@
 #include "db/v4/PwEntryV4.h"
 #include "util/Util.h"
 #include "db/v4/PwMetaV4.h"
+#include "db/v4/PwDatabaseV4.h"
 #include "db/v4/PwStreamUtilsV4.h"
 
 // Standard entry fields
@@ -378,12 +379,58 @@ void PwEntryV4::clearHistory() {
     emit historySizeChanged(_historyDataModel.size());
 }
 
+/** Removes old history items, if required by Meta settings */
+void PwEntryV4::maintainHistorySize() {
+    PwDatabaseV4* db = getDatabase();
+    if (!db)
+        return;
+
+    PwMetaV4* meta = db->getMeta();
+    if (!meta)
+        return;
+
+    qint32 historyMaxItems = meta->getHistoryMaxItems();
+    if (historyMaxItems >= 0) {
+        while (_historyDataModel.size() > historyMaxItems) {
+            removeOldestHistoryItem();
+        }
+    }
+    //TODO enforce historyMaxSize
+}
+
+/** Removes historical item with oldest modification date. */
+void PwEntryV4::removeOldestHistoryItem() {
+    int indexToRemove = -1;
+    QDateTime oldestTime = QDateTime::currentDateTime().addYears(1000);
+    for (int i = 0; i < _historyDataModel.size(); i++) {
+        PwEntryV4* historyItem = _historyDataModel.value(i);
+        if (historyItem->getLastModificationTime() < oldestTime) {
+            oldestTime = historyItem->getLastModificationTime();
+            indexToRemove = i;
+        }
+    }
+    if (indexToRemove >= 0) {
+        _historyDataModel.removeAt(indexToRemove);
+        qDebug() << "Removed history item dated" << oldestTime.toString();
+    }
+}
+
 bb::cascades::DataModel* PwEntryV4::getExtraFieldsDataModel() {
     return &_extraFieldsDataModel;
 }
 
 bb::cascades::DataModel* PwEntryV4::getHistoryDataModel() {
     return &_historyDataModel;
+}
+
+/** Shortcut for getParentGroup()->getDatabase() with intermediate NULL checks. */
+PwDatabaseV4* PwEntryV4::getDatabase() const {
+    PwDatabaseV4* result = NULL;
+    PwGroupV4* parentGroup = dynamic_cast<PwGroupV4*>(getParentGroup());
+    if (parentGroup) {
+        result = dynamic_cast<PwDatabaseV4*>(parentGroup->getDatabase());
+    }
+    return result;
 }
 
 QString PwEntryV4::getTitle() const {
@@ -543,6 +590,8 @@ bool PwEntryV4::backupState() {
     PwEntryV4* entryCopy = dynamic_cast<PwEntryV4*>(this->clone());
     entryCopy->clearHistory(); // historical entries must not have history
     addHistoryEntry(entryCopy);
+
+    maintainHistorySize(); // remove old history items if necessary
 
     return true;
 }

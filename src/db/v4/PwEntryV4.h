@@ -129,6 +129,9 @@ private:
     // Writes all entry's attachments to an XML stream.
     void writeAttachments(QXmlStreamWriter& xml);
 
+    /** Shortcut for getParentGroup()->getDatabase() with intermediate NULL checks. */
+    PwDatabaseV4* getDatabase() const;
+
     /**
      * Adds a named field value to the entry.
      */
@@ -140,6 +143,10 @@ private:
 
     void addHistoryEntry(PwEntryV4* historyEntry);
     void clearHistory();
+    /** Removes old history items, if required by Meta settings */
+    void maintainHistorySize();
+    /** Removes historical item with oldest modification date. */
+    void removeOldestHistoryItem();
 public:
     PwEntryV4(QObject* parent=0);
     virtual ~PwEntryV4();
@@ -187,7 +194,6 @@ public:
      * If 'field' is null, creates and adds one.
      */
     Q_INVOKABLE void setExtraField(PwField* field, const QString& name, const QString& value, bool protect);
-
 
     // overriden property accessors
     virtual QString getTitle() const;
