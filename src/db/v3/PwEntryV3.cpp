@@ -302,7 +302,8 @@ bool PwEntryV3::backupState() {
  * Returns true if successful, false in case of any error.
  */
 bool PwEntryV3::attachFile(const QString& filePath) {
-    PwAttachment* newAtt = PwAttachment::createFromFile(filePath);
+    // Compressed attachments are not supported in V3
+    PwAttachment* newAtt = PwAttachment::createFromFile(filePath, false);
     if (!newAtt)
         return false;
 

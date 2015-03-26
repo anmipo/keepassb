@@ -132,7 +132,7 @@ bool PwAttachment::matchesQuery(const QString& query) const {
     return getName().contains(query, Qt::CaseInsensitive);
 }
 
-PwAttachment* PwAttachment::createFromFile(const QString& filePath) {
+PwAttachment* PwAttachment::createFromFile(const QString& filePath, const bool allowCompression) {
     // Load the file to memory
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -151,13 +151,29 @@ PwAttachment* PwAttachment::createFromFile(const QString& filePath) {
     QFileInfo fileInfo(file);
     QString fileName = fileInfo.fileName();
 
-    //TODO try compressing data here
-
     PwAttachment* result = new PwAttachment();
     // the ownership will be later taken by the data model
-    result->setData(fileData, false);
     result->setName(fileName);
 
+    if (allowCompression) {
+        QByteArray compressedFileData;
+        Util::ErrorCode err = Util::compressToGZip(fileData, compressedFileData);
+        if (err != Util::SUCCESS) {
+            qDebug() << "Failed to compress new attachment. Error" << err;
+            // failed to compress - well, just save it as it is
+            result->setData(fileData, false); // makes a deep copy
+            qDebug() << "attached raw data: " << fileData.size() << "bytes";
+        } else {
+            result->setData(compressedFileData, true); // makes a deep copy
+            qDebug() << "attached compressed data: " << compressedFileData.size() << "bytes";
+        }
+        Util::safeClear(compressedFileData);
+    } else {
+        // V3 format does not support compression...
+        result->setData(fileData, false); // makes a deep copy
+        qDebug() << "attached raw data: " << fileData.size() << "bytes";
+    }
+    Util::safeClear(fileData);
     return result;
 }
 

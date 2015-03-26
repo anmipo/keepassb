@@ -553,7 +553,7 @@ bool PwEntryV4::backupState() {
  * Returns true if successful, false in case of any error.
  */
 bool PwEntryV4::attachFile(const QString& filePath) {
-    PwAttachment* newAtt = PwAttachment::createFromFile(filePath);
+    PwAttachment* newAtt = PwAttachment::createFromFile(filePath, true);
     if (!newAtt)
         return false;
 

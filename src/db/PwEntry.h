@@ -46,9 +46,10 @@ public:
 
     /**
      * Loads the given file and returns the corresponding PwAttachment instance.
+     * If allowCompression is true, tries to compress the attachment (v3 DBs must set this to false)
      * In case of error returns NULL.
      */
-    static PwAttachment* createFromFile(const QString& filePath);
+    static PwAttachment* createFromFile(const QString& filePath, const bool allowCompression);
 
     /**
      * Stores attachment contents to the specified file (creates or overwrites as necessary)

@@ -30,7 +30,10 @@ Container {
     // appends given file to the current entry
     function attachFile(fileName) {
         // when we are here, we already have user's permission to replace current attachment if necessary
-        attachmentReadingProgressToast.show(); 
+        
+        // Loading and compressing the file might take a while, so reset the watchdog and show a spinner.
+        app.restartWatchdog();
+        attachmentReadingProgressToast.show();
         var success = entry.attachFile(fileName); //append (or replace) file to the entry
         attachmentReadingProgressToast.cancel();
          
