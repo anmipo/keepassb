@@ -66,9 +66,36 @@ Container {
             ListItemComponent {
                 CustomListItem {
                     id: entryExtraListItem
-                    content: LabelTextButton {
-                        labelText: ListItemData.name
-                        valueText: ListItemData.value
+                    content: Container {
+                        bottomPadding: 10
+                        layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
+                        Header {
+                            title: ListItemData.name
+                            bottomMargin: 10
+                        }
+                        Container {
+                            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                            Label {
+                                text: ListItemData.value
+                                layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                                textFormat: TextFormat.Plain
+                                textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
+                                horizontalAlignment: HorizontalAlignment.Fill
+                                verticalAlignment: VerticalAlignment.Center
+                                multiline: false
+                            }
+                            Button {
+                                id: button
+                                imageSource: "asset:///images/ic_copy.png"
+                                preferredWidth: 50
+                                verticalAlignment: VerticalAlignment.Top
+                                horizontalAlignment: HorizontalAlignment.Right
+                                enabled: (ListItemData.value.length > 0)
+                                onClicked: {
+                                    Qt.app.copyWithTimeout(ListItemData.value);
+                                }
+                            }
+                        }
                     }
                     contextActions: ActionSet {
                         title: ListItemData.name
@@ -92,6 +119,40 @@ Container {
                             }
                         ]
                     }
+                }
+            }
+        ]
+        onTriggered: {
+            var field = dataModel.data(indexPath);
+            viewExtraFieldDialog.title = field.name;
+            viewExtraFieldDialog.body = field.value;
+            viewExtraFieldDialog.show();
+        }
+        attachedObjects: [
+            SystemDialog {
+                id: viewExtraFieldDialog
+                dismissAutomatically: true
+                confirmButton.enabled: false
+                confirmButton.label: ""
+                cancelButton.enabled: true
+                cancelButton.label: qsTr("Close", "Action/button which closes a dialog box") + Retranslate.onLocaleOrLanguageChanged
+                buttons: [
+                    SystemUiButton {
+                        id: copyFieldNameButton
+                        label: qsTr("Copy Name", "Action/button which copies field's name to clipboard") + Retranslate.onLocaleOrLanguageChanged
+                    },
+                    SystemUiButton {
+                        id: copyFieldValueButton
+                        label: qsTr("Copy Value", "Action/button which copies field's value to clipboard") + Retranslate.onLocaleOrLanguageChanged
+                    }
+                ]
+                onFinished: {
+                    var button = buttonSelection();
+                    if (button == copyFieldNameButton) 
+                        Qt.app.copyWithTimeout(title);
+                    else if (button == copyFieldValueButton) 
+                        Qt.app.copyWithTimeout(body );
+                    // ignore other options
                 }
             }
         ]
