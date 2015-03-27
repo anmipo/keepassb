@@ -294,6 +294,7 @@ void PwEntryV4::clear() {
     _extraFieldsDataModel.clear(); // deletes owned objects
     emit extraSizeChanged(0);
 
+    qDeleteAll(fields);
     fields.clear();
     PwEntry::clear();
 }
@@ -317,7 +318,7 @@ bool PwEntryV4::matchesQuery(const QString& query) const {
 }
 
 void PwEntryV4::addField(PwField* field) {
-    fields.insert(field->getName(), field);
+    fields.append(field);
     if (!field->isStandardField()) {
         // both fields and _extraFieldsDataModel contain pointer to the same PwField instance
         _extraFieldsDataModel.append(field); // takes ownership, if not already set
@@ -325,8 +326,20 @@ void PwEntryV4::addField(PwField* field) {
     }
 }
 
+PwField* PwEntryV4::getField(const QString& name) const {
+    PwField* result = NULL;
+    for (int i = 0; i < fields.size(); i++) {
+        PwField* field = fields.at(i);
+        if (field->getName() == name) {
+            result = field;
+            break;
+        }
+    }
+    return result;
+}
+
 void PwEntryV4::setField(const QString& name, const QString& value) {
-    PwField* field = fields.value(name);
+    PwField* field = getField(name);
     if (field != NULL) {
         field->setValue(value);
         // Memory protection flag remains unchanged.
@@ -340,7 +353,7 @@ void PwEntryV4::setField(const QString& name, const QString& value) {
 }
 
 bool PwEntryV4::containsFieldName(const QString& fieldName) const {
-    return PwField::isStandardName(fieldName) || fields.contains(fieldName);
+    return PwField::isStandardName(fieldName) || (getField(fieldName) != NULL);
 }
 
 /** Deletes extra field with the given name (ignores errors) without making backup */
@@ -349,7 +362,7 @@ void PwEntryV4::deleteExtraField(const QString& fieldName) {
     for (int i = 0; i < size; i++) {
         PwField* field = _extraFieldsDataModel.value(i);
         if (fieldName == field->getName()) {
-            fields.remove(fieldName);
+            fields.removeOne(field);
             _extraFieldsDataModel.removeAt(i); // also deletes objects owned by the model
             break;
         }
@@ -434,8 +447,8 @@ PwDatabaseV4* PwEntryV4::getDatabase() const {
 }
 
 QString PwEntryV4::getTitle() const {
-    PwField* field = fields.value(TITLE);
-    return (field == NULL) ? "" : field->getValue();
+    PwField* field = getField(TITLE);
+    return (field ? field->getValue() : "");
 }
 void PwEntryV4::setTitle(const QString& title) {
     if (title != getTitle()) {
@@ -444,8 +457,8 @@ void PwEntryV4::setTitle(const QString& title) {
     }
 }
 QString PwEntryV4::getUserName() const {
-    PwField* field = fields.value(USERNAME);
-    return (field == NULL) ? "" : field->getValue();
+    PwField* field = getField(USERNAME);
+    return (field ? field->getValue() : "");
 }
 void PwEntryV4::setUserName(const QString& userName) {
     if (userName != getUserName()) {
@@ -454,8 +467,8 @@ void PwEntryV4::setUserName(const QString& userName) {
     }
 }
 QString PwEntryV4::getPassword() const {
-    PwField* field = fields.value(PASSWORD);
-    return (field == NULL) ? "" : field->getValue();
+    PwField* field = getField(PASSWORD);
+    return (field ? field->getValue() : "");
 }
 void PwEntryV4::setPassword(const QString& password) {
     if (password != getPassword()) {
@@ -464,8 +477,8 @@ void PwEntryV4::setPassword(const QString& password) {
     }
 }
 QString PwEntryV4::getUrl() const {
-    PwField* field = fields.value(URL);
-    return (field == NULL) ? "" : field->getValue();
+    PwField* field = getField(URL);
+    return (field ? field->getValue() : "");
 }
 void PwEntryV4::setUrl(const QString& url) {
     if (url != getUrl()) {
@@ -474,8 +487,8 @@ void PwEntryV4::setUrl(const QString& url) {
     }
 }
 QString PwEntryV4::getNotes() const {
-    PwField* field = fields.value(NOTES);
-    return (field == NULL) ? "" : field->getValue();
+    PwField* field = getField(NOTES);
+    return (field ? field->getValue() : "");
 }
 void PwEntryV4::setNotes(const QString& notes) {
     if (notes != getNotes()) {
@@ -541,10 +554,8 @@ PwEntry* PwEntryV4::clone() {
     entryCopy->setOverrideUrl(getOverrideUrl());
     entryCopy->setTags(getTags());
 
-    QMapIterator<QString, PwField*> iter(fields);
-    while (iter.hasNext()) {
-        iter.next();
-        PwField* fieldCopy = iter.value()->clone();
+    for (int i = 0; i < fields.size(); i++) {
+        PwField* fieldCopy = fields.at(i)->clone();
         fieldCopy->setParent(NULL); // will be taken by the container
         entryCopy->addField(fieldCopy);
     }
@@ -794,11 +805,8 @@ void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& sa
     xml.writeEndElement(); // XML_TIMES
 
     // write <String> fields
-    QMapIterator<QString, PwField*> iter(fields);
-    while (iter.hasNext()) {
-        iter.next();
-        QString key = iter.key();
-        PwField* field = iter.value();
+    for (int i = 0; i < fields.size(); i++) {
+        PwField* field = fields.at(i);
         field->updateProtectionFlag(meta);
         field->writeToStream(xml, salsa20);
     }

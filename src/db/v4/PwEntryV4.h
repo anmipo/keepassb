@@ -109,7 +109,7 @@ class PwEntryV4: public PwEntry {
 private:
     PwUuid _customIconUuid;
     PwAutoType _autoType;
-    QMap<QString, PwField*> fields;
+    QList<PwField*> fields;
     bb::cascades::QListDataModel<PwField*> _extraFieldsDataModel;
     bb::cascades::QListDataModel<PwEntryV4*> _historyDataModel;
     quint32 _usageCount;
@@ -140,6 +140,10 @@ private:
      * Updates a named field's value (adding if necessary).
      */
     void setField(const QString& name, const QString& value);
+    /**
+     * Returns field instance by its name (or NULL if none found).
+     */
+    PwField* getField(const QString& name) const;
 
     void addHistoryEntry(PwEntryV4* historyEntry);
     void clearHistory();
