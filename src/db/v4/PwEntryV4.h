@@ -180,7 +180,7 @@ public:
      */
     virtual bool attachFile(const QString& filePath);
 
-    /** Loads entry fields from the stream. The caller is responsible for clearing any previous values. */
+    /** Loads entry fields from the stream. */
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20);
     /** Writes the entry to the stream. */
     void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);

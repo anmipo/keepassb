@@ -48,6 +48,8 @@ QString MemoryProtection::toString() const {
 ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_MEMORY_PROTECTION);
 
+    clear();
+
     xml.readNext();
     QStringRef tagName = xml.name();
     while (!xml.hasError() && !(xml.isEndElement() && (XML_MEMORY_PROTECTION == tagName))) {
@@ -98,6 +100,7 @@ PwBinaryV4::~PwBinaryV4() {
     clear();
 }
 void PwBinaryV4::clear() {
+    _id = -1;
     _isCompressed = false;
     _isProtected = false;
     Util::safeClear(_data);
@@ -105,6 +108,8 @@ void PwBinaryV4::clear() {
 
 bool PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_BINARY);
+
+    clear();
 
     if (xml.isStartElement() && (xml.name() == XML_BINARY)) {
         QXmlStreamAttributes attrs = xml.attributes();
@@ -174,6 +179,8 @@ QByteArray PwCustomIconV4::getData() const {
 
 bool PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_CUSTOM_ICON_ITEM);
+
+    clear();
 
     xml.readNext();
     QStringRef tagName = xml.name();
@@ -266,6 +273,8 @@ void PwMetaV4::setRecycleBinChangedTime(const QDateTime& time) {
 
 ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_META);
+
+    clear();
 
     xml.readNext();
     QStringRef tagName = xml.name();

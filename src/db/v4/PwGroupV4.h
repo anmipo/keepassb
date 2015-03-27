@@ -63,7 +63,6 @@ public:
 
     /**
      * Loads group fields from the stream.
-     * The caller is responsible for clearing any previous values.
      */
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
 

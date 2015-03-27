@@ -103,6 +103,8 @@ void PwField::updateProtectionFlag(const PwMetaV4& meta) {
 ErrorCodesV4::ErrorCode PwField::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(XML_STRING == xml.name());
 
+    clear();
+
     QString key, value;
     bool protect = false;
 
@@ -186,6 +188,8 @@ void PwAutoType::clear() {
 
 ErrorCodesV4::ErrorCode PwAutoType::readFromStream(QXmlStreamReader& xml) {
     Q_ASSERT(XML_AUTO_TYPE == xml.name());
+
+    clear();
 
     QString key, value;
     ErrorCodesV4::ErrorCode err;
@@ -625,12 +629,16 @@ bool PwEntryV4::attachFile(const QString& filePath) {
 
 /**
  * Loads entry fields from the stream.
- * The caller is responsible for clearing any previous values.
  */
 ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_ENTRY);
 
     ErrorCodesV4::ErrorCode err = ErrorCodesV4::SUCCESS;
+
+    // All the fields will be read from the stream, except parent group
+    PwGroup* parentGroup = getParentGroup();
+    clear();
+    setParentGroup(parentGroup);
 
     xml.readNext();
     QStringRef tagName = xml.name();

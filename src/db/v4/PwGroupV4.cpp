@@ -121,10 +121,16 @@ bool PwGroupV4::moveToBackup() {
 
 /**
  * Loads group fields from the stream.
- * The caller is responsible for clearing any previous values.
  */
 ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_GROUP);
+
+    // All the fields will be read from the stream, except pointers to the parent group and database
+    PwGroup* parentGroup = getParentGroup();
+    PwDatabase* parentDatabase = getDatabase();
+    clear();
+    setParentGroup(parentGroup);
+    setDatabase(parentDatabase);
 
     ErrorCodesV4::ErrorCode err;
     xml.readNext();
