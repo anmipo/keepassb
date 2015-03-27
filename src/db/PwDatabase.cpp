@@ -255,8 +255,10 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(progressChanged(int)), this, SIGNAL(progressChanged(int))); Q_ASSERT(res);
     Q_UNUSED(res);
 
-    // Initiate the actual unlocking/loading
+    // Do the actual unlocking/loading
     db->load(dbFileData, password, keyFileData);
+    Util::safeClear(dbFileData);
+    Util::safeClear(keyFileData);
 }
 
 PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData) {

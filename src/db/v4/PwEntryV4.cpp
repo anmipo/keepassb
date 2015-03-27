@@ -25,7 +25,7 @@ PwField::PwField(QObject* parent) : QObject(parent),
 }
 
 PwField::PwField(QObject* parent, const QString& name, const QString& value, const bool isProtected) : QObject(parent),
-        _name(name), _value(value), _isProtected(isProtected) {
+        _name(Util::deepCopy(name)), _value(Util::deepCopy(value)), _isProtected(isProtected) {
     // left empty
 }
 
@@ -200,7 +200,7 @@ ErrorCodesV4::ErrorCode PwAutoType::readFromStream(QXmlStreamReader& xml) {
             } else if (tagName == XML_AUTO_TYPE_OBFUSCATION) {
                 _obfuscationType = PwStreamUtilsV4::readUInt32(xml, 0);
             } else if (tagName == XML_AUTO_TYPE_DEFAULT_SEQUENCE) {
-                _defaultSequence = PwStreamUtilsV4::readString(xml);
+                _defaultSequence = Util::deepCopy(PwStreamUtilsV4::readString(xml));
             } else if (tagName == XML_AUTO_TYPE_ITEM) {
                 err = readAssociation(xml);
                 if (err != ErrorCodesV4::SUCCESS)

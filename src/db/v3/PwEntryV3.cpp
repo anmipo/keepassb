@@ -85,35 +85,35 @@ void PwEntryV3::setGroupId(qint32 groupId) {
 
 void PwEntryV3::setTitle(const QString& title) {
     if (title != _title) {
-        _title = title;
+        _title = Util::deepCopy(title);
         emit titleChanged(title);
     }
 }
 
 void PwEntryV3::setUserName(const QString& userName) {
     if (userName != _userName) {
-        _userName = userName;
+        _userName = Util::deepCopy(userName);
         emit userNameChanged(userName);
     }
 }
 
 void PwEntryV3::setPassword(const QString& password) {
     if (password != _password) {
-        _password = password;
+        _password = Util::deepCopy(password);
         emit passwordChanged(password);
     }
 }
 
 void PwEntryV3::setUrl(const QString& url) {
     if (url != _url) {
-        _url = url;
+        _url = Util::deepCopy(url);
         emit urlChanged(url);
     }
 }
 
 void PwEntryV3::setNotes(const QString& notes) {
     if (notes != _notes) {
-        _notes = notes;
+        _notes = Util::deepCopy(notes);
         emit notesChanged(notes);
     }
 }
@@ -196,7 +196,7 @@ bool PwEntryV3::readFromStream(QDataStream& stream) {
                 // make the binary data available via the common 'attachment' interface
                 PwAttachment* attachment = new PwAttachment(this);
                 attachment->setName(binaryDesc);
-                attachment->setData(binaryData, false);
+                attachment->setData(binaryData, false); // makes deep copy
                 this->addAttachment(attachment);
             }
             return true;
@@ -275,11 +275,13 @@ PwEntry* PwEntryV3::clone() {
     if (!copy->readFromStream(bufferStream)) {
         delete copy;
         qDebug() << "PwEntryV3::clone() failed on read";
+        Util::safeClear(buffer);
         return NULL;
     }
     // insert copy into the same group (readFromStream does not do that)
     getParentGroup()->addEntry(copy);
 
+    Util::safeClear(buffer);
     return copy;
 }
 

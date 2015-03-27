@@ -245,6 +245,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     QByteArray dbBytesWithoutHeader = dbBytes.right(dataSize);
     QByteArray decryptedData(dataSize, 0);
     err = decryptData(dbBytesWithoutHeader, decryptedData);
+    Util::safeClear(dbBytesWithoutHeader);
     if (err != SUCCESS) {
         if (err == DECRYPTED_PADDING_ERROR || err == DECRYPTED_CHECKSUM_MISMATCH) {
             qDebug() << "Cannot decrypt database - decryptData" << err;
@@ -263,6 +264,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     QDataStream decryptedDataStream(decryptedData);
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
     err = readContent(decryptedDataStream);
+    Util::safeClear(decryptedData);
     if (err != SUCCESS) {
         emit dbLoadError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
@@ -288,7 +290,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
     int ec;
 
     QByteArray transformedKey(SB_AES_256_KEY_BYTES, 0);
-    QByteArray combinedKey2(combinedKey.data(), combinedKey.size()); // this makes a deep copy
+    QByteArray combinedKey2 = Util::deepCopy(combinedKey);
     unsigned char* origKey = reinterpret_cast<unsigned char*>(combinedKey2.data());
     unsigned char* transKey = reinterpret_cast<unsigned char*>(transformedKey.data());
 

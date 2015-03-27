@@ -90,7 +90,8 @@ PwBinaryV4::PwBinaryV4(QObject* parent) : QObject(parent) {
     // nothing to do
 }
 PwBinaryV4::PwBinaryV4(QObject* parent, const int id, const QByteArray& data, const bool isCompressed, bool isProtected) :
-            QObject(parent), _id(id), _data(data), _isCompressed(isCompressed), _isProtected(isProtected) {
+            QObject(parent), _id(id), _data(Util::deepCopy(data)),
+            _isCompressed(isCompressed), _isProtected(isProtected) {
     //nothing else to do
 }
 PwBinaryV4::~PwBinaryV4() {
@@ -116,7 +117,7 @@ bool PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
         }
         _isCompressed = (attrs.value(XML_BINARY_COMPRESSED) == XML_TRUE);
         _isProtected = (attrs.value(XML_PROTECTED) == XML_TRUE);
-        _data = PwStreamUtilsV4::readBase64(xml);
+        _data = PwStreamUtilsV4::readBase64(xml); // implicit deep copy
         // data might probably be empty
         if (_isProtected) {
             // remove protection but keep the flag for saving
@@ -135,7 +136,7 @@ void PwBinaryV4::writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) {
     xml.writeAttribute(XML_BINARY_COMPRESSED, _isCompressed ? XML_TRUE : XML_FALSE);
     if (_isProtected) {
         xml.writeAttribute(XML_PROTECTED, XML_TRUE);
-        QByteArray protectedData(_data.constData(), _data.size()); // deep copy
+        QByteArray protectedData = Util::deepCopy(_data);
         salsa20.xorWithNextBytes(protectedData);
         xml.writeCharacters(protectedData.toBase64());
         Util::safeClear(protectedData);
@@ -181,7 +182,7 @@ bool PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
             if (tagName == XML_CUSTOM_ICON_ITEM_ID) {
                 uuid = PwStreamUtilsV4::readUuid(xml);
             } else if (tagName == XML_CUSTOM_ICON_ITEM_DATA) {
-                data = PwStreamUtilsV4::readBase64(xml);
+                data = PwStreamUtilsV4::readBase64(xml); // implicit deep copy
             } else {
                 qDebug() << "unexpected XML tag in CustomIcon: " << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
