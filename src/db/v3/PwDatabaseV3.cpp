@@ -15,16 +15,15 @@
 #include "util/Util.h"
 
 // DB unlock stages progress percentage
-const int UNLOCK_PROGRESS_INIT = 0;
-const int UNLOCK_PROGRESS_HEADER_READ = 5;
-const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
-const int UNLOCK_PROGRESS_DECRYPTED = 80;
-const int UNLOCK_PROGRESS_DONE = 100;
+// DB unlock stages progress percentage
+const quint8 UNLOCK_PROGRESS_KEY_TRANSFORM[]  = { 0, 70};
+const quint8 UNLOCK_PROGRESS_DECRYPTION[]     = {70, 80};
+const quint8 UNLOCK_PROGRESS_PARSE_DATA[]     = {80, 100};
+
 // DB save stages progress percentage
-const int SAVE_PROGRESS_INIT = 0;
-const int SAVE_PROGRESS_CONTENT_PACKED = 5;
-const int SAVE_PROGRESS_KEY_TRANSFORMED = 90;
-const int SAVE_PROGRESS_DONE = 100;
+const quint8 SAVE_PROGRESS_PACK_DATA[]      = { 0,  5};
+const quint8 SAVE_PROGRESS_KEY_TRANSFORM[]  = { 5, 90};
+const quint8 SAVE_PROGRESS_ENCRYPTION[]     = {90, 100};
 
 const int MASTER_SEED_SIZE = 16;
 const int INITIAL_VECTOR_SIZE = 16;
@@ -164,6 +163,13 @@ bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
     return (sign1 ==  PwHeaderV3::SIGNATURE_1) && (sign2 == PwHeaderV3::SIGNATURE_2);
 }
 
+/**
+ * Callback for progress updates of time-consuming processes.
+ */
+void PwDatabaseV3::onProgress(quint32 rawProgress) {
+    emit progressChanged(getProgressPercent(rawProgress));
+}
+
 void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(password.toLatin1(), keyFileData, combinedKey)) {
         emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
@@ -219,27 +225,25 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     QDataStream stream (dbBytes);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    emit progressChanged(UNLOCK_PROGRESS_INIT);
-
     PwHeaderV3::ErrorCode headerErrCode = header.read(stream);
     if (headerErrCode != PwHeaderV3::SUCCESS) {
         qDebug() << PwHeaderV3::getErrorMessage(headerErrCode) << headerErrCode;
         emit dbLoadError(PwHeaderV3::getErrorMessage(headerErrCode), headerErrCode);
         return false;
     }
-    emit progressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
 
     /* Calculate the AES key */
-    ErrorCode err = transformKey(combinedKey, aesKey, UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    setPhaseProgressBounds(UNLOCK_PROGRESS_KEY_TRANSFORM);
+    ErrorCode err = transformKey(combinedKey, aesKey);
     if (err != SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
         emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
 
-    emit progressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
 
     /* Decrypt data */
+    setPhaseProgressBounds(UNLOCK_PROGRESS_DECRYPTION);
     int dataSize = dbBytes.size() - header.HEADER_SIZE;
     // DB header not needed for decryption
     QByteArray dbBytesWithoutHeader = dbBytes.right(dataSize);
@@ -259,8 +263,9 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
         }
         return false;
     }
-    emit progressChanged(UNLOCK_PROGRESS_DECRYPTED);
 
+    /* Reading and parsing data*/
+    setPhaseProgressBounds(UNLOCK_PROGRESS_PARSE_DATA);
     QDataStream decryptedDataStream(decryptedData);
     decryptedDataStream.setByteOrder(QDataStream::LittleEndian);
     err = readContent(decryptedDataStream);
@@ -270,13 +275,10 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit progressChanged(UNLOCK_PROGRESS_DONE);
-
     return true;
 }
 
-PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey,
-        QByteArray& aesKey, const int progressFrom, const int progressTo) {
+PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey, QByteArray& aesKey) {
     CryptoManager* cm = CryptoManager::instance();
 
     // prepare key transform
@@ -284,25 +286,26 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
         return KEY_TRANSFORM_INIT_ERROR;
 
     quint32 transformRounds = header.getTransformRounds();
-    int progress = progressFrom;
-    int subProgress = 0;
-    int subProgressThreshold = ceil(transformRounds / (progressTo - progressFrom));
-    int ec;
+
+    // To avoid excessive UI updates, report progress only once in a while
+    static int PROGRESS_UPDATE_ITERATIONS = 3000;
+    int progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
+    setPhaseProgressRawTarget(transformRounds);
 
     QByteArray transformedKey(SB_AES_256_KEY_BYTES, 0);
     QByteArray combinedKey2 = Util::deepCopy(combinedKey);
     unsigned char* origKey = reinterpret_cast<unsigned char*>(combinedKey2.data());
     unsigned char* transKey = reinterpret_cast<unsigned char*>(transformedKey.data());
 
+    int ec;
     for (quint64 round = 0; round < transformRounds; round++) {
         ec = cm->performKeyTransform(origKey, transKey);
         memcpy(origKey, transKey, SB_AES_256_KEY_BYTES);
         if (ec != SB_SUCCESS) break;
 
-        if (++subProgress > subProgressThreshold) {
-            subProgress = 0;
-            progress++;
-            emit progressChanged(progress);
+        if (--progressUpdateDecimator == 0) {
+            progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
+            onProgress(round);
         }
     }
     Util::safeClear(combinedKey2); // ~ origKey
@@ -331,7 +334,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
 // Decrypts the DB's data using current keys.
 PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedData, QByteArray& decryptedData) {
     CryptoManager* cm = CryptoManager::instance();
-    int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData);
+    int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData, this);
     if (err != SB_SUCCESS) {
         qDebug() << "decryptAES error: " << err;
         return CANNOT_DECRYPT_DB;
@@ -358,6 +361,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups) {
     groups.clear();
+    int progressUpdateDecimator = 100;
     for (quint32 iGroup = 0; iGroup < header.getGroupCount(); iGroup++) {
         PwGroupV3* group = new PwGroupV3();
         group->setDatabase(this);
@@ -366,21 +370,35 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
         if (group->isDeleted())
             backupGroup = group;
         groups.append(group);
+
+        if (--progressUpdateDecimator == 0) {
+            progressUpdateDecimator = 100;
+            onProgress(iGroup);
+        }
     }
     return SUCCESS;
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries) {
+    int progressUpdateDecimator = 100;
     for (quint32 iEntry = 0; iEntry < header.getEntryCount(); iEntry++) {
         PwEntryV3* entry = new PwEntryV3();
         if (!entry->readFromStream(stream))
             return NOT_ENOUGH_ENTRIES;
         entries.append(entry);
+
+        if (--progressUpdateDecimator == 0) {
+            progressUpdateDecimator = 100;
+            onProgress(iEntry);
+        }
     }
     return SUCCESS;
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
+
+    setPhaseProgressRawTarget(header.getGroupCount() + header.getEntryCount());
+
     QList<PwGroupV3*> groups;
     ErrorCode err = readAllGroups(stream, groups);
     if (err != SUCCESS)
@@ -456,9 +474,9 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     QString saveErrorMessage = tr("Cannot save database", "An error message");
 
     outData.clear();
-    emit progressChanged(SAVE_PROGRESS_INIT);
 
     // pack up the groups&entries
+    setPhaseProgressBounds(SAVE_PROGRESS_PACK_DATA);
     QByteArray contentData;
     int groupCount, entryCount;
     ErrorCode err = writeContent(contentData, groupCount, entryCount);
@@ -466,7 +484,6 @@ bool PwDatabaseV3::save(QByteArray& outData) {
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
-    emit progressChanged(SAVE_PROGRESS_CONTENT_PACKED);
 
     // now update the header (hash and counts)
     header.setGroupCount(groupCount);
@@ -481,9 +498,10 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     }
     header.setContentHash(contentHash);
 
-    // update encryption seeds
+    // update encryption seeds and transform the keys
     header.randomizeInitialVectors();
-    err = transformKey(combinedKey, aesKey, SAVE_PROGRESS_CONTENT_PACKED, SAVE_PROGRESS_KEY_TRANSFORMED);
+    setPhaseProgressBounds(SAVE_PROGRESS_KEY_TRANSFORM);
+    err = transformKey(combinedKey, aesKey);
     if (err != SUCCESS) {
         qDebug() << "transformKey error while saving: " << err;
         emit dbSaveError(saveErrorMessage, err);
@@ -496,12 +514,11 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     header.write(outStream);
 
     // encrypt the content
+    setPhaseProgressBounds(SAVE_PROGRESS_ENCRYPTION);
     cm->addPadding16(contentData);
     QByteArray encryptedContentData;
-    cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData);
+    cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData, this);
     Util::safeClear(contentData);
-
-    emit progressChanged(SAVE_PROGRESS_DONE);
 
     outData.append(encryptedContentData);
     return true;
@@ -515,6 +532,10 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
     QDataStream contentStream(&contentData, QIODevice::WriteOnly);
     contentStream.setByteOrder(QDataStream::LittleEndian);
 
+    setPhaseProgressRawTarget((quint64)(groupCount + entryCount));
+    static int PROGRESS_UPDATE_DECIMATOR = 100;
+    int progressUpdateDecimator = PROGRESS_UPDATE_DECIMATOR;
+
     // first prepare the content
     QList<PwGroup*> groups;
     QList<PwEntry*> entries;
@@ -522,10 +543,18 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
 
     for (int i = 0; i < groups.size(); i++) {
         dynamic_cast<PwGroupV3*>(groups.at(i))->writeToStream(contentStream);
+        if (--progressUpdateDecimator == 0) {
+            progressUpdateDecimator = PROGRESS_UPDATE_DECIMATOR;
+            onProgress(i);
+        }
     }
 
     for (int i = 0; i < entries.size(); i++) {
         dynamic_cast<PwEntryV3*>(entries.at(i))->writeToStream(contentStream);
+        if (--progressUpdateDecimator == 0) {
+            progressUpdateDecimator = PROGRESS_UPDATE_DECIMATOR;
+            onProgress(groupCount + i);
+        }
     }
     // also write the meta-stream entries (which are not included in the above list)
     for (int i = 0; i < metaStreamEntries.size(); i++) {

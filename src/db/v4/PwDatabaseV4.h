@@ -140,8 +140,7 @@ private:
 
     // Calculates the AES encryption key based on the combined key (password + key data)
     // and current header seed values.
-    ErrorCodesV4::ErrorCode transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
-            const int progressFrom, const int progressTo);
+    ErrorCodesV4::ErrorCode transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey);
 
     // Reads the encrypted DB; in case of errors emits appropriate signals and returns false.
     bool readDatabase(const QByteArray& dbBytes);
@@ -157,7 +156,7 @@ private:
     ErrorCodesV4::ErrorCode parseDeletedObjects(QXmlStreamReader& xml);
 
     /** Splits data to hashed blocks. */
-    ErrorCodesV4::ErrorCode splitToBlocks(const QByteArray& inData, QDataStream& blockStream) const;
+    ErrorCodesV4::ErrorCode splitToBlocks(const QByteArray& inData, QDataStream& blockStream);
     // Helper for splitToBlocks()
     static void writeBlock(QDataStream& blockStream, quint32 blockId, const QByteArray& blockHash, quint32 blockSize, const QByteArray& blockData);
 
@@ -165,7 +164,7 @@ private:
      * Encrypts DB's data using current keys.
      * Changes input raw data by adding padding.
      */
-    ErrorCodesV4::ErrorCode encryptData(QByteArray& rawData, QByteArray& encryptedData) const;
+    ErrorCodesV4::ErrorCode encryptData(QByteArray& rawData, QByteArray& encryptedData);
 
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;
@@ -182,10 +181,10 @@ protected:
     PwMetaV4* getMeta() { return &meta; }
 
     /**
-     * Progress report callback for XML parsing.
-     * xmlPos is characterOffset value of the XML stream.
+     * Callback for progress updates of time-consuming processes.
      */
-    virtual void onXmlProgress(qint64 xmlPos);
+    virtual void onProgress(quint32 rawProgress);
+
 public:
     PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();

@@ -134,7 +134,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
 
     // report reading progress
     if (progressObserver)
-        progressObserver->onXmlProgress(xml.characterOffset());
+        progressObserver->onProgress(xml.characterOffset());
 
     ErrorCodesV4::ErrorCode err;
     xml.readNext();

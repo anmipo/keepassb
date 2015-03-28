@@ -10,6 +10,8 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
+#include "util/ProgressObserver.h"
+
 class Util {
 public:
     /**
@@ -25,13 +27,15 @@ public:
     /**
      * Compresses data to GZip format.
      */
-    static ErrorCode compressToGZip(const QByteArray& inData, QByteArray& gzipData);
+    static ErrorCode compressToGZip(const QByteArray& inData, QByteArray& gzipData,
+            ProgressObserver* progressObserver = 0);
 
     /**
      * Unpacks GZip data.
      * This method is derived from http://stackoverflow.com/questions/13679592/gzip-in-blackberry-10
      */
-    static ErrorCode inflateGZipData(const QByteArray& gzipData, QByteArray& outData);
+    static ErrorCode inflateGZipData(const QByteArray& gzipData, QByteArray& outData,
+            ProgressObserver* progressObserver = 0);
 
     /**
      * Given a GZipped buffer, returns the size of its unpacked content.

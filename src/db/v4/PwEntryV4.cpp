@@ -642,7 +642,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const P
 
     // report reading progress
     if (progressObserver)
-        progressObserver->onXmlProgress(xml.characterOffset());
+        progressObserver->onProgress(xml.characterOffset());
 
     xml.readNext();
     QStringRef tagName = xml.name();

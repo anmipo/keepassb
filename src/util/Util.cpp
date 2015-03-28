@@ -22,10 +22,16 @@ static const int GZIP_CHUNK_SIZE = 128 * 1024;
  * Unpacks GZip data.
  * This method is derived from http://stackoverflow.com/questions/13679592/gzip-in-blackberry-10
  */
-Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& outData) {
+Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& outData, ProgressObserver* progressObserver) {
     if (gzipData.size() <= 4) {
         qDebug() << "inflateGZipData: Input data is too short";
         return GZIP_INFLATE_DATA_TOO_SHORT;
+    }
+
+    if (progressObserver) {
+        //TODO make finer-grained progress reporting
+        progressObserver->setPhaseProgressRawTarget(1);
+        progressObserver->onProgress(0);
     }
 
     outData.clear();
@@ -71,17 +77,27 @@ Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& ou
     // clean up and return
     safeClear(outBuf);
     inflateEnd(&strm);
+
+    if (progressObserver)
+        progressObserver->onProgress(1);
+
     return SUCCESS;
 }
 
 /**
  * Compresses data to GZip format.
  */
-Util::ErrorCode Util::compressToGZip(const QByteArray& inData, QByteArray& gzipData) {
+Util::ErrorCode Util::compressToGZip(const QByteArray& inData, QByteArray& gzipData, ProgressObserver* progressObserver) {
     gzipData.clear();
 
     QByteArray outBuf(GZIP_CHUNK_SIZE, 0);
     char* out = outBuf.data();
+
+    if (progressObserver) {
+        //TODO make finer-grained progress reporting
+        progressObserver->setPhaseProgressRawTarget(1);
+        progressObserver->onProgress(0);
+    }
 
     z_stream strm;
     strm.zalloc = Z_NULL;
@@ -117,6 +133,10 @@ Util::ErrorCode Util::compressToGZip(const QByteArray& inData, QByteArray& gzipD
     // clean up and return
     safeClear(outBuf);
     deflateEnd(&strm);
+
+    if (progressObserver)
+        progressObserver->onProgress(1);
+
     return SUCCESS;
 }
 

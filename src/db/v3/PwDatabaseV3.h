@@ -84,7 +84,7 @@ public:
 };
 
 
-class PwDatabaseV3: public PwDatabase {
+class PwDatabaseV3: public PwDatabase, public ProgressObserver {
     Q_OBJECT
 public:
     /**
@@ -121,8 +121,7 @@ private:
      * Calculates the AES encryption key based on the combined key (password + key data)
      * and current header seed values.
      */
-    ErrorCode transformKey(const QByteArray& combinedKey, QByteArray& aesKey,
-            const int progressFrom, const int progressTo);
+    ErrorCode transformKey(const QByteArray& combinedKey, QByteArray& aesKey);
     /** Decrypts the DB's data using current keys. */
     ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
     /** Read groups and entries from the decrypted stream and builds their tree */
@@ -147,6 +146,12 @@ protected:
 
     /** Combines password and key data into one key */
     virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
+
+    /**
+     * Callback for progress updates of time-consuming processes.
+     */
+    virtual void onProgress(quint32 rawProgress);
+
 public:
     PwDatabaseV3(QObject* parent=0);
     virtual ~PwDatabaseV3();

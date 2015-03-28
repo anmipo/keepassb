@@ -131,7 +131,15 @@ int CryptoManager::getRandomBytes(QByteArray& bytes, const int size) {
  * cipherText will be resized to fit the result
  * Returns an SB_* error code.
  */
-int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector, const QByteArray& plainText, QByteArray& cipherText) {
+int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector,
+        const QByteArray& plainText, QByteArray& cipherText,
+        ProgressObserver* progressObserver) {
+
+    if (progressObserver) {
+        progressObserver->setPhaseProgressRawTarget(1); // TODO make finer-grained progress reporting
+        progressObserver->onProgress(0);
+    }
+
 	sb_Params aesParams;
 	RETURN_IF_SB_ERROR(
 	        hu_AESParamsCreate(mode, SB_AES_128_BLOCK_BITS, NULL, NULL, &aesParams, sbCtx),
@@ -167,7 +175,11 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
     RETURN_IF_SB_ERROR(
             hu_AESParamsDestroy(&aesParams, sbCtx),
             "AESParamsDestroy failed");
-	return SB_SUCCESS;
+
+    if (progressObserver)
+        progressObserver->onProgress(1);
+
+    return SB_SUCCESS;
 }
 
 /**
@@ -276,7 +288,15 @@ int CryptoManager::endKeyTransform() {
  * N.B.: does no padding, assumes cypherText size is a multiple of 16.
  * Returns an SB_* error code.
  */
-int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVector, const QByteArray& cypherText, QByteArray& plainText) {
+int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVector,
+        const QByteArray& cypherText, QByteArray& plainText,
+        ProgressObserver* progressObserver) {
+
+    if (progressObserver) {
+        progressObserver->setPhaseProgressRawTarget(1); // TODO make finer-grained progress reporting
+        progressObserver->onProgress(0);
+    }
+
 	sb_Params aesParams;
 	RETURN_IF_SB_ERROR(
 	        hu_AESParamsCreate(SB_AES_CBC, SB_AES_128_BLOCK_BITS, NULL, NULL, &aesParams, sbCtx),
@@ -310,6 +330,10 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
     RETURN_IF_SB_ERROR(
             hu_AESParamsDestroy(&aesParams, sbCtx),
             "AESParamsDestroy failed");
+
+    if (progressObserver)
+        progressObserver->onProgress(1);
+
 	return SB_SUCCESS;
 }
 

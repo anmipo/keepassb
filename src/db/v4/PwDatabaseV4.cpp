@@ -28,21 +28,18 @@ const QByteArray SALSA_20_INIT_VECTOR = QByteArray("\xE8\x30\x09\x4B\x97\x20\x5D
 const int INITIAL_VECTOR_SIZE = 16;
 
 // DB unlock stages progress percentage
-const int UNLOCK_PROGRESS_INIT            = 0;  // reading header
-const int UNLOCK_PROGRESS_HEADER_READ     = 5;  // transforming the key
-const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 60; // decrypting
-const int UNLOCK_PROGRESS_DECRYPTED       = 70; // reading blocks
-const int UNLOCK_PROGRESS_BLOCKS_READ     = 75; // unpacking gzip
-const int UNLOCK_PROGRESS_UNPACKED        = 80; // parsing XML
-const int UNLOCK_PROGRESS_DONE            = 100;
+const quint8 UNLOCK_PROGRESS_KEY_TRANSFORM[]  = { 0, 60};
+const quint8 UNLOCK_PROGRESS_DECRYPTION[]     = {60, 70};
+const quint8 UNLOCK_PROGRESS_READ_BLOCKS[]    = {70, 75};
+const quint8 UNLOCK_PROGRESS_GZIP_INFLATE[]   = {75, 80};
+const quint8 UNLOCK_PROGRESS_XML_PARSING[]    = {80, 100};
 
 // DB save stages progress percentage
-const int SAVE_PROGRESS_INIT            = 0;  // transforming the key
-const int SAVE_PROGRESS_KEY_TRANSFORMED = 65; // writing the XML
-const int SAVE_PROGRESS_XML_READY       = 70; // compressing
-const int SAVE_PROGRESS_DATA_COMPRESSED = 80; // making blocks
-const int SAVE_PROGRESS_BLOCKS_READY    = 85; // encrypting
-const int SAVE_PROGRESS_DONE            = 100;
+const quint8 SAVE_PROGRESS_KEY_TRANSFORM[]  = { 0, 65};
+const quint8 SAVE_PROGRESS_XML_WRITING[]    = {65, 80};
+const quint8 SAVE_PROGRESS_GZIP_DEFLATE[]   = {80, 85};
+const quint8 SAVE_PROGRESS_WRITE_BLOCKS[]   = {85, 90};
+const quint8 SAVE_PROGRESS_ENCRYPTION[]     = {90, 100};
 
 PwHeaderV4::PwHeaderV4(QObject* parent) : QObject(parent), data() {
     initialized = false;
@@ -349,6 +346,13 @@ void PwDatabaseV4::clear() {
     PwDatabase::clear(); // ancestor's cleaning
 }
 
+/**
+ * Callback for progress updates of time-consuming processes.
+ */
+void PwDatabaseV4::onProgress(quint32 rawProgress) {
+    emit progressChanged(getProgressPercent(rawProgress));
+}
+
 void PwDatabaseV4::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(password.toUtf8(), keyFileData, combinedKey)) {
         emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
@@ -424,8 +428,7 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
     return true;
 }
 
-ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey,
-        const int progressFrom, const int progressTo) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey) {
 //    aesKey.clear();
 
     CryptoManager* cm = CryptoManager::instance();
@@ -439,10 +442,10 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     QByteArray subKey1bis(subKey1.length(), 0);
     QByteArray subKey2bis(subKey2.length(), 0);
 
-    int progress = progressFrom;
-    int subProgress = 0;
-    int subProgressThreshold = ceil(transformRounds / (progressTo - progressFrom));
-    int ec;
+    // To avoid excessive UI updates, report progress only once in a while
+    static int PROGRESS_UPDATE_ITERATIONS = 3000;
+    int progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
+    setPhaseProgressRawTarget(transformRounds);
 
     // prepare key transform
     if (cm->beginKeyTransform(key, SB_AES_128_KEY_BYTES) != SB_SUCCESS)
@@ -452,6 +455,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     unsigned char* origKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
     unsigned char* transKey1 = reinterpret_cast<unsigned char*>(subKey1bis.data());
     unsigned char* transKey2 = reinterpret_cast<unsigned char*>(subKey2bis.data());
+    int ec;
     for (quint64 round = 0; round < transformRounds; round++) {
         ec = cm->performKeyTransform(origKey1, transKey1);
         memcpy(origKey1, transKey1, SB_AES_128_BLOCK_BYTES);
@@ -461,10 +465,9 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
         memcpy(origKey2, transKey2, SB_AES_128_BLOCK_BYTES);
         if (ec != SB_SUCCESS) break;
 
-        if (++subProgress > subProgressThreshold) {
-            subProgress = 0;
-            progress++;
-            emit progressChanged(progress);
+        if (--progressUpdateDecimator == 0) {
+            progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
+            onProgress(round);
         }
     }
     if (ec != SB_SUCCESS)
@@ -497,8 +500,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
 }
 
 bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
-    emit progressChanged(UNLOCK_PROGRESS_INIT);
-
+    /* Read DB header */
     PwHeaderV4::ErrorCode headerErrCode = header.read(dbBytes);
     if (headerErrCode != PwHeaderV4::SUCCESS) {
         qDebug() << PwHeaderV4::getErrorMessage(headerErrCode) << headerErrCode;
@@ -506,20 +508,17 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit progressChanged(UNLOCK_PROGRESS_HEADER_READ);
-
     /* Calculate the AES key */
-    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey,
-            UNLOCK_PROGRESS_HEADER_READ, UNLOCK_PROGRESS_KEY_TRANSFORMED);
+    setPhaseProgressBounds(UNLOCK_PROGRESS_KEY_TRANSFORM);
+    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey);
     if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Cannot decrypt database - transformKey" << err;
         emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
 
-    emit progressChanged(UNLOCK_PROGRESS_KEY_TRANSFORMED);
-
     /* Decrypt data */
+    setPhaseProgressBounds(UNLOCK_PROGRESS_DECRYPTION);
     int dataSize = dbBytes.size() - header.sizeInBytes();
     QByteArray decryptedData (dataSize, 0);
     // DB header not needed for decryption
@@ -530,7 +529,6 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
-    emit progressChanged(UNLOCK_PROGRESS_DECRYPTED);
 
     QDataStream decryptedStream(decryptedData);
     decryptedStream.setByteOrder(QDataStream::LittleEndian);
@@ -546,6 +544,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     }
 
     /* Read data blocks */
+    setPhaseProgressBounds(UNLOCK_PROGRESS_READ_BLOCKS);
     QByteArray blocksData;
     err = readBlocks(decryptedStream, blocksData);
     Util::safeClear(decryptedData); // not needed any further
@@ -555,12 +554,12 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    emit progressChanged(UNLOCK_PROGRESS_BLOCKS_READ);
 
     QByteArray xmlData;
     if (header.isCompressed()) {
         /* Inflate GZip data to XML */
-        Util::ErrorCode inflateErr = Util::inflateGZipData(blocksData, xmlData);
+        setPhaseProgressBounds(UNLOCK_PROGRESS_GZIP_INFLATE);
+        Util::ErrorCode inflateErr = Util::inflateGZipData(blocksData, xmlData, this);
         Util::safeClear(blocksData);
         if (inflateErr != Util::SUCCESS) {
             qDebug() << "Error inflating database";
@@ -571,7 +570,6 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         xmlData = blocksData;
     }
 
-    emit progressChanged(UNLOCK_PROGRESS_UNPACKED);
 
     /* Init Salsa20 for reading protected values */
     err = initSalsa20();
@@ -582,6 +580,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     }
 
     /* Parse XML */
+    setPhaseProgressBounds(UNLOCK_PROGRESS_XML_PARSING);
     QString xmlString = QString::fromUtf8(xmlData.data(), xmlData.size());
     err = parseXml(xmlString);
     Util::safeClear(xmlData);
@@ -591,8 +590,6 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         emit dbLoadError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
     }
-
-    emit progressChanged(UNLOCK_PROGRESS_DONE);
     qDebug() << "DB unlocked";
 
     return true;
@@ -616,12 +613,16 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::initSalsa20() {
 ErrorCodesV4::ErrorCode PwDatabaseV4::decryptData(const QByteArray& encryptedData, QByteArray& decryptedData) {
     // assert encryptedData.size is multiple of 16 bytes
 
+    setPhaseProgressRawTarget(1); // TODO make more fine-grained progress reporting
+
+    onProgress(0);
     CryptoManager* cm = CryptoManager::instance();
     int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData);
     if (err != SB_SUCCESS) {
         qDebug() << "decryptAES error: " << err;
         return ErrorCodesV4::CANNOT_DECRYPT_DB;
     }
+    onProgress(1);
     return ErrorCodesV4::SUCCESS;
 }
 
@@ -633,9 +634,12 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
     QByteArray blockHash(SB_SHA256_DIGEST_LEN, 0);
     QByteArray computedHash(SB_SHA256_DIGEST_LEN, 0);
 
+    setPhaseProgressRawTarget(blocksData.size());
+
     Util::safeClear(blocksData);
     CryptoManager* cm = CryptoManager::instance();
 
+    int bytesRead = 0;
     quint32 blockId = 0;
     while (true) {
         inputStream >> readBlockId;
@@ -643,10 +647,12 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
             qDebug() << "readBlocks wrong block ID";
             return ErrorCodesV4::WRONG_BLOCK_ID;
         }
+        bytesRead += sizeof(readBlockId);
         blockId++;
 
         inputStream.readRawData(blockHash.data(), SB_SHA256_DIGEST_LEN);
         inputStream >> blockSize;
+        bytesRead += (SB_SHA256_DIGEST_LEN + sizeof(blockSize));
         if (blockSize == 0) {
             if (Util::isAllZero(blockHash)) {
                 break;
@@ -657,6 +663,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
         }
         QByteArray blockData(blockSize, 0);
         inputStream.readRawData(blockData.data(), blockSize);
+        bytesRead += blockSize;
         int err = cm->sha256(blockData, computedHash);
         if ((err != SB_SUCCESS) || (computedHash != blockHash)) {
             qDebug() << "readBlocks block hash mismatch";
@@ -664,14 +671,9 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
         }
         blocksData.append(blockData);
         Util::safeClear(blockData);
+        onProgress(bytesRead);
     }
     return ErrorCodesV4::SUCCESS;
-}
-
-/** xmlPos is characterOffset value of the XML stream */
-void PwDatabaseV4::onXmlProgress(qint64 xmlPos) {
-    float xmlProgress = ((float)xmlPos) / xmlSize;
-    emit progressChanged(UNLOCK_PROGRESS_UNPACKED + xmlProgress * (UNLOCK_PROGRESS_DONE - UNLOCK_PROGRESS_UNPACKED));
 }
 
 ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
@@ -684,7 +686,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     rootV4->setDatabase(this);
     rootV4->setParentGroup(NULL); // not Qt parent, but the group containing this one
 
-    xmlSize = xmlString.size();
+    setPhaseProgressRawTarget(xmlString.size());
 
     ErrorCodesV4::ErrorCode err;
     QXmlStreamReader xml(xmlString);
@@ -763,7 +765,6 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseDeletedObjects(QXmlStreamReader& xml)
 bool PwDatabaseV4::save(QByteArray& outData) {
     QString saveErrorMessage = tr("Cannot save database", "An error message");
     outData.clear();
-    emit progressChanged(SAVE_PROGRESS_INIT);
 
     // Randomize encryption seeds
     if (!header.randomizeInitialVectors()) {
@@ -772,14 +773,14 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         return false;
     }
 
-    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey, SAVE_PROGRESS_INIT, SAVE_PROGRESS_KEY_TRANSFORMED);
+    setPhaseProgressBounds(SAVE_PROGRESS_KEY_TRANSFORM);
+    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey);
     if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "transformKey error while saving: " << err;
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
 
-    emit progressChanged(SAVE_PROGRESS_KEY_TRANSFORMED);
 
     // Reset Salsa20 state and apply new keys
     initSalsa20();
@@ -801,6 +802,10 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
 
     // Prepare XML content
+    setPhaseProgressBounds(SAVE_PROGRESS_XML_WRITING);
+    setPhaseProgressRawTarget(1);
+    onProgress(0);
+
     QByteArray xmlContentData;
     QXmlStreamWriter xml(&xmlContentData);
     xml.setCodec("UTF-8");
@@ -837,27 +842,26 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     xml.writeEndElement(); // XML_ROOT
     xml.writeEndElement(); // XML_KEEPASS_FILE
     xml.writeEndDocument();
-
-    emit progressChanged(SAVE_PROGRESS_XML_READY);
+    onProgress(1);
 
     // compress the data if necessary
+    setPhaseProgressBounds(SAVE_PROGRESS_GZIP_DEFLATE);
     QByteArray dataToSplit;
     if (header.isCompressed()) {
         QByteArray gzipData;
-        Util::ErrorCode gzErr = Util::compressToGZip(xmlContentData, gzipData);
+        Util::ErrorCode gzErr = Util::compressToGZip(xmlContentData, gzipData, this);
         Util::safeClear(xmlContentData);
         if (gzErr != Util::SUCCESS) {
             qDebug() << "PwDatabaseV4::save() gzip compression failed: " << gzErr;
             return ErrorCodesV4::GZIP_COMPRESS_ERROR;
         }
         dataToSplit = gzipData;
-        emit progressChanged(SAVE_PROGRESS_DATA_COMPRESSED);
     } else {
         dataToSplit = xmlContentData;
     }
 
-
     // split data to hashed blocks
+    setPhaseProgressBounds(SAVE_PROGRESS_WRITE_BLOCKS);
     QByteArray dataInBlocks;
     QDataStream blockStream(&dataInBlocks, QIODevice::WriteOnly);
     blockStream.setByteOrder(QDataStream::LittleEndian);
@@ -873,9 +877,8 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         return err;
     }
 
-    emit progressChanged(SAVE_PROGRESS_BLOCKS_READY);
-
     // finally, encrypt everything
+    setPhaseProgressBounds(SAVE_PROGRESS_ENCRYPTION);
     QByteArray encryptedData;
     err = encryptData(dataInBlocks, encryptedData);
     Util::safeClear(dataInBlocks);
@@ -889,18 +892,18 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     outStream.writeRawData(encryptedData.constData(), encryptedData.size());
     Util::safeClear(encryptedData);
 
-    emit progressChanged(SAVE_PROGRESS_DONE);
     return true;
 }
 
 /**
  * Splits data to hashed blocks.
  */
-ErrorCodesV4::ErrorCode PwDatabaseV4::splitToBlocks(const QByteArray& inData, QDataStream& blockStream) const {
+ErrorCodesV4::ErrorCode PwDatabaseV4::splitToBlocks(const QByteArray& inData, QDataStream& blockStream) {
     static const int DEFAULT_BLOCK_SIZE = 1024 * 1024; // KeePass' default block size
 
-    CryptoManager* cm = CryptoManager::instance();
+    setPhaseProgressRawTarget(inData.size());
 
+    CryptoManager* cm = CryptoManager::instance();
     QByteArray blockHash(SB_SHA256_DIGEST_LEN, 0);
     int blockStart = 0;
     quint32 blockSize;
@@ -920,6 +923,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::splitToBlocks(const QByteArray& inData, QD
 
         blockStart += blockSize;
         blockId++;
+        onProgress(blockStart);
     }
 
     // finally, write the terminating block
@@ -940,11 +944,11 @@ void PwDatabaseV4::writeBlock(QDataStream& blockStream, quint32 blockId, const Q
  * Encrypts DB's data using current keys.
  * Changes input raw data by adding padding.
  */
-ErrorCodesV4::ErrorCode PwDatabaseV4::encryptData(QByteArray& rawData, QByteArray& encryptedData) const {
+ErrorCodesV4::ErrorCode PwDatabaseV4::encryptData(QByteArray& rawData, QByteArray& encryptedData) {
     CryptoManager* cm = CryptoManager::instance();
 
     cm->addPadding16(rawData);
-    int err = cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), rawData, encryptedData);
+    int err = cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), rawData, encryptedData, this);
     if (err != SB_SUCCESS) {
         qDebug() << "encryptAES error: " << err;
         return ErrorCodesV4::CANNOT_ENCRYPT_DB;

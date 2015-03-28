@@ -14,6 +14,7 @@
 #include "huctx.h"
 #include "sbdef.h"
 #include "sbreturn.h"
+#include "util/ProgressObserver.h"
 
 class CryptoManager {
 private:
@@ -65,7 +66,9 @@ public:
 	 * cipherText will be resized to fit the result
 	 * Returns an SB_* error code.
 	 */
-	int encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector, const QByteArray& plainText, QByteArray& cipherText);
+	int encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector,
+	        const QByteArray& plainText, QByteArray& cipherText,
+	        ProgressObserver* progressObserver = 0);
 
 	/**
 	 * Decrypts data with AES in CBC mode.
@@ -73,7 +76,9 @@ public:
 	 * N.B.: does no padding, assumes cypherText size is a multiple of 16.
 	 * Returns an SB_* error code.
 	 */
-	int decryptAES(const QByteArray& key, const QByteArray& initVector, const QByteArray& cypherText, QByteArray& plainText);
+	int decryptAES(const QByteArray& key, const QByteArray& initVector,
+	        const QByteArray& cypherText, QByteArray& plainText,
+	        ProgressObserver* progressObserver = 0);
 
 	/**
 	 * Adds PKCS#7 padding to the array to ensure (mod 16) length.
