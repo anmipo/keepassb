@@ -642,7 +642,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const P
 
     // report reading progress
     if (progressObserver)
-        progressObserver->onProgress(xml.characterOffset());
+        progressObserver->setProgress(xml.characterOffset());
 
     xml.readNext();
     QStringRef tagName = xml.name();
@@ -675,7 +675,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const P
             } else if (XML_AUTO_TYPE == tagName) {
                 err = _autoType.readFromStream(xml);
             } else if (XML_HISTORY == tagName) {
-                err = readHistory(xml, meta, salsa20, progressObserver);
+                err = readHistory(xml, meta, salsa20);
             }
         }
         if (err != ErrorCodesV4::SUCCESS)
@@ -732,7 +732,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver) {
+ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20) {
     Q_ASSERT(XML_HISTORY == xml.name());
 
     ErrorCodesV4::ErrorCode err;
@@ -740,7 +740,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMe
     while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_HISTORY))) {
         if (xml.isStartElement() && (tagName == XML_ENTRY)) {
             PwEntryV4* historyEntry = new PwEntryV4(this); // 'this' is the parent, not a copy source
-            err = historyEntry->readFromStream(xml, meta, salsa20, progressObserver);
+            err = historyEntry->readFromStream(xml, meta, salsa20, NULL); // no need for such frequent progress updates
             if (err != ErrorCodesV4::SUCCESS)
                 return err;
 
@@ -757,6 +757,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMe
 }
 
 ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment) {
+    Q_UNUSED(salsa20);
     Q_ASSERT(XML_BINARY == xml.name());
 
     QStringRef tagName = xml.name();
@@ -793,7 +794,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const P
 /**
  * Writes the entry to the stream.
  */
-void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20) {
+void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver) {
     xml.writeStartElement(XML_ENTRY);
     PwStreamUtilsV4::writeUuid(xml, XML_UUID, getUuid());
     PwStreamUtilsV4::writeInt32(xml, XML_ICON_ID, getIconId());
@@ -832,12 +833,14 @@ void PwEntryV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& sa
         xml.writeStartElement(XML_HISTORY);
         for (int i = 0; i < historySize; i++) {
             PwEntryV4* historyEntry = _historyDataModel.value(i);
-            historyEntry->writeToStream(xml, meta, salsa20);
+            historyEntry->writeToStream(xml, meta, salsa20, NULL);
         }
         xml.writeEndElement(); // XML_HISTORY
     }
-
     xml.writeEndElement(); // XML_ENTRY
+
+    if (progressObserver)
+        progressObserver->increaseProgress(1);
 }
 
 void PwEntryV4::writeAttachments(QXmlStreamWriter& xml) {

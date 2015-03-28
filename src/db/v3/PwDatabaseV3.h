@@ -150,7 +150,7 @@ protected:
     /**
      * Callback for progress updates of time-consuming processes.
      */
-    virtual void onProgress(quint32 rawProgress);
+    void onProgress(quint8 progressPercent);
 
 public:
     PwDatabaseV3(QObject* parent=0);

@@ -147,7 +147,7 @@ private:
     // Decrypts the DB's data using current keys.
     ErrorCodesV4::ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
     // Extracts data blocks from the decrypted data stream, verifying hashes.
-    ErrorCodesV4::ErrorCode readBlocks(QDataStream& inputStream, QByteArray& gzipData);
+    ErrorCodesV4::ErrorCode readBlocks(QDataStream& inputStream, const int streamSize, QByteArray& gzipData);
     // Configures Salsa20 instance for reading protected values
     ErrorCodesV4::ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.
@@ -183,7 +183,7 @@ protected:
     /**
      * Callback for progress updates of time-consuming processes.
      */
-    virtual void onProgress(quint32 rawProgress);
+    void onProgress(quint8 progressPercent);
 
 public:
     PwDatabaseV4(QObject* parent=0);

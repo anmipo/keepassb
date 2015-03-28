@@ -35,6 +35,8 @@ protected:
     /** Combines password and key data into one key */
 	virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const = 0;
 
+	/** Returns the number of all groups and entries combined */
+	int countAllChildren() const;
 public:
     enum Error {
         SUCCESS             = 0,
@@ -69,7 +71,7 @@ public:
      */
     virtual int search(const SearchParams& params, QList<PwEntry*> &searchResult) const;
 
-    PwGroup* getRootGroup();
+    PwGroup* getRootGroup() const;
 
     /**
      * Returns the Backup group of this database.

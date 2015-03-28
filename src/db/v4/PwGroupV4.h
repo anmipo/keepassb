@@ -70,7 +70,7 @@ public:
     /**
      * Writes the group with all its entries, subgroups and their subentries to the stream.
      */
-    void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);
+    void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver);
 
     // property getters/setters
     bool getIsExpanded() const { return _isExpanded; }

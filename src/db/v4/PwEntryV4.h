@@ -124,7 +124,7 @@ private:
     // Loads timestamps of an entry
     ErrorCodesV4::ErrorCode readTimes(QXmlStreamReader& xml);
     // Loads the history tag of an entry and fills entry's history list
-    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver);
+    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20);
     // Loads an entry's binary attachment ("Binary" field of an entry).
     ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment);
     // Writes all entry's attachments to an XML stream.
@@ -184,7 +184,7 @@ public:
     /** Loads entry fields from the stream. */
     ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver);
     /** Writes the entry to the stream. */
-    void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);
+    void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver);
 
     Q_INVOKABLE bb::cascades::DataModel* getExtraFieldsDataModel();
     Q_INVOKABLE bb::cascades::DataModel* getHistoryDataModel();

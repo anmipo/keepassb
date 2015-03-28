@@ -28,11 +28,8 @@ Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& ou
         return GZIP_INFLATE_DATA_TOO_SHORT;
     }
 
-    if (progressObserver) {
-        //TODO make finer-grained progress reporting
-        progressObserver->setPhaseProgressRawTarget(1);
-        progressObserver->onProgress(0);
-    }
+    if (progressObserver)
+        progressObserver->setPhaseProgressRawTarget(gzipData.size());
 
     outData.clear();
 
@@ -72,14 +69,14 @@ Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& ou
             return GZIP_INFLATE_ERROR;
         }
         outData.append(out, GZIP_CHUNK_SIZE - strm.avail_out);
+
+        if (progressObserver)
+            progressObserver->setProgress(strm.total_in);
     } while (strm.avail_out == 0);
 
     // clean up and return
     safeClear(outBuf);
     inflateEnd(&strm);
-
-    if (progressObserver)
-        progressObserver->onProgress(1);
 
     return SUCCESS;
 }
@@ -93,11 +90,8 @@ Util::ErrorCode Util::compressToGZip(const QByteArray& inData, QByteArray& gzipD
     QByteArray outBuf(GZIP_CHUNK_SIZE, 0);
     char* out = outBuf.data();
 
-    if (progressObserver) {
-        //TODO make finer-grained progress reporting
-        progressObserver->setPhaseProgressRawTarget(1);
-        progressObserver->onProgress(0);
-    }
+    if (progressObserver)
+        progressObserver->setPhaseProgressRawTarget(inData.size());
 
     z_stream strm;
     strm.zalloc = Z_NULL;
@@ -128,14 +122,14 @@ Util::ErrorCode Util::compressToGZip(const QByteArray& inData, QByteArray& gzipD
         // No need to check return code, since "deflate() can do no wrong here" (zlib.net/zlib_how.html)
 
         gzipData.append(out, GZIP_CHUNK_SIZE - strm.avail_out);
+        if (progressObserver)
+            progressObserver->setProgress(strm.total_in);
+
     } while (strm.avail_out == 0);
 
     // clean up and return
     safeClear(outBuf);
     deflateEnd(&strm);
-
-    if (progressObserver)
-        progressObserver->onProgress(1);
 
     return SUCCESS;
 }

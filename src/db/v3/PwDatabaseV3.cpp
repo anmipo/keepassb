@@ -166,8 +166,8 @@ bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
 /**
  * Callback for progress updates of time-consuming processes.
  */
-void PwDatabaseV3::onProgress(quint32 rawProgress) {
-    emit progressChanged(getProgressPercent(rawProgress));
+void PwDatabaseV3::onProgress(quint8 progressPercent) {
+    emit progressChanged(progressPercent);
 }
 
 void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
@@ -287,9 +287,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
 
     quint32 transformRounds = header.getTransformRounds();
 
-    // To avoid excessive UI updates, report progress only once in a while
-    static int PROGRESS_UPDATE_ITERATIONS = 3000;
-    int progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
     setPhaseProgressRawTarget(transformRounds);
 
     QByteArray transformedKey(SB_AES_256_KEY_BYTES, 0);
@@ -303,10 +300,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
         memcpy(origKey, transKey, SB_AES_256_KEY_BYTES);
         if (ec != SB_SUCCESS) break;
 
-        if (--progressUpdateDecimator == 0) {
-            progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
-            onProgress(round);
-        }
+        setProgress(round);
     }
     Util::safeClear(combinedKey2); // ~ origKey
     if (ec != SB_SUCCESS)
@@ -361,7 +355,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<PwGroupV3*> &groups) {
     groups.clear();
-    int progressUpdateDecimator = 100;
     for (quint32 iGroup = 0; iGroup < header.getGroupCount(); iGroup++) {
         PwGroupV3* group = new PwGroupV3();
         group->setDatabase(this);
@@ -370,27 +363,18 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readAllGroups(QDataStream& stream, QList<P
         if (group->isDeleted())
             backupGroup = group;
         groups.append(group);
-
-        if (--progressUpdateDecimator == 0) {
-            progressUpdateDecimator = 100;
-            onProgress(iGroup);
-        }
+        increaseProgress(1);
     }
     return SUCCESS;
 }
 
 PwDatabaseV3::ErrorCode PwDatabaseV3::readAllEntries(QDataStream& stream, QList<PwEntryV3*> &entries) {
-    int progressUpdateDecimator = 100;
     for (quint32 iEntry = 0; iEntry < header.getEntryCount(); iEntry++) {
         PwEntryV3* entry = new PwEntryV3();
         if (!entry->readFromStream(stream))
             return NOT_ENOUGH_ENTRIES;
         entries.append(entry);
-
-        if (--progressUpdateDecimator == 0) {
-            progressUpdateDecimator = 100;
-            onProgress(iEntry);
-        }
+        increaseProgress(1);
     }
     return SUCCESS;
 }
@@ -533,8 +517,6 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
     contentStream.setByteOrder(QDataStream::LittleEndian);
 
     setPhaseProgressRawTarget((quint64)(groupCount + entryCount));
-    static int PROGRESS_UPDATE_DECIMATOR = 100;
-    int progressUpdateDecimator = PROGRESS_UPDATE_DECIMATOR;
 
     // first prepare the content
     QList<PwGroup*> groups;
@@ -543,18 +525,12 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::writeContent(QByteArray& contentData, int&
 
     for (int i = 0; i < groups.size(); i++) {
         dynamic_cast<PwGroupV3*>(groups.at(i))->writeToStream(contentStream);
-        if (--progressUpdateDecimator == 0) {
-            progressUpdateDecimator = PROGRESS_UPDATE_DECIMATOR;
-            onProgress(i);
-        }
+        increaseProgress(1);
     }
 
     for (int i = 0; i < entries.size(); i++) {
         dynamic_cast<PwEntryV3*>(entries.at(i))->writeToStream(contentStream);
-        if (--progressUpdateDecimator == 0) {
-            progressUpdateDecimator = PROGRESS_UPDATE_DECIMATOR;
-            onProgress(groupCount + i);
-        }
+        increaseProgress(1);
     }
     // also write the meta-stream entries (which are not included in the above list)
     for (int i = 0; i < metaStreamEntries.size(); i++) {

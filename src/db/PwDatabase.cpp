@@ -47,6 +47,20 @@ void PwDatabase::clear() {
 	qDebug("DB cleared");
 }
 
+/** Returns the number of all groups and entries combined */
+int PwDatabase::countAllChildren() const {
+    int result = 0;
+    PwGroup* root = getRootGroup();
+    if (root) {
+        // TODO can make this more efficient
+        QList<PwGroup*> groups;
+        QList<PwEntry*> entries;
+        root->getAllChildren(groups, entries);
+        result = groups.size() + entries.size();
+    }
+    return result;
+}
+
 bool PwDatabase::processKeyFile(const QByteArray& keyFileData, QByteArray& key) const {
     const int KEY_LENGTH = 32;
 
@@ -79,7 +93,7 @@ bool PwDatabase::processKeyFile(const QByteArray& keyFileData, QByteArray& key) 
     return true;
 }
 
-PwGroup* PwDatabase::getRootGroup() {
+PwGroup* PwDatabase::getRootGroup() const {
     return _rootGroup;
 }
 

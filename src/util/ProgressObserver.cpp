@@ -14,6 +14,7 @@
 void ProgressObserver::setPhaseProgressBounds(const quint8* boundsInPercent) {
     fromPercent = boundsInPercent[0];
     toPercent = boundsInPercent[1];
+    setPhaseProgressRawTarget(1);
 }
 
 /**
@@ -30,4 +31,31 @@ int ProgressObserver::getProgressPercent(quint32 rawProgress) {
  */
 void ProgressObserver::setPhaseProgressRawTarget(quint32 rawMax) {
     this->rawMax = rawMax;
+    resetProgress();
+}
+
+/**
+ * Updates raw progress counter.
+ * Safe for frequent calls: onProgress() is called only when progress percentage has changed.
+ */
+void ProgressObserver::setProgress(quint32 rawProgress) {
+    this->rawProgress = rawProgress;
+    int newPercent = getProgressPercent(rawProgress);
+    if (progressPercent != newPercent) {
+        progressPercent = newPercent;
+        onProgress(progressPercent);
+    }
+}
+
+/**
+ * Increases raw progress by the given value.
+ * Safe for frequent calls: onProgress() is called only when progress percentage has changed.
+ */
+void ProgressObserver::increaseProgress(quint32 rawDelta) {
+    setProgress(rawProgress + rawDelta);
+}
+
+/** Resets raw progress counter. */
+void ProgressObserver::resetProgress() {
+    setProgress(0);
 }

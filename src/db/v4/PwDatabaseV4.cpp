@@ -349,8 +349,8 @@ void PwDatabaseV4::clear() {
 /**
  * Callback for progress updates of time-consuming processes.
  */
-void PwDatabaseV4::onProgress(quint32 rawProgress) {
-    emit progressChanged(getProgressPercent(rawProgress));
+void PwDatabaseV4::onProgress(quint8 progressPercent) {
+    emit progressChanged(progressPercent);
 }
 
 void PwDatabaseV4::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
@@ -442,9 +442,6 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     QByteArray subKey1bis(subKey1.length(), 0);
     QByteArray subKey2bis(subKey2.length(), 0);
 
-    // To avoid excessive UI updates, report progress only once in a while
-    static int PROGRESS_UPDATE_ITERATIONS = 3000;
-    int progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
     setPhaseProgressRawTarget(transformRounds);
 
     // prepare key transform
@@ -465,10 +462,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
         memcpy(origKey2, transKey2, SB_AES_128_BLOCK_BYTES);
         if (ec != SB_SUCCESS) break;
 
-        if (--progressUpdateDecimator == 0) {
-            progressUpdateDecimator = PROGRESS_UPDATE_ITERATIONS;
-            onProgress(round);
-        }
+        setProgress(round);
     }
     if (ec != SB_SUCCESS)
         return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
@@ -534,9 +528,9 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     decryptedStream.setByteOrder(QDataStream::LittleEndian);
 
     /* Verify first bytes */
-    const int N = SB_SHA256_DIGEST_LEN;
-    QByteArray startBytes(N, 0);
-    decryptedStream.readRawData(startBytes.data(), N);
+    const int VERIFICATION_LENGTH = SB_SHA256_DIGEST_LEN;
+    QByteArray startBytes(VERIFICATION_LENGTH, 0);
+    decryptedStream.readRawData(startBytes.data(), VERIFICATION_LENGTH);
     if (startBytes != header.getStreamStartBytes()) {
         qDebug() << "First bytes do not match" << err;
         emit invalidPasswordOrKey();
@@ -546,7 +540,8 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     /* Read data blocks */
     setPhaseProgressBounds(UNLOCK_PROGRESS_READ_BLOCKS);
     QByteArray blocksData;
-    err = readBlocks(decryptedStream, blocksData);
+    int streamSize = decryptedData.size() - VERIFICATION_LENGTH;
+    err = readBlocks(decryptedStream, streamSize, blocksData);
     Util::safeClear(decryptedData); // not needed any further
     if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "Cannot decrypt database - readBlocks" << err;
@@ -613,33 +608,28 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::initSalsa20() {
 ErrorCodesV4::ErrorCode PwDatabaseV4::decryptData(const QByteArray& encryptedData, QByteArray& decryptedData) {
     // assert encryptedData.size is multiple of 16 bytes
 
-    setPhaseProgressRawTarget(1); // TODO make more fine-grained progress reporting
-
-    onProgress(0);
     CryptoManager* cm = CryptoManager::instance();
-    int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData);
+    int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData, this);
     if (err != SB_SUCCESS) {
         qDebug() << "decryptAES error: " << err;
         return ErrorCodesV4::CANNOT_DECRYPT_DB;
     }
-    onProgress(1);
     return ErrorCodesV4::SUCCESS;
 }
 
 /**
  * Extracts data blocks from the decrypted data stream, verifying hashes.
  */
-ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByteArray& blocksData) {
+ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, const int streamSize, QByteArray& blocksData) {
     quint32 blockSize, readBlockId;
     QByteArray blockHash(SB_SHA256_DIGEST_LEN, 0);
     QByteArray computedHash(SB_SHA256_DIGEST_LEN, 0);
 
-    setPhaseProgressRawTarget(blocksData.size());
+    setPhaseProgressRawTarget(streamSize);
 
     Util::safeClear(blocksData);
     CryptoManager* cm = CryptoManager::instance();
 
-    int bytesRead = 0;
     quint32 blockId = 0;
     while (true) {
         inputStream >> readBlockId;
@@ -647,12 +637,10 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
             qDebug() << "readBlocks wrong block ID";
             return ErrorCodesV4::WRONG_BLOCK_ID;
         }
-        bytesRead += sizeof(readBlockId);
         blockId++;
 
         inputStream.readRawData(blockHash.data(), SB_SHA256_DIGEST_LEN);
         inputStream >> blockSize;
-        bytesRead += (SB_SHA256_DIGEST_LEN + sizeof(blockSize));
         if (blockSize == 0) {
             if (Util::isAllZero(blockHash)) {
                 break;
@@ -663,7 +651,6 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
         }
         QByteArray blockData(blockSize, 0);
         inputStream.readRawData(blockData.data(), blockSize);
-        bytesRead += blockSize;
         int err = cm->sha256(blockData, computedHash);
         if ((err != SB_SUCCESS) || (computedHash != blockHash)) {
             qDebug() << "readBlocks block hash mismatch";
@@ -671,7 +658,9 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
         }
         blocksData.append(blockData);
         Util::safeClear(blockData);
-        onProgress(bytesRead);
+
+        int bytesRead = sizeof(readBlockId) + SB_SHA256_DIGEST_LEN + sizeof(blockSize) + blockSize;
+        increaseProgress(bytesRead);
     }
     return ErrorCodesV4::SUCCESS;
 }
@@ -804,7 +793,6 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     // Prepare XML content
     setPhaseProgressBounds(SAVE_PROGRESS_XML_WRITING);
     setPhaseProgressRawTarget(1);
-    onProgress(0);
 
     QByteArray xmlContentData;
     QXmlStreamWriter xml(&xmlContentData);
@@ -825,8 +813,9 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
     xml.writeStartElement(XML_ROOT);
     //write groups
+    setPhaseProgressRawTarget(countAllChildren());
     PwGroupV4* root = dynamic_cast<PwGroupV4*>(getRootGroup());
-    root->writeToStream(xml, meta, salsa20);
+    root->writeToStream(xml, meta, salsa20, this);
 
     //write DeletedObjects
     if (deletedObjects.isEmpty()) {
@@ -842,7 +831,6 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     xml.writeEndElement(); // XML_ROOT
     xml.writeEndElement(); // XML_KEEPASS_FILE
     xml.writeEndDocument();
-    onProgress(1);
 
     // compress the data if necessary
     setPhaseProgressBounds(SAVE_PROGRESS_GZIP_DEFLATE);
@@ -923,7 +911,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::splitToBlocks(const QByteArray& inData, QD
 
         blockStart += blockSize;
         blockId++;
-        onProgress(blockStart);
+        increaseProgress(blockSize);
     }
 
     // finally, write the terminating block

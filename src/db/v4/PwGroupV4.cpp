@@ -134,7 +134,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
 
     // report reading progress
     if (progressObserver)
-        progressObserver->onProgress(xml.characterOffset());
+        progressObserver->setProgress(xml.characterOffset());
 
     ErrorCodesV4::ErrorCode err;
     xml.readNext();
@@ -247,7 +247,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
 /**
  * Writes the group with all its entries, subgroups and their subentries to the stream.
  */
-void PwGroupV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20) {
+void PwGroupV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver) {
     xml.writeStartElement(XML_GROUP);
     PwStreamUtilsV4::writeUuid(xml, XML_UUID, getUuid());
     PwStreamUtilsV4::writeString(xml, XML_NAME, getName());
@@ -275,16 +275,18 @@ void PwGroupV4::writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& sa
     // write entries
     QList<PwEntry*> entries = this->getEntries();
     for (int i = 0; i < entries.size(); i++) {
-        dynamic_cast<PwEntryV4*>(entries.at(i))->writeToStream(xml, meta, salsa20);
+        dynamic_cast<PwEntryV4*>(entries.at(i))->writeToStream(xml, meta, salsa20, progressObserver);
     }
 
     // write subgroups
     QList<PwGroup*> subGroups = this->getSubGroups();
     for (int i = 0; i < subGroups.size(); i++) {
-        dynamic_cast<PwGroupV4*>(subGroups.at(i))->writeToStream(xml, meta, salsa20);
+        dynamic_cast<PwGroupV4*>(subGroups.at(i))->writeToStream(xml, meta, salsa20, progressObserver);
     }
 
     xml.writeEndElement(); // XML_GROUP
+    if (progressObserver)
+        progressObserver->increaseProgress(1);
 }
 
 void PwGroupV4::clear() {

@@ -135,10 +135,8 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
         const QByteArray& plainText, QByteArray& cipherText,
         ProgressObserver* progressObserver) {
 
-    if (progressObserver) {
+    if (progressObserver)
         progressObserver->setPhaseProgressRawTarget(1); // TODO make finer-grained progress reporting
-        progressObserver->onProgress(0);
-    }
 
 	sb_Params aesParams;
 	RETURN_IF_SB_ERROR(
@@ -177,7 +175,7 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
             "AESParamsDestroy failed");
 
     if (progressObserver)
-        progressObserver->onProgress(1);
+        progressObserver->setProgress(1);
 
     return SB_SUCCESS;
 }
@@ -292,10 +290,8 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
         const QByteArray& cypherText, QByteArray& plainText,
         ProgressObserver* progressObserver) {
 
-    if (progressObserver) {
+    if (progressObserver)
         progressObserver->setPhaseProgressRawTarget(1); // TODO make finer-grained progress reporting
-        progressObserver->onProgress(0);
-    }
 
 	sb_Params aesParams;
 	RETURN_IF_SB_ERROR(
@@ -332,7 +328,7 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
             "AESParamsDestroy failed");
 
     if (progressObserver)
-        progressObserver->onProgress(1);
+        progressObserver->setProgress(1);
 
 	return SB_SUCCESS;
 }

@@ -16,6 +16,8 @@ private:
     int fromPercent;
     int toPercent;
     int rawMax;
+    int rawProgress;
+    int progressPercent;
 protected:
     /**
      * Sets starting and finishing progress percentage for the current processing phase.
@@ -27,6 +29,11 @@ protected:
      * considering phase progress bounds.
      */
     int getProgressPercent(quint32 rawProgress);
+
+    /**
+     * Progress update.
+     */
+    virtual void onProgress(quint8 progressPercent) = 0;
 public:
     /**
      * Sets maximum raw progress value in this phase.
@@ -35,11 +42,17 @@ public:
     void setPhaseProgressRawTarget(quint32 rawMax);
 
     /**
-     * Progress update.
-     * rawProgress can range from 0 to (separately set) rawMax.
+     * Updates raw progress counter and calls onProgress() if progress percentage changed.
+     * Safe for frequent calls: onProgress() is called only when progress percentage has changed.
      */
-    virtual void onProgress(quint32 rawProgress) = 0;
-
+    void setProgress(quint32 rawProgress);
+    /**
+     * Increases raw progress by the given value.
+     * Safe for frequent calls: onProgress() is called only when progress percentage has changed.
+     */
+    void increaseProgress(quint32 rawDelta);
+    /** Resets raw progress counter. */
+    void resetProgress();
 };
 
 
