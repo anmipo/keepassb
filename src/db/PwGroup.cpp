@@ -248,12 +248,23 @@ void PwGroup::filterEntries(const SearchParams& params, QList<PwEntry*> &result)
     }
 
     PwEntry* entry;
+    QStringList queryWords = params.queryWords;
     for (int i = 0; i < _entries.size(); i++) {
         entry = _entries.at(i);
-        if (entry->matchesQuery(params.query)) {
-            result.append(entry);
-            // this group remains the parent of the entry
+
+        // Space-separated search terms are considered as AND conditions,
+        // so if something does not match - just skip to the next entry.
+        bool allMatch = true;
+        for (int j = 0; j < queryWords.size(); j++) {
+            if (!entry->matchesQuery(queryWords.at(j))) {
+                // this group remains the parent of the entry
+                allMatch = false;
+                break;
+            }
         }
+
+        if (allMatch)
+            result.append(entry);
     }
 }
 

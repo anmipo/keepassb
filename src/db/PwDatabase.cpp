@@ -290,6 +290,7 @@ Q_INVOKABLE  int PwDatabaseFacade::search(const QString& query) {
     params.includeDeleted = settings->isSearchInDeleted();
     params.includeSubgroups = true;
     params.query = query.trimmed();
+    params.queryWords = params.query.split(" ", QString::SkipEmptyParts);
 
     QList<PwEntry*> searchResult;
 

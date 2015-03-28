@@ -26,6 +26,7 @@ struct SearchParams {
     bool includeSubgroups;
     bool includeDeleted;
     QString query;
+    QStringList queryWords;
 };
 
 class PwGroup : public bb::cascades::DataModel {
