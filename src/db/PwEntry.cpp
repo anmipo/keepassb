@@ -365,8 +365,9 @@ bool PwEntry::addAttachment(PwAttachment* attachment) {
 
 /** Removes the entry from the parent group. Does NOT make a copy in Backup/Recycle bin. */
 void PwEntry::deleteWithoutBackup() {
-    if (_parentGroup) {
-        _parentGroup->removeEntry(this);
+    PwGroup* parentGroup = getParentGroup();
+    if (parentGroup) {
+        parentGroup->removeEntry(this);
     }
 }
 
@@ -393,8 +394,7 @@ bool PwEntry::moveToBackup() {
         return false;
     }
 
-    parentGroup->removeEntry(this);
-    backupGroup->addEntry(this);
+    backupGroup->moveEntry(this);
 
     setParent(backupGroup); // parent in Qt terms, responsible for memory release
     registerAccessEvent();

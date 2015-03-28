@@ -173,10 +173,9 @@ Page {
                         searchContainer.visible = false;
                         searchQuery = searchField.text;
                         searchField.text = "";
-                        database.search(searchQuery);
                         var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
                         var searchResultsPage = searchResultsPageComponent.createObject(null, 
-                                {"searchResult": database.searchResult});
+                                {"searchQuery": searchQuery});
                         naviPane.push(searchResultsPage);
                     }
                 }

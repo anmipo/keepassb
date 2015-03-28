@@ -3,7 +3,19 @@ import org.keepassb 1.0
 import "common.js" as Common
 
 Page {
-    property PwSearchResultDataModel searchResult
+    id: searchResultsPage
+    property string searchQuery
+    property PwSearchResultDataModel searchResult: database.searchResult;
+
+    // Runs search with the latest query
+    function performSearch() {
+        database.search(searchQuery);
+        //searchResult = database.searchResult;
+    }
+        
+    onSearchQueryChanged: {
+        performSearch();
+    }
     
     titleBar: TitleBar {
         title: qsTr("Search Results", "Title of the page which lists search results") + Retranslate.onLocaleOrLanguageChanged 

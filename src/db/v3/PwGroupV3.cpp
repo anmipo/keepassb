@@ -48,6 +48,10 @@ void PwGroupV3::removeEntry(PwEntry* entry) {
     // there is no suitable groupId, so just reset to zero to simplify debug
     dynamic_cast<PwEntryV3*>(entry)->setGroupId(0);
 }
+void PwGroupV3::moveEntry(PwEntry* entry) {
+    PwGroup::moveEntry(entry);
+    dynamic_cast<PwEntryV3*>(entry)->setGroupId(this->getId());
+}
 
 /**
  * Creates an entry in the group and returns a reference to it.

@@ -132,6 +132,33 @@ void PwGroup::removeEntry(PwEntry* entry) {
     }
 }
 
+/**
+ * Moves entry from its parent group to this one.
+ */
+void PwGroup::moveEntry(PwEntry* entry) {
+    Q_ASSERT(entry);
+
+    // Ok, we need to add the entry to this group and remove it from the original one,
+    // while making sure that no signals are emitted while in intermediate state.
+
+    PwGroup* originalParentGroup = entry->getParentGroup();
+
+    entry->setParent(this);
+    entry->setParentGroup(this);
+    // re-sort children when entry title changed
+    bool res = QObject::connect(entry, SIGNAL(titleChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res); Q_UNUSED(res);
+    _entries.append(entry);
+    emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
+    _isChildrenModified = true;
+
+    if (originalParentGroup) {
+        originalParentGroup->_entries.removeOne(entry);
+        res = QObject::disconnect(entry, SIGNAL(titleChanged(QString)), originalParentGroup, SLOT(sortChildren())); Q_ASSERT(res); Q_UNUSED(res);
+        emit originalParentGroup->itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
+        originalParentGroup->_isChildrenModified = true;
+    }
+}
+
 bool PwGroup::lessThan(const PwGroup* g1, const PwGroup* g2) {
     return g1->getName().compare(g2->getName(), Qt::CaseInsensitive) < 0;
 }

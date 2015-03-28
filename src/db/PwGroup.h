@@ -101,6 +101,9 @@ public:
 
 	virtual void addEntry(PwEntry* entry);
 	virtual void removeEntry(PwEntry* entry);
+	/** Moves entry from its current group to this one. */
+	virtual void moveEntry(PwEntry* entry);
+
 	QList<PwEntry*> getEntries() const { return _entries; }
 
 	/**

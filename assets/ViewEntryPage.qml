@@ -78,11 +78,15 @@ Page {
                     confirmButton.label: qsTr("Delete", "A button/action to confirm deletion of an entry") + Retranslate.onLocaleOrLanguageChanged
                     onFinished: {
                         if (value == SystemUiResult.ConfirmButtonSelection) {
-                            naviPane.pop();
                             var parentGroup = entry.parentGroup;
                             Common.deleteEntry(entry);
                             // refresh the parent ListView, otherwise it crashes
                             parentGroup.itemsChanged(DataModelChangeType.AddRemove, 0);
+                            // in case we viewed an entry from search results - refresh search
+                            if (!!searchResultsPage) {
+                                searchResultsPage.performSearch();
+                            }
+                            naviPane.pop();
                         }
                     }
                 }

@@ -45,6 +45,7 @@ public:
     virtual void removeSubGroup(PwGroup* subGroup);
     virtual void addEntry(PwEntry* entry);
     virtual void removeEntry(PwEntry* entry);
+    virtual void moveEntry(PwEntry* entry);
 
     /**
      * Moves all the group's entries (recursively) to Backup group; subgroups are deleted.
