@@ -499,13 +499,31 @@ bool PwDatabaseV3::save(QByteArray& outData) {
 
     // encrypt the content
     setPhaseProgressBounds(SAVE_PROGRESS_ENCRYPTION);
-    cm->addPadding16(contentData);
     QByteArray encryptedContentData;
-    cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData, this);
+    err = encryptContent(contentData, encryptedContentData);
     Util::safeClear(contentData);
-
+    if (err != SUCCESS) {
+        qDebug() << "encryptContent error while saving: " << err;
+        emit dbSaveError(saveErrorMessage, err);
+        return false;
+    }
     outData.append(encryptedContentData);
     return true;
+}
+
+/**
+ * Encrypts content data using current keys.
+ * May change contentData by padding it.
+ */
+PwDatabaseV3::ErrorCode PwDatabaseV3::encryptContent(QByteArray& contentData, QByteArray& encryptedContentData) {
+    CryptoManager* cm = CryptoManager::instance();
+    cm->addPadding16(contentData);
+    int err = cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData, this);
+    if (err != SB_SUCCESS) {
+        qDebug() << "encryptAES error while saving: " << err;
+        return CANNOT_ENCRYPT_DB;
+    }
+    return SUCCESS;
 }
 
 /**

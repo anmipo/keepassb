@@ -106,6 +106,7 @@ public:
         NOT_ENOUGH_ENTRIES       = 0x45,
         ORPHANED_ENTRY_ERROR     = 0x50,
         // write-related error start from 0x80
+        CANNOT_ENCRYPT_DB        = 0x80,
     };
 
 private:
@@ -136,6 +137,11 @@ private:
      * Sets groupCount and entryCount to the number of saved groups/entries.
      */
     ErrorCode writeContent(QByteArray& contentData, int& groupCount, int& entryCount);
+    /**
+     * Encrypts content data using current keys.
+     * May change contentData by padding it.
+     */
+    ErrorCode encryptContent(QByteArray& contentData, QByteArray& encryptedContentData);
 
 protected:
     /**
