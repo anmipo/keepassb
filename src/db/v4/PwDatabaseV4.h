@@ -15,6 +15,7 @@
 #include "db/v4/PwMetaV4.h"
 #include "db/v4/PwGroupV4.h"
 #include "db/v4/PwEntryV4.h"
+#include "db/v4/PwDeletedObject.h"
 
 /**
  * KeePass 2 database header.
@@ -131,6 +132,7 @@ private:
     QByteArray combinedKey;
     QByteArray aesKey;
     Salsa20 salsa20;
+    QList<PwDeletedObject*> deletedObjects;
 
     // Calculates the AES encryption key based on the combined key (password + key data)
     // and current header seed values.
@@ -147,6 +149,8 @@ private:
     ErrorCodesV4::ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.
     ErrorCodesV4::ErrorCode parseXml(const QString& xmlString);
+    // Parses DeletedObjects list from the XML stream
+    ErrorCodesV4::ErrorCode parseDeletedObjects(QXmlStreamReader& xml);
 
     /** Splits data to hashed blocks. */
     ErrorCodesV4::ErrorCode splitToBlocks(const QByteArray& inData, QDataStream& blockStream) const;

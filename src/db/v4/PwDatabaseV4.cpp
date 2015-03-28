@@ -288,13 +288,14 @@ PwDatabaseV4::PwDatabaseV4(QObject* parent) :
         meta(),
         combinedKey(SB_SHA256_DIGEST_LEN, 0),
         aesKey(SB_SHA256_DIGEST_LEN, 0),
-        salsa20() {
+        salsa20(),
+        deletedObjects() {
     header.setParent(this);
     meta.setParent(this);
 }
 
 PwDatabaseV4::~PwDatabaseV4() {
-    // nothing to do here
+    clear();
 }
 
 /**
@@ -341,6 +342,10 @@ void PwDatabaseV4::clear() {
     meta.clear();
     Util::safeClear(combinedKey);
     Util::safeClear(aesKey);
+
+    qDeleteAll(deletedObjects);
+    deletedObjects.clear();
+
     PwDatabase::clear(); // ancestor's cleaning
 }
 
@@ -691,6 +696,10 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
                     err = rootV4->readFromStream(xml, meta, salsa20);
                     if (err != ErrorCodesV4::SUCCESS)
                         return err;
+                } else if (xml.readNextStartElement() && (xml.name() == XML_DELETED_OBJECTS)) {
+                    err = parseDeletedObjects(xml);
+                    if (err != ErrorCodesV4::SUCCESS)
+                        return err;
                 } else {
                     qDebug() << "unknown tag in the Root:" << tagName;
                     PwStreamUtilsV4::readUnknown(xml);
@@ -709,6 +718,36 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     return ErrorCodesV4::SUCCESS;
 }
 
+
+ErrorCodesV4::ErrorCode PwDatabaseV4::parseDeletedObjects(QXmlStreamReader& xml) {
+    Q_ASSERT(xml.name() == XML_DELETED_OBJECTS);
+
+    ErrorCodesV4::ErrorCode err;
+
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_DELETED_OBJECTS == tagName))) {
+        if (xml.isStartElement()) {
+            if (XML_DELETED_OBJECT_ITEM == tagName) {
+                PwDeletedObject* deletedObject = new PwDeletedObject(this);
+                err = deletedObject->readFromStream(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else {
+                qDebug() << "unknown tag within DeletedObjects:" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_DELETED_OBJECTS_PARSING_ERROR;
+            }
+        }
+        xml.readNext();
+        tagName = xml.name();
+    }
+
+    if (xml.hasError())
+        return ErrorCodesV4::XML_DELETED_OBJECTS_PARSING_ERROR;
+
+    return ErrorCodesV4::SUCCESS;
+}
 
 /**
  * Encrypts and writes DB content to the given array.
@@ -772,10 +811,21 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     }
 
     xml.writeStartElement(XML_ROOT);
-    dynamic_cast<PwGroupV4*>(getRootGroup())->writeToStream(xml, meta, salsa20);
-
     //write groups
-    //TODO wtf is <DeletedObjects/>?
+    PwGroupV4* root = dynamic_cast<PwGroupV4*>(getRootGroup());
+    root->writeToStream(xml, meta, salsa20);
+
+    //write DeletedObjects
+    if (deletedObjects.isEmpty()) {
+        xml.writeEmptyElement(XML_DELETED_OBJECTS);
+    } else {
+        xml.writeStartElement(XML_DELETED_OBJECTS);
+        for (int i = 0; i < deletedObjects.size(); i++) {
+            deletedObjects.at(i)->writeToStream(xml);
+        }
+        xml.writeEndElement(); // XML_DELETED_OBJECTS
+    }
+
     xml.writeEndElement(); // XML_ROOT
     xml.writeEndElement(); // XML_KEEPASS_FILE
     xml.writeEndDocument();

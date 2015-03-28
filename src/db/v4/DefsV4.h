@@ -103,6 +103,10 @@ const QString XML_LAST_ACCESS_TIME = QString("LastAccessTime");
 const QString XML_EXPIRY_TIME = QString("ExpiryTime");
 const QString XML_EXPIRES = QString("Expires");
 
+const QString XML_DELETED_OBJECTS = QString("DeletedObjects");
+const QString XML_DELETED_OBJECT_ITEM = QString("DeletedObject");
+const QString XML_DELETION_TIME = QString("DeletionTime");
+
 // Tag names for XML-formatted key files
 const QString XML_KEYFILE = "KeyFile";
 const QString XML_KEYFILE_META = "Meta";
@@ -154,11 +158,13 @@ public:
         XML_ENTRY_FIELD_PARSING_ERROR            = 0x75,
         XML_ENTRY_ATTACHMENT_PARSING_ERROR       = 0x76,
 
-        XML_ROOT_PARSING_ERROR           = 0x81,
-        XML_STRING_VALUE_PARSING_ERROR = 0x82,
-        GROUP_LOADING_ERROR            = 0x83,
-//        ICON_ID_IS_NOT_INTEGER         = 0x84,
-        INVALID_ATTACHMENT_REFERENCE   = 0x85,
+        XML_ROOT_PARSING_ERROR            = 0x81,
+        XML_STRING_VALUE_PARSING_ERROR    = 0x82,
+        XML_DELETED_OBJECTS_PARSING_ERROR = 0x83,
+        XML_DELETED_OBJECT_ITEM_PARSING_ERROR = 0x84,
+        GROUP_LOADING_ERROR               = 0x87,
+//        ICON_ID_IS_NOT_INTEGER          = 0x88,
+        INVALID_ATTACHMENT_REFERENCE      = 0x89,
 
         // saving errors
         BLOCK_HASHING_ERROR            = 0x90,
