@@ -74,10 +74,10 @@ NavigationPane {
             var viewGroupPage = Qt.createComponent("ViewGroupPage.qml");
             var groupPage = viewGroupPage.createObject(null, 
                     {"group": database.rootGroup, "autofocus": appSettings.searchAfterUnlock});
+            naviPane.push(groupPage);
             if (appSettings.searchAfterUnlock) {
                 groupPage.startSearch();
             }
-            naviPane.push(groupPage);
         }
     }
 
