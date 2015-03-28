@@ -13,6 +13,7 @@
 #include "db/v4/DefsV4.h"
 #include "db/v4/PwMetaV4.h"
 #include "crypto/CryptoManager.h"
+#include "util/ProgressObserver.h"
 
 class PwGroupV4: public PwGroup {
     Q_OBJECT
@@ -64,7 +65,7 @@ public:
     /**
      * Loads group fields from the stream.
      */
-    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver);
 
     /**
      * Writes the group with all its entries, subgroups and their subentries to the stream.

@@ -12,6 +12,7 @@
 #include "db/v4/DefsV4.h"
 #include "db/v4/PwMetaV4.h"
 #include "crypto/CryptoManager.h"
+#include "util/ProgressObserver.h"
 #include <QMetaType>
 #include <QList>
 #include <bb/cascades/DataModel>
@@ -123,7 +124,7 @@ private:
     // Loads timestamps of an entry
     ErrorCodesV4::ErrorCode readTimes(QXmlStreamReader& xml);
     // Loads the history tag of an entry and fills entry's history list
-    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver);
     // Loads an entry's binary attachment ("Binary" field of an entry).
     ErrorCodesV4::ErrorCode readAttachment(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, PwAttachment& attachment);
     // Writes all entry's attachments to an XML stream.
@@ -181,7 +182,7 @@ public:
     virtual bool attachFile(const QString& filePath);
 
     /** Loads entry fields from the stream. */
-    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver);
     /** Writes the entry to the stream. */
     void writeToStream(QXmlStreamWriter& xml, PwMetaV4& meta, Salsa20& salsa20);
 

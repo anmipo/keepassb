@@ -28,20 +28,20 @@ const QByteArray SALSA_20_INIT_VECTOR = QByteArray("\xE8\x30\x09\x4B\x97\x20\x5D
 const int INITIAL_VECTOR_SIZE = 16;
 
 // DB unlock stages progress percentage
-const int UNLOCK_PROGRESS_INIT          = 0;
-const int UNLOCK_PROGRESS_HEADER_READ   = 5;
-const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 70;
-const int UNLOCK_PROGRESS_DECRYPTED     = 80;
-const int UNLOCK_PROGRESS_BLOCKS_READ   = 90;
-const int UNLOCK_PROGRESS_UNPACKED      = 95;
-const int UNLOCK_PROGRESS_DONE          = 100;
+const int UNLOCK_PROGRESS_INIT            = 0;  // reading header
+const int UNLOCK_PROGRESS_HEADER_READ     = 5;  // transforming the key
+const int UNLOCK_PROGRESS_KEY_TRANSFORMED = 60; // decrypting
+const int UNLOCK_PROGRESS_DECRYPTED       = 70; // reading blocks
+const int UNLOCK_PROGRESS_BLOCKS_READ     = 75; // unpacking gzip
+const int UNLOCK_PROGRESS_UNPACKED        = 80; // parsing XML
+const int UNLOCK_PROGRESS_DONE            = 100;
 
 // DB save stages progress percentage
-const int SAVE_PROGRESS_INIT            = 0;
-const int SAVE_PROGRESS_KEY_TRANSFORMED = 70;
-const int SAVE_PROGRESS_XML_READY       = 80;
-const int SAVE_PROGRESS_DATA_COMPRESSED = 85;
-const int SAVE_PROGRESS_BLOCKS_READY    = 90;
+const int SAVE_PROGRESS_INIT            = 0;  // transforming the key
+const int SAVE_PROGRESS_KEY_TRANSFORMED = 65; // writing the XML
+const int SAVE_PROGRESS_XML_READY       = 70; // compressing
+const int SAVE_PROGRESS_DATA_COMPRESSED = 80; // making blocks
+const int SAVE_PROGRESS_BLOCKS_READY    = 85; // encrypting
 const int SAVE_PROGRESS_DONE            = 100;
 
 PwHeaderV4::PwHeaderV4(QObject* parent) : QObject(parent), data() {
@@ -668,6 +668,12 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, QByte
     return ErrorCodesV4::SUCCESS;
 }
 
+/** xmlPos is characterOffset value of the XML stream */
+void PwDatabaseV4::onXmlProgress(qint64 xmlPos) {
+    float xmlProgress = ((float)xmlPos) / xmlSize;
+    emit progressChanged(UNLOCK_PROGRESS_UNPACKED + xmlProgress * (UNLOCK_PROGRESS_DONE - UNLOCK_PROGRESS_UNPACKED));
+}
+
 ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     if (_rootGroup) {
         delete _rootGroup;
@@ -677,6 +683,8 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
     PwGroupV4* rootV4 = new PwGroupV4(this);
     rootV4->setDatabase(this);
     rootV4->setParentGroup(NULL); // not Qt parent, but the group containing this one
+
+    xmlSize = xmlString.size();
 
     ErrorCodesV4::ErrorCode err;
     QXmlStreamReader xml(xmlString);
@@ -693,7 +701,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
 
             } else if (tagName == XML_ROOT) {
                 if (xml.readNextStartElement() && (xml.name() == XML_GROUP)) {
-                    err = rootV4->readFromStream(xml, meta, salsa20);
+                    err = rootV4->readFromStream(xml, meta, salsa20, this);
                     if (err != ErrorCodesV4::SUCCESS)
                         return err;
                 } else if (xml.readNextStartElement() && (xml.name() == XML_DELETED_OBJECTS)) {

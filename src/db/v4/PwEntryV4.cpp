@@ -630,7 +630,7 @@ bool PwEntryV4::attachFile(const QString& filePath) {
 /**
  * Loads entry fields from the stream.
  */
-ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver) {
     Q_ASSERT(xml.name() == XML_ENTRY);
 
     ErrorCodesV4::ErrorCode err = ErrorCodesV4::SUCCESS;
@@ -639,6 +639,10 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const P
     PwGroup* parentGroup = getParentGroup();
     clear();
     setParentGroup(parentGroup);
+
+    // report reading progress
+    if (progressObserver)
+        progressObserver->onXmlProgress(xml.characterOffset());
 
     xml.readNext();
     QStringRef tagName = xml.name();
@@ -671,7 +675,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const P
             } else if (XML_AUTO_TYPE == tagName) {
                 err = _autoType.readFromStream(xml);
             } else if (XML_HISTORY == tagName) {
-                err = readHistory(xml, meta, salsa20);
+                err = readHistory(xml, meta, salsa20, progressObserver);
             }
         }
         if (err != ErrorCodesV4::SUCCESS)
@@ -728,7 +732,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
     return ErrorCodesV4::SUCCESS;
 }
 
-ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver) {
     Q_ASSERT(XML_HISTORY == xml.name());
 
     ErrorCodesV4::ErrorCode err;
@@ -736,7 +740,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMe
     while (!xml.hasError() && !(xml.isEndElement() && (tagName == XML_HISTORY))) {
         if (xml.isStartElement() && (tagName == XML_ENTRY)) {
             PwEntryV4* historyEntry = new PwEntryV4(this); // 'this' is the parent, not a copy source
-            err = historyEntry->readFromStream(xml, meta, salsa20);
+            err = historyEntry->readFromStream(xml, meta, salsa20, progressObserver);
             if (err != ErrorCodesV4::SUCCESS)
                 return err;
 

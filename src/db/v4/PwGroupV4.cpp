@@ -122,7 +122,7 @@ bool PwGroupV4::moveToBackup() {
 /**
  * Loads group fields from the stream.
  */
-ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV4& meta, Salsa20& salsa20, ProgressObserver* progressObserver) {
     Q_ASSERT(xml.name() == XML_GROUP);
 
     // All the fields will be read from the stream, except pointers to the parent group and database
@@ -131,6 +131,10 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
     clear();
     setParentGroup(parentGroup);
     setDatabase(parentDatabase);
+
+    // report reading progress
+    if (progressObserver)
+        progressObserver->onXmlProgress(xml.characterOffset());
 
     ErrorCodesV4::ErrorCode err;
     xml.readNext();
@@ -170,14 +174,14 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 if (isDeleted())
                     subGroup->setDeleted(true); // propagate the deleted flag recursively
                 subGroup->setDatabase(this->getDatabase());
-                err = subGroup->readFromStream(xml, meta, salsa20);
+                err = subGroup->readFromStream(xml, meta, salsa20, progressObserver);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
 
                 this->addSubGroup(subGroup);
             } else if (XML_ENTRY == tagName) {
                 PwEntryV4* entry = new PwEntryV4(this);
-                err = entry->readFromStream(xml, meta, salsa20);
+                err = entry->readFromStream(xml, meta, salsa20, progressObserver);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
 

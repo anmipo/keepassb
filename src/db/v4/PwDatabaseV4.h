@@ -16,6 +16,7 @@
 #include "db/v4/PwGroupV4.h"
 #include "db/v4/PwEntryV4.h"
 #include "db/v4/PwDeletedObject.h"
+#include "util/ProgressObserver.h"
 
 /**
  * KeePass 2 database header.
@@ -121,7 +122,7 @@ public:
 /**
  * Class for handling KeePass 2 databases.
  */
-class PwDatabaseV4: public PwDatabase {
+class PwDatabaseV4: public PwDatabase, public ProgressObserver {
     Q_OBJECT
 private:
     friend class PwGroupV4;
@@ -133,6 +134,9 @@ private:
     QByteArray aesKey;
     Salsa20 salsa20;
     QList<PwDeletedObject*> deletedObjects;
+
+    // helper var, remembers XML stream size between calls to onXmlParsingProgress
+    qint64 xmlSize;
 
     // Calculates the AES encryption key based on the combined key (password + key data)
     // and current header seed values.
@@ -176,6 +180,12 @@ protected:
     virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
 
     PwMetaV4* getMeta() { return &meta; }
+
+    /**
+     * Progress report callback for XML parsing.
+     * xmlPos is characterOffset value of the XML stream.
+     */
+    virtual void onXmlProgress(qint64 xmlPos);
 public:
     PwDatabaseV4(QObject* parent=0);
     virtual ~PwDatabaseV4();
