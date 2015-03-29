@@ -13,6 +13,8 @@ Page {
         searchAfterUnlock.checkedChanged.connect(appSettings.setSearchAfterUnlock);
         backupDatabaseOnSave.checked = appSettings.backupDatabaseOnSave;
         backupDatabaseOnSave.checkedChanged.connect(appSettings.setBackupDatabaseOnSave);
+        minimizeAppOnCopy.checked = appSettings.minimizeAppOnCopy;
+        minimizeAppOnCopy.checkedChanged.connect(appSettings.setMinimizeAppOnCopy);
     }
     ScrollView {
         scrollRole: ScrollRole.Main
@@ -109,6 +111,39 @@ Page {
                     selected: (appSettings.clipboardTimeout == -1)
                 }
             }
+            Divider {}
+            Header {
+                title: qsTr("Smart Copy", "Title of the settings group which configures advanced copying to clipboard") + Retranslate.onLocaleOrLanguageChanged
+            }
+            Container {
+                topMargin: 10
+                layout: StackLayout { 
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                horizontalAlignment: HorizontalAlignment.Fill
+                Label {
+                    horizontalAlignment: HorizontalAlignment.Left
+                    verticalAlignment: VerticalAlignment.Center
+                    text: qsTr("Minimize on Copy", "An on/off setting to make backup copies of the database everytime it is saved.") + Retranslate.onLocaleOrLanguageChanged
+                    textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                    layoutProperties: StackLayoutProperties {
+                        spaceQuota: 1
+                    }
+                }
+                ToggleButton {
+                    id: minimizeAppOnCopy
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Top
+                }
+            }
+            Label {
+                horizontalAlignment: HorizontalAlignment.Fill
+                text: qsTr("This option will automatically minimize the application whenever you copy an entry field to clipboard.", "Description of the 'Minimize on Copy' setting.")
+                textStyle.base: SystemDefaults.TextStyles.SubtitleText
+                textStyle.color: Color.Gray
+                multiline: true
+            }
+            Divider {}
             Header {
                 title: qsTr("Quick Unlock", "Title of the settings group related to the Quick Unlock function (see thesaurus)") + Retranslate.onLocaleOrLanguageChanged
             }

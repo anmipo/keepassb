@@ -31,6 +31,7 @@ const int DEFAULT_PWGEN_FLAGS =
         PasswordGenerator::PWGEN_INCLUDE_DIGITS |
         PasswordGenerator::PWGEN_INCLUDE_SPECIALS;
 const bool DEFAULT_BACKUP_DATABASE_ON_SAVE = true;
+const bool DEFAULT_MINIMIZE_APP_ON_COPY = true;
 
 /**
  * Keys for preferences values
@@ -48,6 +49,7 @@ const QString KEY_PWGEN_PRESET = "pwGenPreset";
 const QString KEY_PWGEN_LENGTH = "pwGenLength";
 const QString KEY_PWGEN_FLAGS = "pwGenFlags";
 const QString KEY_BACKUP_DATABASE_ON_SAVE = "backupDatabaseOnSave";
+const QString KEY_MINIMIZE_APP_ON_COPY = "minimizeAppOnCopy";
 const QString KEY_RECENT_FILES_COUNT = "recentFiles/count";
 const QString KEY_RECENT_FILES_ITEM = "recentFiles/item%1";
 
@@ -102,6 +104,8 @@ Settings::Settings(QObject* parent) : QObject(parent) {
             KEY_PWGEN_FLAGS, DEFAULT_PWGEN_FLAGS).toInt();
     _backupDatabaseOnSave = settings.value(
             KEY_BACKUP_DATABASE_ON_SAVE, DEFAULT_BACKUP_DATABASE_ON_SAVE).toBool();
+    _minimizeAppOnCopy = settings.value(
+            KEY_MINIMIZE_APP_ON_COPY, DEFAULT_MINIMIZE_APP_ON_COPY).toBool();
     loadRecentFiles();
 }
 
@@ -265,5 +269,13 @@ void Settings::setBackupDatabaseOnSave(bool doBackup) {
         QSettings().setValue(KEY_BACKUP_DATABASE_ON_SAVE, doBackup);
         _backupDatabaseOnSave = doBackup;
         emit backupDatabaseOnSaveChanged(doBackup);
+    }
+}
+
+void Settings::setMinimizeAppOnCopy(bool minOnCopy) {
+    if (minOnCopy != _minimizeAppOnCopy) {
+        QSettings().setValue(KEY_MINIMIZE_APP_ON_COPY, minOnCopy);
+        _minimizeAppOnCopy = minOnCopy;
+        emit minimizeAppOnCopyChanged(minOnCopy);
     }
 }

@@ -67,6 +67,10 @@ class Settings: public QObject {
      * Backup original database on save.
      */
     Q_PROPERTY(bool backupDatabaseOnSave READ isBackupDatabaseOnSave WRITE setBackupDatabaseOnSave NOTIFY backupDatabaseOnSaveChanged)
+    /**
+     * Minimize application on copy to clipboard.
+     */
+    Q_PROPERTY(bool minimizeAppOnCopy READ isMinimizeAppOnCopy WRITE setMinimizeAppOnCopy NOTIFY minimizeAppOnCopyChanged)
 public:
     enum EntryListDetail {
         ENTRY_DETAIL_NONE      = 0x00,
@@ -103,6 +107,7 @@ private:
     int _pwGenLength;
     int _pwGenFlags;
     bool _backupDatabaseOnSave;
+    bool _minimizeAppOnCopy;
     QStringList _recentFiles;
     QMap<QString, QString> _recentDbToKey;
 
@@ -133,6 +138,7 @@ public:
     int getPwGenLength() const { return _pwGenLength; }
     int getPwGenFlags() const { return _pwGenFlags; }
     bool isBackupDatabaseOnSave() const { return _backupDatabaseOnSave; }
+    bool isMinimizeAppOnCopy() const { return _minimizeAppOnCopy; }
 
     /**
      * Adds paths to the top of the recent files list
@@ -167,6 +173,7 @@ public slots:
     void setPwGenLength(int length);
     void setPwGenFlags(int flags);
     void setBackupDatabaseOnSave(bool doBackup);
+    void setMinimizeAppOnCopy(bool minOnCopy);
 signals:
     void searchInDeletedChanged(bool);
     void searchAfterUnlockChanged(bool);
@@ -181,6 +188,7 @@ signals:
     void pwGenLengthChanged(int);
     void pwGenFlagsChanged(int);
     void backupDatabaseOnSaveChanged(bool);
+    void minimizeAppOnCopyChanged(bool);
 };
 
 #endif /* SETTINGS_H_ */

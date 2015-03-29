@@ -55,8 +55,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
     database = new PwDatabaseFacade(this);
 
-    Application::instance()->setCover(new ActiveFrame(app, database));
-    res = QObject::connect(Application::instance(), SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
+    app->setCover(new ActiveFrame(app, database));
+    res = QObject::connect(app, SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
 
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
@@ -148,6 +148,10 @@ void ApplicationUI::stopWatchdog() {
 // copy given text to the clipboard, clear it after some time
 void ApplicationUI::copyWithTimeout(const QString& text) {
 	clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
+	if (settings->isMinimizeAppOnCopy()) {
+	    bool res = Application::instance()->minimize();
+	    qDebug() << "App minimize result: " << res;
+	}
 }
 
 void ApplicationUI::invokeFile(const QString& uri) {
