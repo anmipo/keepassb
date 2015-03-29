@@ -13,6 +13,11 @@ PwDeletedObject::PwDeletedObject(QObject* parent) :
     // left empty
 }
 
+PwDeletedObject::PwDeletedObject(const PwUuid& uuid, QObject* parent) :
+        QObject(parent), _uuid(uuid), _deletionTime(QDateTime::currentDateTime()) {
+    // left empty
+}
+
 PwDeletedObject::~PwDeletedObject() {
     clear();
 }

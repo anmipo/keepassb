@@ -221,10 +221,7 @@ bool PwGroupV3::moveToBackup() {
     }
 
     PwGroup* backupGroup = getDatabase()->getBackupGroup(true);
-    if (!backupGroup) {
-        qDebug() << "PwGroupV3::moveToBackup fail - no backup group created";
-        return false;
-    }
+    // For v3, backupGroup is guaranteed to be not NULL
 
     parentGroup->removeSubGroup(this);
     // detach this branch from the parent group; memory will be released later.

@@ -298,6 +298,28 @@ bool PwEntryV3::backupState() {
 }
 
 /**
+ * Moves the entry to Backup group.
+ * Returns true if successful.
+ */
+bool PwEntryV3::moveToBackup() {
+    PwDatabase* db = getDatabase();
+    if (!db) {
+        qDebug() << "moveToBackup fail - parent group without DB";
+        return false;
+    }
+
+    PwGroup* backupGroup = db->getBackupGroup(true);
+    backupGroup->moveEntry(this);
+
+    setParent(backupGroup); // parent in Qt terms, responsible for memory release
+    registerAccessEvent();
+    setDeleted(true);
+
+    qDebug() << "moveToBackup OK";
+    return true;
+}
+
+/**
  * Loads the given file and attaches it to the entry.
  * Makes a backup of the initial entry state.
  * Replaces the current attachment, if any.

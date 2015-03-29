@@ -80,38 +80,58 @@ PwGroup* PwGroupV4::createGroup() {
  * Returns true if successful.
  */
 bool PwGroupV4::moveToBackup() {
+    PwDatabaseV4* db = dynamic_cast<PwDatabaseV4*>(getDatabase());
+    if (!db) {
+        qDebug() << "PwGroupV4::moveToBackup fail - no reference to the DB";
+        return false;
+    }
+
     PwGroup* parentGroup = this->getParentGroup();
     if (!parentGroup) {
         qDebug() << "PwGroupV4::moveToBackup fail - no parent group";
         return false;
     }
 
-    PwGroup* backupGroup = getDatabase()->getBackupGroup(true);
-    if (!backupGroup) {
-        qDebug() << "PwGroupV4::moveToBackup fail - no backup group created";
-        return false;
-    }
-
-    parentGroup->removeSubGroup(this);
-    backupGroup->addSubGroup(this);
-    setParent(backupGroup); // parent in Qt terms, responsible for memory release
-
-    registerAccessEvent();
-    setLocationChangedTime(QDateTime::currentDateTime());
-
-    // Flag the group and all its children deleted.
-    // But children's timestamps should remain unchanged.
-    setDeleted(true);
     QList<PwGroup*> childGroups;
     QList<PwEntry*> childEntries;
     getAllChildren(childGroups, childEntries);
-    for (int i = 0; i < childGroups.size(); i++) {
-        PwGroupV4* childGroup = dynamic_cast<PwGroupV4*>(childGroups.at(i));
-        childGroup->setDeleted(true);
-    }
-    for (int i = 0; i < childEntries.size(); i++) {
-        PwEntryV4* childEntry = dynamic_cast<PwEntryV4*>(childEntries.at(i));
-        childEntry->setDeleted(true);
+
+    PwGroup* backupGroup = getDatabase()->getBackupGroup(true);
+    if (backupGroup) {
+        parentGroup->removeSubGroup(this);
+        backupGroup->addSubGroup(this);
+        setParent(backupGroup); // parent in Qt terms, responsible for memory release
+
+        registerAccessEvent();
+        setLocationChangedTime(QDateTime::currentDateTime());
+
+        // Flag the group and all its children deleted.
+        // But children's timestamps should remain unchanged.
+        setDeleted(true);
+        for (int i = 0; i < childGroups.size(); i++) {
+            PwGroupV4* childGroup = dynamic_cast<PwGroupV4*>(childGroups.at(i));
+            childGroup->setDeleted(true);
+        }
+        for (int i = 0; i < childEntries.size(); i++) {
+            PwEntryV4* childEntry = dynamic_cast<PwEntryV4*>(childEntries.at(i));
+            childEntry->setDeleted(true);
+        }
+    } else {
+        // Backup group has been disabled for this DB...
+        // So we delete the group and all children permanently and mention them
+        // in the DeletedObjects list to facilitate synchronization.
+        qDebug() << "Backup group disabled, removing the group permanently.";
+
+        db->addDeletedObject(getUuid());
+        for (int i = 0; i < childGroups.size(); i++) {
+            PwGroupV4* childGroup = dynamic_cast<PwGroupV4*>(childGroups.at(i));
+            db->addDeletedObject(childGroup->getUuid());
+        }
+        for (int i = 0; i < childEntries.size(); i++) {
+            PwEntryV4* childEntry = dynamic_cast<PwEntryV4*>(childEntries.at(i));
+            db->addDeletedObject(childEntry->getUuid());
+        }
+        deleteWithoutBackup(); // also detaches all children
     }
     childGroups.clear();
     childEntries.clear();

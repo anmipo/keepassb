@@ -130,9 +130,6 @@ private:
     // Writes all entry's attachments to an XML stream.
     void writeAttachments(QXmlStreamWriter& xml);
 
-    /** Shortcut for getParentGroup()->getDatabase() with intermediate NULL checks. */
-    PwDatabaseV4* getDatabase() const;
-
     /**
      * Adds a named field value to the entry.
      */
@@ -170,6 +167,13 @@ public:
      * Returns true if successful.
      */
     virtual bool backupState();
+
+    /**
+     * Moves the entry to the Recycle Bin group (or to DeletedObjects list if backup is disabled)
+     * Returns true if successful.
+     */
+    virtual bool moveToBackup();
+
 
     /** Updates last access timestamp to current time and increases usage counter */
     virtual void registerAccessEvent();

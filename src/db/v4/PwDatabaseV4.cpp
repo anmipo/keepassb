@@ -346,6 +346,12 @@ void PwDatabaseV4::clear() {
     PwDatabase::clear(); // ancestor's cleaning
 }
 
+/** Adds an item to the DeletedObjects list. */
+void PwDatabaseV4::addDeletedObject(const PwUuid& uuid) {
+    PwDeletedObject* deletedObject = new PwDeletedObject(uuid);
+    deletedObjects.append(deletedObject);
+}
+
 /**
  * Callback for progress updates of time-consuming processes.
  */

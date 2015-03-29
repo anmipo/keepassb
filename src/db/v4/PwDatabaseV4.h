@@ -180,6 +180,9 @@ protected:
 
     PwMetaV4* getMeta() { return &meta; }
 
+    /** Adds an item to the DeletedObjects list. */
+    void addDeletedObject(const PwUuid& uuid);
+
     /**
      * Callback for progress updates of time-consuming processes.
      */

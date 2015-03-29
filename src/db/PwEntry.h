@@ -138,6 +138,9 @@ private:
     PwAttachmentDataModel _attachmentsDataModel;
 
 protected:
+    /** Shortcut for getParentGroup()->getDatabase() with intermediate NULL checks. */
+    PwDatabase* getDatabase() const;
+
     // const pointer to attachments' data model for child classes
     const PwAttachmentDataModel* getConstAttachmentsDataModel() const { return &_attachmentsDataModel; }
 
@@ -183,10 +186,12 @@ public:
     Q_INVOKABLE virtual bool backupState() { return false; }
 
     /**
-     * Moves the entry to Backup/Recycle group.
+     * Moves the entry to the Backup/RecycleBin group.
      * Returns true if successful.
+     *
+     * (This method should be pure virtual, but abstract PwEntry causes problems in QML)
      */
-    Q_INVOKABLE virtual bool moveToBackup();
+    Q_INVOKABLE virtual bool moveToBackup() { return false; }
 
     /** Updates last access timestamp to current time */
     Q_INVOKABLE virtual void registerAccessEvent();

@@ -398,7 +398,7 @@ void PwEntryV4::clearHistory() {
 
 /** Removes old history items, if required by Meta settings */
 void PwEntryV4::maintainHistorySize() {
-    PwDatabaseV4* db = getDatabase();
+    PwDatabaseV4* db = dynamic_cast<PwDatabaseV4*>(getDatabase());
     if (!db)
         return;
 
@@ -438,16 +438,6 @@ bb::cascades::DataModel* PwEntryV4::getExtraFieldsDataModel() {
 
 bb::cascades::DataModel* PwEntryV4::getHistoryDataModel() {
     return &_historyDataModel;
-}
-
-/** Shortcut for getParentGroup()->getDatabase() with intermediate NULL checks. */
-PwDatabaseV4* PwEntryV4::getDatabase() const {
-    PwDatabaseV4* result = NULL;
-    PwGroupV4* parentGroup = dynamic_cast<PwGroupV4*>(getParentGroup());
-    if (parentGroup) {
-        result = dynamic_cast<PwDatabaseV4*>(parentGroup->getDatabase());
-    }
-    return result;
 }
 
 QString PwEntryV4::getTitle() const {
@@ -608,6 +598,36 @@ bool PwEntryV4::backupState() {
 
     maintainHistorySize(); // remove old history items if necessary
 
+    return true;
+}
+
+/**
+ * Moves the entry to the Recycle Bin group (or to DeletedObjects list if backup is disabled)
+ * Returns true if successful.
+ */
+bool PwEntryV4::moveToBackup() {
+    PwDatabaseV4* db = dynamic_cast<PwDatabaseV4*>(getDatabase());
+    if (!db) {
+        qDebug() << "moveToBackup fail - no reference to the DB";
+        return false;
+    }
+
+    PwGroup* backupGroup = db->getBackupGroup(true);
+    if (backupGroup) {
+        backupGroup->moveEntry(this);
+        setParent(backupGroup); // parent in Qt terms, responsible for memory release
+        registerAccessEvent();
+        setDeleted(true);
+    } else {
+        // Backup group has been disabled for this DB...
+        // So we delete the entry permanently and mention it
+        // in the DeletedObjects list to facilitate synchronization.
+        qDebug() << "Backup group disabled, removing the entry permanently.";
+        db->addDeletedObject(getUuid());
+        deleteWithoutBackup();
+    }
+
+    qDebug() << "moveToBackup OK";
     return true;
 }
 

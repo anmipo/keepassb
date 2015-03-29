@@ -22,6 +22,7 @@ private:
     QDateTime _deletionTime;
 public:
     PwDeletedObject(QObject* parent=0);
+    PwDeletedObject(const PwUuid& uuid, QObject* parent=0);
     virtual ~PwDeletedObject();
 
     void clear();

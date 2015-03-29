@@ -81,6 +81,11 @@ public:
      * Returns true if successful.
      */
     virtual bool backupState();
+    /**
+     * Moves the entry to Backup group.
+     * Returns true if successful.
+     */
+    virtual bool moveToBackup();
 
     // property accessors
     qint32 getGroupId() const { return _groupId; }

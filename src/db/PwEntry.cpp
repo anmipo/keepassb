@@ -371,35 +371,12 @@ void PwEntry::deleteWithoutBackup() {
     }
 }
 
-/**
- * Moves the entry to Backup/Recycle group.
- * Returns true if successful.
- */
-bool PwEntry::moveToBackup() {
+/** Shortcut for getParentGroup()->getDatabase() with intermediate NULL checks. */
+PwDatabase* PwEntry::getDatabase() const {
     PwGroup* parentGroup = getParentGroup();
-    if (!parentGroup) {
-        qDebug() << "moveToBackup fail - no parent group set";
-        return false;
+    if (parentGroup) {
+        return parentGroup->getDatabase();
+    } else {
+        return NULL;
     }
-
-    PwDatabase* db = parentGroup->getDatabase();
-    if (!db) {
-        qDebug() << "moveToBackup fail - parent group without DB";
-        return false;
-    }
-
-    PwGroup* backupGroup = db->getBackupGroup(true);
-    if (!backupGroup) {
-        qDebug() << "moveToBackup fail - no backup group created";
-        return false;
-    }
-
-    backupGroup->moveEntry(this);
-
-    setParent(backupGroup); // parent in Qt terms, responsible for memory release
-    registerAccessEvent();
-    setDeleted(true);
-
-    qDebug() << "moveToBackup OK";
-    return true;
 }
