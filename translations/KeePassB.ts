@@ -57,247 +57,265 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="27"/>
+        <location filename="../assets/AppSettings.qml" line="29"/>
         <source>Timeouts</source>
         <comment>Title of the settings group which configures several time intervals</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="31"/>
+        <location filename="../assets/AppSettings.qml" line="33"/>
         <source>Lock Database</source>
         <comment>A setting specifying the time interval after which the database will be automatically closed. Will be shown with one of its possible values, e.g. &apos;Lock Database    After 15 seconds&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="38"/>
+        <location filename="../assets/AppSettings.qml" line="40"/>
         <source>When Minimized</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    When Minimized&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="43"/>
+        <location filename="../assets/AppSettings.qml" line="45"/>
         <source>After 15 seconds</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 15 seconds&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="48"/>
+        <location filename="../assets/AppSettings.qml" line="50"/>
         <source>After 30 seconds</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 30 seconds&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="53"/>
+        <location filename="../assets/AppSettings.qml" line="55"/>
         <source>After 1 minute</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 1 minute&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="58"/>
+        <location filename="../assets/AppSettings.qml" line="60"/>
         <source>After 2 minutes</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 2 minutes&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="63"/>
+        <location filename="../assets/AppSettings.qml" line="65"/>
         <source>After 5 minutes</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 5 minutes&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="68"/>
+        <location filename="../assets/AppSettings.qml" line="70"/>
         <source>Never</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    Never&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="75"/>
+        <location filename="../assets/AppSettings.qml" line="77"/>
         <source>Clear Clipboard</source>
         <comment>A setting specifying the time interval after which the clipboard will be automatically cleared. Will be shown with one of its values, e.g. &apos;Clear Clipboard    After 10 seconds&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="82"/>
+        <location filename="../assets/AppSettings.qml" line="84"/>
         <source>After 10 seconds</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 10 seconds&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="87"/>
+        <location filename="../assets/AppSettings.qml" line="89"/>
         <source>After 20 seconds</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 20 seconds&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="92"/>
+        <location filename="../assets/AppSettings.qml" line="94"/>
         <source>After 30 seconds</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 30 seconds&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="97"/>
+        <location filename="../assets/AppSettings.qml" line="99"/>
         <source>After 1 minute</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 1 minute&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="102"/>
+        <location filename="../assets/AppSettings.qml" line="104"/>
         <source>After 2 minutes</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 2 minutes&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="107"/>
+        <location filename="../assets/AppSettings.qml" line="109"/>
         <source>Never</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    Never&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="113"/>
+        <location filename="../assets/AppSettings.qml" line="116"/>
+        <source>Smart Copy</source>
+        <comment>Title of the settings group which configures advanced copying to clipboard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="127"/>
+        <source>Minimize on Copy</source>
+        <comment>An on/off setting to make backup copies of the database everytime it is saved.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="141"/>
+        <source>This option will automatically minimize the application whenever you copy an entry field to clipboard.</source>
+        <comment>Description of the &apos;Minimize on Copy&apos; setting.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="148"/>
         <source>Quick Unlock</source>
         <comment>Title of the settings group related to the Quick Unlock function (see thesaurus)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="122"/>
+        <location filename="../assets/AppSettings.qml" line="157"/>
         <source>Quick Password</source>
         <comment>A setting specifying the type of the password to use with Quick Unlock.  Example: &apos;Quick Password    First 3 symbols of the password&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="155"/>
+        <location filename="../assets/AppSettings.qml" line="190"/>
         <source>Learn more</source>
         <comment>A button which opens a help page about the Quick Unlock function</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="170"/>
+        <location filename="../assets/AppSettings.qml" line="205"/>
         <source>Lists</source>
         <comment>Title of a group of settings which define how various lists of items should be displayed.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="174"/>
+        <location filename="../assets/AppSettings.qml" line="209"/>
         <source>Entry List Details</source>
         <comment>A setting which defines additional information (details) to be displayed for each entry in a list (also see thesaurus for &apos;Entry&apos;). Example: &apos;Entry List Details    Last Modification Time&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="181"/>
+        <location filename="../assets/AppSettings.qml" line="216"/>
         <source>None</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting. Will be displayed as &apos;Entry List Details    None&apos;, meaning that no entry details will be shown in any lists.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="186"/>
+        <location filename="../assets/AppSettings.qml" line="221"/>
         <source>User Name</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it refers to login information rather then person name. Will be displayed as &apos;Entry List Details    User Name&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="191"/>
+        <location filename="../assets/AppSettings.qml" line="226"/>
         <source>Password</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting. Will be displayed as &apos;Entry List Details    Password&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="196"/>
+        <location filename="../assets/AppSettings.qml" line="231"/>
         <source>URL</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it means &apos;internet address&apos; or &apos;internet link&apos;. Will be displayed as &apos;Entry List Details    URL&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="201"/>
+        <location filename="../assets/AppSettings.qml" line="236"/>
         <source>Notes</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it refers to comments or additional text information contained in an entry. Will be displayed as &apos;Entry List Details    Notes&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="206"/>
+        <location filename="../assets/AppSettings.qml" line="241"/>
         <source>Last Modified Time</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it refers to the most recent time when the entry was modified. Will be displayed as &apos;Entry List Details    Last Modified Time&apos;. </comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="213"/>
+        <location filename="../assets/AppSettings.qml" line="248"/>
         <source>List Sorting</source>
         <comment>A setting which defines list sorting rules. Example: &apos;List Sorting    Alphabetical&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="220"/>
+        <location filename="../assets/AppSettings.qml" line="255"/>
         <source>None</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    None&apos;, meaning no sorting, or as-is item order.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="225"/>
+        <location filename="../assets/AppSettings.qml" line="260"/>
         <source>Alphabetical</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Alphabetical&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="231"/>
+        <location filename="../assets/AppSettings.qml" line="266"/>
         <source>Saving</source>
         <comment>Title of a group of settings related to database editing/saving function</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="242"/>
+        <location filename="../assets/AppSettings.qml" line="277"/>
         <source>Backup Database on Save</source>
         <comment>An on/off setting to make backup copies of the database everytime it is saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="256"/>
+        <location filename="../assets/AppSettings.qml" line="291"/>
         <source>Backup the database file before saving any changes. Backup copies are timestamped and stored along with the original database.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="263"/>
+        <location filename="../assets/AppSettings.qml" line="298"/>
         <source>Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="271"/>
+        <location filename="../assets/AppSettings.qml" line="306"/>
         <source>Search</source>
         <comment>Title of a group of settings related to search function</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="282"/>
+        <location filename="../assets/AppSettings.qml" line="317"/>
         <source>Search at Start</source>
         <comment>An on/off setting which defines whether the Search function should be automatically activated when a database is opened/unlocked.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="296"/>
+        <location filename="../assets/AppSettings.qml" line="331"/>
         <source>This option will automatically activate Search whenever a database is unlocked.</source>
         <comment>Description of the &apos;Search at Start&apos; setting.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="312"/>
+        <location filename="../assets/AppSettings.qml" line="347"/>
         <source>Search in Deleted Entries</source>
         <comment>An on/off setting which defines whether the Search should look into entries marked as deleted.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="326"/>
+        <location filename="../assets/AppSettings.qml" line="361"/>
         <source>Recent Files</source>
         <comment>Title of a group of settings related to handling of recently opened files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="330"/>
+        <location filename="../assets/AppSettings.qml" line="365"/>
         <source>Clear History</source>
         <comment>Button/action which clears the history of recent files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="347"/>
+        <location filename="../assets/AppSettings.qml" line="382"/>
         <source>Changes will apply after restart</source>
         <comment>Notification after the user changes some settings which require restarting the app.</comment>
         <translation type="unfinished"></translation>
@@ -306,100 +324,175 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>ApplicationUI</name>
     <message>
-        <location filename="../src/applicationui.cpp" line="162"/>
+        <location filename="../src/applicationui.cpp" line="166"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (see reference:INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>EditEntryV3Page</name>
+    <name>EditEntryPage</name>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="92"/>
+        <location filename="../assets/EditEntryPage.qml" line="93"/>
         <source>Edit Entry</source>
         <comment>Title of a dialog box</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="94"/>
+        <location filename="../assets/EditEntryPage.qml" line="95"/>
         <source>Save</source>
         <comment>A button/action to save current item</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="102"/>
+        <location filename="../assets/EditEntryPage.qml" line="103"/>
         <source>Cancel</source>
         <comment>A button/action to dismiss current dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="125"/>
+        <location filename="../assets/EditEntryPage.qml" line="126"/>
         <source>Title</source>
         <comment>Label of the entry title edit field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="142"/>
+        <location filename="../assets/EditEntryPage.qml" line="143"/>
         <source>Change Icon</source>
         <comment>A button/action to change entry&apos;s icon</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="157"/>
+        <location filename="../assets/EditEntryPage.qml" line="158"/>
         <source>User Name</source>
         <comment>Label of the username edit field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="165"/>
+        <location filename="../assets/EditEntryPage.qml" line="166"/>
         <source>Password</source>
         <comment>Label of the password edit field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="190"/>
+        <location filename="../assets/EditEntryPage.qml" line="191"/>
         <source>URL</source>
         <comment>Label of the link/internet address edit field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="199"/>
+        <location filename="../assets/EditEntryPage.qml" line="200"/>
         <source>Notes</source>
         <comment>Label of the notes/comments edit field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="219"/>
+        <location filename="../assets/EditEntryPage.qml" line="220"/>
         <source>Entry Expires</source>
         <comment>On/off option which enables entry expiration deadline</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="231"/>
+        <location filename="../assets/EditEntryPage.qml" line="232"/>
         <source>Expiry Date</source>
         <comment>Label of the entry expiration/best before date</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="242"/>
+        <location filename="../assets/EditEntryPage.qml" line="243"/>
         <source>Discard Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="243"/>
+        <location filename="../assets/EditEntryPage.qml" line="244"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="244"/>
+        <location filename="../assets/EditEntryPage.qml" line="245"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryV3Page.qml" line="245"/>
+        <location filename="../assets/EditEntryPage.qml" line="246"/>
+        <source>Edit</source>
+        <comment>A button/action to return to edit mode</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditFieldPage</name>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="68"/>
+        <source>Edit Field</source>
+        <comment>Title of a page for editing an entry field</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="70"/>
+        <source>Save</source>
+        <comment>A button/action to save entry field changes</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="84"/>
+        <source>Cancel</source>
+        <comment>A button/action</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="106"/>
+        <source>Name</source>
+        <comment>Label of the field&apos;s name edit control</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="132"/>
+        <source>A field with such name already exists</source>
+        <comment>An error message when a field is being given a name which is already used or reserved for internal use only.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="124"/>
+        <source>Please name the field</source>
+        <comment>An invitation to input a name for entry&apos;s field.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="140"/>
+        <source>Value</source>
+        <comment>Label of the field&apos;s value edit control</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="159"/>
+        <source>In-memory protection</source>
+        <comment>An on/off toggle switch to enable encryption of field data in device memory</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="175"/>
+        <source>Discard Changes</source>
+        <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="176"/>
+        <source>There are unsaved changes.</source>
+        <comment>A notification when the user closes an editor with unsaved changes.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="177"/>
+        <source>Discard</source>
+        <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="178"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation type="unfinished"></translation>
@@ -408,61 +501,61 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>EditGroupPage</name>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="55"/>
+        <location filename="../assets/EditGroupPage.qml" line="56"/>
         <source>Edit Group</source>
         <comment>Title of a page for editing group properties</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="57"/>
+        <location filename="../assets/EditGroupPage.qml" line="58"/>
         <source>Save</source>
         <comment>A button/action to save group changes</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="70"/>
+        <location filename="../assets/EditGroupPage.qml" line="71"/>
         <source>Cancel</source>
         <comment>A button/action</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="94"/>
+        <location filename="../assets/EditGroupPage.qml" line="95"/>
         <source>Name</source>
         <comment>Label of the group name edit field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="102"/>
+        <location filename="../assets/EditGroupPage.qml" line="103"/>
         <source>This group name is reserved</source>
         <comment>An error message when a group is being given a name which is reserved for internal use only.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="122"/>
+        <location filename="../assets/EditGroupPage.qml" line="123"/>
         <source>Change Icon</source>
         <comment>A button/action to change group&apos;s icon</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="140"/>
+        <location filename="../assets/EditGroupPage.qml" line="141"/>
         <source>Discard Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="141"/>
+        <location filename="../assets/EditGroupPage.qml" line="142"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="142"/>
+        <location filename="../assets/EditGroupPage.qml" line="143"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="143"/>
+        <location filename="../assets/EditGroupPage.qml" line="144"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation type="unfinished"></translation>
@@ -603,67 +696,67 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="204"/>
+        <location filename="../src/db/PwDatabase.cpp" line="218"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="211"/>
+        <location filename="../src/db/PwDatabase.cpp" line="225"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="219"/>
+        <location filename="../src/db/PwDatabase.cpp" line="233"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="229"/>
+        <location filename="../src/db/PwDatabase.cpp" line="243"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="242"/>
+        <location filename="../src/db/PwDatabase.cpp" line="256"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="334"/>
+        <location filename="../src/db/PwDatabase.cpp" line="351"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="357"/>
+        <location filename="../src/db/PwDatabase.cpp" line="374"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="363"/>
+        <location filename="../src/db/PwDatabase.cpp" line="380"/>
         <source>Cannot replace database file</source>
         <comment>An error message: failed to replace database file with another file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="369"/>
+        <location filename="../src/db/PwDatabase.cpp" line="386"/>
         <source>Cannot rename temporary database file</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="340"/>
+        <location filename="../src/db/PwDatabase.cpp" line="357"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="345"/>
+        <location filename="../src/db/PwDatabase.cpp" line="362"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
@@ -672,31 +765,31 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="169"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="175"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="236"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="240"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="257"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="262"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="267"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="274"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="454"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="458"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
@@ -705,65 +798,71 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="275"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="358"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="438"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="510"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="452"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="502"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="523"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="573"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="476"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="548"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="489"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="561"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="513"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="585"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="755"/>
+        <source>Cannot save database</source>
+        <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PwHeaderV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="127"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="126"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="129"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="128"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="131"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="130"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="133"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="132"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
@@ -772,31 +871,31 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwHeaderV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="173"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="188"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="175"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="190"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="177"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="192"/>
         <source>Unknown compression algorithm</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="179"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="194"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="181"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="196"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
@@ -861,19 +960,19 @@ NOTE: A timeout or the main-menu Lock button will activate the Quick Lock (if en
 <context>
     <name>SearchResultsPage</name>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="9"/>
+        <location filename="../assets/SearchResultsPage.qml" line="21"/>
         <source>Search Results</source>
         <comment>Title of the page which lists search results</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="38"/>
+        <location filename="../assets/SearchResultsPage.qml" line="45"/>
         <source>Group: %1</source>
         <comment>Describes the group of the selected entry. Example: &apos;Group:  Internet&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="54"/>
+        <location filename="../assets/SearchResultsPage.qml" line="61"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translation type="unfinished"></translation>
@@ -984,19 +1083,19 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryExtrasTab</name>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="52"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="167"/>
         <source>Attached Files</source>
         <comment>Title of a list with attached files</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="55"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="170"/>
         <source>There are no attached files.</source>
         <comment>Explanation for the empty list of attached files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="79"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="195"/>
         <source>%n byte(s)</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
         <translation type="unfinished">
@@ -1004,73 +1103,103 @@ To continue, tap the lock symbol below.</source>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="84"/>
-        <source>Remove File</source>
-        <comment>A button/action to remove/delete the selected file</comment>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="107"/>
+        <source>Edit Field</source>
+        <comment>A button/action to edit entry&apos;s field.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="108"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="115"/>
+        <source>Delete Field</source>
+        <comment>A button/action to delete entry&apos;s field.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="141"/>
+        <source>Close</source>
+        <comment>Action/button which closes a dialog box</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="149"/>
+        <source>Copy Value</source>
+        <comment>Action/button which copies field&apos;s value to clipboard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="145"/>
+        <source>Copy Name</source>
+        <comment>Action/button which copies field&apos;s name to clipboard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="200"/>
+        <source>Remove File</source>
+        <comment>A button/action to remove/delete the selected file attachment from the database (not from the disk)</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="224"/>
         <source>Save File</source>
         <comment>Title of a file saving dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="117"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="233"/>
         <source>File saved</source>
         <comment>A confirmation message once the file has been successfully saved</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="120"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="236"/>
         <source>Could not save file</source>
         <comment>Error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="131"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="247"/>
         <source>Select File</source>
         <comment>Title of a file selection dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="152"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="268"/>
         <source>Open</source>
         <comment>A button/action which opens (or launches) a file (see related error message with reference INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="163"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="279"/>
         <source>File attached</source>
         <comment>A confirmation message once the file has been successfully attached to the entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="164"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="280"/>
         <source>Could not attach file</source>
         <comment>Error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="169"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="285"/>
         <source>Loading file</source>
         <comment>Status message about ongoing process</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="175"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="291"/>
         <source>Warning</source>
         <comment>Title of an window with an important notification</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="176"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="292"/>
         <source>KDB format allows only one attachment per entry. Replace the current attachment?</source>
         <comment>KDB is a file format, do not translate</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="177"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="293"/>
         <source>Replace</source>
         <comment>A button/action to confirm that the old attachment should be replaced by the new one</comment>
         <translation type="unfinished"></translation>
@@ -1149,78 +1278,63 @@ To continue, tap the lock symbol below.</source>
     </message>
 </context>
 <context>
-    <name>ViewEntryV3Page</name>
+    <name>ViewEntryPage</name>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="21"/>
+        <location filename="../assets/ViewEntryPage.qml" line="27"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="40"/>
+        <location filename="../assets/ViewEntryPage.qml" line="47"/>
         <source>Attach File</source>
         <comment>A button/action to attach a file to an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="50"/>
+        <location filename="../assets/ViewEntryPage.qml" line="58"/>
+        <source>Add Extra Field</source>
+        <comment>A button/action to add an extra field to an entry</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryPage.qml" line="68"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="58"/>
+        <location filename="../assets/ViewEntryPage.qml" line="76"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="59"/>
+        <location filename="../assets/ViewEntryPage.qml" line="77"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="60"/>
+        <location filename="../assets/ViewEntryPage.qml" line="78"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="84"/>
+        <location filename="../assets/ViewEntryPage.qml" line="106"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="88"/>
+        <location filename="../assets/ViewEntryPage.qml" line="110"/>
         <source>Extra</source>
         <comment>Title of a page which shows additional/advanced properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryV3Page.qml" line="92"/>
-        <source>History</source>
-        <comment>Title of a page which lists the previous versions of an entry.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ViewEntryV4Page</name>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="26"/>
-        <source>General</source>
-        <comment>Title of a page which shows main/basic properties of an entry.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="30"/>
-        <source>Extra</source>
-        <comment>Title of a page which shows additional/advanced properties of an entry.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryV4Page.qml" line="34"/>
+        <location filename="../assets/ViewEntryPage.qml" line="114"/>
         <source>History</source>
         <comment>Title of a page which lists the previous versions of an entry.</comment>
         <translation type="unfinished"></translation>
@@ -1229,115 +1343,115 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewGroupPage</name>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="83"/>
+        <location filename="../assets/ViewGroupPage.qml" line="90"/>
         <source>Search</source>
         <comment>A button/action which opens a search dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="95"/>
+        <location filename="../assets/ViewGroupPage.qml" line="102"/>
         <source>Create Entry</source>
         <comment>A button/action to create a new entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="102"/>
+        <location filename="../assets/ViewGroupPage.qml" line="109"/>
         <source>Create Group</source>
         <comment>A button/action to create a new group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="123"/>
+        <location filename="../assets/ViewGroupPage.qml" line="130"/>
         <source>Lock</source>
         <comment>A button/action which locks/closes the database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="155"/>
+        <location filename="../assets/ViewGroupPage.qml" line="162"/>
         <source>Search...</source>
         <comment>Hint text inside the search text input field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="177"/>
+        <location filename="../assets/ViewGroupPage.qml" line="183"/>
         <source>Cancel</source>
         <comment>Cancel button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="249"/>
+        <location filename="../assets/ViewGroupPage.qml" line="250"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="256"/>
+        <location filename="../assets/ViewGroupPage.qml" line="257"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="263"/>
+        <location filename="../assets/ViewGroupPage.qml" line="264"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="271"/>
+        <location filename="../assets/ViewGroupPage.qml" line="272"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="293"/>
+        <location filename="../assets/ViewGroupPage.qml" line="294"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="301"/>
+        <location filename="../assets/ViewGroupPage.qml" line="302"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="329"/>
+        <location filename="../assets/ViewGroupPage.qml" line="330"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="347"/>
+        <location filename="../assets/ViewGroupPage.qml" line="345"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="348"/>
+        <location filename="../assets/ViewGroupPage.qml" line="346"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="349"/>
+        <location filename="../assets/ViewGroupPage.qml" line="347"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="361"/>
+        <location filename="../assets/ViewGroupPage.qml" line="359"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="362"/>
+        <location filename="../assets/ViewGroupPage.qml" line="360"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="363"/>
+        <location filename="../assets/ViewGroupPage.qml" line="361"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translation type="unfinished"></translation>

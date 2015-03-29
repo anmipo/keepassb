@@ -1,11 +1,12 @@
 1
-273
+274
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
 common.js
 demo.kdbx
-EditEntryV3Page.qml
+EditEntryPage.qml
+EditFieldPage.qml
 EditGroupPage.qml
 GroupListItem.qml
 IconPickerPage.qml
@@ -16,6 +17,7 @@ images/cover.png
 images/ic_about.png
 images/ic_add_attachment.png
 images/ic_add_entry.png
+images/ic_add_field.png
 images/ic_add_group.png
 images/ic_attach.png
 images/ic_done.png
@@ -120,8 +122,7 @@ UnlockDbPage.qml
 ViewEntryExtrasTab.qml
 ViewEntryGeneralTab.qml
 ViewEntryHistoryTab.qml
-ViewEntryV3Page.qml
-ViewEntryV4Page.qml
+ViewEntryPage.qml
 ViewGroupPage.qml
 VisualStyle.bright/images/ic_browse.png
 VisualStyle.bright/images/ic_copy.png

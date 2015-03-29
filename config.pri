@@ -39,7 +39,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/AboutPage.qml) \
         $$quote($$BASEDIR/assets/ActiveFrameCover.qml) \
         $$quote($$BASEDIR/assets/AppSettings.qml) \
-        $$quote($$BASEDIR/assets/EditEntryV3Page.qml) \
+        $$quote($$BASEDIR/assets/EditEntryPage.qml) \
+        $$quote($$BASEDIR/assets/EditFieldPage.qml) \
         $$quote($$BASEDIR/assets/EditGroupPage.qml) \
         $$quote($$BASEDIR/assets/GroupListItem.qml) \
         $$quote($$BASEDIR/assets/IconPickerPage.qml) \
@@ -54,8 +55,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/ViewEntryExtrasTab.qml) \
         $$quote($$BASEDIR/assets/ViewEntryGeneralTab.qml) \
         $$quote($$BASEDIR/assets/ViewEntryHistoryTab.qml) \
-        $$quote($$BASEDIR/assets/ViewEntryV3Page.qml) \
-        $$quote($$BASEDIR/assets/ViewEntryV4Page.qml) \
+        $$quote($$BASEDIR/assets/ViewEntryPage.qml) \
         $$quote($$BASEDIR/assets/ViewGroupPage.qml) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_browse.png) \
         $$quote($$BASEDIR/assets/VisualStyle.bright/images/ic_copy.png) \
@@ -216,6 +216,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_about.png) \
         $$quote($$BASEDIR/assets/images/ic_add_attachment.png) \
         $$quote($$BASEDIR/assets/images/ic_add_entry.png) \
+        $$quote($$BASEDIR/assets/images/ic_add_field.png) \
         $$quote($$BASEDIR/assets/images/ic_add_group.png) \
         $$quote($$BASEDIR/assets/images/ic_attach.png) \
         $$quote($$BASEDIR/assets/images/ic_done.png) \
@@ -323,11 +324,15 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/v3/PwGroupV3.cpp) \
         $$quote($$BASEDIR/src/db/v3/PwStreamUtilsV3.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwDatabaseV4.cpp) \
+        $$quote($$BASEDIR/src/db/v4/PwDeletedObject.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwEntryV4.cpp) \
         $$quote($$BASEDIR/src/db/v4/PwGroupV4.cpp) \
+        $$quote($$BASEDIR/src/db/v4/PwMetaV4.cpp) \
+        $$quote($$BASEDIR/src/db/v4/PwStreamUtilsV4.cpp) \
         $$quote($$BASEDIR/src/main.cpp) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.cpp) \
         $$quote($$BASEDIR/src/util/PasswordGenerator.cpp) \
+        $$quote($$BASEDIR/src/util/ProgressObserver.cpp) \
         $$quote($$BASEDIR/src/util/Settings.cpp) \
         $$quote($$BASEDIR/src/util/TimedClipboard.cpp) \
         $$quote($$BASEDIR/src/util/Util.cpp)
@@ -343,11 +348,16 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/v3/PwEntryV3.h) \
         $$quote($$BASEDIR/src/db/v3/PwGroupV3.h) \
         $$quote($$BASEDIR/src/db/v3/PwStreamUtilsV3.h) \
+        $$quote($$BASEDIR/src/db/v4/DefsV4.h) \
         $$quote($$BASEDIR/src/db/v4/PwDatabaseV4.h) \
+        $$quote($$BASEDIR/src/db/v4/PwDeletedObject.h) \
         $$quote($$BASEDIR/src/db/v4/PwEntryV4.h) \
         $$quote($$BASEDIR/src/db/v4/PwGroupV4.h) \
+        $$quote($$BASEDIR/src/db/v4/PwMetaV4.h) \
+        $$quote($$BASEDIR/src/db/v4/PwStreamUtilsV4.h) \
         $$quote($$BASEDIR/src/ui/ActiveFrame.h) \
         $$quote($$BASEDIR/src/util/PasswordGenerator.h) \
+        $$quote($$BASEDIR/src/util/ProgressObserver.h) \
         $$quote($$BASEDIR/src/util/Settings.h) \
         $$quote($$BASEDIR/src/util/TimedClipboard.h) \
         $$quote($$BASEDIR/src/util/Util.h)
