@@ -798,44 +798,44 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
 <context>
     <name>PwDatabaseV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="358"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="364"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="510"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="516"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="523"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="573"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="529"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="579"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="548"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="554"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="561"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="567"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="585"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="591"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="755"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="761"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
