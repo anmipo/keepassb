@@ -54,7 +54,7 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("\u00A92014 Andrei Popleteev", "Developer name, do not translate") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("\u00A92014–2015 Andrei Popleteev", "Developer name, do not translate") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }
