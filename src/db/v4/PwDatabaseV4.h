@@ -152,6 +152,10 @@ private:
     ErrorCodesV4::ErrorCode initSalsa20();
     // Parses well-formed XML data into instance members.
     ErrorCodesV4::ErrorCode parseXml(const QString& xmlString);
+    // Parses <KeePassFile> tag content from the XML stream
+    ErrorCodesV4::ErrorCode parseXmlDocumentTag(QXmlStreamReader& xml, PwGroupV4& root);
+    // Parses Root tag content from the XML stream
+    ErrorCodesV4::ErrorCode parseRoot(QXmlStreamReader& xml, PwGroupV4& root);
     // Parses DeletedObjects list from the XML stream
     ErrorCodesV4::ErrorCode parseDeletedObjects(QXmlStreamReader& xml);
 

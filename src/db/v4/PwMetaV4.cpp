@@ -66,15 +66,16 @@ ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) 
                 _protectNotes = PwStreamUtilsV4::readBool(xml, false);
             } else {
                 qDebug() << "WARN: unknown MemoryProtection tag " << tagName;
+                return ErrorCodesV4::XML_META_MEMORY_PROTECTION_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
         tagName = xml.name();
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_META_MEMORY_PROTECTION_PARSING_ERROR;
-    else
-        return ErrorCodesV4::SUCCESS;
+        return ErrorCodesV4::XML_META_MEMORY_PROTECTION_PARSING_ERROR_GENERIC;
+
+    return ErrorCodesV4::SUCCESS;
 }
 
 void MemoryProtection::writeToStream(QXmlStreamWriter& xml) {
@@ -106,7 +107,7 @@ void PwBinaryV4::clear() {
     Util::safeClear(_data);
 }
 
-bool PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
+ErrorCodesV4::ErrorCode PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
     Q_ASSERT(xml.name() == XML_BINARY);
 
     clear();
@@ -130,9 +131,17 @@ bool PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa20& salsa20) {
         }
     } else {
         qDebug() << "invalid Binary structure, got" << xml.name() << "tag";
-        return false;
+        return ErrorCodesV4::XML_META_BINARY_PARSING_ERROR_TAG;
     }
-    return (!xml.hasError() && (_id >= 0));
+
+    if (_id < 0)
+        return ErrorCodesV4::XML_META_BINARY_PARSING_ERROR_1;
+
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_BINARY_PARSING_ERROR_GENERIC;
+
+    return ErrorCodesV4::SUCCESS;
+
 }
 
 void PwBinaryV4::writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) {
@@ -177,7 +186,7 @@ QByteArray PwCustomIconV4::getData() const {
     return data;
 }
 
-bool PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
+ErrorCodesV4::ErrorCode PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_CUSTOM_ICON_ITEM);
 
     clear();
@@ -193,14 +202,20 @@ bool PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
             } else {
                 qDebug() << "unexpected XML tag in CustomIcon: " << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return false;
+                return ErrorCodesV4::XML_META_CUSTOM_ICON_ITEM_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
         tagName = xml.name();
     }
 
-    return (!xml.hasError() && !data.isEmpty());
+    if (data.isEmpty())
+        return ErrorCodesV4::XML_META_CUSTOM_ICON_ITEM_PARSING_ERROR_1;
+
+    if (xml.hasError())
+        return ErrorCodesV4::XML_META_CUSTOM_ICON_ITEM_PARSING_ERROR_GENERIC;
+
+    return ErrorCodesV4::SUCCESS;
 }
 
 /** Writes icon fields to an XML stream.  */
@@ -343,14 +358,14 @@ ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml, Salsa20&
             } else {
                 qDebug() << "unexpected XML tag in Meta:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_META_UNKNOWN_TAG_ERROR;
+                return ErrorCodesV4::XML_META_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
         tagName = xml.name();
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_META_PARSING_ERROR;
+        return ErrorCodesV4::XML_META_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -364,20 +379,20 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomIcons(QXmlStreamReader& xml) {
             QStringRef tagName = xml.name();
             if (tagName == XML_CUSTOM_ICON_ITEM) {
                 PwCustomIconV4* icon = new PwCustomIconV4(this);
-                if (!icon->readFromStream(xml)) {
-                    return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR;
-                }
+                ErrorCodesV4::ErrorCode err = icon->readFromStream(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
                 customIcons.insert(icon->getUuid(), icon);
             } else {
                 qDebug() << "unexpected XML tag in CustomIcons: " << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR;
+                return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR;
+        return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -391,20 +406,20 @@ ErrorCodesV4::ErrorCode PwMetaV4::readBinaries(QXmlStreamReader& xml, Salsa20& s
             QStringRef tagName = xml.name();
             if (tagName == XML_BINARY) {
                 PwBinaryV4* binary = new PwBinaryV4(this);
-                if (!binary->readFromStream(xml, salsa20)) {
-                    return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
-                }
+                ErrorCodesV4::ErrorCode err = binary->readFromStream(xml, salsa20);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
                 binaries.insert(binary->getId(), binary);
             } else {
                 qDebug() << "unexpected XML tag in Binaries: " << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
+                return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR;
+        return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -424,13 +439,13 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomData(QXmlStreamReader& xml) {
             } else {
                 qDebug() << "unexpected XML tag in CustomData:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+                return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+        return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -451,13 +466,13 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomDataItem(QXmlStreamReader& xml) {
             } else {
                 qDebug() << "unexpected XML tag in CustomData item:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+                return ErrorCodesV4::XML_META_CUSTOM_DATA_ITEM_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR;
+        return ErrorCodesV4::XML_META_CUSTOM_DATA_ITEM_PARSING_ERROR_GENERIC;
 
     customData.insert(key, value);
     return ErrorCodesV4::SUCCESS;

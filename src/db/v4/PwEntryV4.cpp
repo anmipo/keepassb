@@ -130,12 +130,12 @@ ErrorCodesV4::ErrorCode PwField::readFromStream(QXmlStreamReader& xml, Salsa20& 
             } else {
                 qDebug() << "unknown tag in PwField::readFromStream():" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_ENTRY_FIELD_PARSING_ERROR;
+                return ErrorCodesV4::XML_ENTRY_FIELD_PARSING_ERROR_TAG;
             }
         }
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_ENTRY_FIELD_PARSING_ERROR;
+        return ErrorCodesV4::XML_ENTRY_FIELD_PARSING_ERROR_GENERIC;
 
     // Even if either XML_KEY or XML_VALUE were missing in the stream, (re)init the field anyway
     setName(key);
@@ -212,12 +212,12 @@ ErrorCodesV4::ErrorCode PwAutoType::readFromStream(QXmlStreamReader& xml) {
             } else {
                 qDebug() << "unknown tag in PwAutoType:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR;
+                return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR_TAG;
             }
         }
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR;
+        return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -239,12 +239,12 @@ ErrorCodesV4::ErrorCode PwAutoType::readAssociation(QXmlStreamReader& xml) {
             } else {
                 qDebug() << "unknown tag in PwAutoType/association:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_ASSOCIATION_PARSING_ERROR;
+                return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_ASSOCIATION_PARSING_ERROR_TAG;
             }
         }
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_ASSOCIATION_PARSING_ERROR;
+        return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_ASSOCIATION_PARSING_ERROR_GENERIC;
 
     _associations.append(QStringPair(window, sequence));
     return ErrorCodesV4::SUCCESS;
@@ -705,7 +705,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readFromStream(QXmlStreamReader& xml, const P
     }
 
     if (xml.hasError())
-        return ErrorCodesV4::XML_ENTRY_PARSING_ERROR;
+        return ErrorCodesV4::XML_ENTRY_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -721,33 +721,41 @@ ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
         if (xml.isStartElement()) {
             if (tagName == XML_LAST_MODIFICATION_TIME) {
                 setLastModificationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_1;
             } else if (tagName == XML_CREATION_TIME) {
                 setCreationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_2;
             } else if (tagName == XML_LAST_ACCESS_TIME) {
                 setLastAccessTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_3;
             } else if (tagName == XML_EXPIRY_TIME) {
                 setExpiryTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_4;
             } else if (tagName == XML_EXPIRES) {
                 setExpires(PwStreamUtilsV4::readBool(xml, false));
             } else if (tagName == XML_USAGE_COUNT) {
                 setUsageCount(PwStreamUtilsV4::readUInt32(xml, 0));
             } else if (tagName == XML_LOCATION_CHANGED_TIME) {
                 setLocationChangedTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_5;
             } else {
                 qDebug() << "unknown PwEntryV4/Times tag:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR;
+                return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_TAG;
             }
         }
-        if (!conversionOk)
-            break;
 
         xml.readNext();
         tagName = xml.name();
     }
 
-    if (xml.hasError() || !conversionOk)
-        return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR;
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -771,7 +779,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readHistory(QXmlStreamReader& xml, const PwMe
     }
 
     if (xml.hasError())
-        return ErrorCodesV4::XML_ENTRY_HISTORY_PARSING_ERROR;
+        return ErrorCodesV4::XML_ENTRY_HISTORY_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -794,19 +802,19 @@ ErrorCodesV4::ErrorCode PwEntryV4::readAttachment(QXmlStreamReader &xml, const P
                 if (convOk) {
                     //parent group is not defined here yet
                     PwBinaryV4* binary = meta.getBinaryById(binaryId);
-                    if (!binary) {
-                        return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE;
-                    }
+                    if (!binary)
+                        return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE_1;
+
                     attachment.setData(binary->getData(), binary->isCompressed());
                     attachment.setId(binaryId);
                 } else {
-                    return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE;
+                    return ErrorCodesV4::INVALID_ATTACHMENT_REFERENCE_2;
                 }
             }
         }
     }
     if (xml.hasError())
-        return ErrorCodesV4::XML_ENTRY_ATTACHMENT_PARSING_ERROR;
+        return ErrorCodesV4::XML_ENTRY_ATTACHMENT_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }

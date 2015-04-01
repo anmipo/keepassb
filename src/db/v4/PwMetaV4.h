@@ -67,7 +67,7 @@ public:
     void clear();
     QString toString() const;
 
-    bool readFromStream(QXmlStreamReader& xml, Salsa20& salsa20);
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml, Salsa20& salsa20);
     void writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20);
 
     int getId() const { return _id; }
@@ -90,8 +90,8 @@ public:
     void clear();
     QString toString() const;
 
-    /** Reads icon fields from an XML stream. Returns true if successful, false otherwise. */
-    bool readFromStream(QXmlStreamReader& xml);
+    /** Reads icon fields from an XML stream. */
+    ErrorCodesV4::ErrorCode readFromStream(QXmlStreamReader& xml);
     /** Writes icon fields to an XML stream. */
     void writeToStream(QXmlStreamWriter& xml);
 

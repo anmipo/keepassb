@@ -683,12 +683,34 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
 
     setPhaseProgressRawTarget(xmlString.size());
 
-    ErrorCodesV4::ErrorCode err;
     QXmlStreamReader xml(xmlString);
-    QStringRef tagName;
-    while (!xml.atEnd() && !xml.hasError()) {
-        if (xml.readNextStartElement()) {
-            tagName = xml.name();
+    if (xml.readNextStartElement() && (xml.name() == XML_KEEPASS_FILE)) {
+        ErrorCodesV4::ErrorCode err = parseXmlDocumentTag(xml, *rootV4);
+        if (err != ErrorCodesV4::SUCCESS)
+            return err;
+    } else {
+        qDebug() << "XML document tag is not <KeePassFile>:" << xml.name();
+        return ErrorCodesV4::XML_DOCUMENT_PARSING_ERROR_NOT_KEEPASS;
+    }
+
+    bool xmlHadError = xml.hasError();
+    xml.clear();
+    if (xmlHadError)
+        return ErrorCodesV4::XML_PARSING_ERROR_GENERIC;
+
+    _rootGroup = rootV4;
+    return ErrorCodesV4::SUCCESS;
+}
+
+ErrorCodesV4::ErrorCode PwDatabaseV4::parseXmlDocumentTag(QXmlStreamReader& xml, PwGroupV4& root) {
+    Q_ASSERT(xml.name() == XML_KEEPASS_FILE);
+
+    ErrorCodesV4::ErrorCode err;
+
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_KEEPASS_FILE == tagName))) {
+        if (xml.isStartElement()) {
             if (tagName == XML_META) {
                 err = meta.readFromStream(xml, salsa20);
                 if (err != ErrorCodesV4::SUCCESS)
@@ -697,33 +719,56 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
                     return ErrorCodesV4::XML_META_HEADER_HASH_MISMATCH;
 
             } else if (tagName == XML_ROOT) {
-                if (xml.readNextStartElement() && (xml.name() == XML_GROUP)) {
-                    err = rootV4->readFromStream(xml, meta, salsa20, this);
-                    if (err != ErrorCodesV4::SUCCESS)
-                        return err;
-                } else if (xml.readNextStartElement() && (xml.name() == XML_DELETED_OBJECTS)) {
-                    err = parseDeletedObjects(xml);
-                    if (err != ErrorCodesV4::SUCCESS)
-                        return err;
-                } else {
-                    qDebug() << "unknown tag in the Root:" << tagName;
-                    PwStreamUtilsV4::readUnknown(xml);
-                    return ErrorCodesV4::XML_ROOT_PARSING_ERROR;
-                }
+                err = parseRoot(xml, root);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+
+            } else {
+                qDebug() << "unknown tag in XML document:" << tagName;
+                return ErrorCodesV4::XML_DOCUMENT_PARSING_ERROR_TAG;
             }
         }
+        xml.readNext();
+        tagName = xml.name();
     }
 
-    xml.clear();
     if (xml.hasError())
-        return ErrorCodesV4::XML_PARSING_ERROR;
+        return ErrorCodesV4::XML_DOCUMENT_PARSING_ERROR_GENERIC;
 
-    _rootGroup = rootV4;
-//    debugPrint(_rootGroup, 2);
     return ErrorCodesV4::SUCCESS;
 }
 
+ErrorCodesV4::ErrorCode PwDatabaseV4::parseRoot(QXmlStreamReader& xml, PwGroupV4& root) {
+    Q_ASSERT(xml.name() == XML_ROOT);
 
+    ErrorCodesV4::ErrorCode err;
+
+    xml.readNext();
+    QStringRef tagName = xml.name();
+    while (!xml.hasError() && !(xml.isEndElement() && (XML_ROOT == tagName))) {
+        if (xml.isStartElement()) {
+            if (XML_GROUP == tagName) {
+                err = root.readFromStream(xml, meta, salsa20, this);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else if (XML_DELETED_OBJECTS == tagName) {
+                err = parseDeletedObjects(xml);
+                if (err != ErrorCodesV4::SUCCESS)
+                    return err;
+            } else {
+                qDebug() << "unknown tag in the Root:" << tagName;
+                PwStreamUtilsV4::readUnknown(xml);
+                return ErrorCodesV4::XML_ROOT_PARSING_ERROR_TAG;
+            }
+        }
+        xml.readNext();
+        tagName = xml.name();
+    }
+    if (xml.hasError())
+        return ErrorCodesV4::XML_ROOT_PARSING_ERROR_GENERIC;
+
+    return ErrorCodesV4::SUCCESS;
+}
 ErrorCodesV4::ErrorCode PwDatabaseV4::parseDeletedObjects(QXmlStreamReader& xml) {
     Q_ASSERT(xml.name() == XML_DELETED_OBJECTS);
 
@@ -741,7 +786,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseDeletedObjects(QXmlStreamReader& xml)
             } else {
                 qDebug() << "unknown tag within DeletedObjects:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_DELETED_OBJECTS_PARSING_ERROR;
+                return ErrorCodesV4::XML_DELETED_OBJECTS_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
@@ -749,7 +794,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseDeletedObjects(QXmlStreamReader& xml)
     }
 
     if (xml.hasError())
-        return ErrorCodesV4::XML_DELETED_OBJECTS_PARSING_ERROR;
+        return ErrorCodesV4::XML_DELETED_OBJECTS_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }
@@ -847,7 +892,8 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         Util::safeClear(xmlContentData);
         if (gzErr != Util::SUCCESS) {
             qDebug() << "PwDatabaseV4::save() gzip compression failed: " << gzErr;
-            return ErrorCodesV4::GZIP_COMPRESS_ERROR;
+            emit dbSaveError(saveErrorMessage, ErrorCodesV4::GZIP_COMPRESS_ERROR);
+            return false;
         }
         dataToSplit = gzipData;
     } else {
@@ -868,7 +914,8 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     Util::safeClear(dataToSplit);
     if (err != ErrorCodesV4::SUCCESS) {
         qDebug() << "PwDatabaseV4::save() failed to make hashed blocks: " << err;
-        return err;
+        emit dbSaveError(saveErrorMessage, err);
+        return false;
     }
 
     // finally, encrypt everything

@@ -44,18 +44,20 @@ ErrorCodesV4::ErrorCode PwDeletedObject::readFromStream(QXmlStreamReader& xml) {
                 _uuid = PwStreamUtilsV4::readUuid(xml);
             } else if (XML_DELETION_TIME == tagName) {
                 _deletionTime = PwStreamUtilsV4::readTime(xml, &conversionOk);
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_DELETED_OBJECT_ITEM_PARSING_ERROR_1;
             } else {
                 qDebug() << "unknown PwDeletedObject tag:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_DELETED_OBJECT_ITEM_PARSING_ERROR;
+                return ErrorCodesV4::XML_DELETED_OBJECT_ITEM_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
         tagName = xml.name();
     }
 
-    if (xml.hasError() || !conversionOk)
-        return ErrorCodesV4::XML_DELETED_OBJECT_ITEM_PARSING_ERROR;
+    if (xml.hasError())
+        return ErrorCodesV4::XML_DELETED_OBJECT_ITEM_PARSING_ERROR_GENERIC;
 
     return ErrorCodesV4::SUCCESS;
 }

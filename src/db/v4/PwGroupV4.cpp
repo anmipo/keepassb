@@ -210,7 +210,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
             } else {
                 qDebug() << "unknown PwGroupV4 tag:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_GROUP_PARSING_ERROR;
+                return ErrorCodesV4::XML_GROUP_PARSING_ERROR_TAG;
             }
         }
         xml.readNext();
@@ -218,9 +218,8 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
     }
 
     if (xml.hasError())
-        return ErrorCodesV4::XML_GROUP_PARSING_ERROR;
-    else
-        return ErrorCodesV4::SUCCESS;
+        return ErrorCodesV4::XML_GROUP_PARSING_ERROR_GENERIC;
+    return ErrorCodesV4::SUCCESS;
 }
 
 ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
@@ -234,34 +233,40 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
         if (xml.isStartElement()) {
             if (tagName == XML_LAST_MODIFICATION_TIME) {
                 setLastModificationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+
             } else if (tagName == XML_CREATION_TIME) {
                 setCreationTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_1;
             } else if (tagName == XML_LAST_ACCESS_TIME) {
                 setLastAccessTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_2;
             } else if (tagName == XML_EXPIRY_TIME) {
                 setExpiryTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_3;
             } else if (tagName == XML_EXPIRES) {
                 setExpires(PwStreamUtilsV4::readBool(xml, false));
             } else if (tagName == XML_USAGE_COUNT) {
                 setUsageCount(PwStreamUtilsV4::readUInt32(xml, 0));
             } else if (tagName == XML_LOCATION_CHANGED_TIME) {
                 setLocationChangedTime(PwStreamUtilsV4::readTime(xml, &conversionOk));
+                if (!conversionOk)
+                    return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_4;
             } else {
                 qDebug() << "unknown PwGroupV4/Times tag:" << tagName;
                 PwStreamUtilsV4::readUnknown(xml);
-                return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR;
+                return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_TAG;
             }
         }
-        if (!conversionOk)
-            break;
         xml.readNext();
         tagName = xml.name();
     }
 
-    if (xml.hasError() || !conversionOk)
-        return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR;
-    else
-        return ErrorCodesV4::SUCCESS;
+    if (xml.hasError())
+        return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_GENERIC;
+    return ErrorCodesV4::SUCCESS;
 }
 
 /**
