@@ -17,14 +17,8 @@
     </message>
     <message>
         <location filename="../assets/AboutPage.qml" line="57"/>
-        <source>©2014 Andrei Popleteev</source>
+        <source>©2014вЂ“2015 Andrei Popleteev</source>
         <comment>Developer name, do not translate</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AboutPage.qml" line="66"/>
-        <source>Credits</source>
-        <comment>Title of the help page with acknowledgements and licensing terms of used components.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -33,6 +27,12 @@
 Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
 Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by Luboš Volkov.</source>
         <comment>Content of the &apos;Credits&apos; help section </comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AboutPage.qml" line="66"/>
+        <source>Credits</source>
+        <comment>Title of the help page with acknowledgements and licensing terms of used components.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -835,7 +835,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="761"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="806"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
