@@ -41,6 +41,11 @@ Keywords:
 keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
 
 Changelog:
+v2.3.1
+Fixed potential bug in .kdbx saving
+Fixed saving of KeePass plugins' data
+
+
 v2.3.0
 Added v2/kdbx editing (beta). This function is experimental, so please make sure to keep the "Backup on save" option enabled.
 Added multi-word search: found entries should contain each word (thanks, Milan!)
