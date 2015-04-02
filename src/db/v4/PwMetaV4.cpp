@@ -634,8 +634,10 @@ void PwMetaV4::writeCustomData(QXmlStreamWriter& xml) const {
         QMapIterator<QString, QString> iter(customData);
         while (iter.hasNext()) {
             iter.next();
+            xml.writeStartElement(XML_CUSTOM_DATA_ITEM);
             PwStreamUtilsV4::writeString(xml, XML_KEY, iter.key());
             PwStreamUtilsV4::writeString(xml, XML_VALUE, iter.value());
+            xml.writeEndElement(); // XML_CUSTOM_DATA_ITEM
         }
         xml.writeEndElement(); // XML_CUSTOM_DATA
     } else {
