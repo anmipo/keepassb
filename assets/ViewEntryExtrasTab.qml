@@ -265,7 +265,7 @@ Container {
             SystemToast {
                 property string filePath 
                 id: attachmentFileToast
-                button.label: qsTr("Open", "A button/action which opens (or launches) a file (see related error message with reference INVOKE_ATTACHMENT)") + Retranslate.onLocaleOrLanguageChanged
+                button.label: qsTr("Open", "A button/action which opens/launches the selected file. It may produce an error message, please search for INVOKE_ATTACHMENT to ensure concordance.") + Retranslate.onLocaleOrLanguageChanged
                 onFinished: {
                     if (value == SystemUiResult.ButtonSelection) {
                         app.invokeFile("file://" + filePath);

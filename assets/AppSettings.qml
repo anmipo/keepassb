@@ -124,11 +124,10 @@ Page {
                 Label {
                     horizontalAlignment: HorizontalAlignment.Left
                     verticalAlignment: VerticalAlignment.Center
-                    text: qsTr("Minimize on Copy", "An on/off setting to make backup copies of the database everytime it is saved.") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Minimize on Copy", "An on/off setting to make backup copies of the database every time it is saved.") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                    multiline: true
                 }
                 ToggleButton {
                     id: minimizeAppOnCopy
@@ -189,11 +188,11 @@ Page {
             Label {
                 text: qsTr("Learn more", "A button which opens a help page about the Quick Unlock function") + Retranslate.onLocaleOrLanguageChanged
                 textStyle.color: Color.create("#FF0073BC")
-                multiline: true
                 topMargin: 10
                 bottomMargin: 30
                 textFormat: TextFormat.Html
                 textStyle.base: SystemDefaults.TextStyles.SubtitleText
+                multiline: true
                 gestureHandlers: TapHandler {
                     onTapped: {
                         var quickUnlockHelpPage = quickUnlockHelpComponent.createObject();
@@ -245,7 +244,7 @@ Page {
             }
             DropDown {
                 id: alphaSorting
-                title: qsTr("List Sorting", "A setting which defines list sorting rules. Example: 'List Sorting    Alphabetical'.") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("List Sorting", "A setting which defines sorting of entries in groups. Example: 'List Sorting    Alphabetical'.") + Retranslate.onLocaleOrLanguageChanged
                 onSelectedOptionChanged: {
                     if (selectedOption) {
                         appSettings.alphaSorting = selectedOption.value;
@@ -276,9 +275,8 @@ Page {
                     verticalAlignment: VerticalAlignment.Center
                     text: qsTr("Backup Database on Save", "An on/off setting to make backup copies of the database everytime it is saved.") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                    multiline: true
                 }
                 ToggleButton {
                     id: backupDatabaseOnSave
@@ -316,9 +314,8 @@ Page {
                     verticalAlignment: VerticalAlignment.Center
                     text: qsTr("Search at Start", "An on/off setting which defines whether the Search function should be automatically activated when a database is opened/unlocked.") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+                    multiline: true
                 }
                 ToggleButton {
                     id: searchAfterUnlock
@@ -346,10 +343,8 @@ Page {
                     verticalAlignment: VerticalAlignment.Center
                     text: qsTr("Search in Deleted Entries", "An on/off setting which defines whether the Search should look into entries marked as deleted.") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
+                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                     multiline: true
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1
-                    }
                 }
                 ToggleButton {
                     id: searchInDeleted

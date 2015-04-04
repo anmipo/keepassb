@@ -159,7 +159,7 @@ Page {
                     property string searchQuery 
                     
                     id: searchField
-                    hintText: qsTr("Search...", "Hint text inside the search text input field") + Retranslate.onLocaleOrLanguageChanged
+                    hintText: qsTr("Enter search query", "Hint text for the search query input field, invites the user to type some text") + Retranslate.onLocaleOrLanguageChanged
                     horizontalAlignment: HorizontalAlignment.Fill
                     layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                     clearButtonVisible: true 
@@ -180,7 +180,7 @@ Page {
                     }
                 }
                 Button {
-                    text: qsTr("Cancel", "Cancel button") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Cancel", "Button/action to cancel/hide search query field") + Retranslate.onLocaleOrLanguageChanged
                     horizontalAlignment: HorizontalAlignment.Right
                     preferredWidth: 50
                     onClicked: {

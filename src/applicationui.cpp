@@ -163,7 +163,7 @@ void ApplicationUI::invokeFile(const QString& uri) {
         qDebug() << "invoke ok";
     } else {
         qDebug() << "invoke failed";
-        showToast(tr("Cannot open the file", "An error message related to the 'open file' action (see reference:INVOKE_ATTACHMENT)"));
+        showToast(tr("Cannot open the file", "An error message related to the 'open file' action (reference: INVOKE_ATTACHMENT)"));
     }
 }
 

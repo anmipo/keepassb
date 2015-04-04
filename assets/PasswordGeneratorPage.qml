@@ -61,7 +61,7 @@ Sheet {
                 }
             }
             acceptAction: ActionItem {
-                title: qsTr("OK", "A button/action")
+                title: qsTr("OK", "A button/action to accept the proposed password and insert it into the entry")
                 onTriggered: {
                     newPasswordReady(password);
                     app.restartWatchdog();

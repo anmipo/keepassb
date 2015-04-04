@@ -19,7 +19,7 @@ Sheet {
 
     Page {
         titleBar: TitleBar {
-            title: qsTr("Choose Icon", "Title of a page for selecting an icon image") + Retranslate.onLocaleOrLanguageChanged
+            title: qsTr("Choose Icon", "Title of a page/an invitation to pick an icon from the list") + Retranslate.onLocaleOrLanguageChanged
             dismissAction: ActionItem {
                 title: qsTr("Cancel", "A button/action") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {

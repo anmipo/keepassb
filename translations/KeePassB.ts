@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="ru" sourcelanguage="en">
 <context>
     <name>AboutPage</name>
     <message>
         <location filename="../assets/AboutPage.qml" line="10"/>
         <source>Contact Developer</source>
         <comment>Menu item: action to write an email to the application developer</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Обратная Связь</translation>
     </message>
     <message>
         <location filename="../assets/AboutPage.qml" line="52"/>
         <source>Version %1</source>
         <comment>Application version in &apos;About&apos; screen</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Версия %1</translation>
     </message>
     <message>
         <location filename="../assets/AboutPage.qml" line="57"/>
-        <source>©2014вЂ“2015 Andrei Popleteev</source>
+        <source>©2014–2015 Andrei Popleteev</source>
         <comment>Developer name, do not translate</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -32,7 +32,7 @@
         <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;.
 Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;, a nice JavaScript-based KeePass&amp;nbsp;2 port.
 Some icons are based on free samples of the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt; and &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by Luboš Volkov.</source>
-        <comment>Content of the &apos;Credits&apos; help section </comment>
+        <comment>Content of the &apos;Credits&apos; help section. Feel free to mention yourself, for example: &apos;Russian translation by Vladimir Lavrov&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -239,7 +239,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <message>
         <location filename="../assets/AppSettings.qml" line="248"/>
         <source>List Sorting</source>
-        <comment>A setting which defines list sorting rules. Example: &apos;List Sorting    Alphabetical&apos;.</comment>
+        <comment>A setting which defines sorting of entries in groups. Example: &apos;List Sorting    Alphabetical&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -400,7 +400,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     </message>
     <message>
         <location filename="../assets/EditEntryPage.qml" line="243"/>
-        <source>Discard Changes</source>
+        <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -456,6 +456,12 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/EditFieldPage.qml" line="175"/>
+        <source>Unsaved Changes</source>
+        <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/EditFieldPage.qml" line="124"/>
         <source>Please name the field</source>
         <comment>An invitation to input a name for entry&apos;s field.</comment>
@@ -471,12 +477,6 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
         <location filename="../assets/EditFieldPage.qml" line="159"/>
         <source>In-memory protection</source>
         <comment>An on/off toggle switch to enable encryption of field data in device memory</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/EditFieldPage.qml" line="175"/>
-        <source>Discard Changes</source>
-        <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -538,7 +538,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     </message>
     <message>
         <location filename="../assets/EditGroupPage.qml" line="141"/>
-        <source>Discard Changes</source>
+        <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -566,7 +566,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <message>
         <location filename="../assets/IconPickerPage.qml" line="22"/>
         <source>Choose Icon</source>
-        <comment>Title of a page for selecting an icon image</comment>
+        <comment>Title of a page/an invitation to pick an icon from the list</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -593,7 +593,7 @@ Thanks to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepa
     <message>
         <location filename="../assets/PasswordGeneratorPage.qml" line="64"/>
         <source>OK</source>
-        <comment>A button/action</comment>
+        <comment>A button/action to accept the proposed password and insert it into the entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1100,6 +1100,8 @@ To continue, tap the lock symbol below.</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
         <translation type="unfinished">
             <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -1368,14 +1370,14 @@ To continue, tap the lock symbol below.</source>
     </message>
     <message>
         <location filename="../assets/ViewGroupPage.qml" line="162"/>
-        <source>Search...</source>
-        <comment>Hint text inside the search text input field</comment>
+        <source>Enter search query</source>
+        <comment>Hint text for the search query input field, invites the user to type some text</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/ViewGroupPage.qml" line="183"/>
         <source>Cancel</source>
-        <comment>Cancel button</comment>
+        <comment>Button/action to cancel/hide search query field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
