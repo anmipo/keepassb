@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru" sourcelanguage="en">
+<TS version="2.0">
 <context>
     <name>AboutPage</name>
     <message>
@@ -13,7 +13,7 @@
         <location filename="../assets/AboutPage.qml" line="52"/>
         <source>Version %1</source>
         <comment>Application version in &apos;About&apos; screen</comment>
-        <translation type="unfinished">Версия %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../assets/AboutPage.qml" line="57"/>
@@ -34,31 +34,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="73"/>
+        <location filename="../assets/AboutPage.qml" line="79"/>
         <source> </source>
-        <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi&apos;</comment>
+        <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi.&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="75"/>
+        <location filename="../assets/AboutPage.qml" line="88"/>
         <source>Some icons are based on free samples of &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by Lubos Volkov and the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="73"/>
-        <source></source>
-        <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi&apos;</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../assets/AboutPage.qml" line="84"/>
+        <location filename="../assets/AboutPage.qml" line="97"/>
         <source>Privacy Policy</source>
         <comment>Title of a help page</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="90"/>
+        <location filename="../assets/AboutPage.qml" line="103"/>
         <source>KeePassB does not collect any personal data nor share it with anyone.</source>
         <comment>Content of the &apos;Privacy Policy&apos; help page</comment>
         <translation type="unfinished"></translation>
@@ -466,21 +460,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="132"/>
-        <source>A field with such name already exists</source>
-        <comment>An error message when a field is being given a name which is already used or reserved for internal use only.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/EditFieldPage.qml" line="175"/>
-        <source>Unsaved Changes</source>
-        <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/EditFieldPage.qml" line="124"/>
         <source>Please name the field</source>
         <comment>An invitation to input a name for entry&apos;s field.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="132"/>
+        <source>A field with such name already exists</source>
+        <comment>An error message when a field is being given a name which is already used or reserved for internal use only.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -493,6 +481,12 @@
         <location filename="../assets/EditFieldPage.qml" line="159"/>
         <source>In-memory protection</source>
         <comment>An on/off toggle switch to enable encryption of field data in device memory</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="175"/>
+        <source>Unsaved Changes</source>
+        <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -748,6 +742,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/db/PwDatabase.cpp" line="357"/>
+        <source>Cannot write to database file</source>
+        <comment>An error message shown when the database file cannot be written to.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="362"/>
+        <source>Error writing to database file</source>
+        <comment>An error message shown when the database file cannot be written to.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/db/PwDatabase.cpp" line="374"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
@@ -763,18 +769,6 @@
         <location filename="../src/db/PwDatabase.cpp" line="386"/>
         <source>Cannot rename temporary database file</source>
         <comment>An error message</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/db/PwDatabase.cpp" line="357"/>
-        <source>Cannot write to database file</source>
-        <comment>An error message shown when the database file cannot be written to.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/db/PwDatabase.cpp" line="362"/>
-        <source>Error writing to database file</source>
-        <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1065,6 +1059,12 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/UnlockDbPage.qml" line="251"/>
+        <source>Choose Database</source>
+        <comment>Title of a database selection dialog; an invitation to choose a file.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/UnlockDbPage.qml" line="263"/>
         <source>Choose Key File</source>
         <comment>Title of a key file selection dialog; an invitation to choose a file (also see &apos;key file&apos; in the thesaurus).</comment>
@@ -1077,48 +1077,20 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="303"/>
-        <source>Please provide a password or a key file.</source>
-        <comment>Notification message when the user tries to open a database without providing any credentials</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/UnlockDbPage.qml" line="251"/>
-        <source>Choose Database</source>
-        <comment>Title of a database selection dialog; an invitation to choose a file.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/UnlockDbPage.qml" line="292"/>
         <source>Open</source>
         <comment>A button/action which opens/unlocks a database file.</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="303"/>
+        <source>Please provide a password or a key file.</source>
+        <comment>Notification message when the user tries to open a database without providing any credentials</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ViewEntryExtrasTab</name>
-    <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="167"/>
-        <source>Attached Files</source>
-        <comment>Title of a list with attached files</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="170"/>
-        <source>There are no attached files.</source>
-        <comment>Explanation for the empty list of attached files.</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="195"/>
-        <source>%n byte(s)</source>
-        <comment>File size in bytes; please specify the required plural forms.</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../assets/ViewEntryExtrasTab.qml" line="107"/>
         <source>Edit Field</source>
@@ -1138,16 +1110,36 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="145"/>
+        <source>Copy Name</source>
+        <comment>Action/button which copies field&apos;s name to clipboard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/ViewEntryExtrasTab.qml" line="149"/>
         <source>Copy Value</source>
         <comment>Action/button which copies field&apos;s value to clipboard</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="145"/>
-        <source>Copy Name</source>
-        <comment>Action/button which copies field&apos;s name to clipboard</comment>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="167"/>
+        <source>Attached Files</source>
+        <comment>Title of a list with attached files</comment>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="170"/>
+        <source>There are no attached files.</source>
+        <comment>Explanation for the empty list of attached files.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="195"/>
+        <source>%n byte(s)</source>
+        <comment>File size in bytes; please specify the required plural forms.</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../assets/ViewEntryExtrasTab.qml" line="200"/>

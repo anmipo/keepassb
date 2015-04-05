@@ -34,25 +34,25 @@
         <translation>Спасибо Доминику Райхлу (Dominik Reichl) за &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;, Брайану Пеллину (Brian Pellin) за &lt;a href=&apos;http://www.keepassdroid.com&apos;&gt;KeePassDroid&lt;/a&gt; и Нам Т. Нгуену (Nam T. Nguyen) за &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="73"/>
+        <location filename="../assets/AboutPage.qml" line="79"/>
         <source> </source>
-        <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi&apos;</comment>
-        <translation>Русский перевод - Андрей Поплетеев.</translation>
+        <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi.&apos;</comment>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="75"/>
+        <location filename="../assets/AboutPage.qml" line="88"/>
         <source>Some icons are based on free samples of &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by Lubos Volkov and the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translation>Некоторые иконки основаны на открытых образцах из наборов &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; (автор Luboš Volkov) и &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="84"/>
+        <location filename="../assets/AboutPage.qml" line="97"/>
         <source>Privacy Policy</source>
         <comment>Title of a help page</comment>
         <translation>Политика Конфиденциальности</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="90"/>
+        <location filename="../assets/AboutPage.qml" line="103"/>
         <source>KeePassB does not collect any personal data nor share it with anyone.</source>
         <comment>Content of the &apos;Privacy Policy&apos; help page</comment>
         <translation>KeePassB не собирает никаких персональных данных, никуда ничего не отправляет, и вообще не имеет прямого доступа к сети.</translation>

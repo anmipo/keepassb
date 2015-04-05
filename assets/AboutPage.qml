@@ -68,11 +68,24 @@ Page {
                     horizontalAlignment: HorizontalAlignment.Left
                 }
                 Label{
-                    text: qsTr("Thanks to Dominik Reichl for <a href='http://keepass.info'>KeePass</a>, to Brian Pellin for <a href='http://www.keepassdroid.com'>KeePassDroid</a> and to Nam T. Nguyen for <a href='https://bitbucket.org/namn/browsepass/'>BrowsePass</a>.", "Content of the 'Credits' help section.") + 
-                            "\n\r" +
-                            qsTr(" ","Placeholder for translation credits. Please insert your name, for example: 'Italian translation by Marco Rossi'") + 
-                            "\n\r" + 
-                            qsTr("Some icons are based on free samples of <a href='http://getothercircles.com'>The OtherCircles</a> icon set by Lubos Volkov and the <a href='http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/'>Linecons Icon Set</a>.", "Content of the 'Credits' help section.") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Thanks to Dominik Reichl for <a href='http://keepass.info'>KeePass</a>, to Brian Pellin for <a href='http://www.keepassdroid.com'>KeePassDroid</a> and to Nam T. Nguyen for <a href='https://bitbucket.org/namn/browsepass/'>BrowsePass</a>.", "Content of the 'Credits' help section.") + Retranslate.onLocaleOrLanguageChanged 
+                    multiline: true
+                    textFormat: TextFormat.Html
+                    textStyle.base: SystemDefaults.TextStyles.BodyText
+                    topMargin: 20
+                    horizontalAlignment: HorizontalAlignment.Left
+                }
+                Label{
+                    text: qsTr(" ","Placeholder for translation credits. Please insert your name, for example: 'Italian translation by Marco Rossi.'") + Retranslate.onLocaleOrLanguageChanged 
+                    multiline: true
+                    textFormat: TextFormat.Html
+                    textStyle.base: SystemDefaults.TextStyles.BodyText
+                    visible: (text.length > 1)
+                    topMargin: 20
+                    horizontalAlignment: HorizontalAlignment.Left
+                }
+                Label{
+                    text: qsTr("Some icons are based on free samples of <a href='http://getothercircles.com'>The OtherCircles</a> icon set by Lubos Volkov and the <a href='http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/'>Linecons Icon Set</a>.", "Content of the 'Credits' help section.") + Retranslate.onLocaleOrLanguageChanged
                     multiline: true
                     textFormat: TextFormat.Html
                     textStyle.base: SystemDefaults.TextStyles.BodyText
