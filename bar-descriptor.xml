@@ -9,7 +9,10 @@
 
     <!-- The name that is displayed in the BlackBerry 10 application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>KeePassB</name>
+    <name>
+       KeePassB
+       <text xml:lang="ru">KeePassB</text>
+    </name>
 
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -19,13 +22,17 @@
     <!-- Fourth digit segment of the package version. First three segments are taken from the
          <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
     <buildId>0</buildId>
+    <packageLocale>ru</packageLocale>
 
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
     <versionLabel>2.3.1 beta</versionLabel>
 
     <!-- Description, displayed in the BlackBerry 10 application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <description>KeePassB is a native Built for BlackBerry implementation of the KeePass password manager.</description>
+    <description>
+       KeePassB is a native Built for BlackBerry implementation of the KeePass password manager.
+       <text xml:lang="ru">KeePassB - &#x44d;&#x442;&#x43e; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x430; &#x434;&#x43b;&#x44f; &#x445;&#x440;&#x430;&#x43d;&#x435;&#x43d;&#x438;&#x44f; &#x43f;&#x430;&#x440;&#x43e;&#x43b;&#x435;&#x439;, &#x441;&#x43e;&#x432;&#x43c;&#x435;&#x441;&#x442;&#x438;&#x43c;&#x430;&#x44f; &#x441; KeePass, &#x438; &#x441;&#x43f;&#x435;&#x446;&#x438;&#x430;&#x43b;&#x44c;&#x43d;&#x43e; &#x441;&#x43e;&#x437;&#x434;&#x430;&#x43d;&#x43d;&#x430;&#x44f; &#x434;&#x43b;&#x44f; &#x43f;&#x43b;&#x430;&#x442;&#x444;&#x43e;&#x440;&#x43c;&#x44b; BlackBerry 10.</text>
+    </description>
 
     <!-- Copyright information. Optional. -->
     <copyright>©2014-2015 Andrei Popleteev</copyright>
