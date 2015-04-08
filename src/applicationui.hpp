@@ -63,6 +63,7 @@ private slots:
     void onSystemLanguageChanged();
     void onWatchdogTimeoutChanged(int timeout);
     void onThumbnail(); // app minimized
+    void onTimeout(); // watchdog timeout
 public slots:
     Q_INVOKABLE void restartWatchdog();
     Q_INVOKABLE void stopWatchdog();

@@ -339,6 +339,12 @@
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translation>Не удалось открыть файл</translation>
     </message>
+    <message>
+        <location filename="../src/applicationui.cpp" line="177"/>
+        <source>Locked due to inactivity timeout</source>
+        <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
+        <translation>Закрыто из-за долгого бездействия</translation>
+    </message>
 </context>
 <context>
     <name>ChangeMasterKeyPage</name>

@@ -61,7 +61,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
     res = QObject::connect(settings, SIGNAL(autoLockTimeoutChanged(int)), this, SLOT(onWatchdogTimeoutChanged(int))); Q_ASSERT(res);
-    res = QObject::connect(&watchdog, SIGNAL(timeout()), this, SLOT(lock())); Q_ASSERT(res);
+    res = QObject::connect(&watchdog, SIGNAL(timeout()), this, SLOT(onTimeout())); Q_ASSERT(res);
 
     // clear clipboard when leaving the app (since the timeout timer won't fire after that)
     res = QObject::connect(app, SIGNAL(manualExit()), &clipboard, SLOT(clear())); Q_ASSERT(res);
@@ -165,6 +165,18 @@ void ApplicationUI::invokeFile(const QString& uri) {
         qDebug() << "invoke failed";
         showToast(tr("Cannot open the file", "An error message related to the 'open file' action (reference: INVOKE_ATTACHMENT)"));
     }
+}
+
+/**
+ * Called on watchdog timeout, possibly with no DB open.
+ */
+void ApplicationUI::onTimeout() {
+    // Timeouts can be emitted even when no DB is opened (and have no effect then).
+    // So we show a notification only if something will actually be locked.
+    if (!database->isLocked()) {
+        showToast(tr("Locked due to inactivity timeout", "Notification shown when the database is locked (or Quick Lock'ed) after some time without user interaction."));
+    }
+    lock();
 }
 
 void ApplicationUI::lock() {
