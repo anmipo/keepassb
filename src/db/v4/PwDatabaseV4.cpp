@@ -360,13 +360,23 @@ void PwDatabaseV4::onProgress(quint8 progressPercent) {
 }
 
 void PwDatabaseV4::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
-    if (!buildCompositeKey(password.toUtf8(), keyFileData, combinedKey)) {
+    if (!buildCompositeKey(getPasswordBytes(password), keyFileData, combinedKey)) {
         emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
         return;
     }
 
     if (readDatabase(dbFileData))
         emit dbUnlocked();
+}
+
+/** Converts the password string to its raw representation, as of format version's rules */
+QByteArray PwDatabaseV4::getPasswordBytes(const QString& password) const {
+    return password.toUtf8();
+}
+
+/** Setter for the combinedKey field */
+void PwDatabaseV4::setCombinedKey(const QByteArray& newKey) {
+    combinedKey = Util::deepCopy(newKey);
 }
 
 /**
@@ -995,4 +1005,16 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::encryptData(QByteArray& rawData, QByteArra
         return ErrorCodesV4::CANNOT_ENCRYPT_DB;
     }
     return ErrorCodesV4::SUCCESS;
+}
+
+/**
+ * Changes DB's master key to the given combination.
+ * Returns true if successful, otherwise emits an error and returns false.
+ */
+bool PwDatabaseV4::changeMasterKey(const QString& password, const QByteArray& keyFileData) {
+    if (!PwDatabase::changeMasterKey(password, keyFileData))
+        return false;
+
+    meta.setMasterKeyChangedTime(QDateTime::currentDateTime());
+    return true;
 }

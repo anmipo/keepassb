@@ -39,6 +39,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/AboutPage.qml) \
         $$quote($$BASEDIR/assets/ActiveFrameCover.qml) \
         $$quote($$BASEDIR/assets/AppSettings.qml) \
+        $$quote($$BASEDIR/assets/ChangeMasterKeyPage.qml) \
         $$quote($$BASEDIR/assets/EditEntryPage.qml) \
         $$quote($$BASEDIR/assets/EditFieldPage.qml) \
         $$quote($$BASEDIR/assets/EditGroupPage.qml) \
@@ -222,6 +223,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_done.png) \
         $$quote($$BASEDIR/assets/images/ic_edit.png) \
         $$quote($$BASEDIR/assets/images/ic_edit_group.png) \
+        $$quote($$BASEDIR/assets/images/ic_edit_key.png) \
         $$quote($$BASEDIR/assets/images/ic_email.png) \
         $$quote($$BASEDIR/assets/images/ic_empty_group.png) \
         $$quote($$BASEDIR/assets/images/ic_entry.png) \
@@ -365,11 +367,11 @@ config_pri_source_group1 {
 
 INCLUDEPATH += $$quote($$BASEDIR/src/db/v4) \
     $$quote($$BASEDIR/src/util) \
-    $$quote($$BASEDIR/src/db) \
-    $$quote($$BASEDIR/src/db/v3) \
-    $$quote($$BASEDIR/src/ui) \
     $$quote($$BASEDIR/src) \
-    $$quote($$BASEDIR/src/crypto)
+    $$quote($$BASEDIR/src/db/v3) \
+    $$quote($$BASEDIR/src/crypto) \
+    $$quote($$BASEDIR/src/db) \
+    $$quote($$BASEDIR/src/ui)
 
 CONFIG += precompile_header
 

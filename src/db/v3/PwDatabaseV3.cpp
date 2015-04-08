@@ -171,7 +171,7 @@ void PwDatabaseV3::onProgress(quint8 progressPercent) {
 }
 
 void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
-    if (!buildCompositeKey(password.toLatin1(), keyFileData, combinedKey)) {
+    if (!buildCompositeKey(getPasswordBytes(password), keyFileData, combinedKey)) {
         emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
         return;
     }
@@ -179,6 +179,16 @@ void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, c
     if (readDatabase(dbFileData)) {
         emit dbUnlocked();
     }
+}
+
+/** Converts the password string to its raw representation, as of format version's rules */
+QByteArray PwDatabaseV3::getPasswordBytes(const QString& password) const {
+    return password.toLatin1();
+}
+
+/** Setter for the combinedKey field */
+void PwDatabaseV3::setCombinedKey(const QByteArray& newKey) {
+    combinedKey = Util::deepCopy(newKey);
 }
 
 /**
@@ -449,6 +459,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
     }
     return SUCCESS;
 }
+
 
 /**
  * Encrypts and writes DB content to the given array.

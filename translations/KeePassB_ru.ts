@@ -341,6 +341,98 @@
     </message>
 </context>
 <context>
+    <name>ChangeMasterKeyPage</name>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="166"/>
+        <source>Browse...</source>
+        <comment>A button/action which opens a file selection dialog.</comment>
+        <translation>Выбрать...</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="141"/>
+        <source>Key File</source>
+        <comment>A label before the selected key file (see thesaurus). Example: &apos;Key File    Documents/file.dat&apos;.</comment>
+        <translation>Ключевой Файл</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="78"/>
+        <source>Master Key</source>
+        <comment>Title of a dialog for changing main/master password of the current database</comment>
+        <translation>Главный Пароль</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="80"/>
+        <source>Cancel</source>
+        <comment>A button/action to cancel/close master password change form</comment>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="99"/>
+        <source>You are about to change the master key for this database: &lt;i&gt;%1&lt;/i&gt;</source>
+        <comment>Help text in the master key change dialog. %1 is the currently opened database file (for example, &apos;documents/database.dat&apos;)</comment>
+        <translation>Вы меняете главный пароль этой базы: &lt;i&gt;%1&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="107"/>
+        <source>Type</source>
+        <comment>Title of a dropdown selection box to choose the type of database&apos;s master key (password, key file, or bot)</comment>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="111"/>
+        <source>Password Only</source>
+        <comment>One of the possible values of the &apos;Master key type&apos; selector</comment>
+        <translation>Пароль</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="117"/>
+        <source>Key File Only</source>
+        <comment>One of the possible values of the &apos;Master key type&apos; selector</comment>
+        <translation>Ключевой Файл</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="122"/>
+        <source>Password + Key File</source>
+        <comment>One of the possible values of the &apos;Master key type&apos; selector</comment>
+        <translation>Пароль + Ключевой Файл</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="159"/>
+        <source>(none)</source>
+        <comment>Value of the &apos;Key File&apos; field when no key file were selected; will be displayed as &apos;Key Flie    (none)&apos;.</comment>
+        <translation>(Нет)</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="175"/>
+        <source>Enter password</source>
+        <comment>Invitation to enter a password.</comment>
+        <translation>Введите Пароль</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="185"/>
+        <source>Save Changes</source>
+        <translation>Сохранить Изменения</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="191"/>
+        <source>Please specify the key file</source>
+        <comment>An error message/invitation to choose the key file for the master key</comment>
+        <translation>Пожалуйста выберите ключевой файл</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="197"/>
+        <source>Password cannot be empty</source>
+        <comment>An error message/invitation to enter a non-empty password for the master key</comment>
+        <translation>Пароль не может быть пустым</translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="222"/>
+        <source>Choose Key File</source>
+        <comment>Title of a key file selection dialog; an invitation to choose a file (also see &apos;key file&apos; in the thesaurus).</comment>
+        <translation>Выберите Ключевой Файл</translation>
+    </message>
+</context>
+<context>
     <name>EditEntryPage</name>
     <message>
         <location filename="../assets/EditEntryPage.qml" line="93"/>
@@ -704,69 +796,78 @@
     </message>
 </context>
 <context>
+    <name>PwDatabase</name>
+    <message>
+        <location filename="../src/db/PwDatabase.cpp" line="133"/>
+        <source>Cryptographic library error</source>
+        <comment>Generic error message from a cryptographic library</comment>
+        <translation>Ошибка шифрования</translation>
+    </message>
+</context>
+<context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="218"/>
+        <location filename="../src/db/PwDatabase.cpp" line="235"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation>Не удалось  открыть базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="225"/>
+        <location filename="../src/db/PwDatabase.cpp" line="242"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translation>Ошибка при чтении файла базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="233"/>
+        <location filename="../src/db/PwDatabase.cpp" line="250"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translation>Файл базы паролей пуст</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="243"/>
+        <location filename="../src/db/PwDatabase.cpp" line="294"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation>Не удается открыть ключевой файл</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="256"/>
+        <location filename="../src/db/PwDatabase.cpp" line="262"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation>Незнакомый формат базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="351"/>
+        <location filename="../src/db/PwDatabase.cpp" line="378"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation>Не удается сохранить базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="357"/>
+        <location filename="../src/db/PwDatabase.cpp" line="384"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation>Не удается записать в файл базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="362"/>
+        <location filename="../src/db/PwDatabase.cpp" line="389"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation>Ошибка при записи в файл базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="374"/>
+        <location filename="../src/db/PwDatabase.cpp" line="401"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translation>Не удалось создать резервную копию. Сохранение отменено.</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="380"/>
+        <location filename="../src/db/PwDatabase.cpp" line="407"/>
         <source>Cannot replace database file</source>
         <comment>An error message: failed to replace database file with another file.</comment>
         <translation>Не удалось заменить файл базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="386"/>
+        <location filename="../src/db/PwDatabase.cpp" line="413"/>
         <source>Cannot rename temporary database file</source>
         <comment>An error message</comment>
         <translation>Не удалось переименовать временный файл базы</translation>
@@ -781,25 +882,25 @@
         <translation>Ошибка шифрования</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="240"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="250"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation>Не удалось  расшифровать базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="262"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="272"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation>Не удалось расшифровать базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="274"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="284"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation>Не удалось разобрать базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="458"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="469"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation>Не удалось сохранить базу паролей</translation>
@@ -814,38 +915,38 @@
         <translation>Ошибка шифрования</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="516"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="526"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation>Не удалось  расшифровать базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="529"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="579"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="539"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="589"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation>Не удалось  расшифровать базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="554"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="564"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation>Ошибка при чтении базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="567"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="577"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation>Ошибка при распаковке базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="591"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="601"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation>Не удалось  разобрать базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="806"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="816"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation>Не удалось  сохранить базу паролей</translation>
@@ -1010,56 +1111,56 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
 (%2)</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="125"/>
+        <location filename="../assets/UnlockDbPage.qml" line="102"/>
         <source>Invalid password or key file</source>
         <comment>An error message shown when the decryption fails. Also see &apos;key file&apos; in thesaurus.</comment>
         <translation>Неверный пароль или ключевой файл</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="144"/>
+        <location filename="../assets/UnlockDbPage.qml" line="121"/>
         <source>Database</source>
         <comment>A label before the selected database file. Example: &apos;Database    documents/database.dat&apos;</comment>
         <translation>База Паролей</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="171"/>
+        <location filename="../assets/UnlockDbPage.qml" line="148"/>
         <source>Demo Database</source>
         <comment>A special database used for demonstration purpose. Example: &apos;Database    Demo Database&apos;.</comment>
         <translation>Демонстрационная</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="177"/>
-        <location filename="../assets/UnlockDbPage.qml" line="211"/>
+        <location filename="../assets/UnlockDbPage.qml" line="154"/>
+        <location filename="../assets/UnlockDbPage.qml" line="188"/>
         <source>Browse...</source>
         <comment>A button/action which opens a file selection dialog.</comment>
         <translation>Выбрать...</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="187"/>
+        <location filename="../assets/UnlockDbPage.qml" line="164"/>
         <source>Key File</source>
         <comment>A label before the selected key file (see thesaurus). Example: &apos;Key File    Documents/file.dat&apos;.</comment>
         <translation>Ключевой Файл</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="205"/>
+        <location filename="../assets/UnlockDbPage.qml" line="182"/>
         <source>(none)</source>
         <comment>Value of the &apos;Key File&apos; field when no key file were selected; will be displayed as &apos;Key Flie    (none)&apos;.</comment>
         <translation>(Нет)</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="221"/>
+        <location filename="../assets/UnlockDbPage.qml" line="198"/>
         <source>Enter password</source>
         <comment>Invitation to enter a password.</comment>
         <translation>Введите Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="231"/>
+        <location filename="../assets/UnlockDbPage.qml" line="208"/>
         <source>Enable Quick Unlock</source>
         <comment>A checkbox which activates the Quick Unlock function. &apos;Enable&apos; is used as &apos;activate&apos;, &apos;allow&apos;, &apos;turn on&apos;.</comment>
         <translation>Разрешить Быстрый Доступ</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="241"/>
+        <location filename="../assets/UnlockDbPage.qml" line="218"/>
         <source>Demo database enables you to test KeePassB without importing a real database.
 To continue, tap the lock symbol below.</source>
         <comment>Description of the &apos;Demo Database&apos; option. The &apos;lock symbol&apos; refers to a button with a padlock icon.</comment>
@@ -1067,31 +1168,31 @@ To continue, tap the lock symbol below.</source>
 Чтобы продолжить, нажмите иконку с замком.</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="251"/>
+        <location filename="../assets/UnlockDbPage.qml" line="228"/>
         <source>Choose Database</source>
         <comment>Title of a database selection dialog; an invitation to choose a file.</comment>
         <translation>Выберите Базу Паролей</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="263"/>
+        <location filename="../assets/UnlockDbPage.qml" line="240"/>
         <source>Choose Key File</source>
         <comment>Title of a key file selection dialog; an invitation to choose a file (also see &apos;key file&apos; in the thesaurus).</comment>
         <translation>Выберите Ключевой Файл</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="278"/>
+        <location filename="../assets/UnlockDbPage.qml" line="255"/>
         <source>Decrypting...</source>
         <comment>Title of a progress indicator while a database is being decrypted/decoded.</comment>
         <translation>Открытие...</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="292"/>
+        <location filename="../assets/UnlockDbPage.qml" line="269"/>
         <source>Open</source>
         <comment>A button/action which opens/unlocks a database file.</comment>
         <translation>Открыть Базу</translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="303"/>
+        <location filename="../assets/UnlockDbPage.qml" line="280"/>
         <source>Please provide a password or a key file.</source>
         <comment>Notification message when the user tries to open a database without providing any credentials</comment>
         <translation>Пожалуйста укажите пароль или ключевой файл.</translation>
@@ -1536,37 +1637,43 @@ To continue, tap the lock symbol below.</source>
         <translation>Закрыть Базу</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="89"/>
+        <location filename="../assets/main.qml" line="52"/>
+        <source>Change Master Key</source>
+        <comment>A button/action to change the master key (main password) of the database</comment>
+        <translation>Сменить Главный Пароль</translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="99"/>
         <source>Copied to clipboard</source>
         <comment>A notification which confirms successful copying of text.</comment>
         <translation>Данные скопированы</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="92"/>
+        <location filename="../assets/main.qml" line="102"/>
         <source>Clipboard cleared</source>
         <comment>A notification message</comment>
         <translation>Буфер обмена очищен</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="127"/>
+        <location filename="../assets/main.qml" line="137"/>
         <source>Database saved</source>
         <comment>A short notification/confirmation message</comment>
         <translation>База паролей сохранена</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="131"/>
+        <location filename="../assets/main.qml" line="141"/>
         <source>Error</source>
         <comment>Title of an error notification popup</comment>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="136"/>
+        <location filename="../assets/main.qml" line="146"/>
         <source>Saving...</source>
         <comment>Title of a progress indicator while a database is being encrypted/saved.</comment>
         <translation>Сохранение...</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="151"/>
+        <location filename="../assets/main.qml" line="165"/>
         <source>%1
 (%2)</source>
         <comment>A template for &apos;Error message (Error description)&apos;; change only for right-to-left langugages</comment>

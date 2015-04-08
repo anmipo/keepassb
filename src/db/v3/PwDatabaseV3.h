@@ -144,11 +144,17 @@ private:
     ErrorCode encryptContent(QByteArray& contentData, QByteArray& encryptedContentData);
 
 protected:
+    /** Setter for the combinedKey field */
+    virtual void setCombinedKey(const QByteArray& newKey);
+
     /**
      * Extracts the key from a correctly-formed XML file.
      * Returns true if successful, false otherwise.
      */
     virtual bool processXmlKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
+
+    /** Converts the password string to its raw representation, as of format version's rules */
+    virtual QByteArray getPasswordBytes(const QString& password) const;
 
     /** Combines password and key data into one key */
     virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;

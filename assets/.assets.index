@@ -1,8 +1,9 @@
 1
-274
+276
 AboutPage.qml
 ActiveFrameCover.qml
 AppSettings.qml
+ChangeMasterKeyPage.qml
 common.js
 demo.kdbx
 EditEntryPage.qml
@@ -23,6 +24,7 @@ images/ic_attach.png
 images/ic_done.png
 images/ic_edit.png
 images/ic_edit_group.png
+images/ic_edit_key.png
 images/ic_email.png
 images/ic_empty_group.png
 images/ic_entry.png

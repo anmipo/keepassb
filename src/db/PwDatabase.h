@@ -37,12 +37,19 @@ protected:
 
 	/** Returns the number of all groups and entries combined */
 	int countAllChildren() const;
+
+	/** Converts the password string to its raw representation, as of format version's rules */
+	virtual QByteArray getPasswordBytes(const QString& password) const = 0;
+
+    /** Setter for the combinedKey field (in child classes) */
+	virtual void setCombinedKey(const QByteArray& newKey) = 0;
 public:
     enum Error {
         SUCCESS             = 0,
         UNKNOWN_DB_FORMAT   = 1,
         COMPOSITE_KEY_ERROR = 2,
         DB_FILE_EMPTY       = 3,
+        KEY_COMPOSING_ERROR = 4,
         // child classes' specific codes start from 0x10
     };
 	PwDatabase(QObject* parent=0);
@@ -58,6 +65,12 @@ public:
      * In case of error emits a dbSaveError with error code and returns false.
      */
     virtual bool save(QByteArray& outData) = 0;
+
+    /**
+     * Changes DB's master key to the given combination.
+     * Returns true if successful, otherwise emits an error and returns false.
+     */
+    virtual bool changeMasterKey(const QString& password, const QByteArray& keyFileData);
 
     // Clears the database.
     virtual void clear();
@@ -145,6 +158,12 @@ private:
     // Creates a PwDatabase instance suitable for processing the given data.
     // If no suitable processor found, returns NULL.
     static PwDatabase* createDatabaseInstance(const QByteArray& rawDbData);
+    /**
+     * Loads given key file to the given buffer. No processing, just load or emit error signals.
+     * Empty file path is ok.
+     * Returns true if successful, otherwise emits fileOpenError signal and returns false.
+     */
+    bool loadKeyFile(const QString& keyFilePath, QByteArray& keyFileData) const;
 
     // Registers DB-related types for use in QML
     void registerQmlTypes();
@@ -169,6 +188,12 @@ public:
      * The progress and the result is communicated via appropriate signal.
      */
     Q_INVOKABLE void unlock(const QString &dbFilePath, const QString &password, const QString &keyFilePath);
+
+    /**
+     * Changes the master key of the currently opened DB to the specified one and saves the DB.
+     * Returns true if successful; otherwise emits a fileOpenError or dbSaveError and returns false.
+     */
+    Q_INVOKABLE bool changeMasterKey(const QString& password, const QString keyFilePath);
 
     /** Returns the format version of the currently opened DB (3 or 4, or -1 if none opened) */
     Q_INVOKABLE int getFormatVersion() const { return (db ? db->getFormatVersion() : -1); }
@@ -218,7 +243,7 @@ signals:
     void dbLocked();
     void dbUnlocked();
     void dbUnlockError(const QString& message, const int errorCode);
-    void fileOpenError(const QString& message, const QString& errorDescription);
+    void fileOpenError(const QString& message, const QString& errorDescription) const;
 
     /** Emitted before starting DB encryption/saving */
     void dbAboutToSave();

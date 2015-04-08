@@ -172,15 +172,22 @@ private:
 
     // Prints a tree of the group and all its children (for debug)
     void debugPrint(const PwGroup* group, int indent) const;
+
 protected:
+    /** Setter for the combinedKey field */
+    virtual void setCombinedKey(const QByteArray& newKey);
     /**
      * Extracts the key from a correctly-formed XML file.
      * Returns true if successful, false otherwise.
      */
     virtual bool processXmlKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
 
+    /** Converts the password string to its raw representation, as of format version's rules */
+    virtual QByteArray getPasswordBytes(const QString& password) const;
+
     /** Combines password and key data into one key */
     virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
+
 
     PwMetaV4* getMeta() { return &meta; }
 
@@ -221,6 +228,12 @@ public:
      * Encrypts and writes DB content to the given array.
      */
     bool save(QByteArray& outData);
+
+    /**
+     * Changes DB's master key to the given combination.
+     * Returns true if successful, otherwise emits an error and returns false.
+     */
+    virtual bool changeMasterKey(const QString& password, const QByteArray& keyFileData);
 
     /**
      * Erases all loaded/decrypted data

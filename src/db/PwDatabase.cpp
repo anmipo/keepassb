@@ -123,6 +123,23 @@ int PwDatabase::search(const SearchParams& params, QList<PwEntry*> &searchResult
     return searchResult.size();
 }
 
+/**
+ * Changes DB's master key to the given combination.
+ * Returns true if successful, otherwise emits an error and returns false.
+ */
+bool PwDatabase::changeMasterKey(const QString& password, const QByteArray& keyFileData) {
+    QByteArray tmpCombinedKey;
+    if (!buildCompositeKey(getPasswordBytes(password), keyFileData, tmpCombinedKey)) {
+        emit dbSaveError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), KEY_COMPOSING_ERROR);
+        return false;
+    }
+    setCombinedKey(tmpCombinedKey);
+    Util::safeClear(tmpCombinedKey);
+
+    // transformKey() is part of the subsequent save() call
+    return true;
+}
+
 /*****************************************/
 PwSearchResultDataModel::PwSearchResultDataModel(QObject* parent) :
         bb::cascades::QListDataModel<PwEntry*>() {
@@ -236,19 +253,8 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
 
     // Load key file to memory
     QByteArray keyFileData;
-    if (!keyFilePath.isEmpty()) {
-        QFile keyFile (keyFilePath);
-        if (!keyFile.open(QIODevice::ReadOnly)) {
-            qDebug() << "Cannot open key file: '" << keyFilePath << "' Error: " << keyFile.error() << ". Message: " << keyFile.errorString();
-            emit fileOpenError(tr("Cannot open key file", "An error message shown when the file is not available or cannot be read. See 'key file' in the supplied thesaurus."), keyFile.errorString());
-            return;
-        }
-        keyFileData = keyFile.readAll();
-        qDebug() << "Key file read: " << (keyFileData.isEmpty() ? "empty" : "non-empty");
-        keyFile.close();
-    } else {
-        qDebug() << "Key file not provided";
-    }
+    if (!loadKeyFile(keyFilePath, keyFileData))
+        return;
 
     // Get suitable DB processor (KeePass1 vs KeePass2)
     db = createDatabaseInstance(dbFileData);
@@ -275,6 +281,27 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     Util::safeClear(keyFileData);
 }
 
+/**
+ * Loads given key file to the given buffer. No processing, just load or emit error signals.
+ * Empty file path is ok.
+ * Returns true if successful, otherwise emits fileOpenError signal and returns false.
+ */
+bool PwDatabaseFacade::loadKeyFile(const QString& keyFilePath, QByteArray& keyFileData) const {
+    if (!keyFilePath.isEmpty()) {
+        QFile keyFile (keyFilePath);
+        if (!keyFile.open(QIODevice::ReadOnly)) {
+            qDebug() << "Cannot open key file: '" << keyFilePath << "' Error: " << keyFile.error() << ". Message: " << keyFile.errorString();
+            emit fileOpenError(tr("Cannot open key file", "An error message shown when the file is not available or cannot be read. See 'key file' in the supplied thesaurus."), keyFile.errorString());
+            return false;
+        }
+        keyFileData = keyFile.readAll();
+        qDebug() << "Key file read: " << (keyFileData.isEmpty() ? "empty" : "non-empty");
+        keyFile.close();
+    } else {
+        qDebug() << "Key file not provided";
+    }
+    return true;
+}
 PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData) {
     if (PwDatabaseV3::isSignatureMatch(rawDbData)) {
         return new PwDatabaseV3();
@@ -387,4 +414,23 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
         return;
     }
     emit dbSaved();
+}
+
+/**
+ * Changes the master key of the currently opened DB to the specified one and saves the DB.
+ * Returns true if successful; otherwise emits a fileOpenError or dbSaveError and returns false.
+ */
+bool PwDatabaseFacade::changeMasterKey(const QString& password, const QString keyFilePath) {
+    QByteArray keyFileData;
+    if (!loadKeyFile(keyFilePath, keyFileData))
+        return false;
+
+    if (!db->changeMasterKey(password, keyFileData)) {
+        Util::safeClear(keyFileData);
+        return false;
+    }
+    Util::safeClear(keyFileData);
+
+    save();
+    return true;
 }

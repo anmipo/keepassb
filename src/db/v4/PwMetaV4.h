@@ -180,6 +180,7 @@ public:
     PwUuid getRecycleBinGroupUuid() const { return recycleBinGroupUuid; }
     void setRecycleBinGroupUuid(const PwUuid& uuid);
     void setRecycleBinChangedTime(const QDateTime& time);
+    void setMasterKeyChangedTime(const QDateTime& time);
     const MemoryProtection* getMemoryProtection() const { return &memoryProtection; }
     qint32 getHistoryMaxItems() const { return historyMaxItems; }
     qint64 getHistoryMaxSize() const { return historyMaxSize; }

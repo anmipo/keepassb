@@ -47,6 +47,16 @@ NavigationPane {
                 onTriggered: {
                     app.lock();
                 }
+            },
+            ActionItem {
+                title: qsTr("Change Master Key", "A button/action to change the master key (main password) of the database") + Retranslate.onLocaleOrLanguageChanged
+				imageSource: "asset:///images/ic_edit_key.png"
+                enabled: !database.locked && database.isEditable();
+                onTriggered: {
+                    var changeMasterKeySheet = changeMasterKeySheetComponent.createObject(naviPane.top);
+                    changeMasterKeySheet.open();
+                    changeMasterKeySheet.autofocus();
+                }
             }
         ]
     }
@@ -138,6 +148,10 @@ NavigationPane {
             autoUpdateEnabled: true
             confirmButton.label: ""
             cancelButton.label: ""
+        },
+        ComponentDefinition {
+            id: changeMasterKeySheetComponent
+            source: "asset:///ChangeMasterKeyPage.qml"
         }
     ]
 

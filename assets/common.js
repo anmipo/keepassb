@@ -107,3 +107,26 @@ function deleteGroup(group) {
     group.moveToBackup(); // also updates timestamps
     Qt.database.save();
 }
+
+/**
+ * Creates an Option of the given DropDown; 
+ * deletes the previous option with the same value, if any.
+ */
+function createUniqueOption(fullPath, dropdown, newOptionComponent) {
+    // First, remove any already existing options with this path
+    var existingIndex = -1;
+    var options = dropdown.options;
+    for (var i = 0; i < dropdown.count(); i++) {
+        if (options[i].value == fullPath) {
+            existingIndex = i;
+            break;
+        } 
+    }
+    if (existingIndex >= 0)
+        dropdown.remove(dropdown.options[existingIndex]);
+
+    var option = newOptionComponent.createObject();
+    option.value = fullPath;
+    option.text = prettifyFilePath(fullPath);
+    return option;
+}
