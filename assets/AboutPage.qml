@@ -17,7 +17,8 @@ Page {
                 Invocation {
                     id: invokeSendEmail
                     query {
-                        uri: "mailto:blackberry@popleteev.com?subject=KeePassB%202"
+                        uri: "mailto:blackberry@popleteev.com?subject=" + Application.applicationName 
+                                + "%20(v" + Application.applicationVersion + ")"
                         invokeActionId: "bb.action.SENDEMAIL"
                         invokeTargetId: "sys.pim.uib.email.hybridcomposer"
                     }
