@@ -221,6 +221,7 @@ quint64 Util::bytesToQuint64(const QByteArray& bytes) {
 QByteArray Util::quint32ToBytes(const quint32 value) {
     QByteArray bytes;
     QDataStream stream(&bytes, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
     stream << value;
     return bytes;
 }
@@ -229,6 +230,7 @@ QByteArray Util::quint32ToBytes(const quint32 value) {
 QByteArray Util::quint64ToBytes(const quint64 value) {
     QByteArray bytes;
     QDataStream stream(&bytes, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
     stream << value;
     return bytes;
 }
