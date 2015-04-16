@@ -254,7 +254,6 @@ Page {
                 console.log("Creating new DB: " + newDbFileName);
                 if (database.createDatabaseV4(newDbFileName)) {
                     console.log("createDatabaseV4() success");
-                    databaseUnlocked();
                     // Now force the user to change (or rather set) the master key                    
                     var changeMasterKeySheetComponent =Qt.createComponent("ChangeMasterKeyPage.qml");
                     //TODO: check if the above leaks
