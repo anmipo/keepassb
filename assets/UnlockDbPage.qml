@@ -252,7 +252,6 @@ Page {
             onFileSelected: {
                 var newDbFileName = selectedFiles[0];
                 console.log("Creating new DB: " + newDbFileName);
-                chooseDatabaseFile(newDbFileName);
                 if (database.createDatabaseV4(newDbFileName)) {
                     console.log("createDatabaseV4() success");
                     databaseUnlocked();
@@ -262,8 +261,21 @@ Page {
                     var changeMasterKeySheet = changeMasterKeySheetComponent.createObject(naviPane.top, {"creationMode": true});
                     changeMasterKeySheet.open();
                     changeMasterKeySheet.autofocus();
+                    
+                    // restore the pre-Browse selection, in case creation gets cancelled;
+                    // if creation is successful, the selection will be updated. 
+                    dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex; 
+
+                    changeMasterKeySheet.masterKeyChanged.connect(function() {
+                        // add DB/keyfile to recent history only if the DB was actually saved
+                        chooseDatabaseFile(newDbFileName);
+                        var keyfile = appSettings.getKeyFileForDatabase(newDbFileName);
+                        selectKeyOptionByFilename(keyfile);
+                        appSettings.addRecentFiles(dbFilePath, keyFilePath);
+                    });
                 } else {
                     console.log("createDatabaseV4() failed");
+                    dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex; // restore the pre-Browse selection 
                 }
             }
             onCanceled: {

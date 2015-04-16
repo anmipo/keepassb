@@ -14,6 +14,7 @@ Sheet {
     property string keyFilePath: ""
     property string dbName
     property bool creationMode: false // Are we working with a new in-memory-only DB?
+    signal masterKeyChanged // emitted when the key successfully changed
     
     onCreationCompleted: {
         // close without saving when DB is being locked
@@ -55,6 +56,7 @@ Sheet {
                     app.prepareQuickUnlock(password);
                 }
             }
+            masterKeyChanged();
             _close();
         } else {
             // There was an error. The message will be shown via signals.
