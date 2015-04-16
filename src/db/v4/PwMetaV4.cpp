@@ -18,7 +18,7 @@
 int DEFAULT_HISTORY_MAX_ITEMS = 10; // -1 for unlimited
 int DEFAULT_HISTORY_MAX_SIZE = 6 * 1024 * 1024; // -1 for unlimited
 int DEFAULT_MAINTENANCE_HISTORY_DAYS = 365;
-
+const QString GENERATOR_NAME = QString("KeePassB"); // short app name, no version
 
 MemoryProtection::MemoryProtection(QObject* parent) : QObject(parent) {
     clear(); // reset to default values
@@ -558,7 +558,7 @@ PwBinaryV4* PwMetaV4::findBinary(const QByteArray& data, bool isCompressed) cons
 
 void PwMetaV4::setHeaderHash(const QByteArray& headerHash) {
     if (this->headerHash != headerHash) {
-        this->headerHash = QByteArray(headerHash);
+        this->headerHash = Util::deepCopy(headerHash);
     }
 }
 
@@ -575,6 +575,8 @@ bool PwMetaV4::isHeaderHashMatch(const QByteArray& dbHeaderHash) const {
 ErrorCodesV4::ErrorCode PwMetaV4::writeToStream(QXmlStreamWriter& xml, Salsa20& salsa20) {
     xml.writeStartElement(XML_META);
 
+    // Replace the original generator name with this app's name
+    generator = GENERATOR_NAME;
     PwStreamUtilsV4::writeString(xml, XML_GENERATOR, generator);
     PwStreamUtilsV4::writeBase64(xml, XML_HEADER_HASH, headerHash);
     PwStreamUtilsV4::writeString(xml, XML_DATABASE_NAME, databaseName);

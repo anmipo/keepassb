@@ -21,7 +21,7 @@ public:
     virtual ~PwUuid();
 
     void clear();
-    QByteArray toByteArray() const { return bytes; }
+    QByteArray toByteArray() const { return Util::deepCopy(bytes); }
 
     /** Generates and returns a new UUID instance. */
     static PwUuid create();

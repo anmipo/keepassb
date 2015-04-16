@@ -13,7 +13,7 @@
 #include "db/PwDatabase.h"
 
 
-const int PwEntry::DEFAULT_ICON_ID = 0; // "key"
+const int PwEntry::DEFAULT_ICON_ID = PwIcon::KEY;
 
 /*****************************/
 
@@ -235,7 +235,7 @@ PwEntry::~PwEntry() {
 
 void PwEntry::clear() {
     _uuid.clear();
-    _iconId = -1;
+    _iconId = DEFAULT_ICON_ID;
 
     QDateTime now = QDateTime::currentDateTime();
     _creationTime = now;

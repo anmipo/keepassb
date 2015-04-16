@@ -27,6 +27,9 @@ const QByteArray SALSA_20_INIT_VECTOR = QByteArray("\xE8\x30\x09\x4B\x97\x20\x5D
 // Size of encryption initial vector in bytes
 const int INITIAL_VECTOR_SIZE = 16;
 
+// Default number of transform rounds for new DBs
+const quint64 DEFAULT_TRANSFORM_ROUNDS = 123456; // ~2 seconds delay on BB Q10
+
 // DB unlock stages progress percentage
 const quint8 UNLOCK_PROGRESS_KEY_TRANSFORM[]  = { 0, 60};
 const quint8 UNLOCK_PROGRESS_DECRYPTION[]     = {60, 70};
@@ -97,7 +100,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
                 return NOT_AES; // Not AES cypher
             break;
         case HEADER_COMPRESSION_FLAGS:
-            if (fieldValue.at(0) > 1)
+            if (Util::bytesToQuint32(fieldValue) > COMPRESSION_GZIP)
                 return UNKNOWN_COMPRESSION_ALGORITHM;
             break;
         case HEADER_MASTER_SEED:
@@ -109,7 +112,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
                 return TRANSFORM_SEED_SIZE_MISMATCH; // Transform seed size is not 32 bytes
             break;
         case HEADER_TRANSFORM_ROUNDS:
-            transformRounds = *(quint64*)fieldValue.constData();
+            transformRounds = Util::bytesToQuint64(fieldValue);
             break;
         case HEADER_ENCRYPTION_IV:
             if (fieldSize != INITIAL_VECTOR_SIZE)
@@ -245,6 +248,11 @@ quint64 PwHeaderV4::getTransformRounds() const {
     return transformRounds;
 }
 
+void PwHeaderV4::setTransformRounds(const quint64 value) {
+    data.insert(HEADER_TRANSFORM_ROUNDS, Util::quint64ToBytes(value));
+    transformRounds = value;
+}
+
 QByteArray PwHeaderV4::getTransformSeed() const {
     return data.value(HEADER_TRANSFORM_SEED);
 }
@@ -266,12 +274,26 @@ QByteArray PwHeaderV4::getProtectedStreamKey() const {
 }
 
 bool PwHeaderV4::isCompressed() const {
-    return (data.value(HEADER_COMPRESSION_FLAGS).at(0) != 0);
+    quint32 flags = Util::bytesToQuint32(data.value(HEADER_COMPRESSION_FLAGS));
+    return (flags != COMPRESSION_NONE);
+}
+
+void PwHeaderV4::setCompressionFlags(const quint32 flags) {
+    data.insert(HEADER_COMPRESSION_FLAGS, Util::quint32ToBytes(flags));
 }
 
 QByteArray PwHeaderV4::getHash() const {
     return hash;
 }
+
+void PwHeaderV4::setCipherId(const PwUuid& uuid) {
+    data.insert(HEADER_CIPHER_ID, uuid.toByteArray());
+}
+
+void PwHeaderV4::setInnerRandomStreamId(const PwUuid& uuid) {
+    data.insert(HEADER_INNER_RANDOM_STREAM_ID, uuid.toByteArray());
+}
+
 int PwHeaderV4::sizeInBytes() const {
     return size;
 }
@@ -313,8 +335,9 @@ PwGroup* PwDatabaseV4::getBackupGroup(bool createIfMissing) {
         if (!recycleBinGroup && createIfMissing) {
             // no such group - create one
             recycleBinGroup = root->createGroup();
-            recycleBinGroup->setName(PwGroupV4::RECYCLE_BIN_GROUP_NAME);
-            recycleBinGroup->setIconId(PwGroupV4::RECYCLE_BIN_GROUP_ICON_ID);
+            QString recycleBinGroupName = tr("Recycle Bin", "Name of a group which contains deleted entries");
+            recycleBinGroup->setName(recycleBinGroupName);
+            recycleBinGroup->setIconId(PwIcon::TRASH_BIN);
             recycleBinGroup->setDeleted(true);
 
             meta.setRecycleBinGroupUuid(recycleBinGroup->getUuid());
@@ -1017,4 +1040,67 @@ bool PwDatabaseV4::changeMasterKey(const QString& password, const QByteArray& ke
 
     meta.setMasterKeyChangedTime(QDateTime::currentDateTime());
     return true;
+}
+
+/**
+ * Creates an DB v4 instance and initializes it with meaningful default values (header, meta, etc)
+ * Also adds in a few sample groups/entries.
+ * Set dbName to the database file name without extension.
+ * Leaves master key uninitialized, so call changeMasterKey() after this method.
+ */
+PwDatabaseV4* PwDatabaseV4::createSampleDatabase(const QString& dbName) {
+    PwDatabaseV4* db = new PwDatabaseV4();
+
+    db->header.setCipherId(AES_ID); //uuid
+    db->header.setCompressionFlags(PwHeaderV4::COMPRESSION_GZIP); //uint32
+    db->header.setInnerRandomStreamId(SALSA_20_ID); // uuid
+    db->header.setTransformRounds(DEFAULT_TRANSFORM_ROUNDS);
+
+    // Master key is left non-initialized, as documented.
+    db->header.randomizeInitialVectors();
+    db->initSalsa20();
+
+    // No need to set meta fields: they either have sensible default values,
+    // or will be updated on save (e.g., hash and generator name)
+
+    // Create the root and fill it with some groups/entries
+    PwGroupV4* root = new PwGroupV4(db);
+    db->_rootGroup = root;
+    root->setUuid(PwUuid::create());
+    root->setDatabase(db);
+    root->setParentGroup(NULL);
+    root->setIconId(49);
+    root->setName(dbName);
+
+    PwGroupV4* subGroupGeneral = dynamic_cast<PwGroupV4*>(root->createGroup());
+    subGroupGeneral->setIconId(PwIcon::FOLDER);
+    subGroupGeneral->setName(tr("General", "Name of a sample group intended for various/miscellaneous entries"));
+
+    PwGroupV4* subGroupSystem = dynamic_cast<PwGroupV4*>(root->createGroup());
+    subGroupSystem->setIconId(PwIcon::NETWORK_FOLDER_WINDOWS);
+    subGroupSystem->setName(tr("System", "Name of a sample group intended for operating system related entries"));
+
+    PwGroupV4* subGroupNetwork = dynamic_cast<PwGroupV4*>(root->createGroup());
+    subGroupNetwork->setIconId(PwIcon::SERVER);
+    subGroupNetwork->setName(tr("Network", "Name of a sample group intended for computer network related entries (servers, routers, etc)"));
+
+    PwGroupV4* subGroupInternet = dynamic_cast<PwGroupV4*>(root->createGroup());
+    subGroupInternet->setIconId(PwIcon::GLOBE);
+    subGroupInternet->setName(tr("Internet", "Name of a sample group intended for general Internet-related entries (websites, forums, social networks, etc)"));
+
+    PwGroupV4* subGroupEmail = dynamic_cast<PwGroupV4*>(root->createGroup());
+    subGroupEmail->setIconId(PwIcon::ENVELOPE_OPEN);
+    subGroupEmail->setName(tr("eMail", "Name of a sample group intended for e-mail related entries (email accounts)"));
+
+    PwGroupV4* subGroupBanking = dynamic_cast<PwGroupV4*>(root->createGroup());
+    subGroupBanking->setIconId(PwIcon::PERCENT);
+    subGroupBanking->setName(tr("Homebanking", "Name of a sample group intended for banking/finance related entries (Internet banking, credit cards, payment gateways)"));
+
+    PwEntryV4* entry1 = dynamic_cast<PwEntryV4*>(root->createEntry());
+    entry1->setTitle(tr("Sample Entry", "Title of a sample entry"));
+    entry1->setUserName(tr("john.smith", "Sample user name of a sample entry. Set to a typical person name for your language."));
+    entry1->setPassword(tr("pa$$word", "Sample password of a sample entry. Translation is optional."));
+    entry1->setUrl("http://keepassb.com");
+
+    return db;
 }

@@ -69,6 +69,15 @@ public:
      * Makes a deep copy of the object.
      */
     static QByteArray deepCopy(const QByteArray& data);
+
+    /** Converts an 4-byte array to 32-bit unsigned integer. */
+    static quint32 bytesToQuint32(const QByteArray& bytes);
+    /** Converts an 8-byte array to 64-bit unsigned integer. */
+    static quint64 bytesToQuint64(const QByteArray& bytes);
+    /** Converts a 32-bit unsigned integer to a byte array. */
+    static QByteArray quint32ToBytes(const quint32 value);
+    /** Converts a 64-bit unsigned integer to a byte array. */
+    static QByteArray quint64ToBytes(const quint64 value);
 };
 
 #endif /* UTIL_H_ */

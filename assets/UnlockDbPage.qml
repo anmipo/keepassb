@@ -126,6 +126,10 @@ Page {
                     if (selectedOption == dbBrowseOption) {
                         // lastSelectedIndex should not change here
                         dbFilePicker.open();
+                    } else if (selectedOption == dbCreateOption) {
+                        // lastSelectedIndex should not change here
+                        // so if the user cancels, we select the previous DB
+                        newDbFilePicker.open();
                     } else if (selectedOption == dbDemoOption) {
                         lastSelectedIndex = selectedIndex; 
                         demoMode = true;
@@ -148,6 +152,12 @@ Page {
                         text: qsTr("Demo Database", "A special database used for demonstration purpose. Example: 'Database    Demo Database'.") + Retranslate.onLocaleOrLanguageChanged
                         imageSource: "asset:///pwicons/13.png"
                         value: "app/native/assets/demo.kdbx"
+                    },
+                    Option {
+                        id: dbCreateOption
+                        text: qsTr("Create Database...", "An action to create a new database.") + Retranslate.onLocaleOrLanguageChanged
+                        imageSource: "asset:///images/ic_create_database.png"
+                        value: "_create_"
                     },
                     Option {
                         id: dbBrowseOption
@@ -228,6 +238,33 @@ Page {
             title: qsTr("Choose Database", "Title of a database selection dialog; an invitation to choose a file.") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
                 chooseDatabaseFile(selectedFiles[0]);
+            }
+            onCanceled: {
+                dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex; // restore the pre-Browse selection
+            }
+        },
+        FilePicker {
+            id: newDbFilePicker
+            mode: FilePickerMode.Saver
+            type: FileType.Other
+            defaultSaveFileNames: qsTr("NewDatabase.kdbx", "Default file name for new databases. The '.kdbx' extension should not be translated.");
+            title: qsTr("Create Database", "Title of a file saving dialog used when creating new database file.") + Retranslate.onLocaleOrLanguageChanged
+            onFileSelected: {
+                var newDbFileName = selectedFiles[0];
+                console.log("Creating new DB: " + newDbFileName);
+                chooseDatabaseFile(newDbFileName);
+                if (database.createDatabaseV4(newDbFileName)) {
+                    console.log("createDatabaseV4() success");
+                    databaseUnlocked();
+                    // Now force the user to change (or rather set) the master key                    
+                    var changeMasterKeySheetComponent =Qt.createComponent("ChangeMasterKeyPage.qml");
+                    //TODO: check if the above leaks
+                    var changeMasterKeySheet = changeMasterKeySheetComponent.createObject(naviPane.top, {"creationMode": true});
+                    changeMasterKeySheet.open();
+                    changeMasterKeySheet.autofocus();
+                } else {
+                    console.log("createDatabaseV4() failed");
+                }
             }
             onCanceled: {
                 dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex; // restore the pre-Browse selection

@@ -200,3 +200,35 @@ QByteArray Util::deepCopy(const QByteArray& data) {
     QByteArray copy = QByteArray(data.constData(), data.size()); // makes a deep copy
     return copy; // returns an implicitly-shared copy of the deep copy
 }
+
+/** Converts a 4-byte array to 32-bit unsigned integer. */
+quint32 Util::bytesToQuint32(const QByteArray& bytes) {
+    Q_ASSERT(bytes.length() == sizeof(quint32));
+
+    quint32 value = *(quint32*)bytes.constData();
+    return value;
+}
+
+/** Converts an 8-byte array to 64-bit unsigned integer. */
+quint64 Util::bytesToQuint64(const QByteArray& bytes) {
+    Q_ASSERT(bytes.length() == sizeof(quint64));
+
+    quint64 value = *(quint64*)bytes.constData();
+    return value;
+}
+
+/** Converts a 32-bit unsigned integer to a byte array. */
+QByteArray Util::quint32ToBytes(const quint32 value) {
+    QByteArray bytes;
+    QDataStream stream(&bytes, QIODevice::WriteOnly);
+    stream << value;
+    return bytes;
+}
+
+/** Converts a 64-bit unsigned integer to a byte array. */
+QByteArray Util::quint64ToBytes(const quint64 value) {
+    QByteArray bytes;
+    QDataStream stream(&bytes, QIODevice::WriteOnly);
+    stream << value;
+    return bytes;
+}

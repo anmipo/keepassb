@@ -52,8 +52,8 @@ public:
     const static quint32 FILE_VERSION_CRITICAL_MASK = 0xFFFF0000;
 
     enum CompressionAlgorithm {
-        NONE = 0,
-        GZIP = 1
+        COMPRESSION_NONE = 0,
+        COMPRESSION_GZIP = 1
     };
     enum ErrorCode {
         SUCCESS               = 0,
@@ -87,14 +87,6 @@ public:
      */
     ErrorCode write(QDataStream& outStream);
 
-    quint64 getTransformRounds() const;
-    QByteArray getTransformSeed() const;
-    QByteArray getMasterSeed() const;
-    QByteArray getInitialVector() const;
-    QByteArray getStreamStartBytes() const;
-    QByteArray getProtectedStreamKey() const;
-    bool isCompressed() const;
-
     /**
      * Returns SHA-256 hash of the header content.
      * The value is updated only by read() or write().
@@ -115,8 +107,20 @@ public:
      * Returns false in case of RNG error;
      */
     bool randomizeInitialVectors();
-};
 
+    // Field accessors
+    quint64 getTransformRounds() const;
+    void setTransformRounds(const quint64 value);
+    QByteArray getTransformSeed() const;
+    QByteArray getMasterSeed() const;
+    QByteArray getInitialVector() const;
+    QByteArray getStreamStartBytes() const;
+    QByteArray getProtectedStreamKey() const;
+    bool isCompressed() const;
+    void setCompressionFlags(const quint32 flags);
+    void setCipherId(const PwUuid& uuid);
+    void setInnerRandomStreamId(const PwUuid& uuid);
+};
 
 
 /**
@@ -234,6 +238,14 @@ public:
      * Returns true if successful, otherwise emits an error and returns false.
      */
     virtual bool changeMasterKey(const QString& password, const QByteArray& keyFileData);
+
+    /**
+     * Creates an DB v4 instance and initializes it with meaningful default values (header, meta, etc)
+     * Also adds in a few sample groups/entries.
+     * Set dbName to the database file name without extension.
+     * Leaves master key uninitialized, so call changeMasterKey() after this method.
+     */
+    static PwDatabaseV4* createSampleDatabase(const QString& dbName);
 
     /**
      * Erases all loaded/decrypted data

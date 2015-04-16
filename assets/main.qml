@@ -53,7 +53,7 @@ NavigationPane {
 				imageSource: "asset:///images/ic_edit_key.png"
                 enabled: !database.locked && database.isEditable();
                 onTriggered: {
-                    var changeMasterKeySheet = changeMasterKeySheetComponent.createObject(naviPane.top);
+                    var changeMasterKeySheet = changeMasterKeySheetComponent.createObject(naviPane.top, {creationMode: false});
                     changeMasterKeySheet.open();
                     changeMasterKeySheet.autofocus();
                 }

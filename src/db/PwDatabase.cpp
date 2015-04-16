@@ -267,6 +267,16 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     db->setDatabaseFilePath(dbFilePath);
 
     // Setup signal forwarding
+    connectDatabaseSignals();
+
+    // Do the actual unlocking/loading
+    db->load(dbFileData, password, keyFileData);
+    Util::safeClear(dbFileData);
+    Util::safeClear(keyFileData);
+}
+
+/** Establishes signal forwarding from DB instance to this facade */
+void PwDatabaseFacade::connectDatabaseSignals() {
     bool res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLocked()), this, SLOT(onDbLocked())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbUnlocked()), this, SLOT(onDbUnlocked())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(dbLoadError(QString, int)), this, SIGNAL(dbUnlockError(QString, int))); Q_ASSERT(res);
@@ -274,11 +284,6 @@ void PwDatabaseFacade::unlock(const QString &dbFilePath, const QString &password
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(invalidPasswordOrKey()), this, SIGNAL(invalidPasswordOrKey())); Q_ASSERT(res);
     res = QObject::connect(dynamic_cast<QObject*>(db), SIGNAL(progressChanged(int)), this, SIGNAL(progressChanged(int))); Q_ASSERT(res);
     Q_UNUSED(res);
-
-    // Do the actual unlocking/loading
-    db->load(dbFileData, password, keyFileData);
-    Util::safeClear(dbFileData);
-    Util::safeClear(keyFileData);
 }
 
 /**
@@ -302,6 +307,7 @@ bool PwDatabaseFacade::loadKeyFile(const QString& keyFilePath, QByteArray& keyFi
     }
     return true;
 }
+
 PwDatabase* PwDatabaseFacade::createDatabaseInstance(const QByteArray& rawDbData) {
     if (PwDatabaseV3::isSignatureMatch(rawDbData)) {
         return new PwDatabaseV3();
@@ -350,15 +356,17 @@ QString PwDatabaseFacade::makeBackupFilePath(QString dbFilePath) {
 
 /**
  * Saves changes in the current database.
+ * If successful, returns true and emits dbSaved() signal;
+ * otherwise returns false and (sometimes) emits an appropriate error signal.
  */
-Q_INVOKABLE void PwDatabaseFacade::save() {
+Q_INVOKABLE bool PwDatabaseFacade::save() {
     if (!db) {
         qDebug() << "Cannot save - no DB open";
-        return;
+        return false;
     }
     if (isLocked()) {
         qDebug() << "Cannot save - DB is locked";
-        return;
+        return false;
     }
 
     emit dbAboutToSave();
@@ -367,7 +375,7 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
     QByteArray outData;
     if (!db->save(outData)) {
         qDebug() << "DB saving failed";
-        return;
+        return false;
     }
 
     // Save to a temporary file and check all the errors
@@ -376,18 +384,20 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
     if (!outDbFile.open(QIODevice::WriteOnly)) {
         qDebug() << "Cannot open DB file: '" << tmpFilePath << "' Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();
         emit fileSaveError(tr("Cannot save database file", "An error message shown when the database file cannot be saved."), outDbFile.errorString());
-        return;
+        return false;
     }
     qint64 bytesWritten = outDbFile.write(outData);
     if ((outDbFile.error() != QFile::NoError) || (bytesWritten != outData.size())) {
         qDebug() << "Cannot write to DB file. Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();
         emit fileSaveError(tr("Cannot write to database file", "An error message shown when the database file cannot be written to."), outDbFile.errorString());
-        return;
+        return false;
     }
     if (!outDbFile.flush()) {
         qDebug() << "Could not flush the DB file. Error: " << outDbFile.error() << ". Message: " << outDbFile.errorString();
         emit fileSaveError(tr("Error writing to database file", "An error message shown when the database file cannot be written to."), outDbFile.errorString());
-        // no return, pass through to close()
+        outDbFile.close();
+        // could not flush -> possibly not completely written -> not saved
+        return false;
     }
     outDbFile.close();
 
@@ -395,32 +405,34 @@ Q_INVOKABLE void PwDatabaseFacade::save() {
     QFile origDbFile(db->getDatabaseFilePath());
     if (Settings::instance()->isBackupDatabaseOnSave()) {
         // rename the original DB to a timestamped backup
+        // (but when we create a DB, the original does not exist, and it is ok)
         QString bakFileName = makeBackupFilePath(db->getDatabaseFilePath());
-        if (!origDbFile.rename(bakFileName)) {
+        if (origDbFile.exists() && !origDbFile.rename(bakFileName)) {
             qDebug() << "Failed to backup the original DB" << origDbFile.errorString();
             emit fileSaveError(tr("Cannot backup database file. Saving cancelled.", "An error message: failed to make a backup copy of the database file."), origDbFile.errorString());
-            return;
+            return false;
         }
     } else {
-        if (!origDbFile.remove()) {
+        if (origDbFile.exists() && !origDbFile.remove()) {
             qDebug() << "Failed to remove the original DB" << origDbFile.errorString();
             emit fileSaveError(tr("Cannot replace database file", "An error message: failed to replace database file with another file."), origDbFile.errorString());
-            return;
+            return false;
         }
     }
     if (!outDbFile.rename(db->getDatabaseFilePath())) {
         qDebug() << "Failed to rename tmp file: " << outDbFile.errorString();
         emit fileSaveError(tr("Cannot rename temporary database file", "An error message"), outDbFile.errorString());
-        return;
+        return false;
     }
     emit dbSaved();
+    return true;
 }
 
 /**
  * Changes the master key of the currently opened DB to the specified one and saves the DB.
  * Returns true if successful; otherwise emits a fileOpenError or dbSaveError and returns false.
  */
-bool PwDatabaseFacade::changeMasterKey(const QString& password, const QString keyFilePath) {
+bool PwDatabaseFacade::changeMasterKey(const QString& password, const QString& keyFilePath) {
     QByteArray keyFileData;
     if (!loadKeyFile(keyFilePath, keyFileData))
         return false;
@@ -431,6 +443,30 @@ bool PwDatabaseFacade::changeMasterKey(const QString& password, const QString ke
     }
     Util::safeClear(keyFileData);
 
-    save();
+    bool isSuccess = save();
+    return isSuccess;
+}
+
+/**
+ * Creates a sample v4 database with the given path and opens it.
+ * THe DB only exists in memory, no file is written.
+ * Master key is not initialized, so call changeMasterKey() afterwards.
+ * Returns true if successful; false in case of any error.
+ */
+Q_INVOKABLE bool PwDatabaseFacade::createDatabaseV4(const QString& dbFilePath) {
+    // Just in case, make sure there is no DB open
+    if (db || !isLocked()) {
+        qDebug() << "cannot create new DB, there is one opened";
+        return false;
+    }
+
+    QString dbName = QFileInfo(dbFilePath).baseName();
+    PwDatabaseV4* db4 = PwDatabaseV4::createSampleDatabase(dbName);
+    db = db4;
+
+    db4->setDatabaseFilePath(dbFilePath);
+    connectDatabaseSignals(); // Setup DB's signal forwarding to this facade
+    onDbUnlocked(); // notify QML that the DB is ready
+
     return true;
 }

@@ -15,6 +15,7 @@
 #include "db/PwGroup.h"
 #include <bb/cascades/DataModel>
 #include <bb/cascades/QListDataModel>
+#include "db/PwIcon.h"
 
 using namespace bb::cascades;
 

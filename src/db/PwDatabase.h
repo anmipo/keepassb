@@ -12,6 +12,7 @@
 #include <bb/cascades/QListDataModel>
 #include "db/PwGroup.h"
 #include "db/PwEntry.h"
+#include "db/PwIcon.h"
 
 class PwDatabaseFacade;
 
@@ -168,6 +169,9 @@ private:
     // Registers DB-related types for use in QML
     void registerQmlTypes();
 
+    /** Establishes signal forwarding from DB instance to this facade */
+    void connectDatabaseSignals();
+
     // Clears the current DB instance and search results, if any.
     void clear();
 
@@ -190,10 +194,18 @@ public:
     Q_INVOKABLE void unlock(const QString &dbFilePath, const QString &password, const QString &keyFilePath);
 
     /**
+     * Creates a sample v4 database with the given path and opens it.
+     * THe DB only exists in memory, no file is written.
+     * Master key is not initialized, so call changeMasterKey() afterwards.
+     * Returns true if successful; false in case of any error.
+     */
+    Q_INVOKABLE bool createDatabaseV4(const QString& dbFilePath);
+
+    /**
      * Changes the master key of the currently opened DB to the specified one and saves the DB.
      * Returns true if successful; otherwise emits a fileOpenError or dbSaveError and returns false.
      */
-    Q_INVOKABLE bool changeMasterKey(const QString& password, const QString keyFilePath);
+    Q_INVOKABLE bool changeMasterKey(const QString& password, const QString& keyFilePath);
 
     /** Returns the format version of the currently opened DB (3 or 4, or -1 if none opened) */
     Q_INVOKABLE int getFormatVersion() const { return (db ? db->getFormatVersion() : -1); }
@@ -236,8 +248,10 @@ public slots:
 
     /**
      * Saves changes in the current database.
+     * If successful, returns true and emits dbSaved() signal;
+     * otherwise returns false and (sometimes) emits an appropriate error signal.
      */
-    Q_INVOKABLE void save();
+    Q_INVOKABLE bool save();
 
 signals:
     void dbLocked();

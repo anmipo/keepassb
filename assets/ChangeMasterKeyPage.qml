@@ -13,6 +13,7 @@ Sheet {
     property alias keyType: masterKeyType.selectedValue 
     property string keyFilePath: ""
     property string dbName
+    property bool creationMode: false // Are we working with a new in-memory-only DB?
     
     onCreationCompleted: {
         // close without saving when DB is being locked
@@ -20,6 +21,12 @@ Sheet {
         app.restartWatchdog();
         loadRecentItems();
         dbName = Common.prettifyFilePath(database.getDatabaseFilePath());
+        if (creationMode) {
+            // when creating a database, user could not choose Quick Unlock mode,
+            // so disable it in case it was enabled.
+            appSettings.quickUnlockEnabled = false;
+            console.log("Quick Unlock disabled");
+        }
     }
     onClosed: {
         database.dbLocked.disconnect(_close);
@@ -80,6 +87,11 @@ Sheet {
                 title: qsTr("Cancel", "A button/action to cancel/close master password change form") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
                     _close();
+                    if (creationMode) {
+                        console.log("Database creation cancelled");
+                        //TODO show appropriate toast?
+                        app.lock();
+                    }
                 }
             }
         }
@@ -96,7 +108,10 @@ Sheet {
                 rightPadding: 10
                 bottomPadding: 10
                 Label {
-                    text: qsTr("You are about to change the master key for this database: <i>%1</i>", "Help text in the master key change dialog. %1 is the currently opened database file (for example, 'documents/database.dat')").arg(dbName) + Retranslate.onLocaleOrLanguageChanged
+                    text: (creationMode ?
+                        qsTr("Please specify the master key for encrypting your new database (<i>%1</i>). ", "Help text when setting the master key for a new database. %1 will be replaced with the file name (for example, 'documents/database.dat')").arg(dbName) : 
+                        qsTr("You are changing the master key for this database: <i>%1</i>", "Help text in the master key change dialog. %1 is the currently opened database file (for example, 'documents/database.dat')").arg(dbName)) 
+                            + Retranslate.onLocaleOrLanguageChanged
                     multiline: true
                     textFormat: TextFormat.Html
                     textStyle.base: SystemDefaults.TextStyles.BodyText
