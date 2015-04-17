@@ -181,16 +181,23 @@ void PwDatabaseFacade::setLocked(bool locked) {
 }
 
 void PwDatabaseFacade::lock() {
-    if (!isLocked()) {
-        clear();
-        emit dbLocked();
-    }
+	clear();
 }
 
 void PwDatabaseFacade::clear() {
     _searchResultDataModel.clear();
+    releaseDatabase(true);
+}
+
+/**
+ * Releases memory occupied by current DB instance (if any open),
+ * optionally locking it first.
+ */
+void PwDatabaseFacade::releaseDatabase(bool lockFirst) {
+    qDebug() << "releaseDatabase: " << lockFirst;
     if (db) {
-        db->lock();
+        if (lockFirst)
+            db->lock();
         delete db;
         db = NULL;
     }
@@ -216,6 +223,7 @@ bool PwDatabaseFacade::isRoot(PwGroup* group) const {
 
 void PwDatabaseFacade::onDbLocked() {
     setLocked(true);
+    releaseDatabase(false); // no need to lock, already locked
     emit dbLocked();
 }
 

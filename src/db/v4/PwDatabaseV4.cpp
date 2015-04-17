@@ -388,8 +388,12 @@ void PwDatabaseV4::load(const QByteArray& dbFileData, const QString& password, c
         return;
     }
 
-    if (readDatabase(dbFileData))
+    if (readDatabase(dbFileData)) {
         emit dbUnlocked();
+    } else {
+        // This is needed to clean up at higher abstraction levels
+        emit dbLocked();
+    }
 }
 
 /** Converts the password string to its raw representation, as of format version's rules */

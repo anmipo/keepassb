@@ -178,6 +178,9 @@ void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, c
 
     if (readDatabase(dbFileData)) {
         emit dbUnlocked();
+    } else {
+        // This is needed to clean up at higher abstraction levels
+        emit dbLocked();
     }
 }
 

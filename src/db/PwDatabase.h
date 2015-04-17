@@ -174,6 +174,11 @@ private:
 
     // Clears the current DB instance and search results, if any.
     void clear();
+    /**
+     * Releases memory occupied by current DB instance (if any open),
+     * optionally locking it first.
+     */
+    void releaseDatabase(bool lockFirst);
 
     /** Returns a timestamped backup file path for the given DB file path. */
     static QString makeBackupFilePath(QString dbFilePath);
