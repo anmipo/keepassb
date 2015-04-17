@@ -194,7 +194,6 @@ void PwDatabaseFacade::clear() {
  * optionally locking it first.
  */
 void PwDatabaseFacade::releaseDatabase(bool lockFirst) {
-    qDebug() << "releaseDatabase: " << lockFirst;
     if (db) {
         if (lockFirst)
             db->lock();

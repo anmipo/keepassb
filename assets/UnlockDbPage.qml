@@ -261,17 +261,10 @@ Page {
                     changeMasterKeySheet.open();
                     changeMasterKeySheet.autofocus();
                     
-                    // restore the pre-Browse selection, in case creation gets cancelled;
-                    // if creation is successful, the selection will be updated. 
-                    dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex; 
-
-                    changeMasterKeySheet.masterKeyChanged.connect(function() {
-                        // add DB/keyfile to recent history only if the DB was actually saved
-                        chooseDatabaseFile(newDbFileName);
-                        var keyfile = appSettings.getKeyFileForDatabase(newDbFileName);
-                        selectKeyOptionByFilename(keyfile);
-                        appSettings.addRecentFiles(dbFilePath, keyFilePath);
-                    });
+                    // Restore the pre-Browse selection, in case creation gets cancelled;
+                    dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex;
+                    // Select new db/keyfile once (if) creation is completed. 
+                    changeMasterKeySheet.masterKeyChanged.connect(loadRecentItems);
                 } else {
                     console.log("createDatabaseV4() failed");
                     dbDropDown.selectedIndex = dbDropDown.lastSelectedIndex; // restore the pre-Browse selection 

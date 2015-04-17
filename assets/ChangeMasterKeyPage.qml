@@ -56,6 +56,8 @@ Sheet {
                     app.prepareQuickUnlock(password);
                 }
             }
+            // Remember selected key file for this DB
+            appSettings.addRecentFiles(database.getDatabaseFilePath(), keyFilePath);
             masterKeyChanged();
             _close();
         } else {
@@ -199,7 +201,7 @@ Sheet {
                 }
                 Button {
                     id: saveChangesButton
-                    text: qsTr("Save Changes") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("Apply Changes", "A button/action which saves the database with the new master key.") + Retranslate.onLocaleOrLanguageChanged
                     horizontalAlignment: HorizontalAlignment.Fill
                     onClicked: {
                         var isKeyFileEmpty = (keyFilePath.length == 0);
