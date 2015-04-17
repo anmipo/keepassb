@@ -247,7 +247,7 @@ Page {
             id: newDbFilePicker
             mode: FilePickerMode.Saver
             type: FileType.Other
-            defaultSaveFileNames: qsTr("NewDatabase.kdbx", "Default file name for new databases. The '.kdbx' extension should not be translated.");
+            defaultSaveFileNames: qsTr("NewDatabase.kdbx", "Default file name for new databases. Please keep the '.kdbx' extension as it is.");
             title: qsTr("Create Database", "Title of a file saving dialog used when creating new database file.") + Retranslate.onLocaleOrLanguageChanged
             onFileSelected: {
                 var newDbFileName = selectedFiles[0];

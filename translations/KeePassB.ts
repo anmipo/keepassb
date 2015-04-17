@@ -10,49 +10,49 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="52"/>
+        <location filename="../assets/AboutPage.qml" line="53"/>
         <source>Version %1</source>
         <comment>Application version in &apos;About&apos; screen</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="57"/>
+        <location filename="../assets/AboutPage.qml" line="58"/>
         <source>©2014–2015 Andrei Popleteev</source>
         <comment>Developer name, do not translate</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="66"/>
+        <location filename="../assets/AboutPage.qml" line="67"/>
         <source>Credits</source>
         <comment>Title of the help page with acknowledgements and licensing terms of used components.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="71"/>
+        <location filename="../assets/AboutPage.qml" line="72"/>
         <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;, to Brian Pellin for &lt;a href=&apos;http://www.keepassdroid.com&apos;&gt;KeePassDroid&lt;/a&gt; and to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="79"/>
+        <location filename="../assets/AboutPage.qml" line="80"/>
         <source> </source>
         <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi.&apos;</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="88"/>
+        <location filename="../assets/AboutPage.qml" line="89"/>
         <source>Some icons are based on free samples of &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by Lubos Volkov and the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="97"/>
+        <location filename="../assets/AboutPage.qml" line="98"/>
         <source>Privacy Policy</source>
         <comment>Title of a help page</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="103"/>
+        <location filename="../assets/AboutPage.qml" line="104"/>
         <source>KeePassB does not collect any personal data nor share it with anyone.</source>
         <comment>Content of the &apos;Privacy Policy&apos; help page</comment>
         <translation type="unfinished"></translation>
@@ -349,90 +349,97 @@
 <context>
     <name>ChangeMasterKeyPage</name>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="78"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="89"/>
         <source>Master Key</source>
         <comment>Title of a dialog for changing main/master password of the current database</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="80"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="91"/>
         <source>Cancel</source>
         <comment>A button/action to cancel/close master password change form</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="99"/>
-        <source>You are about to change the master key for this database: &lt;i&gt;%1&lt;/i&gt;</source>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="116"/>
+        <source>Please specify the master key for encrypting your new database (&lt;i&gt;%1&lt;/i&gt;). </source>
+        <comment>Help text when setting the master key for a new database. %1 will be replaced with the file name (for example, &apos;documents/database.dat&apos;)</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="117"/>
+        <source>You are changing the master key for this database: &lt;i&gt;%1&lt;/i&gt;</source>
         <comment>Help text in the master key change dialog. %1 is the currently opened database file (for example, &apos;documents/database.dat&apos;)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="107"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="126"/>
         <source>Type</source>
         <comment>Title of a dropdown selection box to choose the type of database&apos;s master key (password, key file, or bot)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="111"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="130"/>
         <source>Password Only</source>
         <comment>One of the possible values of the &apos;Master key type&apos; selector</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="117"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="136"/>
         <source>Key File Only</source>
         <comment>One of the possible values of the &apos;Master key type&apos; selector</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="122"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="141"/>
         <source>Password + Key File</source>
         <comment>One of the possible values of the &apos;Master key type&apos; selector</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="141"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="160"/>
         <source>Key File</source>
         <comment>A label before the selected key file (see thesaurus). Example: &apos;Key File    Documents/file.dat&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="159"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="178"/>
         <source>(none)</source>
         <comment>Value of the &apos;Key File&apos; field when no key file were selected; will be displayed as &apos;Key Flie    (none)&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="166"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="185"/>
         <source>Browse...</source>
         <comment>A button/action which opens a file selection dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="175"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="194"/>
         <source>Enter password</source>
         <comment>Invitation to enter a password.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="185"/>
-        <source>Save Changes</source>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="204"/>
+        <source>Apply Changes</source>
+        <comment>A button/action which saves the database with the new master key.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="191"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="210"/>
         <source>Please specify the key file</source>
         <comment>An error message/invitation to choose the key file for the master key</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="197"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="216"/>
         <source>Password cannot be empty</source>
         <comment>An error message/invitation to enter a non-empty password for the master key</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ChangeMasterKeyPage.qml" line="222"/>
+        <location filename="../assets/ChangeMasterKeyPage.qml" line="241"/>
         <source>Choose Key File</source>
         <comment>Title of a key file selection dialog; an invitation to choose a file (also see &apos;key file&apos; in the thesaurus).</comment>
         <translation type="unfinished"></translation>
@@ -813,67 +820,67 @@
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="235"/>
+        <location filename="../src/db/PwDatabase.cpp" line="242"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="242"/>
+        <location filename="../src/db/PwDatabase.cpp" line="249"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="250"/>
+        <location filename="../src/db/PwDatabase.cpp" line="257"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="294"/>
+        <location filename="../src/db/PwDatabase.cpp" line="306"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="262"/>
+        <location filename="../src/db/PwDatabase.cpp" line="269"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="378"/>
+        <location filename="../src/db/PwDatabase.cpp" line="393"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="384"/>
+        <location filename="../src/db/PwDatabase.cpp" line="399"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="389"/>
+        <location filename="../src/db/PwDatabase.cpp" line="404"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="401"/>
+        <location filename="../src/db/PwDatabase.cpp" line="419"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="407"/>
+        <location filename="../src/db/PwDatabase.cpp" line="425"/>
         <source>Cannot replace database file</source>
         <comment>An error message: failed to replace database file with another file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="413"/>
+        <location filename="../src/db/PwDatabase.cpp" line="431"/>
         <source>Cannot rename temporary database file</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
@@ -888,25 +895,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="250"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="253"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="272"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="275"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="284"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="287"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="469"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="472"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
@@ -915,46 +922,106 @@
 <context>
     <name>PwDatabaseV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="364"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="338"/>
+        <source>Recycle Bin</source>
+        <comment>Name of a group which contains deleted entries</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="387"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="526"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="553"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="539"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="589"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="566"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="616"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="564"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="591"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="577"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="604"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="601"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="628"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="816"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="843"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1081"/>
+        <source>General</source>
+        <comment>Name of a sample group intended for various/miscellaneous entries</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1085"/>
+        <source>System</source>
+        <comment>Name of a sample group intended for operating system related entries</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1089"/>
+        <source>Network</source>
+        <comment>Name of a sample group intended for computer network related entries (servers, routers, etc)</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1093"/>
+        <source>Internet</source>
+        <comment>Name of a sample group intended for general Internet-related entries (websites, forums, social networks, etc)</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1097"/>
+        <source>eMail</source>
+        <comment>Name of a sample group intended for e-mail related entries (email accounts)</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1101"/>
+        <source>Homebanking</source>
+        <comment>Name of a sample group intended for banking/finance related entries (Internet banking, credit cards, payment gateways)</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1104"/>
+        <source>Sample Entry</source>
+        <comment>Title of a sample entry</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1105"/>
+        <source>john.smith</source>
+        <comment>Sample user name of a sample entry. Set to a typical person name for your language.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1106"/>
+        <source>pa$$word</source>
+        <comment>Sample password of a sample entry. Translation is optional.</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -988,31 +1055,31 @@
 <context>
     <name>PwHeaderV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="188"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="191"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="190"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="193"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="192"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="195"/>
         <source>Unknown compression algorithm</source>
         <comment>Error message when opening a database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="194"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="197"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="196"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="199"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translation type="unfinished"></translation>
@@ -1122,75 +1189,93 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="148"/>
+        <location filename="../assets/UnlockDbPage.qml" line="152"/>
         <source>Demo Database</source>
         <comment>A special database used for demonstration purpose. Example: &apos;Database    Demo Database&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="154"/>
-        <location filename="../assets/UnlockDbPage.qml" line="188"/>
+        <location filename="../assets/UnlockDbPage.qml" line="158"/>
+        <source>Create Database...</source>
+        <comment>An action to create a new database.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="164"/>
+        <location filename="../assets/UnlockDbPage.qml" line="198"/>
         <source>Browse...</source>
         <comment>A button/action which opens a file selection dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="164"/>
+        <location filename="../assets/UnlockDbPage.qml" line="174"/>
         <source>Key File</source>
         <comment>A label before the selected key file (see thesaurus). Example: &apos;Key File    Documents/file.dat&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="182"/>
+        <location filename="../assets/UnlockDbPage.qml" line="192"/>
         <source>(none)</source>
         <comment>Value of the &apos;Key File&apos; field when no key file were selected; will be displayed as &apos;Key Flie    (none)&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="198"/>
+        <location filename="../assets/UnlockDbPage.qml" line="208"/>
         <source>Enter password</source>
         <comment>Invitation to enter a password.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="208"/>
+        <location filename="../assets/UnlockDbPage.qml" line="218"/>
         <source>Enable Quick Unlock</source>
         <comment>A checkbox which activates the Quick Unlock function. &apos;Enable&apos; is used as &apos;activate&apos;, &apos;allow&apos;, &apos;turn on&apos;.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="218"/>
+        <location filename="../assets/UnlockDbPage.qml" line="228"/>
         <source>Demo database enables you to test KeePassB without importing a real database.
 To continue, tap the lock symbol below.</source>
         <comment>Description of the &apos;Demo Database&apos; option. The &apos;lock symbol&apos; refers to a button with a padlock icon.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="228"/>
+        <location filename="../assets/UnlockDbPage.qml" line="238"/>
         <source>Choose Database</source>
         <comment>Title of a database selection dialog; an invitation to choose a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="240"/>
+        <location filename="../assets/UnlockDbPage.qml" line="250"/>
+        <source>NewDatabase.kdbx</source>
+        <comment>Default file name for new databases. Please keep the &apos;.kdbx&apos; extension as it is.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="251"/>
+        <source>Create Database</source>
+        <comment>Title of a file saving dialog used when creating new database file.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/UnlockDbPage.qml" line="281"/>
         <source>Choose Key File</source>
         <comment>Title of a key file selection dialog; an invitation to choose a file (also see &apos;key file&apos; in the thesaurus).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="255"/>
+        <location filename="../assets/UnlockDbPage.qml" line="296"/>
         <source>Decrypting...</source>
         <comment>Title of a progress indicator while a database is being decrypted/decoded.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="269"/>
+        <location filename="../assets/UnlockDbPage.qml" line="310"/>
         <source>Open</source>
         <comment>A button/action which opens/unlocks a database file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/UnlockDbPage.qml" line="280"/>
+        <location filename="../assets/UnlockDbPage.qml" line="321"/>
         <source>Please provide a password or a key file.</source>
         <comment>Notification message when the user tries to open a database without providing any credentials</comment>
         <translation type="unfinished"></translation>
