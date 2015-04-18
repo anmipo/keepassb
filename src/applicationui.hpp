@@ -9,6 +9,7 @@
 #define ApplicationUI_HPP_
 
 #include <QObject>
+#include "util/Util.h"
 #include <bb/cascades/Application>
 #include <bb/cascades/LocaleHandler>
 #include <bb/system/InvokeManager>

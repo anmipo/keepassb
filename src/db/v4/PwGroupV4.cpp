@@ -80,13 +80,13 @@ PwGroup* PwGroupV4::createGroup() {
 bool PwGroupV4::moveToBackup() {
     PwDatabaseV4* db = dynamic_cast<PwDatabaseV4*>(getDatabase());
     if (!db) {
-        qDebug() << "PwGroupV4::moveToBackup fail - no reference to the DB";
+        LOG("PwGroupV4::moveToBackup fail - no reference to the DB");
         return false;
     }
 
     PwGroup* parentGroup = this->getParentGroup();
     if (!parentGroup) {
-        qDebug() << "PwGroupV4::moveToBackup fail - no parent group";
+        LOG("PwGroupV4::moveToBackup fail - no parent group");
         return false;
     }
 
@@ -118,7 +118,7 @@ bool PwGroupV4::moveToBackup() {
         // Backup group has been disabled for this DB...
         // So we delete the group and all children permanently and mention them
         // in the DeletedObjects list to facilitate synchronization.
-        qDebug() << "Backup group disabled, removing the group permanently.";
+        LOG("Backup group disabled, removing the group permanently.");
 
         db->addDeletedObject(getUuid());
         for (int i = 0; i < childGroups.size(); i++) {
@@ -133,7 +133,7 @@ bool PwGroupV4::moveToBackup() {
     }
     childGroups.clear();
     childEntries.clear();
-    qDebug() << "PwGroupV4::moveToBackup OK";
+    LOG("PwGroupV4::moveToBackup OK");
     return true;
 }
 
@@ -206,7 +206,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readFromStream(QXmlStreamReader& xml, PwMetaV
                 entry->setDeleted(this->isDeleted()); // propagate the deleted flag recursively
                 this->addEntry(entry);
             } else {
-                qDebug() << "unknown PwGroupV4 tag:" << tagName;
+                LOG("unknown PwGroupV4 tag: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_GROUP_PARSING_ERROR_TAG;
             }
@@ -253,7 +253,7 @@ ErrorCodesV4::ErrorCode PwGroupV4::readTimes(QXmlStreamReader& xml) {
                 if (!conversionOk)
                     return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_4;
             } else {
-                qDebug() << "unknown PwGroupV4/Times tag:" << tagName;
+                LOG("unknown PwGroupV4/Times tag: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_GROUP_TIMES_PARSING_ERROR_TAG;
             }

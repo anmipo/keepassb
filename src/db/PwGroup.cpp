@@ -7,7 +7,6 @@
 
 #include "PwGroup.h"
 #include "PwEntry.h"
-#include <QDebug>
 #include <QStringBuilder>
 #include <bb/cascades/ItemGrouping>
 #include <bb/cascades/DataModel>

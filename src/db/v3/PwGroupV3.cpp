@@ -216,7 +216,7 @@ bool PwGroupV3::isNameReserved(const QString& name) {
 bool PwGroupV3::moveToBackup() {
     PwGroup* parentGroup = this->getParentGroup();
     if (!parentGroup) {
-        qDebug() << "PwGroupV3::moveToBackup fail - no parent group";
+        LOG("PwGroupV3::moveToBackup fail - no parent group");
         return false;
     }
 
@@ -234,12 +234,12 @@ bool PwGroupV3::moveToBackup() {
     // V3 does not backup subgroups, so move only entries
     for (int i = 0; i < childEntries.size(); i++) {
         if (!childEntries.at(i)->moveToBackup()) {
-            qDebug() << "PwGroupV3::moveToBackup fail on child entry";
+            LOG("PwGroupV3::moveToBackup fail on child entry");
             return false;
         }
     }
     childGroups.clear();
     childEntries.clear();
-    qDebug() << "PwGroupV3::moveToBackup OK";
+    LOG("PwGroupV3::moveToBackup OK");
     return true;
 }

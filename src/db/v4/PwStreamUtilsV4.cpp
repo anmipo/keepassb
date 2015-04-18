@@ -6,7 +6,6 @@
  */
 
 #include <PwStreamUtilsV4.h>
-#include <qdebug.h>
 #include "db/v4/DefsV4.h"
 #include "util/Util.h"
 
@@ -141,7 +140,7 @@ void PwStreamUtilsV4::writeBase64(QXmlStreamWriter& xml, const QString& tagName,
 /** Skips to the end tag of an unknown element, ignoring any nested elements. */
 void PwStreamUtilsV4::readUnknown(QXmlStreamReader& xml) {
     QStringRef unknownTagName = xml.name();
-    qDebug() << "WARN: unknown XML element: " << unknownTagName;
+    LOG("WARN: unknown XML element: %s", unknownTagName.toUtf8().constData());
 
     while (!xml.hasError() && !(xml.isEndElement() && (xml.name() == unknownTagName))) {
         xml.readNext();

@@ -6,4 +6,10 @@ LIBS += -lbbsystem -lhuapi -lbbcascadespickers -lbbdevice -lbb
 
 CODECFORSRC = UTF-8
 
+device {
+	CONFIG(release, debug|release) {
+		DEFINES += QT_NO_WARNING_OUTPUT QT_NO_DEBUG_OUTPUT
+	}
+}
+
 include(config.pri)

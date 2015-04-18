@@ -71,7 +71,7 @@ PwHeaderV3::ErrorCode PwHeaderV3::read(QDataStream& stream) {
     if ((fileVersion & 0xFFFFFF00) != (DB_VERSION & 0xFFFFFF00))
         return UNSUPPORTED_FILE_VERSION;
 
-    qDebug("Signatures match");
+    LOG("Signatures match");
 
     masterSeed.fill(0, MASTER_SEED_SIZE);
     stream.readRawData(masterSeed.data(), MASTER_SEED_SIZE);
@@ -129,7 +129,7 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
     case NOT_AES:
         return tr("Twofish cypher is not supported", "Error message when opening a database. 'Twofish' is an algorithm name, do not translate it.");
     default:
-        return tr("Header error", "Error message when opening a database. 'Header' refers to supplemental data placed at the beginning of a file.");
+        return tr("Header error %1", "Error message when opening a database. 'Header' refers to supplemental data placed at the beginning of a file.").arg(errCode);
     }
 }
 
@@ -209,7 +209,7 @@ bool PwDatabaseV3::buildCompositeKey(const QByteArray& passwordKey, const QByteA
     int err;
     // if no key file were supplied, the keyFileData will be empty
     if (!passwordKey.isEmpty() && !keyFileData.isEmpty()) {
-        qDebug() << "using password and key file";
+        LOG("using password and key file");
         QByteArray passwordHash, fKey;
         err = cm->sha256(passwordKey, passwordHash);
         if (err != SB_SUCCESS)
@@ -222,14 +222,14 @@ bool PwDatabaseV3::buildCompositeKey(const QByteArray& passwordKey, const QByteA
         err = cm->sha256(passwordHash, combinedKey);
         return (err == SB_SUCCESS);
     } else if (keyFileData.isEmpty()) {
-        qDebug() << "using password only";
+        LOG("using password only");
         err = cm->sha256(passwordKey, combinedKey);
         return (err == SB_SUCCESS);
     } else if (passwordKey.isEmpty()) {
-        qDebug() << "using key file only";
+        LOG("using key file only");
         return processKeyFile(keyFileData, combinedKey);
     } else {
-        qDebug() << "empty keys provided (should not happen)";
+        LOG("empty keys provided (should not happen)");
         return false;
     }
 }
@@ -240,7 +240,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
 
     PwHeaderV3::ErrorCode headerErrCode = header.read(stream);
     if (headerErrCode != PwHeaderV3::SUCCESS) {
-        qDebug() << PwHeaderV3::getErrorMessage(headerErrCode) << headerErrCode;
+        LOG("%s: %d", PwHeaderV3::getErrorMessage(headerErrCode).toUtf8().constData(), headerErrCode);
         emit dbLoadError(PwHeaderV3::getErrorMessage(headerErrCode), headerErrCode);
         return false;
     }
@@ -249,7 +249,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     setPhaseProgressBounds(UNLOCK_PROGRESS_KEY_TRANSFORM);
     ErrorCode err = transformKey(combinedKey, aesKey);
     if (err != SUCCESS) {
-        qDebug() << "Cannot decrypt database - transformKey" << err;
+        LOG("Cannot decrypt database - transformKey: %d", err);
         emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
@@ -265,13 +265,13 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     Util::safeClear(dbBytesWithoutHeader);
     if (err != SUCCESS) {
         if (err == DECRYPTED_PADDING_ERROR || err == DECRYPTED_CHECKSUM_MISMATCH) {
-            qDebug() << "Cannot decrypt database - decryptData" << err;
+            LOG("Cannot decrypt database - decryptData: %d", err);
             emit invalidPasswordOrKey();
         } else {
             // err == CANNOT_DECRYPT_DB
             // err == CONTENT_HASHING_ERROR
             // err == something else
-            qDebug() << "Cannot decrypt database - decryptData" << err;
+            LOG("Cannot decrypt database - decryptData: %d", err);
             emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         }
         return false;
@@ -343,7 +343,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
     CryptoManager* cm = CryptoManager::instance();
     int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData, this);
     if (err != SB_SUCCESS) {
-        qDebug() << "decryptAES error: " << err;
+        LOG("decryptAES error: %d", err);
         return CANNOT_DECRYPT_DB;
     }
 
@@ -353,15 +353,15 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedDat
     QByteArray decryptedContentHash;
     err = cm->sha256(decryptedData, decryptedContentHash);
     if (err != SB_SUCCESS) {
-        qDebug() << "Failed to hash decrypted data" << err;
+        LOG("Failed to hash decrypted data: %d", err);
         return CONTENT_HASHING_ERROR;
     }
 
     if (decryptedContentHash != header.getContentHash()) {
-        qDebug() << "Decrypted checksum mismatch";
+        LOG("Decrypted checksum mismatch");
         return DECRYPTED_CHECKSUM_MISMATCH;
     }
-    qDebug() << "Checksum matches";
+    LOG("Checksum matches");
 
     return SUCCESS;
 }
@@ -452,7 +452,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::readContent(QDataStream& stream) {
         } else {
             qint32 groupId = entry->getGroupId();
             if (!groupById.contains(groupId)) {
-                qDebug() << "There is an entry " << entry->toString() << " with unknown groupId: " << groupId;
+                LOG("There is an entry %s with unknown groupId: %d", entry->toString().toUtf8().constData(), groupId);
                 return ORPHANED_ENTRY_ERROR;
             }
             PwGroupV3* group = groupById.value(groupId);
@@ -486,7 +486,7 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     // now update the header (hash and counts)
     header.setGroupCount(groupCount);
     header.setEntryCount(entryCount);
-    qDebug("Saving %d groups and %d entries", groupCount, entryCount);
+    LOG("Saving %d groups and %d entries", groupCount, entryCount);
 
     QByteArray contentHash;
     CryptoManager* cm = CryptoManager::instance();
@@ -501,7 +501,7 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     setPhaseProgressBounds(SAVE_PROGRESS_KEY_TRANSFORM);
     err = transformKey(combinedKey, aesKey);
     if (err != SUCCESS) {
-        qDebug() << "transformKey error while saving: " << err;
+        LOG("transformKey error while saving: %d", err);
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
@@ -517,7 +517,7 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     err = encryptContent(contentData, encryptedContentData);
     Util::safeClear(contentData);
     if (err != SUCCESS) {
-        qDebug() << "encryptContent error while saving: " << err;
+        LOG("encryptContent error while saving: %d", err);
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
@@ -534,7 +534,7 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::encryptContent(QByteArray& contentData, QB
     cm->addPadding16(contentData);
     int err = cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData, this);
     if (err != SB_SUCCESS) {
-        qDebug() << "encryptAES error while saving: " << err;
+        LOG("encryptAES error while saving: %d", err);
         return CANNOT_ENCRYPT_DB;
     }
     return SUCCESS;

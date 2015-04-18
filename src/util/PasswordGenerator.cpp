@@ -9,6 +9,7 @@
 #include <bb/cascades/Application>
 #include "crypto/CryptoManager.h"
 #include "util/Settings.h"
+#include "util/Util.h"
 
 const QString CHAR_SET_LOWER  = "abcdefghijklmnopqrstuvwxyz";
 const QString CHAR_SET_UPPER  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -52,7 +53,7 @@ QString PasswordGenerator::makeCustomPassword(const int length, const int flags)
 
     int charsetSize = charset.size();
     if (charsetSize == 0) {
-        qDebug() << "password charset is empty";
+        LOG("password charset is empty");
         return QString("");
     }
 

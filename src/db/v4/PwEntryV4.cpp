@@ -128,7 +128,7 @@ ErrorCodesV4::ErrorCode PwField::readFromStream(QXmlStreamReader& xml, Salsa20& 
                     value = PwStreamUtilsV4::readString(xml);
                 }
             } else {
-                qDebug() << "unknown tag in PwField::readFromStream():" << tagName;
+                LOG("unknown tag in PwField::readFromStream(): %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_ENTRY_FIELD_PARSING_ERROR_TAG;
             }
@@ -210,7 +210,7 @@ ErrorCodesV4::ErrorCode PwAutoType::readFromStream(QXmlStreamReader& xml) {
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else {
-                qDebug() << "unknown tag in PwAutoType:" << tagName;
+                LOG("unknown tag in PwAutoType: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_PARSING_ERROR_TAG;
             }
@@ -237,7 +237,7 @@ ErrorCodesV4::ErrorCode PwAutoType::readAssociation(QXmlStreamReader& xml) {
             } else if (tagName == XML_AUTO_TYPE_KEYSTROKE_SEQUENCE) {
                 sequence = PwStreamUtilsV4::readString(xml);
             } else {
-                qDebug() << "unknown tag in PwAutoType/association:" << tagName;
+                LOG("unknown tag in PwAutoType/association: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_ENTRY_AUTO_TYPE_ASSOCIATION_PARSING_ERROR_TAG;
             }
@@ -428,7 +428,7 @@ void PwEntryV4::removeOldestHistoryItem() {
     }
     if (indexToRemove >= 0) {
         _historyDataModel.removeAt(indexToRemove);
-        qDebug() << "Removed history item dated" << oldestTime.toString();
+        LOG("Removed history item dated %s", oldestTime.toString().toUtf8().constData());
     }
 }
 
@@ -608,7 +608,7 @@ bool PwEntryV4::backupState() {
 bool PwEntryV4::moveToBackup() {
     PwDatabaseV4* db = dynamic_cast<PwDatabaseV4*>(getDatabase());
     if (!db) {
-        qDebug() << "moveToBackup fail - no reference to the DB";
+        LOG("moveToBackup fail - no reference to the DB");
         return false;
     }
 
@@ -622,12 +622,12 @@ bool PwEntryV4::moveToBackup() {
         // Backup group has been disabled for this DB...
         // So we delete the entry permanently and mention it
         // in the DeletedObjects list to facilitate synchronization.
-        qDebug() << "Backup group disabled, removing the entry permanently.";
+        LOG("Backup group disabled, removing the entry permanently.");
         db->addDeletedObject(getUuid());
         deleteWithoutBackup();
     }
 
-    qDebug() << "moveToBackup OK";
+    LOG("moveToBackup OK");
     return true;
 }
 
@@ -744,7 +744,7 @@ ErrorCodesV4::ErrorCode PwEntryV4::readTimes(QXmlStreamReader& xml) {
                 if (!conversionOk)
                     return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_5;
             } else {
-                qDebug() << "unknown PwEntryV4/Times tag:" << tagName;
+                LOG("unknown PwEntryV4/Times tag: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_ENTRY_TIMES_PARSING_ERROR_TAG;
             }

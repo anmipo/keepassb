@@ -157,7 +157,6 @@ private:
     PwBinaryV4* findBinary(const QByteArray& data, bool isCompressed) const;
 
 public:
-    void debugPrint() const;
     PwMetaV4(QObject* parent=0);
     virtual ~PwMetaV4();
 

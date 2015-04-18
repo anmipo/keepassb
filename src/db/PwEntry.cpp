@@ -6,7 +6,6 @@
  */
 
 #include "PwEntry.h"
-#include <QDebug>
 #include <QDateTime>
 #include <QList>
 #include "util/Util.h"
@@ -55,11 +54,11 @@ PwAttachment* PwAttachment::clone() const {
 }
 
 bool PwAttachment::saveContentToFile(const QString& fileName) {
-    qDebug() << "Saving attachment to file: " << fileName;
+    LOG("Saving attachment to file: %s", fileName.toUtf8().constData());
 
     QFile outFile(fileName);
     if (!outFile.open(QIODevice::WriteOnly)) {
-        qDebug() << "Cannot open file for writing: " << fileName;
+        LOG("Cannot open file for writing: %s", fileName.toUtf8().constData());
         return false;
     }
 
@@ -68,10 +67,10 @@ bool PwAttachment::saveContentToFile(const QString& fileName) {
         QByteArray unpackedData;
         Util::ErrorCode err = Util::inflateGZipData(_data, unpackedData);
         if (err != Util::SUCCESS) {
-            qDebug() << "Attachment inflate error" << err;
+            LOG("Attachment inflate error %d", err);
             return false;
         }
-        qDebug() << "Data unpacked";
+        LOG("Data unpacked");
 
         dataSize = unpackedData.size();
         sizeWritten = outFile.write(unpackedData);
@@ -84,7 +83,7 @@ bool PwAttachment::saveContentToFile(const QString& fileName) {
     }
 
     if (sizeWritten != dataSize) {
-        qDebug("%d bytes written out of %d total", sizeWritten, dataSize);
+        LOG("%d bytes written out of %d total", sizeWritten, dataSize);
         return false;
     }
     outFile.close();
@@ -136,12 +135,14 @@ PwAttachment* PwAttachment::createFromFile(const QString& filePath, const bool a
     // Load the file to memory
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Cannot open attachment file: '" << filePath << "' Error: " << file.error() << ". Message: " << file.errorString();
+        LOG("Cannot open attachment file '%s'  Error: %d. Message: %s",
+                filePath.toUtf8().constData(), file.error(), file.errorString().toUtf8().constData());
         return NULL;
     }
     QByteArray fileData = file.readAll();
     if (file.error() != QFile::NoError) {
-        qDebug() << "Cannot read attachment file: '" << filePath << "' Error: " << file.error() << ". Message: " << file.errorString();
+        LOG("Cannot read attachment file '%s'  Error: %d. Message: %s",
+                filePath.toUtf8().constData(), file.error(), file.errorString().toUtf8().constData());
         file.close();
         return NULL;
     }
@@ -159,19 +160,19 @@ PwAttachment* PwAttachment::createFromFile(const QString& filePath, const bool a
         QByteArray compressedFileData;
         Util::ErrorCode err = Util::compressToGZip(fileData, compressedFileData);
         if (err != Util::SUCCESS) {
-            qDebug() << "Failed to compress new attachment. Error" << err;
+            LOG("Failed to compress new attachment. Error %d", err);
             // failed to compress - well, just save it as it is
             result->setData(fileData, false); // makes a deep copy
-            qDebug() << "attached raw data: " << fileData.size() << "bytes";
+            LOG("attached raw data: %d bytes", fileData.size());
         } else {
             result->setData(compressedFileData, true); // makes a deep copy
-            qDebug() << "attached compressed data: " << compressedFileData.size() << "bytes";
+            LOG("attached compressed data: %d bytes", compressedFileData.size());
         }
         Util::safeClear(compressedFileData);
     } else {
         // V3 format does not support compression...
         result->setData(fileData, false); // makes a deep copy
-        qDebug() << "attached raw data: " << fileData.size() << "bytes";
+        LOG("attached raw data: %d bytes", fileData.size());
     }
     Util::safeClear(fileData);
     return result;

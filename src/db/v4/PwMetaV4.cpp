@@ -65,7 +65,7 @@ ErrorCodesV4::ErrorCode MemoryProtection::readFromStream(QXmlStreamReader& xml) 
             } else if (XML_MEMORY_PROTECTION_PROTECT_NOTES == tagName) {
                 _protectNotes = PwStreamUtilsV4::readBool(xml, false);
             } else {
-                qDebug() << "WARN: unknown MemoryProtection tag " << tagName;
+                LOG("WARN: unknown MemoryProtection tag: %s", tagName.toUtf8().constData());
                 return ErrorCodesV4::XML_META_MEMORY_PROTECTION_PARSING_ERROR_TAG;
             }
         }
@@ -117,7 +117,7 @@ ErrorCodesV4::ErrorCode PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa2
         bool convOk;
         _id = attrs.value(XML_BINARY_ID).toString().toInt(&convOk);
         if (!convOk) {
-            qDebug() << "PwBinaryV4::readFromStream() int conversion failed";
+            LOG("PwBinaryV4::readFromStream() int conversion failed");
             // We cannot fix this, so fail
             _id = -1;
         }
@@ -130,7 +130,7 @@ ErrorCodesV4::ErrorCode PwBinaryV4::readFromStream(QXmlStreamReader& xml, Salsa2
             salsa20.xorWithNextBytes(_data);
         }
     } else {
-        qDebug() << "invalid Binary structure, got" << xml.name() << "tag";
+        LOG("invalid Binary structure, got %s tag.", xml.name().toUtf8().constData());
         return ErrorCodesV4::XML_META_BINARY_PARSING_ERROR_TAG;
     }
 
@@ -200,7 +200,7 @@ ErrorCodesV4::ErrorCode PwCustomIconV4::readFromStream(QXmlStreamReader& xml) {
             } else if (tagName == XML_CUSTOM_ICON_ITEM_DATA) {
                 data = PwStreamUtilsV4::readBase64(xml); // implicit deep copy
             } else {
-                qDebug() << "unexpected XML tag in CustomIcon: " << tagName;
+                LOG("unexpected XML tag in CustomIcon: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_CUSTOM_ICON_ITEM_PARSING_ERROR_TAG;
             }
@@ -360,7 +360,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readFromStream(QXmlStreamReader& xml, Salsa20&
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else {
-                qDebug() << "unexpected XML tag in Meta:" << tagName;
+                LOG("unexpected XML tag in Meta: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_PARSING_ERROR_TAG;
             }
@@ -388,7 +388,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomIcons(QXmlStreamReader& xml) {
                     return err;
                 customIcons.insert(icon->getUuid(), icon);
             } else {
-                qDebug() << "unexpected XML tag in CustomIcons: " << tagName;
+                LOG("unexpected XML tag in CustomIcons: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_CUSTOM_ICONS_PARSING_ERROR_TAG;
             }
@@ -415,7 +415,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readBinaries(QXmlStreamReader& xml, Salsa20& s
                     return err;
                 binaries.insert(binary->getId(), binary);
             } else {
-                qDebug() << "unexpected XML tag in Binaries: " << tagName;
+                LOG("unexpected XML tag in Binaries: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_BINARIES_PARSING_ERROR_TAG;
             }
@@ -441,7 +441,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomData(QXmlStreamReader& xml) {
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else {
-                qDebug() << "unexpected XML tag in CustomData:" << tagName;
+                LOG("unexpected XML tag in CustomData: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_CUSTOM_DATA_PARSING_ERROR_TAG;
             }
@@ -468,7 +468,7 @@ ErrorCodesV4::ErrorCode PwMetaV4::readCustomDataItem(QXmlStreamReader& xml) {
             } else if (tagName == XML_VALUE) {
                 value = PwStreamUtilsV4::readString(xml);
             } else {
-                qDebug() << "unexpected XML tag in CustomData item:" << tagName;
+                LOG("unexpected XML tag in CustomData item: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_META_CUSTOM_DATA_ITEM_PARSING_ERROR_TAG;
             }
@@ -649,40 +649,4 @@ void PwMetaV4::writeCustomData(QXmlStreamWriter& xml) const {
     } else {
         xml.writeEmptyElement(XML_CUSTOM_DATA);
     }
-}
-
-void PwMetaV4::debugPrint() const {
-    qDebug() << "Meta header:";
-    qDebug() << "  generator:" << generator;
-    qDebug() << "  databaseName:" << databaseName;
-    qDebug() << "  databaseNameChangedTime:" << databaseNameChangedTime;
-    qDebug() << "  databaseDescription:" << databaseDescription;
-    qDebug() << "  databaseDescriptionChangedTime:" << databaseDescriptionChangedTime;
-    qDebug() << "  defaultUserName:" << defaultUserName;
-    qDebug() << "  defaultUserNameChangedTime:" << defaultUserNameChangedTime;
-    qDebug() << "  maintenanceHistoryDays:" << maintenanceHistoryDays;
-    qDebug() << "  colorString:" << colorString;
-    qDebug() << "  masterKeyChangedTime:" << masterKeyChangedTime;
-    qDebug() << "  masterKeyChangeRec:" << masterKeyChangeRec;
-    qDebug() << "  masterKeyChangeForce:" << masterKeyChangeForce;
-    qDebug() << "  memoryProtection:" << memoryProtection.toString();
-    qDebug() << "  customIcons.size():" << customIcons.size();
-    foreach (PwCustomIconV4* it, customIcons.values()) {
-        qDebug() << "    " << it->toString();
-    }
-    qDebug() << "  recycleBinEnabled:" << recycleBinEnabled;
-    qDebug() << "  recycleBinGroupUuid:" << recycleBinGroupUuid.toString();
-    qDebug() << "  recycleBinChangedTime:" << recycleBinChangedTime;
-    qDebug() << "  entryTemplatesGroupUuid:" << entryTemplatesGroupUuid.toString();
-    qDebug() << "  entryTemplatesGroupChangedTime:" << entryTemplatesGroupChangedTime;
-    qDebug() << "  historyMaxItems:" << historyMaxItems;
-    qDebug() << "  historyMaxSize:" << historyMaxSize;
-    qDebug() << "  lastSelectedGroupUuid:" << lastSelectedGroupUuid.toString();
-    qDebug() << "  lastTopVisibleGroupUuid:" << lastTopVisibleGroupUuid.toString();
-    qDebug() << "  customData.size():" << customData.size();
-    qDebug() << "  binaries.size():" << binaries.size();
-    foreach (PwBinaryV4* it, binaries.values()) {
-        qDebug() << "    " << it->toString();
-    }
-    qDebug() << "--- end of Meta ---";
 }

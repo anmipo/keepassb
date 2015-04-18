@@ -91,7 +91,7 @@ void ApplicationUI::onInvoke(const InvokeRequest& request) {
         return;
 
     QString filePath = uri.toLocalFile();
-    qDebug() << "filePath: " << filePath;
+    LOG("filePath: %s", filePath.toUtf8().constData());
     if (!filePath.isEmpty()) {
         emit invokedWithDatabase(filePath);
     }
@@ -108,7 +108,7 @@ void ApplicationUI::onSystemLanguageChanged() {
 }
 
 void ApplicationUI::onThumbnail() {
-    qDebug() << "app minimized";
+    LOG("App minimized");
 
     // zero timeout means lock when minimized
     if (!database->isLocked() && settings->getAutoLockTimeout() == 0) {
@@ -148,10 +148,8 @@ void ApplicationUI::stopWatchdog() {
 // copy given text to the clipboard, clear it after some time
 void ApplicationUI::copyWithTimeout(const QString& text) {
 	clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
-	if (settings->isMinimizeAppOnCopy()) {
-	    bool res = Application::instance()->minimize();
-	    qDebug() << "App minimize result: " << res;
-	}
+	if (settings->isMinimizeAppOnCopy())
+	    Application::instance()->minimize();
 }
 
 void ApplicationUI::invokeFile(const QString& uri) {
@@ -160,9 +158,9 @@ void ApplicationUI::invokeFile(const QString& uri) {
     request.setAction("bb.action.OPEN");
     const InvokeTargetReply* reply = invokeManager->invoke(request);
     if (reply) {
-        qDebug() << "invoke ok";
+        LOG("invoke ok");
     } else {
-        qDebug() << "invoke failed";
+        LOG("invoke failed");
         showToast(tr("Cannot open the file", "An error message related to the 'open file' action (reference: INVOKE_ATTACHMENT)"));
     }
 }
@@ -223,11 +221,11 @@ void ApplicationUI::prepareQuickUnlock(const QString& fullPassword) {
         quickPass = fullPassword.right(min(5, len));
         break;
     default:
-        qDebug() << "Unknown quick unlock type: " << settings->getQuickUnlockType();
+        LOG("Unknown quick unlock type: %d", settings->getQuickUnlockType());
     }
     int err = CryptoManager::instance()->sha256(quickPass.toUtf8(), quickPassHash);
     if (err != SB_SUCCESS) {
-        qDebug() << "Prepare quick unlock: hashing error " << err;
+        LOG("Prepare quick unlock: hashing error %d", err);
         // log it, but do not bother the user
     }
 }
@@ -239,7 +237,7 @@ bool ApplicationUI::quickUnlock(const QString& quickPass) {
     QByteArray candidateHash;
     int err = CryptoManager::instance()->sha256(quickPass.toUtf8(), candidateHash);
     if (err != SB_SUCCESS) {
-        qDebug() << "Quick unlock: hashing error " << err;
+        LOG("Quick unlock: hashing error %d", err);
         return false;
     }
     return (candidateHash == quickPassHash);

@@ -9,6 +9,7 @@
 
 #include <bb/system/Clipboard>
 #include <QObject>
+#include "util/Util.h"
 
 const QString TimedClipboard::DATA_TYPE = "text/plain";
 
@@ -30,12 +31,12 @@ void TimedClipboard::timeout() {
 
 bool TimedClipboard::clear() {
     if (modified && (content == this->value(DATA_TYPE))) {
-        qDebug("Clipboard cleared by timeout");
+        LOG("Clipboard cleared by timeout");
         bool result = bb::system::Clipboard::clear();
         emit cleared();
         return result;
     } else {
-        qDebug("Clipboard NOT cleared by timeout - different content");
+        LOG("Clipboard NOT cleared by timeout - different content");
         return false;
     }
 }

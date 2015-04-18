@@ -9,7 +9,6 @@
 
 #include "Util.h"
 
-#include <QDebug>
 #include <zlib.h>
 #include <zconf.h>
 
@@ -24,7 +23,7 @@ static const int GZIP_CHUNK_SIZE = 128 * 1024;
  */
 Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& outData, ProgressObserver* progressObserver) {
     if (gzipData.size() <= 4) {
-        qDebug() << "inflateGZipData: Input data is too short";
+        LOG("inflateGZipData: Input data is too short");
         return GZIP_INFLATE_DATA_TOO_SHORT;
     }
 
@@ -46,7 +45,7 @@ Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& ou
 
     int err = inflateInit2(&strm, 16 + MAX_WBITS); // gzip decoding
     if (err != Z_OK) {
-        qDebug() << "inflateGZipData: inflateInit2 error " << err;
+        LOG("inflateGZipData: inflateInit2 error %d", err);
         return GZIP_INFLATE_INIT_FAIL;
     }
 
@@ -65,7 +64,7 @@ Util::ErrorCode Util::inflateGZipData(const QByteArray& gzipData, QByteArray& ou
         case Z_DATA_ERROR:
         case Z_MEM_ERROR:
             (void)inflateEnd(&strm);
-            qDebug() << "inflateGZipData: inflate error " << err;
+            LOG("inflateGZipData: inflate error %d", err);
             return GZIP_INFLATE_ERROR;
         }
         outData.append(out, GZIP_CHUNK_SIZE - strm.avail_out);
@@ -107,7 +106,7 @@ Util::ErrorCode Util::compressToGZip(const QByteArray& inData, QByteArray& gzipD
             MAX_MEM_LEVEL,    // trade some memory for faster processing
             Z_DEFAULT_STRATEGY);
     if (err != Z_OK) {
-        qDebug() << "compressToGzip: deflateInit2 error " << err;
+        LOG("compressToGzip: deflateInit2 error %d", err);
         return GZIP_DEFLATE_INIT_FAIL;
     }
 

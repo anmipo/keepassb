@@ -11,6 +11,15 @@
 #define UTIL_H_
 
 #include "util/ProgressObserver.h"
+#include <QDebug>
+
+// If qDebug output is suppressed (e.g. in release), disable it altogether
+// so that the optimizer removes log message strings from the output.
+#ifdef QT_NO_DEBUG_OUTPUT
+    #define LOG(arg...) ((void)0)
+#else
+    #define LOG qDebug
+#endif
 
 class Util {
 public:

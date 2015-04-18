@@ -6,19 +6,18 @@
  */
 
 #include "CryptoManager.h"
-#include <QDebug>
+#include "util/Util.h"
 #include "husha2.h"
 #include "hugse56.h"
 #include "sbreturn.h"
 #include "huaes.h"
 #include "huseed.h"
 #include "hurandom.h"
-#include "util/Util.h"
 
 CryptoManager* CryptoManager::_instance;
 
 // convenience macro: if func returns an SB_ error, log it and return its code
-#define RETURN_IF_SB_ERROR(func, msg) {int errCode = (func); if (errCode != SB_SUCCESS) { qDebug() << msg << ". ErrCode:" << errCode; return errCode; }}
+#define RETURN_IF_SB_ERROR(func, msg) {int errCode = (func); if (errCode != SB_SUCCESS) { LOG("%s. ErrCode: %d", msg, errCode); return errCode; }}
 
 CryptoManager::CryptoManager() : keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
 	sbCtx = NULL;
@@ -42,7 +41,7 @@ CryptoManager* CryptoManager::instance() {
  * Initialises security contexts; returns an SB_* error code
  */
 int CryptoManager::init() {
-	qDebug() << "CryptoManager::init";
+	LOG("CryptoManager::init");
 
 	// Create SB Contexts
 	RETURN_IF_SB_ERROR(hu_GlobalCtxCreateDefault(&sbCtx), "CryptoManager error creating SB contexts");
@@ -65,7 +64,7 @@ int CryptoManager::init() {
 }
 
 void CryptoManager::cleanup() {
-	qDebug() << "CryptoManager::cleanup";
+	LOG("CryptoManager::cleanup");
 	if (keyTransformInitialized) {
 	    endKeyTransform();
 	    keyTransformInitialized = false;
@@ -91,8 +90,6 @@ int CryptoManager::initRngSeed() {
  * Returns an SB_* error code.
  */
 int CryptoManager::sha256(const QByteArray& inputData, QByteArray& outputData) {
-	//qDebug() << "CryptoManager makeHash:" << inputData.toHex() << " (" << inputData.size() << ")";
-
 	// Initialize parameters
 	const unsigned char* hashInput = reinterpret_cast<const unsigned char*>(inputData.constData());
 	outputData.fill(0, SB_SHA256_DIGEST_LEN);
@@ -199,13 +196,13 @@ bool CryptoManager::removePadding16(QByteArray& data) {
 		// check if padding length is correct
         int padLength = data.at(length - 1);
         if ((padLength < 1) || (padLength > 16)) {
-            qDebug() << "Wrong padding length:" << padLength;
+            LOG("Wrong padding length: %d", padLength);
             return false;
         }
         // verify if all padding bytes have correct value
         for (int i = length - padLength; i < length; i++) {
             if (data.at(i) != padLength) {
-                qDebug() << "Padding bytes corrupted";
+                LOG("Padding bytes corrupted");
                 return false;
             }
         }

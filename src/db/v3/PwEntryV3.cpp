@@ -266,7 +266,7 @@ PwEntry* PwEntryV3::clone() {
     QByteArray buffer;
     QDataStream bufferStream(&buffer, QIODevice::ReadWrite);
     if (!writeToStream(bufferStream)) {
-        qDebug() << "PwEntryV3::clone() failed on write";
+        LOG("PwEntryV3::clone() failed on write");
         return NULL;
     }
 
@@ -274,7 +274,7 @@ PwEntry* PwEntryV3::clone() {
     PwEntryV3* copy = new PwEntryV3(this->parent());
     if (!copy->readFromStream(bufferStream)) {
         delete copy;
-        qDebug() << "PwEntryV3::clone() failed on read";
+        LOG("PwEntryV3::clone() failed on read");
         Util::safeClear(buffer);
         return NULL;
     }
@@ -304,7 +304,7 @@ bool PwEntryV3::backupState() {
 bool PwEntryV3::moveToBackup() {
     PwDatabase* db = getDatabase();
     if (!db) {
-        qDebug() << "moveToBackup fail - parent group without DB";
+        LOG("moveToBackup fail - parent group without DB");
         return false;
     }
 
@@ -315,7 +315,7 @@ bool PwEntryV3::moveToBackup() {
     registerAccessEvent();
     setDeleted(true);
 
-    qDebug() << "moveToBackup OK";
+    LOG("moveToBackup OK");
     return true;
 }
 

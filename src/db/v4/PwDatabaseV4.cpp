@@ -72,7 +72,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
     if ((fileVersion & FILE_VERSION_CRITICAL_MASK) != (FILE_VERSION & FILE_VERSION_CRITICAL_MASK))
         return UNSUPPORTED_FILE_VERSION;
 
-    qDebug("Signatures match");
+    LOG("Signatures match");
 
     // read header fields
     quint8 fieldId;
@@ -130,7 +130,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
             break;
         //case HEADER_END: has been processed above
         default:
-            qDebug() << "Strange header ID: " << fieldId;
+            LOG("Strange header ID: %d", fieldId);
         }
         data.insert(fieldId, fieldValue);
     }
@@ -440,7 +440,7 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
     int ec;
     // if no key file were supplied, the keyFileData will be empty
     if (!passwordKey.isEmpty() && !keyFileData.isEmpty()) {
-        qDebug() << "using password and key file";
+        LOG("using password and key file");
         ec = cm->sha256(passwordKey, preKey);
         if (ec != SB_SUCCESS)
             return false;
@@ -450,16 +450,16 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
             return false;
         preKey.append(fKey);
     } else if (keyFileData.isEmpty()) {
-        qDebug() << "using password only";
+        LOG("using password only");
         int ec = cm->sha256(passwordKey, preKey);
         if (ec != SB_SUCCESS)
             return false;
     } else if (passwordKey.isEmpty()) {
-        qDebug() << "using key file only";
+        LOG("using key file only");
         if (!processKeyFile(keyFileData, preKey))
             return false;
     } else {
-        qDebug() << "empty keys provided (should not happen)";
+        LOG("empty keys provided (should not happen)");
         return false;
     }
 
@@ -540,7 +540,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     /* Read DB header */
     PwHeaderV4::ErrorCode headerErrCode = header.read(dbBytes);
     if (headerErrCode != PwHeaderV4::SUCCESS) {
-        qDebug() << PwHeaderV4::getErrorMessage(headerErrCode) << headerErrCode;
+        LOG("%s: %d", PwHeaderV4::getErrorMessage(headerErrCode).toUtf8().constData(), headerErrCode);
         emit dbLoadError(PwHeaderV4::getErrorMessage(headerErrCode), headerErrCode);
         return false;
     }
@@ -549,7 +549,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     setPhaseProgressBounds(UNLOCK_PROGRESS_KEY_TRANSFORM);
     ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey);
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "Cannot decrypt database - transformKey" << err;
+        LOG("Cannot decrypt database - transformKey: %d", err);
         emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
         return false;
     }
@@ -562,7 +562,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     QByteArray dbBytesWithoutHeader = dbBytes.right(dataSize);
     err = decryptData(dbBytesWithoutHeader, decryptedData);
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "Cannot decrypt database - decryptData" << err;
+        LOG("Cannot decrypt database - decryptData: %d", err);
         emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
@@ -575,7 +575,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     QByteArray startBytes(VERIFICATION_LENGTH, 0);
     decryptedStream.readRawData(startBytes.data(), VERIFICATION_LENGTH);
     if (startBytes != header.getStreamStartBytes()) {
-        qDebug() << "First bytes do not match" << err;
+        LOG("First bytes do not match: %d", err);
         emit invalidPasswordOrKey();
         return false;
     }
@@ -587,7 +587,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     err = readBlocks(decryptedStream, streamSize, blocksData);
     Util::safeClear(decryptedData); // not needed any further
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "Cannot decrypt database - readBlocks" << err;
+        LOG("Cannot decrypt database - readBlocks: %d", err);
         emit dbLoadError(tr("Error reading database", "An error message"), err);
         return false;
     }
@@ -600,7 +600,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
         Util::ErrorCode inflateErr = Util::inflateGZipData(blocksData, xmlData, this);
         Util::safeClear(blocksData);
         if (inflateErr != Util::SUCCESS) {
-            qDebug() << "Error inflating database";
+            LOG("Error inflating database");
             emit dbLoadError(tr("Error inflating database", "An error message. Inflating means decompression of compressed data."), inflateErr);
             return false;
         }
@@ -612,7 +612,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     /* Init Salsa20 for reading protected values */
     err = initSalsa20();
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "Cannot decrypt database - initSalsa20" << err;
+        LOG("Cannot decrypt database - initSalsa20: %d", err);
         emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
         return false;
     }
@@ -624,11 +624,11 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     Util::safeClear(xmlData);
     Util::safeClear(xmlString);
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "Error parsing database" << err;
+        LOG("Error parsing database: %d", err);
         emit dbLoadError(tr("Cannot parse database", "An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it)."), err);
         return false;
     }
-    qDebug() << "DB unlocked";
+    LOG("DB unlocked");
 
     return true;
 }
@@ -654,7 +654,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::decryptData(const QByteArray& encryptedDat
     CryptoManager* cm = CryptoManager::instance();
     int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData, this);
     if (err != SB_SUCCESS) {
-        qDebug() << "decryptAES error: " << err;
+        LOG("decryptAES error: %d", err);
         return ErrorCodesV4::CANNOT_DECRYPT_DB;
     }
     return ErrorCodesV4::SUCCESS;
@@ -677,7 +677,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, const
     while (true) {
         inputStream >> readBlockId;
         if (readBlockId != blockId) {
-            qDebug() << "readBlocks wrong block ID";
+            LOG("readBlocks wrong block ID");
             return ErrorCodesV4::WRONG_BLOCK_ID;
         }
         blockId++;
@@ -688,7 +688,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, const
             if (Util::isAllZero(blockHash)) {
                 break;
             } else {
-                qDebug() << "readBlocks block hash is not all-zeros";
+                LOG("readBlocks block hash is not all-zeros");
                 return ErrorCodesV4::BLOCK_HASH_NON_ZERO;
             }
         }
@@ -696,7 +696,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::readBlocks(QDataStream& inputStream, const
         inputStream.readRawData(blockData.data(), blockSize);
         int err = cm->sha256(blockData, computedHash);
         if ((err != SB_SUCCESS) || (computedHash != blockHash)) {
-            qDebug() << "readBlocks block hash mismatch";
+            LOG("readBlocks block hash mismatch");
             return ErrorCodesV4::BLOCK_HASH_MISMATCH;
         }
         blocksData.append(blockData);
@@ -726,7 +726,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXml(const QString& xmlString) {
         if (err != ErrorCodesV4::SUCCESS)
             return err;
     } else {
-        qDebug() << "XML document tag is not <KeePassFile>:" << xml.name();
+        LOG("XML document tag is not <KeePassFile>: %s", xml.name().toUtf8().constData());
         return ErrorCodesV4::XML_DOCUMENT_PARSING_ERROR_NOT_KEEPASS;
     }
 
@@ -761,7 +761,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseXmlDocumentTag(QXmlStreamReader& xml,
                     return err;
 
             } else {
-                qDebug() << "unknown tag in XML document:" << tagName;
+                LOG("unknown tag in XML document: %s", tagName.toUtf8().constData());
                 return ErrorCodesV4::XML_DOCUMENT_PARSING_ERROR_TAG;
             }
         }
@@ -793,7 +793,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseRoot(QXmlStreamReader& xml, PwGroupV4
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else {
-                qDebug() << "unknown tag in the Root:" << tagName;
+                LOG("unknown tag in the Root: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_ROOT_PARSING_ERROR_TAG;
             }
@@ -821,7 +821,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseDeletedObjects(QXmlStreamReader& xml)
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
             } else {
-                qDebug() << "unknown tag within DeletedObjects:" << tagName;
+                LOG("unknown tag within DeletedObjects: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_DELETED_OBJECTS_PARSING_ERROR_TAG;
             }
@@ -845,7 +845,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
     // Randomize encryption seeds
     if (!header.randomizeInitialVectors()) {
-        qDebug() << "PwDatabaseV4::save() failed to randomize header seeds";
+        LOG("PwDatabaseV4::save() failed to randomize header seeds");
         emit dbSaveError(saveErrorMessage, ErrorCodesV4::RNG_ERROR_1);
         return false;
     }
@@ -853,7 +853,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     setPhaseProgressBounds(SAVE_PROGRESS_KEY_TRANSFORM);
     ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey);
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "transformKey error while saving: " << err;
+        LOG("transformKey error while saving: %d", err);
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
@@ -868,7 +868,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     // write the header, this implicitly updates header's hash
     PwHeaderV4::ErrorCode headerErr = header.write(outStream);
     if (headerErr != PwHeaderV4::SUCCESS) {
-        qDebug() << "error writing PwHeaderV4: " << headerErr;
+        LOG("error writing PwHeaderV4: %d", headerErr);
         emit dbSaveError(saveErrorMessage, headerErr);
         return false;
     }
@@ -894,7 +894,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     xml.writeStartElement(XML_KEEPASS_FILE);
     err = meta.writeToStream(xml, salsa20);
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "failed to write Meta to XML: " << err;
+        LOG("failed to write Meta to XML: %d", err);
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
@@ -928,7 +928,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
         Util::ErrorCode gzErr = Util::compressToGZip(xmlContentData, gzipData, this);
         Util::safeClear(xmlContentData);
         if (gzErr != Util::SUCCESS) {
-            qDebug() << "PwDatabaseV4::save() gzip compression failed: " << gzErr;
+            LOG("PwDatabaseV4::save() gzip compression failed: %d", gzErr);
             emit dbSaveError(saveErrorMessage, ErrorCodesV4::GZIP_COMPRESS_ERROR);
             return false;
         }
@@ -950,7 +950,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     err = splitToBlocks(dataToSplit, blockStream);
     Util::safeClear(dataToSplit);
     if (err != ErrorCodesV4::SUCCESS) {
-        qDebug() << "PwDatabaseV4::save() failed to make hashed blocks: " << err;
+        LOG("PwDatabaseV4::save() failed to make hashed blocks: %d", err);
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
@@ -962,7 +962,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     Util::safeClear(dataInBlocks);
     if (err != ErrorCodesV4::SUCCESS) {
         Util::safeClear(encryptedData);
-        qDebug() << "PwDatabaseV4::save() failed to encrypt data: " << err;
+        LOG("PwDatabaseV4::save() failed to encrypt data: %d", err);
         emit dbSaveError(saveErrorMessage, err);
         return false;
     }
@@ -1028,7 +1028,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::encryptData(QByteArray& rawData, QByteArra
     cm->addPadding16(rawData);
     int err = cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), rawData, encryptedData, this);
     if (err != SB_SUCCESS) {
-        qDebug() << "encryptAES error: " << err;
+        LOG("encryptAES error: %d", err);
         return ErrorCodesV4::CANNOT_ENCRYPT_DB;
     }
     return ErrorCodesV4::SUCCESS;

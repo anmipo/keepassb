@@ -47,7 +47,7 @@ ErrorCodesV4::ErrorCode PwDeletedObject::readFromStream(QXmlStreamReader& xml) {
                 if (!conversionOk)
                     return ErrorCodesV4::XML_DELETED_OBJECT_ITEM_PARSING_ERROR_1;
             } else {
-                qDebug() << "unknown PwDeletedObject tag:" << tagName;
+                LOG("unknown PwDeletedObject tag: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
                 return ErrorCodesV4::XML_DELETED_OBJECT_ITEM_PARSING_ERROR_TAG;
             }
