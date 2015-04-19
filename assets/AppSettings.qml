@@ -355,13 +355,39 @@ Page {
             Header {
                 title: qsTr("Recent Files", "Title of a group of settings related to handling of recently opened files.") + Retranslate.onLocaleOrLanguageChanged
             }
+            DropDown {
+                id: trackRecentFiles
+                title: qsTr("Keep Track Of", "A setting which defines which type of recently used files should be remembered. Example: 'Keep Track Of: Database and Key Files'") + Retranslate.onLocaleOrLanguageChanged
+                onSelectedOptionChanged: {
+                    if (selectedOption) {
+                        if (selectedOption.value != appSettings.trackRecentFiles)
+                            changesConfirmationToast.show();
+                        appSettings.trackRecentFiles = selectedOption.value;
+                    }
+                }
+                Option {
+                    text: qsTr("Nothing", "One of the possible values of the 'Keep Track Of' setting. Will be displayed as 'Keep Track Of: Nothing', meaning that no history of recently used files will be kept.") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.TRACK_RECENT_FILES_NONE
+                    selected: appSettings.trackRecentFiles == Settings.TRACK_RECENT_FILES_NONE
+                }
+                Option {
+                    text: qsTr("Databases", "One of the possible values of the 'Keep Track Of' setting. Will be displayed as 'Keep Track Of: Databases', meaning that history of recently used files will include only database files, and no key files.") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.TRACK_RECENT_FILES_DB_ONLY
+                    selected: appSettings.trackRecentFiles == Settings.TRACK_RECENT_FILES_DB_ONLY
+                }
+                Option {
+                    text: qsTr("Databases and Key Files", "One of the possible values of the 'Keep Track Of' setting. Will be displayed as 'Keep Track Of: Databases and Key Files', meaning that history of recently used files will include both database files and their associated key files.") + Retranslate.onLocaleOrLanguageChanged
+                    value: Settings.TRACK_RECENT_FILES_DB_AND_KEY
+                    selected: appSettings.trackRecentFiles == Settings.TRACK_RECENT_FILES_DB_AND_KEY
+                }
+            }
             Button {
                 id: clearRecentFiles
                 text: qsTr("Clear History", "Button/action which clears the history of recent files.") + Retranslate.onLocaleOrLanguageChanged
                 horizontalAlignment: HorizontalAlignment.Fill
                 onClicked: {
                     appSettings.clearRecentFiles();
-                    restartToApplyToast.show();
+                    changesConfirmationToast.show();
                 }
             }
             Divider { }
@@ -373,8 +399,8 @@ Page {
             source: "QuickUnlockHelp.qml"
         },
         SystemToast {
-            id: restartToApplyToast
-            body: qsTr("Changes will apply after restart", "Notification after the user changes some settings which require restarting the app.")
+            id: changesConfirmationToast
+            body: qsTr("Changes have been applied", "Notification after the user changes some settings with immediate effect (e.g. clear history of recent files).")
         }
     ]
 }

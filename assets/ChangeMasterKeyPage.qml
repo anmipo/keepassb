@@ -56,7 +56,8 @@ Sheet {
                     app.prepareQuickUnlock(password);
                 }
             }
-            // Remember selected key file for this DB
+            // This might affect the list of recent files and thus current selection,
+            // so the following line must be after any changes.
             appSettings.addRecentFiles(database.getDatabaseFilePath(), keyFilePath);
             masterKeyChanged();
             _close();

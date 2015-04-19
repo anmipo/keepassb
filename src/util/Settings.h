@@ -28,9 +28,9 @@ class Settings: public QObject {
      */
     Q_PROPERTY(int clipboardTimeout READ getClipboardTimeout WRITE setClipboardTimeout NOTIFY clipboardTimeoutChanged)
     /**
-     * Flag indicating whether th last opened DB path should be remembered
+     * What kind of recently used files should we keep in history?
      */
-    Q_PROPERTY(bool trackRecentDb READ isTrackRecentDb WRITE setTrackRecentDb NOTIFY trackRecentDbChanged);
+    Q_PROPERTY(TrackRecentFilesType trackRecentFiles READ getTrackRecentFiles WRITE setTrackRecentFiles NOTIFY trackRecentFilesChanged);
     /**
      * Time in millis until automatic DB lock. Negative value means no timeout.
      */
@@ -91,13 +91,18 @@ public:
         QUICK_UNLOCK_LAST_5    = 0x15
     };
     Q_ENUMS(QuickUnlockType);
-
+    enum TrackRecentFilesType {
+        TRACK_RECENT_FILES_NONE       = 0x00,
+        TRACK_RECENT_FILES_DB_ONLY    = 0x01,
+        TRACK_RECENT_FILES_DB_AND_KEY = 0x03,
+    };
+    Q_ENUMS(TrackRecentFilesType);
 private:
     static Settings* _instance;
     bool _searchInDeleted;
     bool _searchAfterUnlock;
     int _clipboardTimeout;
-    bool _trackRecentDb;
+    TrackRecentFilesType _trackRecentFiles;
     int _autoLockTimeout;
     bool _alphaSorting;
     EntryListDetail _entryListDetail;
@@ -128,7 +133,7 @@ public:
     bool isSearchInDeleted() const { return _searchInDeleted; }
     bool isSearchAfterUnlock() const { return _searchAfterUnlock; }
     int getClipboardTimeout() const { return _clipboardTimeout; }
-    bool isTrackRecentDb() const { return _trackRecentDb; }
+    TrackRecentFilesType getTrackRecentFiles() const { return _trackRecentFiles; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
     bool isAlphaSorting() const { return _alphaSorting; }
     EntryListDetail getEntryListDetail() const { return _entryListDetail; }
@@ -163,7 +168,7 @@ public slots:
     void setSearchInDeleted(bool searchInDeleted);
     void setSearchAfterUnlock(bool searchAfterUnlock);
     void setClipboardTimeout(int timeout);
-    void setTrackRecentDb(bool track);
+    void setTrackRecentFiles(TrackRecentFilesType trackingType);
     void setAutoLockTimeout(int timeout);
     void setAlphaSorting(bool alphaSorting);
     void setEntryListDetail(EntryListDetail detail);
@@ -178,7 +183,7 @@ signals:
     void searchInDeletedChanged(bool);
     void searchAfterUnlockChanged(bool);
     void clipboardTimeoutChanged(int);
-    void trackRecentDbChanged(bool);
+    void trackRecentFilesChanged(TrackRecentFilesType);
     void autoLockTimeoutChanged(int);
     void alphaSortingChanged(bool);
     void entryListDetailChanged(EntryListDetail);
@@ -189,6 +194,8 @@ signals:
     void pwGenFlagsChanged(int);
     void backupDatabaseOnSaveChanged(bool);
     void minimizeAppOnCopyChanged(bool);
+    // emitted whenever the list of recent DB or key files changes
+    void recentFilesChanged(); 
 };
 
 #endif /* SETTINGS_H_ */

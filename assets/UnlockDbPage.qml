@@ -62,6 +62,12 @@ Page {
     }
     
     function loadRecentItems() {
+        // remove any previous dynamic options first
+        while (keyDropDown.count() > 2) // first and last key file options are fixed
+            keyDropDown.remove(keyDropDown.at(1));
+        while (dbDropDown.count() > 3) // 3 last DB options are fixed
+            dbDropDown.remove(dbDropDown.at(0));
+
         var items = appSettings.getRecentFiles();
         for (var i = items.length - 1; i >= 0; i--) {
             var paths = items[i].split("|");
@@ -102,6 +108,7 @@ Page {
             showErrorToast(qsTr("Invalid password or key file", 
                     "An error message shown when the decryption fails. Also see 'key file' in thesaurus.") + Retranslate.onLocaleOrLanguageChanged);
         });
+        appSettings.recentFilesChanged.connect(loadRecentItems);
         loadRecentItems();
     }
     
@@ -333,11 +340,16 @@ Page {
                     }
                     unlockProgressDialog.progress = 0;
                     unlockProgressDialog.show();
-                    appSettings.addRecentFiles(dbFilePath, keyFilePath);
                 }
                 passwordEdit.text = "";
                 database.unlock(dbFilePath, password, keyFilePath);
-                loadRecentItems(); // to rearrange items
+                
+                if (!demoMode) {
+                    // This must go after db.unlock, regardless of unlocking success.
+                    // Depending on file history tracking settings, this might refresh 
+                    // DB and key file selectors and affect selected paths.
+                    appSettings.addRecentFiles(dbFilePath, keyFilePath); 
+                }
             }
         }
     ]

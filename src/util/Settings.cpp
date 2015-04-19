@@ -6,6 +6,7 @@
  */
 
 #include "util/Settings.h"
+#include "util/Util.h"
 #include <bb/cascades/Application>
 #include <QCoreApplication>
 #include <QSettings>
@@ -16,11 +17,11 @@
  */
 const bool DEFAULT_SEARCH_IN_DELETED = false;
 const bool DEFAULT_SEARCH_AFTER_UNLOCK = false;
-const int DEFAULT_CLIPBOARD_TIMEOUT = 30 * 1000;
-const bool DEFAULT_TRACK_RECENT_DB = true;
-const int DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
+const int  DEFAULT_CLIPBOARD_TIMEOUT = 30 * 1000;
+const bool DEFAULT_TRACK_RECENT_FILES = Settings::TRACK_RECENT_FILES_DB_AND_KEY;
+const int  DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
 const bool DEFAULT_ALPHA_SORTING = false;
-const int DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
+const int  DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
 const bool DEFAULT_QUICK_UNLOCK_ENABLED = false;
 const int DEFAULT_QUICK_UNLOCK_TYPE = Settings::QUICK_UNLOCK_FIRST_4;
 const int DEFAULT_PWGEN_PRESET = PasswordGenerator::PWGEN_PRESET_DEFAULT;
@@ -39,7 +40,7 @@ const bool DEFAULT_MINIMIZE_APP_ON_COPY = true;
 const QString KEY_SEARCH_IN_DELETED = "searchInDeleted";
 const QString KEY_SEARCH_AFTER_UNLOCK = "searchAfterUnlock";
 const QString KEY_CLIPBOARD_TIMEOUT = "clipboardTimeout";
-const QString KEY_TRACK_RECENT_DB = "trackRecentDb";
+const QString KEY_TRACK_RECENT_FILES = "trackRecentFiles";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
 const QString KEY_ALPHA_SORTING = "alphaSorting";
 const QString KEY_ENTRY_LIST_DETAIL = "entryListDetail";
@@ -84,8 +85,8 @@ Settings::Settings(QObject* parent) : QObject(parent) {
             KEY_SEARCH_AFTER_UNLOCK, DEFAULT_SEARCH_AFTER_UNLOCK).toBool();
     _clipboardTimeout = settings.value(
             KEY_CLIPBOARD_TIMEOUT, DEFAULT_CLIPBOARD_TIMEOUT).toInt();
-    _trackRecentDb = settings.value(
-            KEY_TRACK_RECENT_DB, DEFAULT_TRACK_RECENT_DB).toBool();
+    _trackRecentFiles = (TrackRecentFilesType)settings.value(
+            KEY_TRACK_RECENT_FILES, DEFAULT_TRACK_RECENT_FILES).toInt();
     _autoLockTimeout = settings.value(
             KEY_AUTO_LOCK_TIMEOUT, DEFAULT_AUTO_LOCK_TIMEOUT).toInt();
     _alphaSorting = settings.value(
@@ -114,13 +115,21 @@ void Settings::loadRecentFiles() {
 
     _recentFiles.clear();
     _recentDbToKey.clear();
+    if (_trackRecentFiles == TRACK_RECENT_FILES_NONE) {
+        emit recentFilesChanged();
+        return;
+    }
+
     int count = settings.value(KEY_RECENT_FILES_COUNT, 0).toInt();
     for (int i = 0; i < count; i++) {
         QString recentItem = settings.value(KEY_RECENT_FILES_ITEM.arg(i)).toString();
         QStringList parts = recentItem.split(RECENT_ITEMS_SEPARATOR);
         _recentFiles.append(parts[0]);
-        _recentDbToKey.insert(parts[0], parts[1]);
+        if (_trackRecentFiles == TRACK_RECENT_FILES_DB_AND_KEY) {
+            _recentDbToKey.insert(parts[0], parts[1]);
+        }
     }
+    emit recentFilesChanged();
 }
 
 void Settings::saveRecentFiles() {
@@ -128,20 +137,27 @@ void Settings::saveRecentFiles() {
     int count = _recentFiles.size();
     if (count > MAX_RECENT_ITEMS_COUNT)
         count = MAX_RECENT_ITEMS_COUNT;
+    if (_trackRecentFiles == TRACK_RECENT_FILES_NONE)
+        count = 0;
     settings.setValue(KEY_RECENT_FILES_COUNT, count);
 
+    bool trackKeyFiles = (_trackRecentFiles == TRACK_RECENT_FILES_DB_AND_KEY);
     for (int i = 0; i < count; i++) {
         QString dbFile = _recentFiles.at(i);
-        QString keyFile = _recentDbToKey.value(dbFile, "");
+        QString keyFile = (trackKeyFiles ? _recentDbToKey.value(dbFile, "") : "");
         settings.setValue(KEY_RECENT_FILES_ITEM.arg(i), dbFile + RECENT_ITEMS_SEPARATOR + keyFile);
     }
 }
 
 void Settings::addRecentFiles(const QString& dbFile, const QString& keyFile) {
-    _recentFiles.removeOne(dbFile); // to avoid duplicates
-    _recentFiles.insert(0, dbFile);
-    _recentDbToKey.insert(dbFile, keyFile);
-    saveRecentFiles();
+    if (_trackRecentFiles != TRACK_RECENT_FILES_NONE) {
+        _recentFiles.removeOne(dbFile); // to avoid duplicates
+        _recentFiles.insert(0, dbFile);
+        if (_trackRecentFiles == TRACK_RECENT_FILES_DB_AND_KEY)
+            _recentDbToKey.insert(dbFile, keyFile);
+        saveRecentFiles();
+    }
+    emit recentFilesChanged();
 }
 
 QStringList Settings::getRecentFiles() const {
@@ -157,6 +173,7 @@ QStringList Settings::getRecentFiles() const {
 Q_INVOKABLE void Settings::clearRecentFiles() {
     _recentFiles.clear();
     _recentDbToKey.clear();
+    emit recentFilesChanged();
     saveRecentFiles();
 }
 
@@ -192,11 +209,15 @@ void Settings::setClipboardTimeout(int timeout) {
     }
 }
 
-void Settings::setTrackRecentDb(bool track) {
-    if (track != _trackRecentDb) {
-        QSettings().setValue(KEY_TRACK_RECENT_DB, track);
-        _trackRecentDb = track;
-        emit trackRecentDbChanged(track);
+void Settings::setTrackRecentFiles(TrackRecentFilesType trackingType) {
+    if (trackingType != _trackRecentFiles) {
+        QSettings().setValue(KEY_TRACK_RECENT_FILES, trackingType);
+        _trackRecentFiles = trackingType;
+        emit trackRecentFilesChanged(trackingType);
+
+        // apply change immediately (no other chances later)
+        loadRecentFiles();
+        saveRecentFiles();
     }
 }
 
