@@ -160,7 +160,7 @@ NavigationPane {
         SystemDialog {
             id: filePermissionErrorDialog
             title: qsTr("File Access", "Title of a message asking user's permission to access files in phone's memory.") + Retranslate.onLocaleOrLanguageChanged
-            body: qsTr("In order to work correctly, KeePassB needs your permission to access files stored on your device. Please change permission settings and restart the app.", "Instructions shown when the user has not allowed the app to access files in phone's memory.") + Retranslate.onLocaleOrLanguageChanged
+            body: qsTr("In order to work correctly, KeePassB needs your permission to access file storage of this device. Please change permission settings and restart the app.", "Instructions shown when the user has not allowed the app to access files in phone's memory.") + Retranslate.onLocaleOrLanguageChanged
             cancelButton.label: ""
             confirmButton.label: qsTr("Change Settings...", "A button which will open system settings.") + Retranslate.onLocaleOrLanguageChanged
             onFinished: {
