@@ -11,6 +11,7 @@ Page {
     id: viewGroupPage
     property PwGroup group
     property bool autofocus: false
+    property bool isEmptyGroup: (group.itemsCount == 0)
 
     onCreationCompleted: {
         group.registerAccessEvent();
@@ -102,14 +103,14 @@ Page {
             title: qsTr("Create Entry", "A button/action to create a new entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_add_entry.png"
             enabled: canCreateEntryHere()
-            ActionBar.placement: ActionBarPlacement.Default
+            ActionBar.placement: (isEmptyGroup ? ActionBarPlacement.OnBar : ActionBarPlacement.Default)
             onTriggered: createEntry()
         },
         ActionItem {
             title: qsTr("Create Group", "A button/action to create a new group") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_add_group.png"
             enabled: canCreateGroupHere()
-            ActionBar.placement: ActionBarPlacement.Default
+            ActionBar.placement: (isEmptyGroup ? ActionBarPlacement.OnBar : ActionBarPlacement.Default)
             onTriggered: createGroup()
         }
     ]
@@ -319,7 +320,7 @@ Page {
         }
         Container {
             layout: StackLayout { }
-            visible: group.itemsCount == 0
+            visible: isEmptyGroup
             horizontalAlignment: HorizontalAlignment.Center
             verticalAlignment: VerticalAlignment.Center
             ImageView {
@@ -327,10 +328,25 @@ Page {
                 horizontalAlignment: HorizontalAlignment.Center
             }
             Label {
+                bottomMargin: 40
                 text: qsTr("This group is empty", "Description for groups without any subgroups or entries.") + Retranslate.onLocaleOrLanguageChanged
                 textStyle.base: SystemDefaults.TextStyles.BodyText
                 horizontalAlignment: HorizontalAlignment.Center
             }
+//            ImageButton {
+//                id: createGroupButton
+//                //text: qsTr("Create Group", "A button/action to create a new group") + Retranslate.onLocaleOrLanguageChanged
+//                defaultImageSource: "asset:///images/ic_add_group.png"
+//                visible: canCreateGroupHere()
+//                onClicked: createGroup()
+//            }
+//            ImageButton {
+//                id: createEntryButton
+//                //text: qsTr("Create Entry", "A button/action to create a new entry") + Retranslate.onLocaleOrLanguageChanged
+//                defaultImageSource: "asset:///images/ic_add_entry.png"
+//                visible: canCreateEntryHere()
+//                onClicked: createEntry()
+//            }
         }
         attachedObjects: [
             ComponentDefinition {
