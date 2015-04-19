@@ -53,7 +53,9 @@ Sheet {
 
     Page {
         titleBar: TitleBar {
-            title: qsTr("Edit Group", "Title of a page for editing group properties") + Retranslate.onLocaleOrLanguageChanged
+            title: creationMode ?
+                qsTr("New Group", "Title of a page for creating(editing) new group") + Retranslate.onLocaleOrLanguageChanged :
+                qsTr("Edit Group", "Title of a page for editing group properties") + Retranslate.onLocaleOrLanguageChanged
             acceptAction: ActionItem {
                 title: qsTr("Save", "A button/action to save group changes") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {

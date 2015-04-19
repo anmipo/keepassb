@@ -13,6 +13,7 @@ Sheet {
     property string fieldName
     property string fieldValue
     property bool fieldProtected 
+    property bool creationMode: (!field)
 
     onFieldChanged: {
         console.log("edit field: " + field);
@@ -65,7 +66,9 @@ Sheet {
 
     Page {
         titleBar: TitleBar {
-            title: qsTr("Edit Field", "Title of a page for editing an entry field") + Retranslate.onLocaleOrLanguageChanged
+            title: creationMode ?
+                qsTr("New Field", "Title of a page for adding (editing) a new entry field") + Retranslate.onLocaleOrLanguageChanged :
+                qsTr("Edit Field", "Title of a page for editing an entry field") + Retranslate.onLocaleOrLanguageChanged
             acceptAction: ActionItem {
                 title: qsTr("Save", "A button/action to save entry field changes") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {

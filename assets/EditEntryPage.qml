@@ -90,7 +90,9 @@ Sheet {
     
     Page {
         titleBar: TitleBar {
-            title: qsTr("Edit Entry", "Title of a dialog box") + Retranslate.onLocaleOrLanguageChanged
+            title: creationMode ?
+                qsTr("New Entry", "Title of a page for creating (editing) a new entry") + Retranslate.onLocaleOrLanguageChanged :
+                qsTr("Edit Entry", "Title of a page for editing entry properties") + Retranslate.onLocaleOrLanguageChanged
             acceptAction: ActionItem {
                 title: qsTr("Save", "A button/action to save current item") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
