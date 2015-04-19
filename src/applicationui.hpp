@@ -60,6 +60,9 @@ public:
     Q_INVOKABLE void prepareQuickUnlock(const QString& fullPassword);
 
     Q_INVOKABLE PasswordGenerator* getPasswordGenerator() const;
+
+    /** Checks if the app has permission to access file system */
+    Q_INVOKABLE bool canAccessSharedFiles() const;
 private slots:
     void onSystemLanguageChanged();
     void onWatchdogTimeoutChanged(int timeout);

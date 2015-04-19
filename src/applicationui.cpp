@@ -246,3 +246,19 @@ bool ApplicationUI::quickUnlock(const QString& quickPass) {
 PasswordGenerator* ApplicationUI::getPasswordGenerator() const {
     return passwordGenerator;
 }
+
+/** Checks if the app has permission to access file system */
+bool ApplicationUI::canAccessSharedFiles() const {
+    bool result = false;
+    QDir dir;
+    QTemporaryFile testFile(dir.absoluteFilePath("shared/documents/keepassb.XXXXXX"));
+    if (testFile.open()) {
+        testFile.write("file access test");
+        result = true;
+        testFile.close();
+    }
+    LOG("File access permission: %s (%s)",
+            (result ? "granted" : "denied"),
+            testFile.fileName().toUtf8().constData());
+    return result;
+}

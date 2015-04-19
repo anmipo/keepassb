@@ -111,6 +111,10 @@ NavigationPane {
                 quickUnlockPage.open();
                 quickUnlockPage.autoFocus();                
             });
+
+        if (!app.canAccessSharedFiles()) {
+            filePermissionErrorDialog.show();
+        }
     }
     
     attachedObjects: [
@@ -138,7 +142,7 @@ NavigationPane {
         },
         SystemDialog {
             id: dbSaveErrorDialog
-            title: qsTr("Error", "Title of an error notification popup")
+            title: qsTr("Error", "Title of an error notification popup") + Retranslate.onLocaleOrLanguageChanged
             cancelButton.label: ""
         },
         SystemProgressDialog {
@@ -152,6 +156,28 @@ NavigationPane {
         ComponentDefinition {
             id: changeMasterKeySheetComponent
             source: "asset:///ChangeMasterKeyPage.qml"
+        },
+        SystemDialog {
+            id: filePermissionErrorDialog
+            title: qsTr("File Access", "Title of a message asking user's permission to access files in phone's memory.") + Retranslate.onLocaleOrLanguageChanged
+            body: qsTr("In order to work correctly, KeePassB needs your permission to access files stored on your device. Please change permission settings and restart the app.", "Instructions shown when the user has not allowed the app to access files in phone's memory.") + Retranslate.onLocaleOrLanguageChanged
+            cancelButton.label: ""
+            confirmButton.label: qsTr("Change Settings...", "A button which will open system settings.") + Retranslate.onLocaleOrLanguageChanged
+            onFinished: {
+                invokePermissionSettings.trigger("bb.action.OPEN");
+                // The user might come back for the instructions, so keep them shown
+                filePermissionErrorDialog.show();
+            }
+        },
+        Invocation {
+            id: invokePermissionSettings
+            query {
+                invokeActionId: "bb.action.OPEN"
+                invokeTargetId: "sys.settings.target"
+                data: "org.KeePassB"
+                mimeType: "settings/view"
+                uri: "settings://permissions"
+            }
         }
     ]
 
