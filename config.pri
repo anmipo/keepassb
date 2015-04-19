@@ -220,6 +220,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_add_field.png) \
         $$quote($$BASEDIR/assets/images/ic_add_group.png) \
         $$quote($$BASEDIR/assets/images/ic_attach.png) \
+        $$quote($$BASEDIR/assets/images/ic_create_database.png) \
         $$quote($$BASEDIR/assets/images/ic_done.png) \
         $$quote($$BASEDIR/assets/images/ic_edit.png) \
         $$quote($$BASEDIR/assets/images/ic_edit_group.png) \
@@ -345,6 +346,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/db/PwDatabase.h) \
         $$quote($$BASEDIR/src/db/PwEntry.h) \
         $$quote($$BASEDIR/src/db/PwGroup.h) \
+        $$quote($$BASEDIR/src/db/PwIcon.h) \
         $$quote($$BASEDIR/src/db/PwUuid.h) \
         $$quote($$BASEDIR/src/db/v3/PwDatabaseV3.h) \
         $$quote($$BASEDIR/src/db/v3/PwEntryV3.h) \
@@ -367,11 +369,11 @@ config_pri_source_group1 {
 
 INCLUDEPATH += $$quote($$BASEDIR/src/db/v4) \
     $$quote($$BASEDIR/src/util) \
-    $$quote($$BASEDIR/src) \
-    $$quote($$BASEDIR/src/db/v3) \
-    $$quote($$BASEDIR/src/crypto) \
     $$quote($$BASEDIR/src/db) \
-    $$quote($$BASEDIR/src/ui)
+    $$quote($$BASEDIR/src/db/v3) \
+    $$quote($$BASEDIR/src/ui) \
+    $$quote($$BASEDIR/src) \
+    $$quote($$BASEDIR/src/crypto)
 
 CONFIG += precompile_header
 

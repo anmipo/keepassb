@@ -1,33 +1,33 @@
-KeePassB 2 - KeePass Built for BlackBerry
-Native KeePass v1/v2 support
+KeePassB Password Manager (KeePass-compatible)
+Native KeePass 1.x and 2.x support
 
-KeePassB 2 is a native BlackBerry 10 version of the multi-platform KeePass password manager.
+KeePassB is a native BlackBerry 10 password manager compatible with KeePass 1.x and 2.x databases. 
 
-KeePass is a free open source password manager, which helps you to manage your passwords in a secure way. You can put all your passwords in one database, which is locked with one master key or a key file. So you only have to remember one single master password or select the key file to unlock the whole database. The databases are encrypted using the best and most secure encryption algorithms currently known.
+The original KeePass (by Dominik Reichl) is a free multi-platform open source password manager, which helps you to manage your passwords in a secure way. You can put all your passwords in one database, which is locked with one master key or a key file. So you only have to remember one single master password or select the key file to unlock the whole database. The databases are encrypted using the best and most secure encryption algorithms currently known.
 
 
 FEATURES:
+- Create, view and edit KeePass v2 .kdbx files (beta)
 - View and edit KeePass v1 .kdb files
-- View and edit KeePass v2 .kdbx files (beta)
-- Native BlackBerry 10 interface
 - Easy copying of all fields
+- Password generator
 - Instant search
 - Flexible settings
-- Quick unlock 
-- Automatic database lock on timeout
-- Automatic database backup (optional)
-- Integration with Dropbox, Box and other system-wide services
+- Quick PIN unlock 
+- Automatic database backup
+- Synchronization with Dropbox, Box and other system-wide services
 - Works with BlackBerry Work Drives
+- Native Built for BlackBerry interface
 
 
-
-CURRENT LIMITATIONS:
-- Creation of new databases is not supported yet
-- Changing database's password is not supported yet
+IN FUTURE VERSIONS:
+- Support of KeePass v2 custom icons
 
 
 VERSIONS: 
-While the early KeePassB version was a modified Android port, KeePassB 2 is a native application built from the ground up.
+KeePassB inherited its name from an Android port created in 2012. Building the native app from the scratch allowed us to engage the full power of BlackBerry 10 platform, resulting in great performance and fantastic interface. Even better, KeePassB naturally integrates into  enterprise environments. (For enterprise enquiries please contact the developer.)
+
+Meanwhile, the old KeePassB remains available for existing users, but further development will focus on the native app.
 
 
 DISCLAIMER:
@@ -37,14 +37,22 @@ A more formal disclaimer for the enterprise folks:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 Keywords:
-keepass, password, manager, kdb, kdbx, vault, kipass, keepassx, keypass, keepassberry
+kdb, kdbx, keypass, keepassx, enpass, keeper, keepassb 2, keepassb2
+
 
 Changelog:
+v2.4.0
+Added creation of new v2/kdbx databases
+Added editing of database master key
+Added settings for history of recently used files (thanks, Stefan!)
+Improved handling of missing file access permission
+Minor UI improvements
+
 v2.3.1
 Fixed potential bug in .kdbx saving
 Fixed saving of KeePass plugins' data
-
 
 v2.3.0
 Added v2/kdbx editing (beta). This function is experimental, so please make sure to keep the "Backup on save" option enabled.

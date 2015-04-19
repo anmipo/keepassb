@@ -67,289 +67,325 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="29"/>
+        <location filename="../assets/AppSettings.qml" line="27"/>
         <source>Timeouts</source>
         <comment>Title of the settings group which configures several time intervals</comment>
         <translation>Блокировка По Времени</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="33"/>
+        <location filename="../assets/AppSettings.qml" line="35"/>
         <source>Lock Database</source>
         <comment>A setting specifying the time interval after which the database will be automatically closed. Will be shown with one of its possible values, e.g. &apos;Lock Database    After 15 seconds&apos;.</comment>
         <translation>Закрывать Базу Паролей</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="40"/>
+        <location filename="../assets/AppSettings.qml" line="42"/>
         <source>When Minimized</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    When Minimized&apos;</comment>
         <translation>При Сворачивании</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="45"/>
+        <location filename="../assets/AppSettings.qml" line="47"/>
         <source>After 15 seconds</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 15 seconds&apos;</comment>
         <translation>Через 15 секунд</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="50"/>
+        <location filename="../assets/AppSettings.qml" line="52"/>
         <source>After 30 seconds</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 30 seconds&apos;</comment>
         <translation>Через 30 секунд</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="55"/>
+        <location filename="../assets/AppSettings.qml" line="57"/>
         <source>After 1 minute</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 1 minute&apos;</comment>
         <translation>Через 1 минуту</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="60"/>
+        <location filename="../assets/AppSettings.qml" line="62"/>
         <source>After 2 minutes</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 2 minutes&apos;</comment>
         <translation>Через 2 минуты</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="65"/>
+        <location filename="../assets/AppSettings.qml" line="67"/>
         <source>After 5 minutes</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    After 5 minutes&apos;</comment>
         <translation>Через 5 минут</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="70"/>
+        <location filename="../assets/AppSettings.qml" line="72"/>
         <source>Never</source>
         <comment>One of the possible values of the &apos;Lock Database&apos; timeout option. Will be displayed as &apos;Lock Database    Never&apos;</comment>
         <translation>Никогда</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="77"/>
+        <location filename="../assets/AppSettings.qml" line="80"/>
         <source>Clear Clipboard</source>
         <comment>A setting specifying the time interval after which the clipboard will be automatically cleared. Will be shown with one of its values, e.g. &apos;Clear Clipboard    After 10 seconds&apos;</comment>
         <translation>Очищать Буфер Обмена</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="84"/>
+        <location filename="../assets/AppSettings.qml" line="87"/>
         <source>After 10 seconds</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 10 seconds&apos;</comment>
         <translation>Через 10 секунд</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="89"/>
+        <location filename="../assets/AppSettings.qml" line="92"/>
         <source>After 20 seconds</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 20 seconds&apos;</comment>
         <translation>Через 20 секунд</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="94"/>
+        <location filename="../assets/AppSettings.qml" line="97"/>
         <source>After 30 seconds</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 30 seconds&apos;</comment>
         <translation>Через 30 секунд</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="99"/>
+        <location filename="../assets/AppSettings.qml" line="102"/>
         <source>After 1 minute</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 1 minute&apos;</comment>
         <translation>Через 1 минуту</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="104"/>
+        <location filename="../assets/AppSettings.qml" line="107"/>
         <source>After 2 minutes</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    After 2 minutes&apos;</comment>
         <translation>Через 2 минуты</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="109"/>
+        <location filename="../assets/AppSettings.qml" line="112"/>
         <source>Never</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    Never&apos;</comment>
         <translation>Никогда</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="116"/>
+        <location filename="../assets/AppSettings.qml" line="120"/>
         <source>Smart Copy</source>
         <comment>Title of the settings group which configures advanced copying to clipboard</comment>
         <translation>Улучшенное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="127"/>
+        <location filename="../assets/AppSettings.qml" line="134"/>
         <source>Minimize on Copy</source>
         <comment>An on/off setting to make backup copies of the database every time it is saved.</comment>
         <translation>Сворачивать При Копировании</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="140"/>
+        <location filename="../assets/AppSettings.qml" line="147"/>
         <source>This option will automatically minimize the application whenever you copy an entry field to clipboard.</source>
         <comment>Description of the &apos;Minimize on Copy&apos; setting.</comment>
         <translation>Если эта опция включена, при копировании любого поля приложение будет автоматически сворачиваться, ускоряя доступ к другим приложениям.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="147"/>
+        <location filename="../assets/AppSettings.qml" line="155"/>
         <source>Quick Unlock</source>
         <comment>Title of the settings group related to the Quick Unlock function (see thesaurus)</comment>
         <translation>Быстрый Доступ</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="156"/>
+        <location filename="../assets/AppSettings.qml" line="168"/>
         <source>Quick Password</source>
         <comment>A setting specifying the type of the password to use with Quick Unlock.  Example: &apos;Quick Password    First 3 symbols of the password&apos;</comment>
         <translation>Быстрый Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="189"/>
+        <location filename="../assets/AppSettings.qml" line="202"/>
         <source>Learn more</source>
         <comment>A button which opens a help page about the Quick Unlock function</comment>
         <translation>Подробнее</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="204"/>
+        <location filename="../assets/AppSettings.qml" line="217"/>
         <source>Lists</source>
         <comment>Title of a group of settings which define how various lists of items should be displayed.</comment>
         <translation>Списки</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="208"/>
+        <location filename="../assets/AppSettings.qml" line="225"/>
         <source>Entry List Details</source>
         <comment>A setting which defines additional information (details) to be displayed for each entry in a list (also see thesaurus for &apos;Entry&apos;). Example: &apos;Entry List Details    Last Modification Time&apos;</comment>
         <translation>Показывать в Списках Записей</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="215"/>
+        <location filename="../assets/AppSettings.qml" line="232"/>
         <source>None</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting. Will be displayed as &apos;Entry List Details    None&apos;, meaning that no entry details will be shown in any lists.</comment>
         <translation>Ничего</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="220"/>
+        <location filename="../assets/AppSettings.qml" line="237"/>
         <source>User Name</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it refers to login information rather then person name. Will be displayed as &apos;Entry List Details    User Name&apos;.</comment>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="225"/>
+        <location filename="../assets/AppSettings.qml" line="242"/>
         <source>Password</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting. Will be displayed as &apos;Entry List Details    Password&apos;.</comment>
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="230"/>
+        <location filename="../assets/AppSettings.qml" line="247"/>
         <source>URL</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it means &apos;internet address&apos; or &apos;internet link&apos;. Will be displayed as &apos;Entry List Details    URL&apos;.</comment>
         <translation>Ссылку</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="235"/>
+        <location filename="../assets/AppSettings.qml" line="252"/>
         <source>Notes</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it refers to comments or additional text information contained in an entry. Will be displayed as &apos;Entry List Details    Notes&apos;.</comment>
         <translation>Заметки</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="240"/>
+        <location filename="../assets/AppSettings.qml" line="257"/>
         <source>Last Modified Time</source>
         <comment>One of the possible values of the &apos;Entry List Details&apos; setting; it refers to the most recent time when the entry was modified. Will be displayed as &apos;Entry List Details    Last Modified Time&apos;. </comment>
         <translation>Время Изменения</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="247"/>
+        <location filename="../assets/AppSettings.qml" line="265"/>
         <source>List Sorting</source>
         <comment>A setting which defines sorting of entries in groups. Example: &apos;List Sorting    Alphabetical&apos;.</comment>
         <translation>Сортировка Списков</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="254"/>
+        <location filename="../assets/AppSettings.qml" line="272"/>
         <source>None</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    None&apos;, meaning no sorting, or as-is item order.</comment>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="259"/>
+        <location filename="../assets/AppSettings.qml" line="277"/>
         <source>Alphabetical</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Alphabetical&apos;.</comment>
         <translation>По Алфавиту</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="265"/>
+        <location filename="../assets/AppSettings.qml" line="285"/>
         <source>Saving</source>
         <comment>Title of a group of settings related to database editing/saving function</comment>
         <translation>Сохранение</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="276"/>
+        <location filename="../assets/AppSettings.qml" line="300"/>
         <source>Backup Database on Save</source>
         <comment>An on/off setting to make backup copies of the database everytime it is saved.</comment>
         <translation>Резервное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="289"/>
+        <location filename="../assets/AppSettings.qml" line="313"/>
         <source>Backup the database file before saving any changes. Backup copies are timestamped and stored along with the original database.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translation>Делать резервную копию базы паролей перед сохранением любых изменений. Резервные файлы содержат время сохранения и хранятся там же, где и исходная база.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="296"/>
+        <location filename="../assets/AppSettings.qml" line="320"/>
         <source>Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translation>Функция сохранения паролей пока экспериментальная. Во избежание потери данных, опцию резервного копирования рекомендуется держать включенной.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="304"/>
+        <location filename="../assets/AppSettings.qml" line="329"/>
         <source>Search</source>
         <comment>Title of a group of settings related to search function</comment>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="315"/>
+        <location filename="../assets/AppSettings.qml" line="343"/>
         <source>Search at Start</source>
         <comment>An on/off setting which defines whether the Search function should be automatically activated when a database is opened/unlocked.</comment>
         <translation>Поиск при Открытии</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="328"/>
+        <location filename="../assets/AppSettings.qml" line="359"/>
         <source>This option will automatically activate Search whenever a database is unlocked.</source>
         <comment>Description of the &apos;Search at Start&apos; setting.</comment>
         <translation>Автоматически активировать функцию поиска сразу после открытия базы паролей.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="344"/>
+        <location filename="../assets/AppSettings.qml" line="378"/>
         <source>Search in Deleted Entries</source>
         <comment>An on/off setting which defines whether the Search should look into entries marked as deleted.</comment>
         <translation>Искать в Удалённых Записях</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="356"/>
+        <location filename="../assets/AppSettings.qml" line="391"/>
         <source>Recent Files</source>
         <comment>Title of a group of settings related to handling of recently opened files.</comment>
         <translation>Недавние Файлы</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="360"/>
+        <location filename="../assets/AppSettings.qml" line="400"/>
         <source>Keep Track Of</source>
         <comment>A setting which defines which type of recently used files should be remembered. Example: &apos;Keep Track Of: Database and Key Files&apos;</comment>
         <translation>Запоминать</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="369"/>
+        <location filename="../assets/AppSettings.qml" line="409"/>
         <source>Nothing</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Nothing&apos;, meaning that no history of recently used files will be kept.</comment>
         <translation>Ничего</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="374"/>
+        <location filename="../assets/AppSettings.qml" line="414"/>
         <source>Databases</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases&apos;, meaning that history of recently used files will include only database files, and no key files.</comment>
         <translation>Базы Паролей</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="379"/>
+        <location filename="../assets/AppSettings.qml" line="419"/>
         <source>Databases and Key Files</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases and Key Files&apos;, meaning that history of recently used files will include both database files and their associated key files.</comment>
         <translation>Базы Паролей и Ключевые Файлы</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="386"/>
+        <location filename="../assets/AppSettings.qml" line="428"/>
         <source>Clear History</source>
         <comment>Button/action which clears the history of recent files.</comment>
         <translation>Очистить Историю</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="403"/>
+        <location filename="../assets/AppSettings.qml" line="429"/>
+        <source>Forget all recent files</source>
+        <comment>Explanation/subtitle for the &apos;Clear History&apos; button.</comment>
+        <translation>Забыть обо всех недавних файлах</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="440"/>
+        <source>Support</source>
+        <comment>Title of the settings group with links to &apos;contact us&apos;</comment>
+        <translation>Поддержка</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="445"/>
+        <source>Contact Us</source>
+        <comment>Button/action to start writing an email to the developer</comment>
+        <translation>Написать Разработчику</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="446"/>
+        <source>Suggestions? Problems? Let us know!</source>
+        <comment>Subtitle for the &apos;Contact us&apos; button</comment>
+        <translation>Подсказать идею или сообщить о проблеме</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="464"/>
+        <source>Recommend KeePassB</source>
+        <comment>Button/action to open the app store and rate this app.</comment>
+        <translation>Порекомендовать KeePassB</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="465"/>
+        <source>Version %1</source>
+        <comment>Application version number. %s will be replaced with the actual number, for example: &apos;Version 2.3.4&apos;</comment>
+        <translation>Версия %1</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="489"/>
         <source>Changes have been applied</source>
         <comment>Notification after the user changes some settings with immediate effect (e.g. clear history of recent files).</comment>
         <translation>Изменения сохранены</translation>
@@ -472,91 +508,97 @@
 <context>
     <name>EditEntryPage</name>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="93"/>
-        <source>Edit Entry</source>
-        <comment>Title of a dialog box</comment>
-        <translation>Изменить Запись</translation>
+        <location filename="../assets/EditEntryPage.qml" line="94"/>
+        <source>New Entry</source>
+        <comment>Title of a page for creating (editing) a new entry</comment>
+        <translation>Новая Запись</translation>
     </message>
     <message>
         <location filename="../assets/EditEntryPage.qml" line="95"/>
+        <source>Edit Entry</source>
+        <comment>Title of a page for editing entry properties</comment>
+        <translation>Изменить Запись</translation>
+    </message>
+    <message>
+        <location filename="../assets/EditEntryPage.qml" line="97"/>
         <source>Save</source>
         <comment>A button/action to save current item</comment>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="103"/>
+        <location filename="../assets/EditEntryPage.qml" line="105"/>
         <source>Cancel</source>
         <comment>A button/action to dismiss current dialog</comment>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="126"/>
+        <location filename="../assets/EditEntryPage.qml" line="128"/>
         <source>Title</source>
         <comment>Label of the entry title edit field</comment>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="143"/>
+        <location filename="../assets/EditEntryPage.qml" line="145"/>
         <source>Change Icon</source>
         <comment>A button/action to change entry&apos;s icon</comment>
         <translation>Изменить Иконку</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="158"/>
+        <location filename="../assets/EditEntryPage.qml" line="160"/>
         <source>User Name</source>
         <comment>Label of the username edit field</comment>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="166"/>
+        <location filename="../assets/EditEntryPage.qml" line="168"/>
         <source>Password</source>
         <comment>Label of the password edit field</comment>
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="191"/>
+        <location filename="../assets/EditEntryPage.qml" line="193"/>
         <source>URL</source>
         <comment>Label of the link/internet address edit field</comment>
         <translation>Ссылка</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="200"/>
+        <location filename="../assets/EditEntryPage.qml" line="202"/>
         <source>Notes</source>
         <comment>Label of the notes/comments edit field</comment>
         <translation>Заметки</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="220"/>
+        <location filename="../assets/EditEntryPage.qml" line="222"/>
         <source>Entry Expires</source>
         <comment>On/off option which enables entry expiration deadline</comment>
         <translation>Ограничить Срок Действия</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="232"/>
+        <location filename="../assets/EditEntryPage.qml" line="234"/>
         <source>Expiry Date</source>
         <comment>Label of the entry expiration/best before date</comment>
         <translation>Действительно До</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="243"/>
+        <location filename="../assets/EditEntryPage.qml" line="245"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation>Несохраненные Изменения</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="244"/>
+        <location filename="../assets/EditEntryPage.qml" line="246"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation>Некоторые изменения не были сохранены.</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="245"/>
+        <location filename="../assets/EditEntryPage.qml" line="247"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="246"/>
+        <location filename="../assets/EditEntryPage.qml" line="248"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation>Вернуться</translation>
@@ -565,73 +607,79 @@
 <context>
     <name>EditFieldPage</name>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="68"/>
+        <location filename="../assets/EditFieldPage.qml" line="70"/>
+        <source>New Field</source>
+        <comment>Title of a page for adding (editing) a new entry field</comment>
+        <translation>Новое Поле</translation>
+    </message>
+    <message>
+        <location filename="../assets/EditFieldPage.qml" line="71"/>
         <source>Edit Field</source>
         <comment>Title of a page for editing an entry field</comment>
         <translation>Изменить Поле</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="70"/>
+        <location filename="../assets/EditFieldPage.qml" line="73"/>
         <source>Save</source>
         <comment>A button/action to save entry field changes</comment>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="84"/>
+        <location filename="../assets/EditFieldPage.qml" line="87"/>
         <source>Cancel</source>
         <comment>A button/action</comment>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="106"/>
+        <location filename="../assets/EditFieldPage.qml" line="109"/>
         <source>Name</source>
         <comment>Label of the field&apos;s name edit control</comment>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="124"/>
+        <location filename="../assets/EditFieldPage.qml" line="127"/>
         <source>Please name the field</source>
         <comment>An invitation to input a name for entry&apos;s field.</comment>
         <translation>Введите название поля</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="132"/>
+        <location filename="../assets/EditFieldPage.qml" line="135"/>
         <source>A field with such name already exists</source>
         <comment>An error message when a field is being given a name which is already used or reserved for internal use only.</comment>
         <translation>Поле с таким названием уже существует</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="140"/>
+        <location filename="../assets/EditFieldPage.qml" line="143"/>
         <source>Value</source>
         <comment>Label of the field&apos;s value edit control</comment>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="159"/>
+        <location filename="../assets/EditFieldPage.qml" line="162"/>
         <source>In-memory protection</source>
         <comment>An on/off toggle switch to enable encryption of field data in device memory</comment>
         <translation>Защита в памяти</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="175"/>
+        <location filename="../assets/EditFieldPage.qml" line="178"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation>Несохраненные Изменения</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="176"/>
+        <location filename="../assets/EditFieldPage.qml" line="179"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation>Некоторые изменения не были сохранены.</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="177"/>
+        <location filename="../assets/EditFieldPage.qml" line="180"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../assets/EditFieldPage.qml" line="178"/>
+        <location filename="../assets/EditFieldPage.qml" line="181"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation>Вернуться</translation>
@@ -640,61 +688,67 @@
 <context>
     <name>EditGroupPage</name>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="56"/>
+        <location filename="../assets/EditGroupPage.qml" line="57"/>
+        <source>New Group</source>
+        <comment>Title of a page for creating(editing) new group</comment>
+        <translation>Новая Группа</translation>
+    </message>
+    <message>
+        <location filename="../assets/EditGroupPage.qml" line="58"/>
         <source>Edit Group</source>
         <comment>Title of a page for editing group properties</comment>
         <translation>Изменить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="58"/>
+        <location filename="../assets/EditGroupPage.qml" line="60"/>
         <source>Save</source>
         <comment>A button/action to save group changes</comment>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="71"/>
+        <location filename="../assets/EditGroupPage.qml" line="73"/>
         <source>Cancel</source>
         <comment>A button/action</comment>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="95"/>
+        <location filename="../assets/EditGroupPage.qml" line="97"/>
         <source>Name</source>
         <comment>Label of the group name edit field</comment>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="103"/>
+        <location filename="../assets/EditGroupPage.qml" line="105"/>
         <source>This group name is reserved</source>
         <comment>An error message when a group is being given a name which is reserved for internal use only.</comment>
         <translation>Это название зарезервировано</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="123"/>
+        <location filename="../assets/EditGroupPage.qml" line="125"/>
         <source>Change Icon</source>
         <comment>A button/action to change group&apos;s icon</comment>
         <translation>Изменить Иконку</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="141"/>
+        <location filename="../assets/EditGroupPage.qml" line="143"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation>Несохраненные Изменения</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="142"/>
+        <location filename="../assets/EditGroupPage.qml" line="144"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation>Некоторые изменения не были сохранены.</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="143"/>
+        <location filename="../assets/EditGroupPage.qml" line="145"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="144"/>
+        <location filename="../assets/EditGroupPage.qml" line="146"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation>Вернуться</translation>
@@ -1301,6 +1355,11 @@ To continue, tap the lock symbol below.</source>
         <translation>Открытие...</translation>
     </message>
     <message>
+        <source>Create Database</source>
+        <comment>An action to create a new database.</comment>
+        <translation type="obsolete">Новая База Паролей</translation>
+    </message>
+    <message>
         <location filename="../assets/UnlockDbPage.qml" line="317"/>
         <source>Open</source>
         <comment>A button/action which opens/unlocks a database file.</comment>
@@ -1578,115 +1637,115 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewGroupPage</name>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="90"/>
+        <location filename="../assets/ViewGroupPage.qml" line="91"/>
         <source>Search</source>
         <comment>A button/action which opens a search dialog.</comment>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="102"/>
+        <location filename="../assets/ViewGroupPage.qml" line="103"/>
         <source>Create Entry</source>
         <comment>A button/action to create a new entry</comment>
         <translation>Добавить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="109"/>
+        <location filename="../assets/ViewGroupPage.qml" line="110"/>
         <source>Create Group</source>
         <comment>A button/action to create a new group</comment>
         <translation>Добавить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="130"/>
+        <location filename="../assets/ViewGroupPage.qml" line="131"/>
         <source>Lock</source>
         <comment>A button/action which locks/closes the database.</comment>
         <translation>Закрыть Базу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="162"/>
+        <location filename="../assets/ViewGroupPage.qml" line="163"/>
         <source>Enter search query</source>
         <comment>Hint text for the search query input field, invites the user to type some text</comment>
         <translation>Введите текст для поиска</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="183"/>
+        <location filename="../assets/ViewGroupPage.qml" line="184"/>
         <source>Cancel</source>
         <comment>Button/action to cancel/hide search query field</comment>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="250"/>
+        <location filename="../assets/ViewGroupPage.qml" line="251"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation>Копировать Имя</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="257"/>
+        <location filename="../assets/ViewGroupPage.qml" line="258"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation>Копировать Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="264"/>
+        <location filename="../assets/ViewGroupPage.qml" line="265"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translation>Изменить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="272"/>
+        <location filename="../assets/ViewGroupPage.qml" line="273"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="294"/>
+        <location filename="../assets/ViewGroupPage.qml" line="295"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation>Изменить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="302"/>
+        <location filename="../assets/ViewGroupPage.qml" line="303"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation>Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="330"/>
+        <location filename="../assets/ViewGroupPage.qml" line="332"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translation>В этой группе пока пусто</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="345"/>
+        <location filename="../assets/ViewGroupPage.qml" line="361"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="346"/>
+        <location filename="../assets/ViewGroupPage.qml" line="362"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation>Точно удалить эту запись?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="347"/>
+        <location filename="../assets/ViewGroupPage.qml" line="363"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="359"/>
+        <location filename="../assets/ViewGroupPage.qml" line="375"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="360"/>
+        <location filename="../assets/ViewGroupPage.qml" line="376"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translation>Точно удалить эту группу, ее подгруппы и записи в них?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="361"/>
+        <location filename="../assets/ViewGroupPage.qml" line="377"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translation>Удалить</translation>
@@ -1770,25 +1829,43 @@ To continue, tap the lock symbol below.</source>
         <translation>Буфер обмена очищен</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="137"/>
+        <location filename="../assets/main.qml" line="141"/>
         <source>Database saved</source>
         <comment>A short notification/confirmation message</comment>
         <translation>База паролей сохранена</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="141"/>
+        <location filename="../assets/main.qml" line="145"/>
         <source>Error</source>
         <comment>Title of an error notification popup</comment>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="146"/>
+        <location filename="../assets/main.qml" line="150"/>
         <source>Saving...</source>
         <comment>Title of a progress indicator while a database is being encrypted/saved.</comment>
         <translation>Сохранение...</translation>
     </message>
     <message>
+        <location filename="../assets/main.qml" line="162"/>
+        <source>File Access</source>
+        <comment>Title of a message asking user&apos;s permission to access files in phone&apos;s memory.</comment>
+        <translation>Доступ к Файлам</translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="163"/>
+        <source>In order to work correctly, KeePassB needs your permission to access file storage of this device. Please change permission settings and restart the app.</source>
+        <comment>Instructions shown when the user has not allowed the app to access files in phone&apos;s memory.</comment>
+        <translation>Для корректной работы KeePassB нужен доступ к к файловой системе устройства. Пожалуйста, измените настроки прав доступа и перезапустите приложение.</translation>
+    </message>
+    <message>
         <location filename="../assets/main.qml" line="165"/>
+        <source>Change Settings...</source>
+        <comment>A button which will open system settings.</comment>
+        <translation>Изменить Настройки...</translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="191"/>
         <source>%1
 (%2)</source>
         <comment>A template for &apos;Error message (Error description)&apos;; change only for right-to-left langugages</comment>
