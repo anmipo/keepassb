@@ -53,6 +53,7 @@ const QString KEY_PWGEN_LENGTH = "pwGenLength";
 const QString KEY_PWGEN_FLAGS = "pwGenFlags";
 const QString KEY_BACKUP_DATABASE_ON_SAVE = "backupDatabaseOnSave";
 const QString KEY_MINIMIZE_APP_ON_COPY = "minimizeAppOnCopy";
+const QString KEY_MULTI_COPY_FIRST_USE = "multiCopyFirstUse";
 const QString KEY_RECENT_FILES_COUNT = "recentFiles/count";
 const QString KEY_RECENT_FILES_ITEM = "recentFiles/item%1";
 
@@ -107,6 +108,8 @@ Settings::Settings(QObject* parent) : QObject(parent) {
             KEY_BACKUP_DATABASE_ON_SAVE, DEFAULT_BACKUP_DATABASE_ON_SAVE).toBool();
     _minimizeAppOnCopy = settings.value(
             KEY_MINIMIZE_APP_ON_COPY, DEFAULT_MINIMIZE_APP_ON_COPY).toBool();
+    _multiCopyFirstUse = settings.value(
+            KEY_MULTI_COPY_FIRST_USE, true).toBool();
 
     // group sorting type is introduced since v2.4.4, import previous setting
     if (settings.contains(KEY_GROUP_SORTING_TYPE)) {
@@ -313,5 +316,13 @@ void Settings::setMinimizeAppOnCopy(bool minOnCopy) {
         QSettings().setValue(KEY_MINIMIZE_APP_ON_COPY, minOnCopy);
         _minimizeAppOnCopy = minOnCopy;
         emit minimizeAppOnCopyChanged(minOnCopy);
+    }
+}
+
+void Settings::setMultiCopyFirstUse(bool firstUse) {
+    if (firstUse != _multiCopyFirstUse) {
+        QSettings().setValue(KEY_MULTI_COPY_FIRST_USE, firstUse);
+        _multiCopyFirstUse = firstUse;
+        emit multiCopyFirstUseChanged(firstUse);
     }
 }

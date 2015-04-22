@@ -23,13 +23,13 @@ PageWithWatchdog {
                 }
             }
             StandardListItem {
-                title: qsTr("Smart Copy", "Title of the settings group which configures advanced copying to clipboard") + Retranslate.onLocaleOrLanguageChanged
+                title: qsTr("Clipboard", "Title of the settings group which configures advanced copying to clipboard") + Retranslate.onLocaleOrLanguageChanged
                 horizontalAlignment: HorizontalAlignment.Fill
                 imageSource: "asset:///images/ic_copy.png"
                 onTouch: {
                     if (event.isUp()) {
-                        var smartCopySettingsPage = smartCopySettingsPageComponent.createObject(this);
-                        naviPane.push(smartCopySettingsPage);
+                        var clipboardSettingsPage = clipboardSettingsPageComponent.createObject(this);
+                        naviPane.push(clipboardSettingsPage);
                     }
                 }                
             }
@@ -238,7 +238,7 @@ PageWithWatchdog {
             }
         },
         ComponentDefinition {
-            id: smartCopySettingsPageComponent
+            id: clipboardSettingsPageComponent
             PageWithWatchdog {
                 onCreationCompleted: {
                     minimizeAppOnCopy.checked = appSettings.minimizeAppOnCopy;
@@ -246,7 +246,7 @@ PageWithWatchdog {
                 }
                 
                 titleBar: TitleBar {
-                    title: qsTr("Smart Copy", "Title of the settings group which configures advanced copying to clipboard") + Retranslate.onLocaleOrLanguageChanged
+                    title: qsTr("Clipboard", "Title of the settings group which configures advanced copying to clipboard") + Retranslate.onLocaleOrLanguageChanged
                 }
                 Container {
                     topPadding: 10

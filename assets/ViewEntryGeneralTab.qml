@@ -29,6 +29,7 @@ ScrollView {
         LabelTextButton {
             id: usernameField
             labelText: qsTr("User Name", "Label of the username field; refers to login information rather then person's own name.") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_copy.png"
             valueText: entry.userName
         }
         LabelTextButton {

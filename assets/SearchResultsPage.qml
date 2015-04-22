@@ -42,6 +42,32 @@ PageWithWatchdog {
                         title: ListItemData.title
                         description: qsTr("Group: %1", "Describes the group of the selected entry. Example: 'Group:  Internet'").arg(ListItemData.parentGroup.name)
                         imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
+                        contextActions: ActionSet {
+                            title: ListItemData.title
+                            actions: [
+                                ActionItem {
+                                    title: qsTr("Multi-Copy", "A button/action which copies several values into clipboard (also see 'Multi-Copy' in thesaurus).") + Retranslate.onLocaleOrLanguageChanged
+                                    imageSource: "asset:///images/ic_multi_copy.png"
+                                    onTriggered: {
+                                        Common.performMultiCopy(ListItemData);
+                                    }
+                                },
+                                ActionItem {
+                                    title: qsTr("Copy User Name", "A button/action which copies user_name value to the clipboard. Here, 'User Name' refers to login information rather that person's own name.") + Retranslate.onLocaleOrLanguageChanged
+                                    imageSource: "asset:///images/ic_copy_username.png"
+                                    onTriggered: {
+                                        Qt.app.copyWithTimeout(ListItemData.userName);
+                                    }
+                                },
+                                ActionItem {
+                                    title: qsTr("Copy Password", "A button/action which copies password password value to the clipborad.") + Retranslate.onLocaleOrLanguageChanged
+                                    imageSource: "asset:///images/ic_copy_password.png"
+                                    onTriggered: {
+                                        Qt.app.copyWithTimeout(ListItemData.password);
+                                    }
+                                }
+                            ]
+                        }
                     }
                 }
             ]

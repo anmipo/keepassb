@@ -130,3 +130,15 @@ function createUniqueOption(fullPath, dropdown, newOptionComponent) {
     option.text = prettifyFilePath(fullPath);
     return option;
 }
+
+/**
+ * Performs Multi-Copy function, optionally showing info dialog first.
+ */
+function performMultiCopy(entry, suppressInfo) {
+	if (appSettings.multiCopyFirstUse && !suppressInfo) {
+		multiCopyInfoDialog.entry = entry;
+		multiCopyInfoDialog.show();
+	} else {
+		Qt.app.prepareMultiCopy(entry.userName, entry.password);		
+	}	
+}

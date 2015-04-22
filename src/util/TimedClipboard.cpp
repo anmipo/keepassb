@@ -14,7 +14,8 @@
 const QString TimedClipboard::DATA_TYPE = "text/plain";
 
 TimedClipboard::TimedClipboard(QObject* parent) :
-		bb::system::Clipboard(parent), timer(parent), content(), modified(false) {
+		bb::system::Clipboard(parent), selectedContentType(CONTENT_NONE),
+		timer(parent), simpleContent(), firstContent(), secondContent(), modified(false) {
 	timer.setSingleShot(true);
 	QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(timeout()));
 }
@@ -30,27 +31,53 @@ void TimedClipboard::timeout() {
 }
 
 bool TimedClipboard::clear() {
-    if (modified && (content == this->value(DATA_TYPE))) {
+    if (!modified)
+        return false;
+
+    QByteArray actualClipboardContent = this->value(DATA_TYPE);
+    bool containsOurContent;
+    switch (selectedContentType) {
+        case CONTENT_SIMPLE:
+            containsOurContent = (simpleContent == actualClipboardContent);
+            break;
+        case CONTENT_FIRST:
+            containsOurContent = (firstContent == actualClipboardContent);
+            break;
+        case CONTENT_SECOND:
+            containsOurContent = (secondContent == actualClipboardContent);
+            break;
+        default: // such as CONTENT_NONE
+            containsOurContent = false;
+    }
+    // clear internal state
+    Util::safeClear(simpleContent);
+    Util::safeClear(firstContent);
+    Util::safeClear(secondContent);
+    selectedContentType = CONTENT_NONE;
+
+    if (containsOurContent) {
+        // remove our data from system's clipboard
         LOG("Clipboard cleared by timeout");
         bool result = bb::system::Clipboard::clear();
         emit cleared();
         return result;
     } else {
-        LOG("Clipboard NOT cleared by timeout - different content");
+        LOG("Clipboard left as is (there is no app's data)");
         return false;
     }
 }
 
 bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMillis) {
-    content = text.toUtf8();
-    modified = true;
+    simpleContent = text.toUtf8();
     // Clearing the complete clipboard is very important, since there could co-exist
     // different texts in various formats: text/plain, text/rtf, text/html...
     bb::system::Clipboard::clear();
 
-	bool result = this->insert(DATA_TYPE, content);
+	bool result = this->insert(DATA_TYPE, simpleContent);
 	if (result) {
+        modified = true;
 		emit inserted();
+		timer.stop();
 		if (timeoutMillis >= 0) {
 		    timer.start(timeoutMillis);
 		}
@@ -58,3 +85,54 @@ bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMi
 	return result;
 }
 
+void TimedClipboard::insertPair(const QString& first, const QString& second, const long timeoutMillis) {
+    this->firstContent = first.toUtf8();
+    this->secondContent = second.toUtf8();
+
+    timer.stop();
+    activateFirst();
+    if (timeoutMillis >= 0) {
+        timer.start(timeoutMillis);
+    }
+}
+
+void TimedClipboard::activateFirst() {
+    // Clearing the complete clipboard is very important, since there could co-exist
+    // different texts in various formats: text/plain, text/rtf, text/html...
+    bb::system::Clipboard::clear();
+    bool result = this->insert(DATA_TYPE, firstContent);
+    if (result) {
+        LOG("Clipboard content: %s", this->value(DATA_TYPE).constData());
+        modified = true;
+        emit inserted();
+        selectedContentType = CONTENT_FIRST;
+    }
+}
+
+void TimedClipboard::activateSecond() {
+    // Clearing the complete clipboard is very important, since there could co-exist
+    // different texts in various formats: text/plain, text/rtf, text/html...
+    bb::system::Clipboard::clear();
+    bool result = this->insert(DATA_TYPE, secondContent);
+    if (result) {
+        LOG("Clipboard content: %s", this->value(DATA_TYPE).constData());
+        modified = true;
+        emit inserted();
+        selectedContentType = CONTENT_SECOND;
+    }
+}
+
+void TimedClipboard::activateAlternative() {
+//    LOG("activateAlternative(): selectedContentType is %d", selectedContentType);
+    if (selectedContentType == CONTENT_FIRST)
+        activateSecond();
+    else if (selectedContentType == CONTENT_SECOND) {
+        activateFirst();
+    } else {
+        LOG("Cannot alternate clipboard content - not in multi-copy mode");
+    }
+}
+
+bool TimedClipboard::isPairActive() {
+    return (selectedContentType == CONTENT_FIRST) || (selectedContentType == CONTENT_SECOND);
+}

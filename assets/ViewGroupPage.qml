@@ -317,8 +317,15 @@ PageWithWatchdog {
                                 title: ListItemData.title
                                 actions: [
                                     ActionItem {
+                                        title: qsTr("Multi-Copy", "A button/action which copies the whole entry into clipboard (also see 'Multi-Copy' in thesaurus).") + Retranslate.onLocaleOrLanguageChanged
+                                        imageSource: "asset:///images/ic_multi_copy.png"
+                                        onTriggered: {
+                                            Common.performMultiCopy(ListItemData);
+                                        }
+                                    },
+                                    ActionItem {
                                         title: qsTr("Copy User Name", "A button/action which copies user_name value to the clipboard. Here, 'User Name' refers to login information rather that person's own name.") + Retranslate.onLocaleOrLanguageChanged
-                                        imageSource: "asset:///images/ic_copy.png"
+                                        imageSource: "asset:///images/ic_copy_username.png"
                                         onTriggered: {
                                             Qt.app.copyWithTimeout(ListItemData.userName);
                                         }

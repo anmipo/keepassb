@@ -1,8 +1,10 @@
 APP_NAME = KeePassB
 
-CONFIG += qt warn_on cascades10
+CONFIG += qt warn_on cascades10 mobility
 
 LIBS += -lbbsystem -lhuapi -lbbcascadespickers -lbbdevice -lbb
+
+MOBILITY += sensors
 
 CODECFORSRC = UTF-8
 

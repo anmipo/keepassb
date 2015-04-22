@@ -71,6 +71,10 @@ class Settings: public QObject {
      * Minimize application on copy to clipboard.
      */
     Q_PROPERTY(bool minimizeAppOnCopy READ isMinimizeAppOnCopy WRITE setMinimizeAppOnCopy NOTIFY minimizeAppOnCopyChanged)
+    /**
+     * True before the Multi-Copy was used for the first time; false afterwards.
+     */
+    Q_PROPERTY(bool multiCopyFirstUse READ isMultiCopyFirstUse WRITE setMultiCopyFirstUse NOTIFY multiCopyFirstUseChanged)
 public:
     enum EntryListDetail {
         ENTRY_DETAIL_NONE      = 0x00,
@@ -124,6 +128,7 @@ private:
     int _pwGenFlags;
     bool _backupDatabaseOnSave;
     bool _minimizeAppOnCopy;
+    bool _multiCopyFirstUse;
     QStringList _recentFiles;
     QMap<QString, QString> _recentDbToKey;
 
@@ -156,6 +161,7 @@ public:
     int getPwGenFlags() const { return _pwGenFlags; }
     bool isBackupDatabaseOnSave() const { return _backupDatabaseOnSave; }
     bool isMinimizeAppOnCopy() const { return _minimizeAppOnCopy; }
+    bool isMultiCopyFirstUse() const { return _multiCopyFirstUse; }
 
     /**
      * Adds paths to the top of the recent files list
@@ -191,6 +197,7 @@ public slots:
     void setPwGenFlags(int flags);
     void setBackupDatabaseOnSave(bool doBackup);
     void setMinimizeAppOnCopy(bool minOnCopy);
+    void setMultiCopyFirstUse(bool firstUse);
 signals:
     void searchInDeletedChanged(bool);
     void searchAfterUnlockChanged(bool);
@@ -206,6 +213,7 @@ signals:
     void pwGenFlagsChanged(int);
     void backupDatabaseOnSaveChanged(bool);
     void minimizeAppOnCopyChanged(bool);
+    void multiCopyFirstUseChanged(bool);
     // emitted whenever the list of recent DB or key files changes
     void recentFilesChanged();
 };

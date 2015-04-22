@@ -23,6 +23,14 @@ PageWithWatchdog {
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     actions: [
         ActionItem {
+            title: qsTr("Multi-Copy", "A button/action which copies the whole entry into clipboard (also see 'Multi-Copy' in thesaurus).") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_multi_copy.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                Common.performMultiCopy(entry);
+            }
+        },
+        ActionItem {
             id: addExtraField
             title: qsTr("Add Extra Field", "A button/action to add an extra field to an entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_add_field.png"

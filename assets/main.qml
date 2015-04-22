@@ -17,6 +17,8 @@
 import bb.cascades 1.2
 import bb.system 1.2
 import QtQuick 1.0
+import org.keepassb 1.0
+import "common.js" as Common
 
 NavigationPane {
     id: naviPane
@@ -177,6 +179,19 @@ NavigationPane {
                 data: "org.KeePassB"
                 mimeType: "settings/view"
                 uri: "settings://permissions"
+            }
+        },
+        SystemDialog {
+            property PwEntry entry
+            id: multiCopyInfoDialog
+            title: qsTr("Multi-Copy", "Title of a window describing how Multi-Copy function works") + Retranslate.onLocaleOrLanguageChanged
+            body: qsTr("Multi-Copy makes it easier to copy and paste both user name and password.\n1) Switch to the target app.\n2) Paste the user name.\n3) Wave your palm in front of the phone's earpiece (the phone will vibrate briefly).\n4) Now paste the password.",
+                "Brief description of the Multi-Copy function. Try to keep it brief.") + Retranslate.onLocaleOrLanguageChanged
+            cancelButton.label: ""
+            onFinished: {
+                // The info was shown, so consider Multi Copy was used once.
+                appSettings.multiCopyFirstUse = false;
+                Common.performMultiCopy(entry, true);
             }
         }
     ]

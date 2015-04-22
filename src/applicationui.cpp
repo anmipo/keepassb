@@ -13,6 +13,7 @@
 #include <bb/cascades/QmlDocument>
 #include <bb/system/SystemToast>
 #include <bb/system/InvokeManager>
+#include <bb/device/VibrationController>
 #include "db/PwDatabase.h"
 #include "crypto/CryptoManager.h"
 #include "ui/ActiveFrame.h"
@@ -20,11 +21,13 @@
 
 using namespace bb::cascades;
 using namespace bb::system;
+using namespace bb::device;
 
 const QString OPEN_DB_ACTION = "org.keepassb.database.open";
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
-        QObject(app), clipboard(app), watchdog(), quickPassHash(), quickLocked(false) {
+        QObject(app), clipboard(app), watchdog(), quickPassHash(), quickLocked(false),
+        sensor(app), vibrationController(app), isMinimized(false), isMultiCopyConfrimed(false) {
 
     m_pTranslator = new QTranslator(this);
     m_pLocaleHandler = new LocaleHandler(this);
@@ -61,6 +64,9 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
     app->setCover(new ActiveFrame(app, this, database));
     res = QObject::connect(app, SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
+    res = QObject::connect(app, SIGNAL(fullscreen()), this, SLOT(onFullscreen())); Q_ASSERT(res);
+    res = QObject::connect(app, SIGNAL(aboutToQuit()), this, SLOT(onAboutToQuit())); Q_ASSERT(res);
+
 
     watchdog.setSingleShot(true);
     watchdog.setInterval(settings->getAutoLockTimeout());
@@ -70,6 +76,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // lock DB and clear clipboard when leaving the app (since the timeout timer won't fire after that)
     res = QObject::connect(app, SIGNAL(manualExit()), database, SLOT(lock())); Q_ASSERT(res);
     res = QObject::connect(app, SIGNAL(manualExit()), &clipboard, SLOT(clear())); Q_ASSERT(res);
+
+    sensor.setAlwaysOn(true); // otherwise sensors are inactive even with run_when_backgrounded
+    sensor.setSkipDuplicates(true); // to reduce processing (has no effect in 10.3.1 yet)
+    res = QObject::connect(&sensor, SIGNAL(readingChanged()), this, SLOT(onSensorReadingChanged())); Q_ASSERT(res);
 
     initQml(app);
 }
@@ -112,12 +122,84 @@ void ApplicationUI::onSystemLanguageChanged() {
     }
 }
 
-void ApplicationUI::onThumbnail() {
-    LOG("App minimized");
+void ApplicationUI::onClipboardCleared() {
+    stopMultiCopySensor();
+}
 
-    // zero timeout means lock when minimized
-    if (!database->isLocked() && settings->getAutoLockTimeout() == 0) {
-        lock();
+void ApplicationUI::onFullscreen() {
+    LOG("App restored");
+    stopMultiCopySensor();
+    isMinimized = false;
+}
+
+void ApplicationUI::onThumbnail() {
+    // Surprisingly, onThumbnail() gets called also when another app is minimized.
+    // So we consider only the first, genuine minimization.
+    LOG("onThumbnail: %s", Application::instance()->isThumbnailed() ? "already thumbnailed" : "fullscreen");
+    if (isMinimized)
+        return;
+
+    LOG("App minimized");
+    isMinimized = true;
+
+    if (!database->isLocked()) {
+        startMultiCopySensor();
+        // zero timeout means lock when minimized
+        if (settings->getAutoLockTimeout() == 0)
+            lock();
+    }
+}
+
+void ApplicationUI::onAboutToQuit() {
+    LOG("App quitting.");
+    stopMultiCopySensor();
+}
+
+
+void ApplicationUI::startMultiCopySensor() {
+    if (clipboard.isPairActive()) {
+        sensor.start();
+        sensorWasClose = sensor.reading()->close();
+        LOG("Sensor started");
+    } else {
+        LOG("No multi-copy activated");
+    }
+}
+
+void ApplicationUI::stopMultiCopySensor() {
+    sensor.stop();
+    LOG("Sensor stopped");
+}
+
+void ApplicationUI::vibrateBriefly() {
+    vibrationController.stop();
+    vibrationController.start(100, 10);
+}
+
+void ApplicationUI::onSensorReadingChanged() {
+    if (!isMinimized) {
+        LOG("Sensor reading while fullscreen - ignoring");
+        return;
+    }
+    if (!isMultiCopyConfrimed) {
+        // The app just minimized, confirm that multi copy is activated
+        // (Without run_when_backgrounded permission we won't be here)
+        vibrateBriefly();
+        isMultiCopyConfrimed = true;
+        LOG("Multi copy confirmed");
+    }
+
+    bool isClose = sensor.reading()->close();
+    if (isClose != sensorWasClose) {
+        if (isClose) {
+            LOG("Multi copy trigger event.");
+            // Multi copy remote event just triggered
+            vibrateBriefly();
+            clipboard.activateAlternative();
+            stopMultiCopySensor();
+        }
+        sensorWasClose = isClose;
+        LOG("Got new reading");
     }
 }
 
@@ -155,6 +237,15 @@ void ApplicationUI::copyWithTimeout(const QString& text) {
 	clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
 	if (settings->isMinimizeAppOnCopy())
 	    Application::instance()->minimize();
+}
+
+// stores entry fields for consequent multi-copying
+void ApplicationUI::prepareMultiCopy(const QString& userName, const QString& password) {
+    LOG("prepareMultiCopy");
+    clipboard.insertPair(userName, password, settings->getClipboardTimeout());
+    isMultiCopyConfrimed = false;
+    if (settings->isMinimizeAppOnCopy())
+        Application::instance()->minimize();
 }
 
 /**

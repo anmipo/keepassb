@@ -1,5 +1,5 @@
 1
-256
+258
 demo.kdbx
 icons_data_model.xml
 images/cover-locked.png
@@ -12,6 +12,7 @@ images/ic_add_entry.png
 images/ic_add_field.png
 images/ic_add_group.png
 images/ic_attach.png
+images/ic_copy_username.png
 images/ic_create_database.png
 images/ic_done.png
 images/ic_edit.png
@@ -24,6 +25,7 @@ images/ic_entry_general.png
 images/ic_expired_item.png
 images/ic_history.png
 images/ic_lock.png
+images/ic_multi_copy.png
 images/ic_new_password.png
 images/ic_notes.png
 images/ic_quicklock.png

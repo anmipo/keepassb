@@ -74,6 +74,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/AppSettings.qml" line="26"/>
+        <location filename="../assets/AppSettings.qml" line="249"/>
+        <source>Clipboard</source>
+        <comment>Title of the settings group which configures advanced copying to clipboard</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/AppSettings.qml" line="154"/>
         <source>Lock Database</source>
         <comment>A setting specifying the time interval after which the database will be automatically closed. Will be shown with one of its possible values, e.g. &apos;Lock Database    After 15 seconds&apos;.</comment>
@@ -161,13 +168,6 @@
         <location filename="../assets/AppSettings.qml" line="231"/>
         <source>Never</source>
         <comment>One of the possible values of the &apos;Clear Clipboard&apos; timeout option. Will be displayed as &apos;Clear Clipboard    Never&apos;</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/AppSettings.qml" line="26"/>
-        <location filename="../assets/AppSettings.qml" line="249"/>
-        <source>Smart Copy</source>
-        <comment>Title of the settings group which configures advanced copying to clipboard</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -443,19 +443,19 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
 <context>
     <name>ApplicationUI</name>
     <message>
-        <location filename="../src/applicationui.cpp" line="54"/>
+        <location filename="../src/applicationui.cpp" line="57"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="174"/>
+        <location filename="../src/applicationui.cpp" line="265"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="185"/>
+        <location filename="../src/applicationui.cpp" line="276"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translation type="unfinished"></translation>
@@ -1258,7 +1258,25 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="59"/>
+        <location filename="../assets/SearchResultsPage.qml" line="49"/>
+        <source>Multi-Copy</source>
+        <comment>A button/action which copies several values into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="56"/>
+        <source>Copy User Name</source>
+        <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="63"/>
+        <source>Copy Password</source>
+        <comment>A button/action which copies password password value to the clipborad.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="85"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translation type="unfinished"></translation>
@@ -1387,49 +1405,49 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryExtrasTab</name>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="107"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="117"/>
         <source>Edit Field</source>
         <comment>A button/action to edit entry&apos;s field.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="115"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="125"/>
         <source>Delete Field</source>
         <comment>A button/action to delete entry&apos;s field.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="141"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="151"/>
         <source>Close</source>
         <comment>Action/button which closes a dialog box</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="145"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="155"/>
         <source>Copy Name</source>
         <comment>Action/button which copies field&apos;s name to clipboard</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="149"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="159"/>
         <source>Copy Value</source>
         <comment>Action/button which copies field&apos;s value to clipboard</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="167"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="177"/>
         <source>Attached Files</source>
         <comment>Title of a list with attached files</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="170"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="180"/>
         <source>There are no attached files.</source>
         <comment>Explanation for the empty list of attached files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="195"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="205"/>
         <source>%n byte(s)</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
         <translation type="unfinished">
@@ -1437,73 +1455,73 @@ To continue, tap the lock symbol below.</source>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="200"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="210"/>
         <source>Remove File</source>
         <comment>A button/action to remove/delete the selected file attachment from the database (not from the disk)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="224"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="234"/>
         <source>Save File</source>
         <comment>Title of a file saving dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="233"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="243"/>
         <source>File saved</source>
         <comment>A confirmation message once the file has been successfully saved</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="236"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="246"/>
         <source>Could not save file</source>
         <comment>Error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="247"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="257"/>
         <source>Select File</source>
         <comment>Title of a file selection dialog.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="268"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="278"/>
         <source>Open</source>
         <comment>A button/action which opens/launches the selected file. It may produce an error message, please search for INVOKE_ATTACHMENT to ensure concordance.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="279"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="289"/>
         <source>File attached</source>
         <comment>A confirmation message once the file has been successfully attached to the entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="280"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="290"/>
         <source>Could not attach file</source>
         <comment>Error message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="285"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="295"/>
         <source>Loading file</source>
         <comment>Status message about ongoing process</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="291"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="301"/>
         <source>Warning</source>
         <comment>Title of an window with an important notification</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="292"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="302"/>
         <source>KDB format allows only one attachment per entry. Replace the current attachment?</source>
         <comment>KDB is a file format, do not translate</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="293"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="303"/>
         <source>Replace</source>
         <comment>A button/action to confirm that the old attachment should be replaced by the new one</comment>
         <translation type="unfinished"></translation>
@@ -1518,19 +1536,19 @@ To continue, tap the lock symbol below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryGeneralTab.qml" line="36"/>
+        <location filename="../assets/ViewEntryGeneralTab.qml" line="37"/>
         <source>Password</source>
         <comment>Label of the password field.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryGeneralTab.qml" line="43"/>
+        <location filename="../assets/ViewEntryGeneralTab.qml" line="44"/>
         <source>URL</source>
         <comment>Label of the entry field containing a link/internet address.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryGeneralTab.qml" line="55"/>
+        <location filename="../assets/ViewEntryGeneralTab.qml" line="56"/>
         <source>Notes</source>
         <comment>Label of the entry field containing comments or additional text information.</comment>
         <translation type="unfinished"></translation>
@@ -1584,61 +1602,67 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryPage</name>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="27"/>
+        <location filename="../assets/ViewEntryPage.qml" line="57"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="47"/>
+        <location filename="../assets/ViewEntryPage.qml" line="46"/>
         <source>Attach File</source>
         <comment>A button/action to attach a file to an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="58"/>
+        <location filename="../assets/ViewEntryPage.qml" line="26"/>
+        <source>Multi-Copy</source>
+        <comment>A button/action which copies the whole entry into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewEntryPage.qml" line="35"/>
         <source>Add Extra Field</source>
         <comment>A button/action to add an extra field to an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="68"/>
+        <location filename="../assets/ViewEntryPage.qml" line="76"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="76"/>
+        <location filename="../assets/ViewEntryPage.qml" line="84"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="77"/>
+        <location filename="../assets/ViewEntryPage.qml" line="85"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="78"/>
+        <location filename="../assets/ViewEntryPage.qml" line="86"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="106"/>
+        <location filename="../assets/ViewEntryPage.qml" line="114"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="110"/>
+        <location filename="../assets/ViewEntryPage.qml" line="118"/>
         <source>Extra</source>
         <comment>Title of a page which shows additional/advanced properties of an entry.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="114"/>
+        <location filename="../assets/ViewEntryPage.qml" line="122"/>
         <source>History</source>
         <comment>Title of a page which lists the previous versions of an entry.</comment>
         <translation type="unfinished"></translation>
@@ -1738,78 +1762,84 @@ To continue, tap the lock symbol below.</source>
     </message>
     <message>
         <location filename="../assets/ViewGroupPage.qml" line="320"/>
+        <source>Multi-Copy</source>
+        <comment>A button/action which copies the whole entry into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="327"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="327"/>
+        <location filename="../assets/ViewGroupPage.qml" line="334"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="334"/>
+        <location filename="../assets/ViewGroupPage.qml" line="341"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="342"/>
+        <location filename="../assets/ViewGroupPage.qml" line="349"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="364"/>
+        <location filename="../assets/ViewGroupPage.qml" line="371"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="372"/>
+        <location filename="../assets/ViewGroupPage.qml" line="379"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="401"/>
+        <location filename="../assets/ViewGroupPage.qml" line="408"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="416"/>
+        <location filename="../assets/ViewGroupPage.qml" line="423"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="417"/>
+        <location filename="../assets/ViewGroupPage.qml" line="424"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="418"/>
+        <location filename="../assets/ViewGroupPage.qml" line="425"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="430"/>
+        <location filename="../assets/ViewGroupPage.qml" line="437"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="431"/>
+        <location filename="../assets/ViewGroupPage.qml" line="438"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="432"/>
+        <location filename="../assets/ViewGroupPage.qml" line="439"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translation type="unfinished"></translation>
@@ -1857,79 +1887,95 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="35"/>
+        <location filename="../assets/main.qml" line="37"/>
         <source>About</source>
         <comment>A button/action which opens an information window about the application.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="44"/>
+        <location filename="../assets/main.qml" line="46"/>
         <source>Quick Lock</source>
         <comment>A button which engages Quick Lock mode (see thesaurus).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="44"/>
+        <location filename="../assets/main.qml" line="46"/>
         <source>Lock</source>
         <comment>A button which closes/locks the current database.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="52"/>
+        <location filename="../assets/main.qml" line="54"/>
         <source>Change Master Key</source>
         <comment>A button/action to change the master key (main password) of the database</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="99"/>
+        <location filename="../assets/main.qml" line="101"/>
         <source>Copied to clipboard</source>
         <comment>A notification which confirms successful copying of text.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="102"/>
+        <location filename="../assets/main.qml" line="104"/>
         <source>Clipboard cleared</source>
         <comment>A notification message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="141"/>
+        <location filename="../assets/main.qml" line="143"/>
         <source>Database saved</source>
         <comment>A short notification/confirmation message</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="145"/>
+        <location filename="../assets/main.qml" line="147"/>
         <source>Error</source>
         <comment>Title of an error notification popup</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="150"/>
+        <location filename="../assets/main.qml" line="152"/>
         <source>Saving...</source>
         <comment>Title of a progress indicator while a database is being encrypted/saved.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="162"/>
+        <location filename="../assets/main.qml" line="164"/>
         <source>File Access</source>
         <comment>Title of a message asking user&apos;s permission to access files in phone&apos;s memory.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="163"/>
+        <location filename="../assets/main.qml" line="165"/>
         <source>In order to work correctly, KeePassB needs your permission to access file storage of this device. Please change permission settings and restart the app.</source>
         <comment>Instructions shown when the user has not allowed the app to access files in phone&apos;s memory.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="165"/>
+        <location filename="../assets/main.qml" line="167"/>
         <source>Change Settings...</source>
         <comment>A button which will open system settings.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="191"/>
+        <location filename="../assets/main.qml" line="187"/>
+        <source>Multi-Copy</source>
+        <comment>Title of a window describing how Multi-Copy function works</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="188"/>
+        <source>Multi-Copy makes it easier to copy and paste both user name and password.
+1) Switch to the target app.
+2) Paste the user name.
+3) Wave your palm in front of the phone&apos;s earpiece (the phone will vibrate briefly).
+4) Now paste the password.</source>
+        <comment>Brief description of the Multi-Copy function. Try to keep it brief.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="206"/>
         <source>%1
 (%2)</source>
         <comment>A template for &apos;Error message (Error description)&apos;; change only for right-to-left langugages</comment>
