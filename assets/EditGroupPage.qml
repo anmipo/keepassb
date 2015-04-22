@@ -59,6 +59,7 @@ Sheet {
             acceptAction: ActionItem {
                 title: qsTr("Save", "A button/action to save group changes") + Retranslate.onLocaleOrLanguageChanged
                 onTriggered: {
+                    nameField.validator.validate();
                     if (!nameField.validator.valid) {
                         nameField.validator.showMessage();
                         return;
