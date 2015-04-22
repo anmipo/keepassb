@@ -70,7 +70,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 }
 
 void ApplicationUI::initQml(bb::cascades::Application *app) {
-    QmlDocument* qml = QmlDocument::create("asset:///main.qml").parent(this);
+    QmlDocument* qml = QmlDocument::create("qrc:/assets/main.qml").parent(this);
     qml->setContextProperty("app", this);
     qml->setContextProperty("appSettings", this->settings);
     qml->setContextProperty("database", this->database);

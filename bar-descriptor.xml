@@ -80,7 +80,10 @@
     </asset>
     
     <!-- App assets -->
-    <asset path="assets">assets</asset>
+    <asset path="assets" dest="assets">
+    	<exclude name="**/*.qml"/>
+    	<exclude name="**/*.js"/>
+    </asset>
     <asset path="appicon.png">appicon.png</asset>
     <asset path="appicon90.png">appicon90.png</asset>
     <asset path="appicon96.png">appicon96.png</asset>
