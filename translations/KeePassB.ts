@@ -706,49 +706,49 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="73"/>
+        <location filename="../assets/EditGroupPage.qml" line="74"/>
         <source>Cancel</source>
         <comment>A button/action</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="97"/>
+        <location filename="../assets/EditGroupPage.qml" line="98"/>
         <source>Name</source>
         <comment>Label of the group name edit field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="105"/>
+        <location filename="../assets/EditGroupPage.qml" line="106"/>
         <source>This group name is reserved</source>
         <comment>An error message when a group is being given a name which is reserved for internal use only.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="125"/>
+        <location filename="../assets/EditGroupPage.qml" line="126"/>
         <source>Change Icon</source>
         <comment>A button/action to change group&apos;s icon</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="143"/>
+        <location filename="../assets/EditGroupPage.qml" line="144"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="144"/>
+        <location filename="../assets/EditGroupPage.qml" line="145"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="145"/>
+        <location filename="../assets/EditGroupPage.qml" line="146"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="146"/>
+        <location filename="../assets/EditGroupPage.qml" line="147"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation type="unfinished"></translation>

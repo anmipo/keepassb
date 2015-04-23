@@ -369,11 +369,11 @@ config_pri_source_group1 {
 
 INCLUDEPATH += $$quote($$BASEDIR/src/db/v4) \
     $$quote($$BASEDIR/src/util) \
-    $$quote($$BASEDIR/src/db) \
-    $$quote($$BASEDIR/src/db/v3) \
-    $$quote($$BASEDIR/src/ui) \
     $$quote($$BASEDIR/src) \
-    $$quote($$BASEDIR/src/crypto)
+    $$quote($$BASEDIR/src/db/v3) \
+    $$quote($$BASEDIR/src/crypto) \
+    $$quote($$BASEDIR/src/db) \
+    $$quote($$BASEDIR/src/ui)
 
 CONFIG += precompile_header
 
@@ -452,5 +452,6 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/*.hxx)
 }
 
-TRANSLATIONS = $$quote($${TARGET}_ru.ts) \
+TRANSLATIONS = $$quote($${TARGET}_de.ts) \
+    $$quote($${TARGET}_ru.ts) \
     $$quote($${TARGET}.ts)

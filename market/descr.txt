@@ -1,39 +1,38 @@
 KeePassB Password Manager (KeePass-compatible)
 Native KeePass 1.x and 2.x support
 
-KeePassB is a native BlackBerry 10 password manager compatible with KeePass 1.x and 2.x databases. 
+KeePassB is a native BlackBerry 10 password manager compatible with KeePass 1.x and 2.x databases. KeePass applications are available for Windows, Mac, Linux, and all major mobile platforms. 
 
-The original KeePass (by Dominik Reichl) is a free multi-platform open source password manager, which helps you to manage your passwords in a secure way. You can put all your passwords in one database, which is locked with one master key or a key file. So you only have to remember one single master password or select the key file to unlock the whole database. The databases are encrypted using the best and most secure encryption algorithms currently known.
+The original KeePass, created by Dominik Reichl, is a free multi-platform open source password manager, which helps you to manage your passwords in a secure way. You can put all your passwords in one database, which is locked with one master key or a key file. So you only have to remember one single master password or select the key file to unlock the whole database. The databases are encrypted using the best and most secure cryptographic algorithms currently known (AES-256, SHA-256). 
 
 
 FEATURES:
-- Create, view and edit KeePass v2 .kdbx files (beta)
-- View and edit KeePass v1 .kdb files
-- Easy copying of all fields
-- Password generator
-- Instant search
-- Flexible settings
-- Quick PIN unlock 
-- Automatic database backup
-- Synchronization with Dropbox, Box and other system-wide services
+- Can create, view and edit KeePass v2 (.kdbx) databases
+- Can view and edit KeePass v1 (.kdb) databases
+- Supports composite master keys (password + key file)
+- Supports multiple databases (work, personal, etc)
+- Provides a strong password generator (customizable, too)
+- Supports Quick Unlock (can provide one attempt to reopen database with an easier password)
+- Can automatically backup database before saving
+- Keeps previous versions of edited/deleted entries. Just in case.
 - Works with BlackBerry Work Drives
-- Native Built for BlackBerry interface
+- Works offline and does not have direct access to network. 
+- Can synchronize via any system-integrated service (Dropbox, Box, OneDrive), if you put database file into a synchronized folder. FTP, WebDAV and other synchronization methods are possible with third-party apps.
+- Languages: English, German, Russian (for other languages check http://keepassb.com/translate)
 
 
-IN FUTURE VERSIONS:
-- Support of KeePass v2 custom icons
+PERMISSIONS:
+- Shared Files - required to access (read and write) KeePass databases in device memory.
+- That's it!
 
 
-VERSIONS: 
-KeePassB inherited its name from an Android port created in 2012. Building the native app from the scratch allowed us to engage the full power of BlackBerry 10 platform, resulting in great performance and fantastic interface. Even better, KeePassB naturally integrates into  enterprise environments. (For enterprise enquiries please contact the developer.)
-
+APP NAME:
+KeePassB inherited its name from an Android port created in 2012. Building the native app from the scratch allowed us to engage the full power of BlackBerry 10 platform, resulting in great performance and fantastic interface. Even better, KeePassB naturally integrates into  enterprise environments. (For enterprise inquiries, please contact the developer.)
 Meanwhile, the old KeePassB remains available for existing users, but further development will focus on the native app.
 
 
 DISCLAIMER:
 While every effort has been made to ensure reliable and error-free functionality of the application, this is a work in progress and you use it at your own risk. If you find a bug, please report it to the developer before leaving negative review.
-
-A more formal disclaimer for the enterprise folks:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
@@ -43,6 +42,11 @@ kdb, kdbx, keypass, keepassx, enpass, keeper, keepassb 2, keepassb2
 
 
 Changelog:
+v2.4.1
+Added German and Russian translations
+Fixed minor interface bugs
+Improved startup time
+
 v2.4.0
 Added creation of new v2/kdbx databases
 Added editing of database master key
