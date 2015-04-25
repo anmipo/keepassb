@@ -369,11 +369,11 @@ config_pri_source_group1 {
 
 INCLUDEPATH += $$quote($$BASEDIR/src/db/v4) \
     $$quote($$BASEDIR/src/util) \
-    $$quote($$BASEDIR/src) \
-    $$quote($$BASEDIR/src/db/v3) \
-    $$quote($$BASEDIR/src/crypto) \
     $$quote($$BASEDIR/src/db) \
-    $$quote($$BASEDIR/src/ui)
+    $$quote($$BASEDIR/src/db/v3) \
+    $$quote($$BASEDIR/src/ui) \
+    $$quote($$BASEDIR/src) \
+    $$quote($$BASEDIR/src/crypto)
 
 CONFIG += precompile_header
 
