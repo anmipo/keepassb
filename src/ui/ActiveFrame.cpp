@@ -15,7 +15,7 @@ using namespace bb::cascades;
 
 ActiveFrame::ActiveFrame(QObject* parent, PwDatabaseFacade* database) : SceneCover(parent) {
 
-    QmlDocument* qml = QmlDocument::create("asset:///ActiveFrameCover.qml").parent(this);
+    QmlDocument* qml = QmlDocument::create("qrc:/assets/ActiveFrameCover.qml").parent(this);
     qml->setContextProperty("database", database);
 
     Container* mainContainer = qml->createRootObject<Container>();
