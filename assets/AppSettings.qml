@@ -135,10 +135,6 @@ PageWithWatchdog {
         }
     }
     attachedObjects: [
-        ComponentDefinition {
-            id: quickUnlockHelpComponent
-            source: "QuickUnlockHelp.qml"
-        },
         SystemToast {
             id: changesConfirmationToast
             body: qsTr("Changes have been applied", "Notification after the user changes some settings with immediate effect (e.g. clear history of recent files).")
