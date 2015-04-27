@@ -389,52 +389,47 @@ Q_INVOKABLE bool PwDatabaseFacade::save() {
         return false;
     }
 
-    // Save to a temporary file and check all the errors
-    QString tmpFilePath = db->getDatabaseFilePath() + TMP_SAVE_FILE_NAME_SUFFIX;
-    QFile outDbFile(tmpFilePath);
-    if (!outDbFile.open(QIODevice::WriteOnly)) {
-        LOG("Cannot open DB file: '%s' Error: %d. Message: %s", tmpFilePath.toUtf8().constData(),
-                outDbFile.error(), outDbFile.errorString().toUtf8().constData());
-        emit fileSaveError(tr("Cannot save database file", "An error message shown when the database file cannot be saved."), outDbFile.errorString());
+    // Copy original DB to temporary timestamped file
+    // (but when we create a DB, the original does not exist, and it is ok)
+    QFile dbFile(db->getDatabaseFilePath());
+    QString bakFileName = makeBackupFilePath(db->getDatabaseFilePath());
+    if (dbFile.exists() && !dbFile.copy(bakFileName)) {
+        LOG("Failed to backup the original DB: %s", dbFile.errorString().toUtf8().constData());
+        emit fileSaveError(tr("Cannot backup database file. Saving cancelled.", "An error message: failed to make a backup copy of the database file."), dbFile.errorString());
         return false;
     }
-    qint64 bytesWritten = outDbFile.write(outData);
-    if ((outDbFile.error() != QFile::NoError) || (bytesWritten != outData.size())) {
-        LOG("Cannot write to DB file. Error: %d. Message: %s", outDbFile.error(), outDbFile.errorString().toUtf8().constData());
-        emit fileSaveError(tr("Cannot write to database file", "An error message shown when the database file cannot be written to."), outDbFile.errorString());
+
+    // Write the new data directly to the original file
+    if (!dbFile.open(QIODevice::WriteOnly)) {
+        LOG("Cannot open DB file: '%s' Error: %d. Message: %s",
+                dbFile.fileName().toUtf8().constData(),
+                dbFile.error(), dbFile.errorString().toUtf8().constData());
+        emit fileSaveError(tr("Cannot save database file", "An error message shown when the database file cannot be saved."), dbFile.errorString());
         return false;
     }
-    if (!outDbFile.flush()) {
-        LOG("Could not flush the DB file. Error: %d. Message: %s", outDbFile.error(), outDbFile.errorString().toUtf8().constData());
-        emit fileSaveError(tr("Error writing to database file", "An error message shown when the database file cannot be written to."), outDbFile.errorString());
-        outDbFile.close();
+    qint64 bytesWritten = dbFile.write(outData);
+    if ((dbFile.error() != QFile::NoError) || (bytesWritten != outData.size())) {
+        LOG("Cannot write to DB file. Error: %d. Message: %s", dbFile.error(), dbFile.errorString().toUtf8().constData());
+        emit fileSaveError(tr("Cannot write to database file", "An error message shown when the database file cannot be written to."), dbFile.errorString());
+        return false;
+    }
+    if (!dbFile.flush()) {
+        LOG("Could not flush the DB file. Error: %d. Message: %s", dbFile.error(), dbFile.errorString().toUtf8().constData());
+        emit fileSaveError(tr("Error writing to database file", "An error message shown when the database file cannot be written to."), dbFile.errorString());
+        dbFile.close();
         // could not flush -> possibly not completely written -> not saved
         return false;
     }
-    outDbFile.close();
+    dbFile.close();
 
-    // Ok, QFile::rename() cannot replace an existing file, so we need to remove/rename the original DB first
-    QFile origDbFile(db->getDatabaseFilePath());
-    if (Settings::instance()->isBackupDatabaseOnSave()) {
-        // rename the original DB to a timestamped backup
-        // (but when we create a DB, the original does not exist, and it is ok)
-        QString bakFileName = makeBackupFilePath(db->getDatabaseFilePath());
-        if (origDbFile.exists() && !origDbFile.rename(bakFileName)) {
-            LOG("Failed to backup the original DB: %s", origDbFile.errorString().toUtf8().constData());
-            emit fileSaveError(tr("Cannot backup database file. Saving cancelled.", "An error message: failed to make a backup copy of the database file."), origDbFile.errorString());
-            return false;
+    if (!Settings::instance()->isBackupDatabaseOnSave()) {
+        // Backup switched off, so remove the backup file
+        // (there are no backup files for newly created DBs)
+        QFile bakFile(bakFileName);
+        if (bakFile.exists() && !bakFile.remove()) {
+            // Could not delete backup. Not critical and nothing we/user can do about it - so just ignore it silently.
+            LOG("Could not remove backup file: %s", bakFile.fileName().toUtf8().constData());
         }
-    } else {
-        if (origDbFile.exists() && !origDbFile.remove()) {
-            LOG("Failed to remove the original DB: %s", origDbFile.errorString().toUtf8().constData());
-            emit fileSaveError(tr("Cannot replace database file", "An error message: failed to replace database file with another file."), origDbFile.errorString());
-            return false;
-        }
-    }
-    if (!outDbFile.rename(db->getDatabaseFilePath())) {
-        LOG("Failed to rename tmp file: %s", outDbFile.errorString().toUtf8().constData());
-        emit fileSaveError(tr("Cannot rename temporary database file", "An error message"), outDbFile.errorString());
-        return false;
     }
     emit dbSaved();
     return true;
