@@ -51,7 +51,7 @@ Sheet {
         close();
     }
 
-    Page {
+    PageWithWatchdog {
         titleBar: TitleBar {
             title: creationMode ?
                 qsTr("New Group", "Title of a page for creating(editing) new group") + Retranslate.onLocaleOrLanguageChanged :
@@ -88,12 +88,7 @@ Sheet {
             topPadding: 10
             leftPadding: 10
             rightPadding: 10
-            bottomPadding: 10
-            
-            onTouchCapture: {
-                app.restartWatchdog();
-            }
-            
+            bottomPadding: 10            
             Label {
                 text: qsTr("Name", "Label of the group name edit field") + Retranslate.onLocaleOrLanguageChanged
             }

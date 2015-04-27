@@ -85,7 +85,7 @@ Sheet {
         keyDropDown.selectedIndex = 0; // default to "none"
     }
 
-    Page {
+    PageWithWatchdog {
         titleBar: TitleBar {
             title: qsTr("Master Key", "Title of a dialog for changing main/master password of the current database") + Retranslate.onLocaleOrLanguageChanged
             dismissAction: ActionItem {
@@ -102,9 +102,6 @@ Sheet {
         }
         Container {
             layout: DockLayout {}
-            onTouchCapture: {
-                app.restartWatchdog();
-            }
             Container {
                 verticalAlignment: VerticalAlignment.Top
                 horizontalAlignment: HorizontalAlignment.Fill

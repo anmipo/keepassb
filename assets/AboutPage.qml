@@ -1,6 +1,6 @@
 import bb.cascades 1.2
 
-Page {
+PageWithWatchdog {
     onCreationCompleted: {
         app.restartWatchdog();
     }
@@ -27,9 +27,6 @@ Page {
         }
     ]
     Container {
-        onTouchCapture: {
-            app.restartWatchdog();
-        }
         layout: DockLayout { }
         ScrollView {
             verticalAlignment: VerticalAlignment.Top

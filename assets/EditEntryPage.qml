@@ -88,7 +88,7 @@ Sheet {
         close();
     }
     
-    Page {
+    PageWithWatchdog {
         titleBar: TitleBar {
             title: creationMode ?
                 qsTr("New Entry", "Title of a page for creating (editing) a new entry") + Retranslate.onLocaleOrLanguageChanged :
@@ -120,10 +120,6 @@ Sheet {
                 leftPadding: 10
                 rightPadding: 10
                 bottomPadding: 10
-                onTouchCapture: {
-                    app.restartWatchdog();
-                }
-
                 Label {
                     text: qsTr("Title", "Label of the entry title edit field") + Retranslate.onLocaleOrLanguageChanged
                 }

@@ -2,7 +2,7 @@ import bb.cascades 1.2
 import org.keepassb 1.0
 import "common.js" as Common
 
-Page {
+PageWithWatchdog {
     id: searchResultsPage
     property string searchQuery
     property PwSearchResultDataModel searchResult: database.searchResult;
@@ -21,10 +21,6 @@ Page {
         title: qsTr("Search Results", "Title of the page which lists search results") + Retranslate.onLocaleOrLanguageChanged 
     }
     Container {
-        onTouchCapture: {
-            app.restartWatchdog();
-        }
-
         layout: DockLayout { }
         ListView {
             id: listView

@@ -9,7 +9,7 @@ import bb.cascades.pickers 1.0
 import org.keepassb 1.0
 import "common.js" as Common
 
-Page {
+PageWithWatchdog {
     id: viewEntryPage
     property PwEntry entry
     property string currentView
@@ -143,10 +143,6 @@ Page {
     }
 
     Container {
-        onTouchCapture: {
-            app.restartWatchdog();
-        }
-
         leftPadding: 10
         rightPadding: 10
         topPadding: 10

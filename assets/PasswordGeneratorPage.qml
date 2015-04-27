@@ -50,7 +50,7 @@ Sheet {
         close();
     }
     
-    Page {
+    PageWithWatchdog {
         titleBar: TitleBar {
             title: qsTr("Password Generator", "Title of a page which helps the user to create random passwords")
             dismissAction: ActionItem {
@@ -82,9 +82,6 @@ Sheet {
             leftPadding: 10
             rightPadding: 10
             bottomPadding: 10
-            onTouchCapture: {
-                app.restartWatchdog();
-            }
             Label {
                 id: passwordLabel
                 text: password

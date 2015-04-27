@@ -17,7 +17,7 @@ Sheet {
         close();
     }
 
-    Page {
+    PageWithWatchdog {
         titleBar: TitleBar {
             title: qsTr("Choose Icon", "Title of a page/an invitation to pick an icon from the list") + Retranslate.onLocaleOrLanguageChanged
             dismissAction: ActionItem {
@@ -33,9 +33,6 @@ Sheet {
             leftPadding: 10
             rightPadding: 10
             bottomPadding: 10
-            onTouchCapture: {
-                app.restartWatchdog();
-            }
             ListView {
                 function listItemClicked(iconId) {
                     iconPicked(iconId);

@@ -14,8 +14,8 @@
         <file>assets/LabelTextButton.qml</file>
         <file>assets/main.qml</file>
         <file>assets/MonoTextField.qml</file>
+        <file>assets/PageWithWatchdog.qml</file>
         <file>assets/PasswordGeneratorPage.qml</file>
-        <file>assets/QuickUnlockHelp.qml</file>
         <file>assets/QuickUnlockPage.qml</file>
         <file>assets/ReadOnlyTextField.qml</file>
         <file>assets/SearchResultsPage.qml</file>

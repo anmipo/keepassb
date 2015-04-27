@@ -7,7 +7,7 @@ import bb.system 1.2
 import org.keepassb 1.0
 import "common.js" as Common
 
-Page {
+PageWithWatchdog {
     id: viewGroupPage
     property PwGroup group
     property bool autofocus: false
@@ -133,10 +133,6 @@ Page {
     }
     
     Container {
-        onTouchCapture: {
-            app.restartWatchdog();
-        }
-        
         layout: DockLayout { }
         Container {
             horizontalAlignment: HorizontalAlignment.Fill

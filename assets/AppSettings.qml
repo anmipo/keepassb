@@ -2,7 +2,7 @@ import bb.cascades 1.2
 import bb.system 1.2
 import org.keepassb 1.0
 import "common.js" as Common
-Page {
+PageWithWatchdog {
     titleBar: TitleBar {
         title: qsTr("Settings", "Title of the configuration/preferences screen") + Retranslate.onLocaleOrLanguageChanged
     }
@@ -10,9 +10,6 @@ Page {
     ScrollView {
         scrollRole: ScrollRole.Main
         Container {
-            onTouchCapture: {
-                app.restartWatchdog();
-            }
             layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
             StandardListItem {
                 title: qsTr("Timeouts", "Title of the settings group which configures several time intervals") + Retranslate.onLocaleOrLanguageChanged
@@ -148,7 +145,7 @@ Page {
         },
         ComponentDefinition {
             id: timeoutSettingsPageComponent
-            Page {
+            PageWithWatchdog {
                 titleBar: TitleBar {
                     title: qsTr("Timeouts", "Title of the settings group which configures several time intervals") + Retranslate.onLocaleOrLanguageChanged
                 }
@@ -246,7 +243,7 @@ Page {
         },
         ComponentDefinition {
             id: smartCopySettingsPageComponent
-            Page {
+            PageWithWatchdog {
                 onCreationCompleted: {
                     minimizeAppOnCopy.checked = appSettings.minimizeAppOnCopy;
                     minimizeAppOnCopy.checkedChanged.connect(appSettings.setMinimizeAppOnCopy);
@@ -289,7 +286,7 @@ Page {
         },
         ComponentDefinition {
             id: quickUnlockSettingsPageComponent
-            Page {
+            PageWithWatchdog {
                 titleBar: TitleBar {
                     title: qsTr("Quick Unlock", "Title of the settings group related to the Quick Unlock function (see thesaurus)") + Retranslate.onLocaleOrLanguageChanged
                 }
@@ -352,7 +349,7 @@ Page {
         },
         ComponentDefinition {
             id: listsSettingsPageComponent
-            Page {
+            PageWithWatchdog {
                 titleBar: TitleBar {
                     title: qsTr("Lists", "Title of a group of settings which define how various lists of items should be displayed.") + Retranslate.onLocaleOrLanguageChanged
                 }
@@ -425,7 +422,7 @@ Page {
         },
         ComponentDefinition {
             id: savingSettingsPageComponent
-            Page {
+            PageWithWatchdog {
                 onCreationCompleted: {
                     backupDatabaseOnSave.checked = appSettings.backupDatabaseOnSave;
                     backupDatabaseOnSave.checkedChanged.connect(appSettings.setBackupDatabaseOnSave);
@@ -476,7 +473,7 @@ Page {
         },
         ComponentDefinition {
             id: searchSettingsPageComponent
-            Page {
+            PageWithWatchdog {
                 onCreationCompleted: {
                     searchInDeleted.checked = appSettings.searchInDeleted;
                     searchInDeleted.checkedChanged.connect(appSettings.setSearchInDeleted);
@@ -542,7 +539,7 @@ Page {
         },
         ComponentDefinition {
             id: recentFilesSettingsPageComponent
-            Page {
+            PageWithWatchdog {
                 titleBar: TitleBar {
                     title: qsTr("Recent Files", "Title of a group of settings related to handling of recently opened files.") + Retranslate.onLocaleOrLanguageChanged
                 }
