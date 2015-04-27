@@ -22,6 +22,8 @@ PageWithWatchdog {
     }
     Container {
         layout: DockLayout { }
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
         ListView {
             id: listView
             visible: searchResult.hasChildren([])

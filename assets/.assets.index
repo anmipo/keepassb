@@ -1,5 +1,5 @@
 1
-253
+254
 demo.kdbx
 icons_data_model.xml
 images/cover-locked.png
@@ -26,6 +26,7 @@ images/ic_lock.png
 images/ic_new_password.png
 images/ic_notes.png
 images/ic_quicklock.png
+images/ic_rate_app.png
 images/ic_refresh.png
 images/ic_rename.png
 images/ic_save.png

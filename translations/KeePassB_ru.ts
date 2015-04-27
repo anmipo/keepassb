@@ -387,13 +387,13 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation>Базы Паролей и Ключевые Файлы</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="583"/>
+        <location filename="../assets/AppSettings.qml" line="585"/>
         <source>Clear History</source>
         <comment>Button/action which clears the history of recent files.</comment>
         <translation>Очистить Историю</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="584"/>
+        <location filename="../assets/AppSettings.qml" line="586"/>
         <source>Forget all recent files</source>
         <comment>Explanation/subtitle for the &apos;Clear History&apos; button.</comment>
         <translation>Забыть обо всех недавних файлах</translation>
@@ -972,40 +972,38 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation>Незнакомый формат базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="398"/>
+        <location filename="../src/db/PwDatabase.cpp" line="407"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation>Не удается сохранить базу паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="404"/>
+        <location filename="../src/db/PwDatabase.cpp" line="413"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation>Не удается записать в файл базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="409"/>
+        <location filename="../src/db/PwDatabase.cpp" line="418"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation>Ошибка при записи в файл базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="424"/>
+        <location filename="../src/db/PwDatabase.cpp" line="398"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translation>Не удалось создать резервную копию. Сохранение отменено.</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="430"/>
         <source>Cannot replace database file</source>
         <comment>An error message: failed to replace database file with another file.</comment>
-        <translation>Не удалось заменить файл базы паролей</translation>
+        <translation type="obsolete">Не удалось заменить файл базы паролей</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="436"/>
         <source>Cannot rename temporary database file</source>
         <comment>An error message</comment>
-        <translation>Не удалось переименовать временный файл базы</translation>
+        <translation type="obsolete">Не удалось переименовать временный файл базы</translation>
     </message>
 </context>
 <context>
@@ -1253,7 +1251,7 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation>Результаты Поиска</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="41"/>
+        <location filename="../assets/SearchResultsPage.qml" line="43"/>
         <source>Group: %1</source>
         <comment>Describes the group of the selected entry. Example: &apos;Group:  Internet&apos;</comment>
         <translation>Группа: %1</translation>
@@ -1274,7 +1272,7 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation type="obsolete">Копировать Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="57"/>
+        <location filename="../assets/SearchResultsPage.qml" line="59"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translation>Ничего не найдено</translation>
@@ -1696,13 +1694,13 @@ To continue, tap the lock symbol below.</source>
         <translation>Закрыть Базу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="159"/>
+        <location filename="../assets/ViewGroupPage.qml" line="161"/>
         <source>Enter search query</source>
         <comment>Hint text for the search query input field, invites the user to type some text</comment>
         <translation>Введите текст для поиска</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="180"/>
+        <location filename="../assets/ViewGroupPage.qml" line="182"/>
         <source>Cancel</source>
         <comment>Button/action to cancel/hide search query field</comment>
         <translation>Отмена</translation>
@@ -1713,79 +1711,79 @@ To continue, tap the lock symbol below.</source>
         <translation type="obsolete">Улучшенное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="247"/>
+        <location filename="../assets/ViewGroupPage.qml" line="249"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation>Копировать Имя</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="254"/>
+        <location filename="../assets/ViewGroupPage.qml" line="256"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation>Копировать Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="261"/>
+        <location filename="../assets/ViewGroupPage.qml" line="263"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translation>Изменить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="269"/>
+        <location filename="../assets/ViewGroupPage.qml" line="271"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="291"/>
+        <location filename="../assets/ViewGroupPage.qml" line="293"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation>Изменить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="299"/>
+        <location filename="../assets/ViewGroupPage.qml" line="301"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation>Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="328"/>
+        <location filename="../assets/ViewGroupPage.qml" line="330"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translation>В этой группе пока пусто</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="357"/>
+        <location filename="../assets/ViewGroupPage.qml" line="345"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="358"/>
+        <location filename="../assets/ViewGroupPage.qml" line="346"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation>Точно удалить эту запись?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="359"/>
+        <location filename="../assets/ViewGroupPage.qml" line="347"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="371"/>
+        <location filename="../assets/ViewGroupPage.qml" line="359"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="372"/>
+        <location filename="../assets/ViewGroupPage.qml" line="360"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translation>Точно удалить эту группу, ее подгруппы и записи в них?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="373"/>
+        <location filename="../assets/ViewGroupPage.qml" line="361"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translation>Удалить</translation>

@@ -47,8 +47,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/IconPickerPage.qml) \
         $$quote($$BASEDIR/assets/LabelTextButton.qml) \
         $$quote($$BASEDIR/assets/MonoTextField.qml) \
+        $$quote($$BASEDIR/assets/PageWithWatchdog.qml) \
         $$quote($$BASEDIR/assets/PasswordGeneratorPage.qml) \
-        $$quote($$BASEDIR/assets/QuickUnlockHelp.qml) \
         $$quote($$BASEDIR/assets/QuickUnlockPage.qml) \
         $$quote($$BASEDIR/assets/ReadOnlyTextField.qml) \
         $$quote($$BASEDIR/assets/SearchResultsPage.qml) \
@@ -235,6 +235,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_new_password.png) \
         $$quote($$BASEDIR/assets/images/ic_notes.png) \
         $$quote($$BASEDIR/assets/images/ic_quicklock.png) \
+        $$quote($$BASEDIR/assets/images/ic_rate_app.png) \
         $$quote($$BASEDIR/assets/images/ic_refresh.png) \
         $$quote($$BASEDIR/assets/images/ic_rename.png) \
         $$quote($$BASEDIR/assets/images/ic_save.png) \

@@ -17,7 +17,7 @@ FEATURES:
 - Keeps previous versions of edited/deleted entries. Just in case.
 - Works with BlackBerry Work Drives
 - Works offline and does not have direct access to network. 
-- Can synchronize via any system-integrated service (Dropbox, Box, OneDrive), if you put database file into a synchronized folder. FTP, WebDAV and other synchronization methods are possible with third-party apps.
+- Can synchronize via any system-integrated service (Dropbox, Box, OneDrive), if you put database file into a synchronized folder. FTP, WebDAV and other synchronization methods are possible with third-party apps (such as PlayCloud).
 - Languages: English, German, Russian (for other languages check http://keepassb.com/translate)
 
 
@@ -42,6 +42,12 @@ kdb, kdbx, keypass, keepassx, enpass, keeper, keepassb 2, keepassb2
 
 
 Changelog:
+v2.4.2
+Improved database saving sequence (no redundant temporary files)
+Improved settings interface
+Fixed synchronization issues with PlayCloud
+Fixed a few interface issues introduced by the previous update 
+
 v2.4.1
 Added German and Russian translations
 Fixed minor interface bugs

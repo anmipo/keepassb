@@ -378,19 +378,27 @@
 -- Released 2.4.1
 
 + fix broken active cover  qrc:/assets/ActiveFrameCover.qml
+- bug: still vibrates even without run_when_backgrounded (sensor.alwaysOn(true) makes it work without the permission) 
++ better smart copy icon
++ activate sensors on thumbnail only if clipboard is modified
++ on first smart copy (and in settings) show help that clipboard contains username, and after triggering the sensor (with vibration) there will be the password
++ BUG: "change master key" menu does not work
++ BUG: password generator button does not work
++ sectorize app settings
++ restart watchdog on setting subpages
++ replace all Page and Sheet with watchdog-resetting subclasses
++ check if edit entry container receives watchdog resets
++ update translations
++ empty group content layout is messed up
++ check what fails with WebDAV/FTP
++ improve DB saving: copy+overwrite instead of tmpFile+delete+rename+rename
 
-better smart copy icon
+
 think how to handle empty login/password in smart copy
-activate sensors on thumbnail only if clipboard is modified
-on first smart copy (and in settings) show help that clipboard contains username, and after triggering the sensor (with vibration) there will be the password
-take into account auto type settings for smart copied fields and their order 
-Smart copy settings: 
-1) Fields: username + password, url + password, as in auto type
-2) Sensor: proximity, tilt, ???  
-3) Feedback: vibration, instant preview (needs permission) 
-Explain that "Run in backgournd" is required for this.
 Second smart copy action clears clipboard
-
+bug: db does not lock on app exit
+make smart copy video
+fix libQtSensors SIGSERGV
 
 fix QML leak (AbstractBpsEventHandler: thread has no event dispatcher)
 check if I need to create .lock file
@@ -424,7 +432,6 @@ clear smart copy on full DB lock
 Later:
 
 Show quick lock status in active frame, too
-translate to DE (Ulf Schuster offered help)
 support v4 entry tags
 Search: show group names in headers
 subtype QByteArray and introduce safeClear into destructor; use that in critical places
