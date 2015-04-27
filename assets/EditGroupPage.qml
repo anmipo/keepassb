@@ -153,7 +153,7 @@ Sheet {
         },
         ComponentDefinition {
             id: iconPickerSheetComponent
-            source: "asset:///IconPickerPage.qml"
+            source: "IconPickerPage.qml"
         }
     ]
 }

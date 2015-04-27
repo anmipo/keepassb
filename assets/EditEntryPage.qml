@@ -254,11 +254,11 @@ Sheet {
         },
         ComponentDefinition {
             id: passwordGeneratorSheetComponent
-            source: "asset:///PasswordGeneratorPage.qml"
+            source: "PasswordGeneratorPage.qml"
         },
         ComponentDefinition {
             id: iconPickerSheetComponent
-            source: "asset:///IconPickerPage.qml"
+            source: "IconPickerPage.qml"
         }
     ]
 }

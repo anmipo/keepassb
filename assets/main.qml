@@ -155,7 +155,7 @@ NavigationPane {
         },
         ComponentDefinition {
             id: changeMasterKeySheetComponent
-            source: "asset:///ChangeMasterKeyPage.qml"
+            source: "ChangeMasterKeyPage.qml"
         },
         SystemDialog {
             id: filePermissionErrorDialog
