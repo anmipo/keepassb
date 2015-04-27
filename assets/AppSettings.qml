@@ -333,11 +333,16 @@ PageWithWatchdog {
                     ScrollView {
                         verticalAlignment: VerticalAlignment.Fill
                         scrollRole: ScrollRole.Main
-                        Label {
-                            text: qsTr("Quick Unlock is a function which enables you to re-access your database using a short \"quick password\".\nPlease enable Quick Unlock before opening your database with the full master password. Thus KeePassB will remember the Quick Password - a few characters of the master password (actually, their SHA-256 hash).\nIn this mode, the database is only partially locked: it remains decrypted in the memory, but the user interface is covered by Quick Unlock screen asking for the Quick Password. If the entered password matches the one remembered, you get access to the database. Otherwise, the database is completely closed and cleared from the memory and will require the full master password again. There is only one attempt to enter correct Quick Password.\nNOTE: For safety reasons, the bottom-left Lock button always closes the database completely, even in Quick Unlock mode.", "Information about Quick Lock function.") + Retranslate.onLocaleOrLanguageChanged
-                            multiline: true
-                            textFormat: TextFormat.Html
-                            textStyle.base: SystemDefaults.TextStyles.BodyText
+                        Container {
+                            Header {
+                                title: qsTr("About Quick Unlock", "Title of a help page about Quick Unlock function (see thesaurus).") + Retranslate.onLocaleOrLanguageChanged
+                            }
+                            Label {
+                                text: qsTr("Quick Unlock is a function which enables you to re-access your database using a short \"quick password\".\n\nPlease enable Quick Unlock before opening your database with the full master password. Thus KeePassB will remember the Quick Password - a few characters of the master password (actually, their SHA-256 hash).\n\nIn this mode, the database is only partially locked: it remains decrypted in the memory, but the user interface is covered by Quick Unlock screen asking for the Quick Password. If the entered password matches the one remembered, you get access to the database. Otherwise, the database is completely closed and cleared from the memory and will require the full master password again. There is only one attempt to enter correct Quick Password.\n\nNOTE: For safety reasons, the bottom-left Lock button always closes the database completely, even in Quick Unlock mode.", "Information about Quick Lock function.") + Retranslate.onLocaleOrLanguageChanged
+                                multiline: true
+                                textFormat: TextFormat.Html
+                                textStyle.base: SystemDefaults.TextStyles.BodyText
+                            }
                         }
                     }
                 }
@@ -572,7 +577,9 @@ PageWithWatchdog {
                             }
                         }
                     }
-                    Divider{}
+                    Divider{
+                        bottomMargin: 0
+                    }
                     StandardListItem {
                         id: clearRecentFiles
                         title: qsTr("Clear History", "Button/action which clears the history of recent files.") + Retranslate.onLocaleOrLanguageChanged
