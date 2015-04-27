@@ -4,6 +4,9 @@ Page {
     default property alias contentWithWatchdog: container.controls  
     Container {
         id: container
+        layout: DockLayout { }
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
         onTouchCapture: {
             app.restartWatchdog();
         }

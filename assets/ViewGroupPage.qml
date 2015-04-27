@@ -134,6 +134,8 @@ PageWithWatchdog {
     
     Container {
         layout: DockLayout { }
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
         Container {
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
@@ -329,20 +331,6 @@ PageWithWatchdog {
                 textStyle.base: SystemDefaults.TextStyles.BodyText
                 horizontalAlignment: HorizontalAlignment.Center
             }
-//            ImageButton {
-//                id: createGroupButton
-//                //text: qsTr("Create Group", "A button/action to create a new group") + Retranslate.onLocaleOrLanguageChanged
-//                defaultImageSource: "asset:///images/ic_add_group.png"
-//                visible: canCreateGroupHere()
-//                onClicked: createGroup()
-//            }
-//            ImageButton {
-//                id: createEntryButton
-//                //text: qsTr("Create Entry", "A button/action to create a new entry") + Retranslate.onLocaleOrLanguageChanged
-//                defaultImageSource: "asset:///images/ic_add_entry.png"
-//                visible: canCreateEntryHere()
-//                onClicked: createEntry()
-//            }
         }
         attachedObjects: [
             ComponentDefinition {
