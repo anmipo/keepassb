@@ -24,7 +24,7 @@ using namespace bb::system;
 const QString OPEN_DB_ACTION = "org.keepassb.database.open";
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
-        QObject(app), clipboard(app), watchdog(), quickPassHash()  {
+        QObject(app), clipboard(app), watchdog(), quickPassHash(), quickLocked(false) {
 
     m_pTranslator = new QTranslator(this);
     m_pLocaleHandler = new LocaleHandler(this);
@@ -55,7 +55,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
     database = new PwDatabaseFacade(this);
 
-    app->setCover(new ActiveFrame(app, database));
+    app->setCover(new ActiveFrame(app, this, database));
     res = QObject::connect(app, SIGNAL(thumbnail()), this, SLOT(onThumbnail())); Q_ASSERT(res);
 
     watchdog.setSingleShot(true);
@@ -186,10 +186,12 @@ void ApplicationUI::lock() {
         return;
 
     if (settings->isQuickUnlockEnabled()) {
+        setQuickLocked(true);
         emit appLocked();
     } else {
         Util::safeClear(quickPassHash);
         database->lock();
+        setQuickLocked(false); // either app or DB can be locked, but not both
     }
 }
 
@@ -198,7 +200,6 @@ int min(int a, int b) {
 }
 
 void ApplicationUI::prepareQuickUnlock(const QString& fullPassword) {
-    // implement this
     int len = fullPassword.length();
 
     QString quickPass;
@@ -232,6 +233,9 @@ void ApplicationUI::prepareQuickUnlock(const QString& fullPassword) {
 }
 
 bool ApplicationUI::quickUnlock(const QString& quickPass) {
+    // We'll either open the Quick Lock, or lock the app completely.
+    // In either case, the app will not be quick-locked anymore.
+    setQuickLocked(false);
     if (quickPass.length() == 0)
         return false;
 
@@ -246,6 +250,13 @@ bool ApplicationUI::quickUnlock(const QString& quickPass) {
 
 PasswordGenerator* ApplicationUI::getPasswordGenerator() const {
     return passwordGenerator;
+}
+
+void ApplicationUI::setQuickLocked(bool newLocked) {
+    if (quickLocked != newLocked) {
+        quickLocked = newLocked;
+        emit quickLockedChanged(quickLocked);
+    }
 }
 
 /** Checks if the app has permission to access file system */

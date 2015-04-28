@@ -1,12 +1,19 @@
 import bb.cascades 1.2
 
 Container {
-    property bool locked: true
-    
+    function getLockStateImage() {
+        if (database.locked)
+            return "asset:///images/cover-locked.png";
+        else if (app.quickLocked) 
+            return "asset:///images/cover-quick-locked.png";
+        else 
+            return "asset:///images/cover-unlocked.png";
+    } 
+
     layout: DockLayout { }
     background: Color.create("#262626") //TODO get color from the theme
     ImageView {
-        imageSource: database.locked ? "asset:///images/cover-locked.png" : "asset:///images/cover-unlocked.png"  
+        imageSource: getLockStateImage()
         horizontalAlignment: HorizontalAlignment.Center
         verticalAlignment: VerticalAlignment.Center
     }

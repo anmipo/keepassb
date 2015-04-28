@@ -29,6 +29,7 @@ class QTranslator;
 class ApplicationUI : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool quickLocked READ isQuickLocked NOTIFY quickLockedChanged)
 private:
     bb::cascades::AbstractPane* qmlRoot;
     Settings* settings;
@@ -39,11 +40,16 @@ private:
     PasswordGenerator* passwordGenerator;
     QTimer watchdog;
     QByteArray quickPassHash;
+    bool quickLocked; // quick lock (i.e. "app lock") state (it is different from DB lock!)
 
     QTranslator* m_pTranslator;
     bb::cascades::LocaleHandler* m_pLocaleHandler;
 
     void initQml(bb::cascades::Application *app);
+
+    // property accessors
+    bool isQuickLocked() const { return quickLocked; }
+    void setQuickLocked(bool newLocked);
 public:
     ApplicationUI(bb::cascades::Application *app);
     virtual ~ApplicationUI() { }
@@ -79,6 +85,8 @@ signals:
     void dbOpenError(const QString& message, const PwDatabase::Error errorCode);
     // emitted when the app enters the quick-lock state
     void appLocked();
+    // emitted when the app lock (quick lock) state changes
+    void quickLockedChanged(bool locked);
     // emitted when the app has been invoked with a valid DB file path
     void invokedWithDatabase(const QString& dbFilePath);
 };

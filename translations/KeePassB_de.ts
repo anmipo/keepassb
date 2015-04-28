@@ -429,13 +429,13 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation type="obsolete">Smart-Copy</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="164"/>
+        <location filename="../src/applicationui.cpp" line="165"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translation>Datei kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="175"/>
+        <location filename="../src/applicationui.cpp" line="176"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translation>Datenbank aufgrund Inaktivität gesperrt</translation>

@@ -12,6 +12,7 @@
 
 #include <bb/cascades/SceneCover>
 #include "db/PwDatabase.h"
+#include "applicationui.hpp"
 
 namespace bb {
     namespace cascades {
@@ -20,8 +21,10 @@ namespace bb {
 }
 
 class ActiveFrame : public bb::cascades::SceneCover {
+    Q_OBJECT
 public:
-    ActiveFrame(QObject* parent, PwDatabaseFacade* database);
+    ActiveFrame(bb::cascades::Application* appBase, ApplicationUI* app, PwDatabaseFacade* database);
+    ~ActiveFrame();
 };
 
 #endif /* ACTIVEFRAME_H_ */
