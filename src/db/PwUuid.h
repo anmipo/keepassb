@@ -20,13 +20,21 @@ public:
     PwUuid(const QByteArray& bytes);
     virtual ~PwUuid();
 
+    /** Resets the UUID to all-zero bytes */
     void clear();
+
     QByteArray toByteArray() const { return Util::deepCopy(bytes); }
 
     /** Generates and returns a new UUID instance. */
     static PwUuid create();
 
-    // returns a new instance of PwUuid with the ID specified by a Base64 string
+    /**
+     * Returns a new instance of PwUuid with the ID specified by a Base64 string.
+     *
+     * If the original string is empty, returns an all-zero UUID (not empty!)
+     * This fixes an error which existed before KeePassB v2.4.2
+     * (new groups had lastTopVisibleEntryUuid empty, which conflicted with KeePassX)
+     */
     static PwUuid fromBase64(const QString& base64);
 
     /** Returns true the UUID has not been set. */

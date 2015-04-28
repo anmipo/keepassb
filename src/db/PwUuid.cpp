@@ -23,8 +23,9 @@ PwUuid::~PwUuid() {
     clear();
 }
 
+/** Resets the UUID to all-zero bytes */
 void PwUuid::clear() {
-    Util::safeClear(bytes);
+    bytes.fill(0, UUID_SIZE);
 }
 
 /** Generates and returns a new UUID instance. */
@@ -35,6 +36,14 @@ PwUuid PwUuid::create() {
 }
 
 PwUuid PwUuid::fromBase64(const QString& base64) {
-    PwUuid uuid(QByteArray::fromBase64(base64.toLatin1()));
-    return uuid;
+    QByteArray bytes = QByteArray::fromBase64(base64.toLatin1());
+    if (bytes.size() != UUID_SIZE) {
+        LOG("PwUuid::fromBase64 - wrong UUID size: %d '%s' (Base64: %s)",
+                bytes.size(), bytes.toHex().constData(), base64.toUtf8().constData());
+    }
+
+    if (bytes.isEmpty())
+        return PwUuid(); // 16 zeroes
+    else
+        return PwUuid(bytes);
 }
