@@ -316,8 +316,8 @@ void PwGroupV4::clear() {
     _isExpanded = true;
     _customIconUuid.clear();
     Util::safeClear(_defaultAutoTypeSequence);
-    Util::safeClear(_enableAutoType);
-    Util::safeClear(_enableSearching);
+    _enableAutoType = "null";
+    _enableSearching = "null";
     _lastTopVisibleEntryUuid.clear();
     _usageCount = 0;
 
@@ -350,14 +350,26 @@ void PwGroupV4::setDefaultAutoTypeSequence(const QString& defaultAutoTypeSequenc
 
 void PwGroupV4::setEnableAutoType(const QString& enableAutoType) {
     if (enableAutoType != _enableAutoType) {
-        _enableAutoType = Util::deepCopy(enableAutoType);
+        if (enableAutoType.isEmpty()) {
+            // Fixes the "Invalid EnableSearching value" error in KeePassX
+                        // for groups created by KeePassB (before v2.4.2)
+            _enableAutoType = "null";
+        } else {
+            _enableAutoType = Util::deepCopy(enableAutoType);
+        }
         emit enableAutoTypeChanged(_enableAutoType);
     }
 }
 
 void PwGroupV4::setEnableSearching(const QString& enableSearching) {
     if (enableSearching != _enableSearching) {
-        _enableSearching = Util::deepCopy(enableSearching);
+        if (enableSearching.isEmpty()) {
+            // Fixes the "Invalid EnableSearching value" error in KeePassX
+            // for groups created by KeePassB (before v2.4.2)
+            _enableSearching = "null";
+        } else {
+            _enableSearching = Util::deepCopy(enableSearching);
+        }
         emit enableSearchingChanged(_enableSearching);
     }
 }
