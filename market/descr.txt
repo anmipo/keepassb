@@ -1,14 +1,18 @@
 KeePassB Password Manager (KeePass-compatible)
-Native KeePass 1.x and 2.x support
+Cross-platform password manager
 
-KeePassB is a native BlackBerry 10 password manager compatible with KeePass 1.x and 2.x databases. KeePass applications are available for Windows, Mac, Linux, and all major mobile platforms. 
+
+KeePassB is a native password manager app compatible with KeePass 1.x and 2.x databases. KeePass is available on all major desktop and mobile platforms.
+
+More details at http://keepassb.com
 
 The original KeePass, created by Dominik Reichl, is a free multi-platform open source password manager, which helps you to manage your passwords in a secure way. You can put all your passwords in one database, which is locked with one master key or a key file. So you only have to remember one single master password or select the key file to unlock the whole database. The databases are encrypted using the best and most secure cryptographic algorithms currently known (AES-256, SHA-256). 
 
 
 FEATURES:
-- Can create, view and edit KeePass v2 (.kdbx) databases
-- Can view and edit KeePass v1 (.kdb) databases
+- Stores your sensitive data, neatly organized in groups and encrypted with AES-256.
+- Compatible with KeePass databases (client apps exist for all major desktop and mobile platforms). 
+- Can view and edit both KeePass 1.x (.kdb) and 2.x (.kdbx) databases
 - Supports composite master keys (password + key file)
 - Supports multiple databases (work, personal, etc)
 - Provides a strong password generator (customizable, too)
@@ -16,9 +20,9 @@ FEATURES:
 - Can automatically backup database before saving
 - Keeps previous versions of edited/deleted entries. Just in case.
 - Works with BlackBerry Work Drives
-- Works offline and does not have direct access to network. 
-- Can synchronize via any system-integrated service (Dropbox, Box, OneDrive), if you put database file into a synchronized folder. FTP, WebDAV and other synchronization methods are possible with third-party apps (such as PlayCloud).
-- Languages: English, German, Russian (for other languages check http://keepassb.com/translate)
+- Works offline, your data stay on device
+- Can synchronize via any system-integrated service (Dropbox, Box, OneDrive), if you put database file into a synchronized folder. FTP, WebDAV and other synchronization methods are possible with third-party apps (see http://keepassb.org/#qa-ftp-webdav for a walk-through).
+- Available in English, German, Russian and Vietnamese
 
 
 PERMISSIONS:
@@ -38,10 +42,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 Keywords:
-kdb, kdbx, keypass, keepassx, enpass, keeper, keepassb 2, keepassb2
+keypass, keepassx, enpass, keeper, keepassb 2, keepassb2, vault, safe
 
 
 Changelog:
+v2.4.3
+Added quick lock status to active cover
+Added Vietnamese translation
+Fixed compatibility with KeePassX 
+
 v2.4.2
 Improved database saving sequence (no redundant temporary files)
 Improved settings interface

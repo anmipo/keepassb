@@ -212,6 +212,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/demo.kdbx) \
         $$quote($$BASEDIR/assets/icons_data_model.xml) \
         $$quote($$BASEDIR/assets/images/cover-locked.png) \
+        $$quote($$BASEDIR/assets/images/cover-quick-locked.png) \
         $$quote($$BASEDIR/assets/images/cover-unlocked.png) \
         $$quote($$BASEDIR/assets/images/cover.png) \
         $$quote($$BASEDIR/assets/images/ic_about.png) \
@@ -455,4 +456,5 @@ lupdate_inclusion {
 
 TRANSLATIONS = $$quote($${TARGET}_de.ts) \
     $$quote($${TARGET}_ru.ts) \
+    $$quote($${TARGET}_vi.ts) \
     $$quote($${TARGET}.ts)
