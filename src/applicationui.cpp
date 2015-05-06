@@ -153,7 +153,11 @@ void ApplicationUI::copyWithTimeout(const QString& text) {
 	    Application::instance()->minimize();
 }
 
-void ApplicationUI::invokeFile(const QString& uri) {
+/**
+ * Opens the given URI (file or web link) with a suitable third-party app.
+ * Shows an error toast in case of trouble, unless suppressErrors is true.
+ */
+void ApplicationUI::invokeFileOrUrl(const QString& uri, bool suppressErrors) {
     InvokeRequest request;
     request.setUri(uri);
     request.setAction("bb.action.OPEN");
@@ -162,7 +166,8 @@ void ApplicationUI::invokeFile(const QString& uri) {
         LOG("invoke ok");
     } else {
         LOG("invoke failed");
-        showToast(tr("Cannot open the file", "An error message related to the 'open file' action (reference: INVOKE_ATTACHMENT)"));
+        if (!suppressErrors)
+            showToast(tr("Cannot open the file", "An error message related to the 'open file' action (reference: INVOKE_ATTACHMENT)"));
     }
 }
 

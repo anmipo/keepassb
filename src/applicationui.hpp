@@ -57,8 +57,11 @@ public:
     // copy given text to the clipboard, clear it after some time
     Q_INVOKABLE void copyWithTimeout(const QString& text);
     void showToast(const QString& msg);
-    // opens given file with a suitable third-party app
-    Q_INVOKABLE void invokeFile(const QString& uri);
+    /**
+     * Opens the given URI (file or web link) with a suitable third-party app.
+     * Shows an error toast in case of trouble, unless suppressErrors is true.
+     */
+    Q_INVOKABLE void invokeFileOrUrl(const QString& uri, bool suppressErrors = false);
 
     // Checks whether quick unlock code matches
     Q_INVOKABLE bool quickUnlock(const QString& quickCode);
