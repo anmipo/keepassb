@@ -429,13 +429,19 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation type="obsolete">Smart-Copy</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="165"/>
+        <location filename="../src/applicationui.cpp" line="54"/>
+        <source>Cryptographic library error</source>
+        <comment>Generic error message from a cryptographic library</comment>
+        <translation>Kryptographiebibliothek Fehler</translation>
+    </message>
+    <message>
+        <location filename="../src/applicationui.cpp" line="178"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translation>Datei kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="176"/>
+        <location filename="../src/applicationui.cpp" line="189"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translation>Datenbank aufgrund Inaktivität gesperrt</translation>

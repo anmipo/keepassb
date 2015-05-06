@@ -16,6 +16,7 @@ private:
     static PasswordGenerator* _instance;
 
     PasswordGenerator(QObject* parent = 0);
+    virtual ~PasswordGenerator();
 public:
     enum PwGenPreset {
         PWGEN_PRESET_DEFAULT = 0x00,

@@ -6,6 +6,8 @@
  */
 
 #include "CryptoManager.h"
+#include <QObject>
+#include <bb/cascades/Application>
 #include "util/Util.h"
 #include "husha2.h"
 #include "hugse56.h"
@@ -19,7 +21,8 @@ CryptoManager* CryptoManager::_instance;
 // convenience macro: if func returns an SB_ error, log it and return its code
 #define RETURN_IF_SB_ERROR(func, msg) {int errCode = (func); if (errCode != SB_SUCCESS) { LOG("%s. ErrCode: %d", msg, errCode); return errCode; }}
 
-CryptoManager::CryptoManager() : keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
+CryptoManager::CryptoManager(QObject* parent): QObject(parent),
+        keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
 	sbCtx = NULL;
 	rngCtx = NULL;
     keyTransformInitialized = false;
@@ -32,7 +35,7 @@ CryptoManager::~CryptoManager() {
 
 CryptoManager* CryptoManager::instance() {
 	if (!_instance)
-		_instance = new CryptoManager();
+		_instance = new CryptoManager(bb::cascades::Application::instance());
 	return _instance;
 }
 

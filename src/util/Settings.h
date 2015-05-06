@@ -123,6 +123,7 @@ public:
      * This constructor should be private, but enums of uncreatable types are not available from QML.
      */
     Settings(QObject* parent = 0);
+    virtual ~Settings();
 
     /**
      * Returns the singleton instance of Settings
@@ -195,7 +196,7 @@ signals:
     void backupDatabaseOnSaveChanged(bool);
     void minimizeAppOnCopyChanged(bool);
     // emitted whenever the list of recent DB or key files changes
-    void recentFilesChanged(); 
+    void recentFilesChanged();
 };
 
 #endif /* SETTINGS_H_ */

@@ -485,14 +485,20 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>ApplicationUI</name>
     <message>
-        <location filename="../src/applicationui.cpp" line="165"/>
+        <location filename="../src/applicationui.cpp" line="54"/>
+        <source>Cryptographic library error</source>
+        <comment>Generic error message from a cryptographic library</comment>
+        <translation>Mật mã thư viện lỗi</translation>
+    </message>
+    <message>
+        <location filename="../src/applicationui.cpp" line="178"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translatorcomment>Một thông báo lỗi liên quan đến hành động mở tập tin (tài liệu tham khảo: INVOKE_ATTCHMENT)</translatorcomment>
         <translation>Không thể mở tập tin</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="176"/>
+        <location filename="../src/applicationui.cpp" line="189"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translatorcomment>Hiển thị thông báo khi cơ sở dữ liệu bị khóa (hoặc Khóa nhanh) sau một thời gian mà không cần người dùng tương tác.</translatorcomment>

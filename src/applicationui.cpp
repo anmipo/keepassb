@@ -48,7 +48,11 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     settings = Settings::instance();
     settings->setParent(app);
 
-    CryptoManager::instance()->init();
+    CryptoManager* cryptoManager = CryptoManager::instance();
+    cryptoManager->setParent(app);
+    if (cryptoManager->init() != SB_SUCCESS) {
+        showToast(tr("Cryptographic library error", "Generic error message from a cryptographic library"));
+    }
 
     passwordGenerator = PasswordGenerator::instance();
     passwordGenerator->setParent(app);

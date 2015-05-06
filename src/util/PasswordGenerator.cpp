@@ -21,13 +21,17 @@ PasswordGenerator* PasswordGenerator::_instance;
 
 PasswordGenerator* PasswordGenerator::instance() {
     if (!_instance) {
-        _instance = new PasswordGenerator();
+        _instance = new PasswordGenerator(QApplication::instance());
     }
     return _instance;
 }
 
 PasswordGenerator::PasswordGenerator(QObject* parent) : QObject(parent) {
     qmlRegisterUncreatableType<PasswordGenerator>("org.keepassb", 1, 0, "PasswordGenerator", "PasswordGenerator is a singleton");
+}
+
+PasswordGenerator::~PasswordGenerator() {
+    _instance = NULL;
 }
 
 /**

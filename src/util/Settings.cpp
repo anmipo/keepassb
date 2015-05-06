@@ -61,7 +61,7 @@ Settings* Settings::_instance;
 
 Settings* Settings::instance() {
     if (!_instance) {
-        _instance = new Settings();
+        _instance = new Settings(QApplication::instance());
     }
     return _instance;
 }
@@ -108,6 +108,10 @@ Settings::Settings(QObject* parent) : QObject(parent) {
     _minimizeAppOnCopy = settings.value(
             KEY_MINIMIZE_APP_ON_COPY, DEFAULT_MINIMIZE_APP_ON_COPY).toBool();
     loadRecentFiles();
+}
+
+Settings::~Settings() {
+    _instance = NULL;
 }
 
 void Settings::loadRecentFiles() {

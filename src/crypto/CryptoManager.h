@@ -11,12 +11,14 @@
 #ifndef CRYPTOMANAGER_H_
 #define CRYPTOMANAGER_H_
 
+#include <QObject>
 #include "huctx.h"
 #include "sbdef.h"
 #include "sbreturn.h"
 #include "util/ProgressObserver.h"
 
-class CryptoManager {
+class CryptoManager: public QObject {
+    Q_OBJECT
 private:
     static CryptoManager* _instance;
     sb_GlobalCtx sbCtx;        // Security Builder Crypto global context
@@ -30,7 +32,7 @@ private:
     sb_Context keyTransformAesContext;
     bool keyTransformInitialized;
 
-    CryptoManager();
+    CryptoManager(QObject* parent = 0);
     virtual ~CryptoManager();
 
     int initRngSeed();
