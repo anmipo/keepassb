@@ -35,12 +35,8 @@ PageWithWatchdog {
                 horizontalAlignment: HorizontalAlignment.Fill
                 leftPadding:   20
                 rightPadding:  20
-                topPadding:    50
+                topPadding:    30
                 bottomPadding: 20
-                ImageView {
-                    imageSource: "asset:///images/cover.png"
-                    horizontalAlignment: HorizontalAlignment.Center
-                }
                 Label{
                     text: Application.applicationName
                     textStyle.base: SystemDefaults.TextStyles.BigText
