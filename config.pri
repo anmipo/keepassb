@@ -241,6 +241,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_rename.png) \
         $$quote($$BASEDIR/assets/images/ic_save.png) \
         $$quote($$BASEDIR/assets/images/ic_search.png) \
+        $$quote($$BASEDIR/assets/images/ic_sort.png) \
         $$quote($$BASEDIR/assets/images/ic_timestamp.png) \
         $$quote($$BASEDIR/assets/images/ic_unlock.png) \
         $$quote($$BASEDIR/assets/images/ic_view_details.png) \

@@ -399,22 +399,47 @@ PageWithWatchdog {
                     }
                     Divider {}
                     DropDown {
-                        id: alphaSorting
-                        title: qsTr("List Sorting", "A setting which defines sorting of entries in groups. Example: 'List Sorting    Alphabetical'.") + Retranslate.onLocaleOrLanguageChanged
+                        id: groupSortingField
+                        title: qsTr("Sort Order", "A setting which defines sorting of entries in groups. Example: 'Sort order   Title'.") + Retranslate.onLocaleOrLanguageChanged
                         onSelectedOptionChanged: {
                             if (selectedOption) {
-                                appSettings.alphaSorting = selectedOption.value;
+                                appSettings.groupSortingType = selectedOption.value;
                             }
                         }
                         Option {
-                            text: qsTr("None", "One of the possible values of the 'List Sorting' setting. Will be displayed as 'List Sorting    None', meaning no sorting, or as-is item order.") + Retranslate.onLocaleOrLanguageChanged
-                            value: false
-                            selected: !appSettings.alphaSorting
+                            text: qsTr("None", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order   None', meaning no sorting, or as-is item order.") + Retranslate.onLocaleOrLanguageChanged
+                            value: Settings.GROUP_SORTING_NONE
+                            selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_NONE);
                         }
                         Option {
-                            text: qsTr("Alphabetical", "One of the possible values of the 'List Sorting' setting. Will be displayed as 'List Sorting    Alphabetical'.") + Retranslate.onLocaleOrLanguageChanged
-                            value: true
-                            selected: appSettings.alphaSorting
+                            text: qsTr("Title (A..Z)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Title'.") + Retranslate.onLocaleOrLanguageChanged
+                            value: Settings.GROUP_SORTING_NAME_ASC
+                            selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_NAME_ASC);
+                        }
+                        Option {
+                            text: qsTr("Title (Z..A)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Title'.") + Retranslate.onLocaleOrLanguageChanged
+                            value: Settings.GROUP_SORTING_NAME_DESC
+                            selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_NAME_DESC);
+                        }
+                        Option {
+                            text: qsTr("Creation Date (Recent First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Creation Date'.") + Retranslate.onLocaleOrLanguageChanged
+                            value: Settings.GROUP_SORTING_CREATION_TIME_DESC
+                            selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_CREATION_TIME_DESC);
+                        }
+                        Option {
+                            text: qsTr("Creation Date (Oldest First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Creation Date'.") + Retranslate.onLocaleOrLanguageChanged
+                            value: Settings.GROUP_SORTING_CREATION_TIME_ASC
+                            selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_CREATION_TIME_ASC);
+                        }
+                        Option {
+                            text: qsTr("Last Modified Date (Recent First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Last Modified Date'.") + Retranslate.onLocaleOrLanguageChanged
+                            value: Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_DESC
+                            selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_DESC);
+                        }
+                        Option {
+                            text: qsTr("Last Modified Date (Oldest First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Last Modified Date'.") + Retranslate.onLocaleOrLanguageChanged
+                            value: Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_ASC
+                            selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_ASC);
                         }
                     }
                     Divider {}

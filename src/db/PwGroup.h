@@ -180,8 +180,16 @@ public:
 
     /** Returns a string representation of the instance */
     virtual QString toString() const;
-    /** Comparator for sorting */
-    static bool lessThan(const PwGroup* g1, const PwGroup* g2);
+
+    /** Comparators for sorting */
+    static bool lessThanByName(const PwGroup* g1, const PwGroup* g2);
+    static bool greaterThanByName(const PwGroup* g1, const PwGroup* g2);
+    static bool lessThanByCreationTime(const PwGroup* g1, const PwGroup* g2);
+    static bool greaterThanByCreationTime(const PwGroup* g1, const PwGroup* g2);
+    static bool lessThanByLastModificationTime(const PwGroup* g1, const PwGroup* g2);
+    static bool greaterThanByLastModificationTime(const PwGroup* g1, const PwGroup* g2);
+    static bool lessThanByLastAccessTime(const PwGroup* g1, const PwGroup* g2);
+    static bool greaterThanByLastAccessTime(const PwGroup* g1, const PwGroup* g2);
 signals:
     void uuidChanged(PwUuid);
     void iconIdChanged(int);

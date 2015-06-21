@@ -36,9 +36,9 @@ class Settings: public QObject {
      */
     Q_PROPERTY(int autoLockTimeout READ getAutoLockTimeout WRITE setAutoLockTimeout NOTIFY autoLockTimeoutChanged)
     /**
-     * Use alphabetical sorting in group lists
+     * Type of group/entry list sorting (which field, ascending/descending)
      */
-    Q_PROPERTY(bool alphaSorting READ isAlphaSorting WRITE setAlphaSorting NOTIFY alphaSortingChanged)
+    Q_PROPERTY(GroupSortingType groupSortingType READ getGroupSortingType WRITE setGroupSortingType NOTIFY groupSortingTypeChanged)
     /**
      * Type of entry field to show in the description of an entry item in group list
      */
@@ -97,6 +97,17 @@ public:
         TRACK_RECENT_FILES_DB_AND_KEY = 0x03,
     };
     Q_ENUMS(TrackRecentFilesType);
+    enum GroupSortingType {
+        GROUP_SORTING_NONE                        = 0x00,
+        GROUP_SORTING_NAME_ASC                    = 0x10,
+        GROUP_SORTING_NAME_DESC                   = 0x11,
+        GROUP_SORTING_CREATION_TIME_ASC           = 0x20,
+        GROUP_SORTING_CREATION_TIME_DESC          = 0x21,
+        GROUP_SORTING_LAST_MODIFICATION_TIME_ASC  = 0x30,
+        GROUP_SORTING_LAST_MODIFICATION_TIME_DESC = 0x31,
+        // GROUP_SORTING_LAST_ACCESS_TIME       = 0x40, -- this timestamp updates only on save, so would look inconsistent
+    };
+    Q_ENUMS(GroupSortingType);
 private:
     static Settings* _instance;
     bool _searchInDeleted;
@@ -104,7 +115,7 @@ private:
     int _clipboardTimeout;
     TrackRecentFilesType _trackRecentFiles;
     int _autoLockTimeout;
-    bool _alphaSorting;
+    GroupSortingType _groupSortingType;
     EntryListDetail _entryListDetail;
     bool _quickUnlockEnabled;
     QuickUnlockType _quickUnlockType;
@@ -136,7 +147,7 @@ public:
     int getClipboardTimeout() const { return _clipboardTimeout; }
     TrackRecentFilesType getTrackRecentFiles() const { return _trackRecentFiles; }
     int getAutoLockTimeout() const { return _autoLockTimeout; }
-    bool isAlphaSorting() const { return _alphaSorting; }
+    GroupSortingType getGroupSortingType() const { return _groupSortingType; }
     EntryListDetail getEntryListDetail() const { return _entryListDetail; }
     bool isQuickUnlockEnabled() const { return _quickUnlockEnabled; }
     QuickUnlockType getQuickUnlockType() const { return _quickUnlockType; }
@@ -171,7 +182,7 @@ public slots:
     void setClipboardTimeout(int timeout);
     void setTrackRecentFiles(TrackRecentFilesType trackingType);
     void setAutoLockTimeout(int timeout);
-    void setAlphaSorting(bool alphaSorting);
+    void setGroupSortingType(GroupSortingType sortingType);
     void setEntryListDetail(EntryListDetail detail);
     void setQuickUnlockEnabled(bool enabled);
     void setQuickUnlockType(QuickUnlockType type);
@@ -186,7 +197,7 @@ signals:
     void clipboardTimeoutChanged(int);
     void trackRecentFilesChanged(TrackRecentFilesType);
     void autoLockTimeoutChanged(int);
-    void alphaSortingChanged(bool);
+    void groupSortingTypeChanged(GroupSortingType);
     void entryListDetailChanged(EntryListDetail);
     void quickUnlockEnabledChanged(bool);
     void quickUnlockTypeChanged(QuickUnlockType);

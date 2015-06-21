@@ -11,55 +11,55 @@
         <translation>Liên hệ với nhà phát triển</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="50"/>
+        <location filename="../assets/AboutPage.qml" line="46"/>
         <source>Version %1</source>
         <comment>Application version in &apos;About&apos; screen</comment>
         <translatorcomment>Phiên bản ứng dụng trong mục Về trên màn hình</translatorcomment>
         <translation>Phiên bản %1</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="55"/>
+        <location filename="../assets/AboutPage.qml" line="51"/>
         <source>©2014–2015 Andrei Popleteev</source>
         <comment>Developer name, do not translate</comment>
         <translation>©2014–2015 Andrei Popleteev</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="64"/>
+        <location filename="../assets/AboutPage.qml" line="60"/>
         <source>Credits</source>
         <comment>Title of the help page with acknowledgements and licensing terms of used components.</comment>
         <translatorcomment>Giúp đỡ trang web với sự thừa nhận và cấp giấy phép hệ của các thành phần được sử dụng</translatorcomment>
         <translation>Tín dụng</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="69"/>
+        <location filename="../assets/AboutPage.qml" line="65"/>
         <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;, to Brian Pellin for &lt;a href=&apos;http://www.keepassdroid.com&apos;&gt;KeePassDroid&lt;/a&gt; and to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translatorcomment>Nội dung của phần giúp đõ về tín dụng</translatorcomment>
         <translation>Với sự giúp đỡ của Dominik Reichl &lt;a href=&apos;http://keepass.info&apos;&gt; KeePass &lt;/a&gt;, Brian Pellin &lt;a href=&apos;http://www.keepassdroid.com&apos;&gt; KeePassDroid &lt;/a&gt; và Nam T. Nguyễn &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt; BrowsePass &lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="77"/>
+        <location filename="../assets/AboutPage.qml" line="73"/>
         <source> </source>
         <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi.&apos;</comment>
         <translatorcomment>Giữ chỗ cho các khoản tín dụng dịch. xin vui lòng điền tên của bạn, ví dụ: dịch tiếng Ý bởi Marco Rossi</translatorcomment>
         <translation>Bản dịch tiếng Việt bởi Trương Thành Tấn</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="86"/>
+        <location filename="../assets/AboutPage.qml" line="82"/>
         <source>Some icons are based on free samples of &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by Lubos Volkov and the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translatorcomment>Nội dung của phần trợ giúp tín dụng</translatorcomment>
         <translation>Một số biểu tượng được dựa trên các mẫu miễn phí của &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; do Lubos Volkov và &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="95"/>
+        <location filename="../assets/AboutPage.qml" line="91"/>
         <source>Privacy Policy</source>
         <comment>Title of a help page</comment>
         <translatorcomment>Tiêu đề của một trang trợ giúp</translatorcomment>
         <translation>Chính sách bảo mật</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="101"/>
+        <location filename="../assets/AboutPage.qml" line="97"/>
         <source>KeePassB does not collect any personal data nor share it with anyone.</source>
         <comment>Content of the &apos;Privacy Policy&apos; help page</comment>
         <translatorcomment>Nội dung  các trang trợ giúp chính sách riêng tư</translatorcomment>
@@ -189,6 +189,30 @@
         <translation>Không bao giờ</translation>
     </message>
     <message>
+        <location filename="../assets/AppSettings.qml" line="403"/>
+        <source>Sort Order</source>
+        <comment>A setting which defines sorting of entries in groups. Example: &apos;Sort order   Title&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="410"/>
+        <source>None</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order   None&apos;, meaning no sorting, or as-is item order.</comment>
+        <translation type="unfinished">Không</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="415"/>
+        <source>Title (A..Z)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="420"/>
+        <source>Title (Z..A)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/AppSettings.qml" line="26"/>
         <location filename="../assets/AppSettings.qml" line="249"/>
         <source>Smart Copy</source>
@@ -311,50 +335,52 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation>Lần sửa đổi cuối cùng</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="403"/>
         <source>List Sorting</source>
         <comment>A setting which defines sorting of entries in groups. Example: &apos;List Sorting    Alphabetical&apos;.</comment>
         <translatorcomment>Một thiết lập mà xác định phân loại của mục nhập trong nhóm. Ví dụ: &apos;danh sách phân loại Alphabetical&apos;</translatorcomment>
-        <translation>Phân loại danh sách</translation>
+        <translation type="obsolete">Phân loại danh sách</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="410"/>
         <source>None</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    None&apos;, meaning no sorting, or as-is item order.</comment>
         <translatorcomment>một trong các giá trị có thể &quot;sắp xếp cài đặt danh sách. Sẽ được hiển thị dưới dạng &apos;Không có danh sách phân loại&apos;, có nghĩa là không có phân loại hoặc như là mục đặt hàng</translatorcomment>
-        <translation>Không</translation>
+        <translation type="obsolete">Không</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="415"/>
         <source>Alphabetical</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Alphabetical&apos;.</comment>
         <translatorcomment>Một trong các giá trị có thể &quot;sắp xếp cài đặt danh sách. Sẽ được hiển thí như &apos;Danh sách phân loại theo thứ tự ABC&apos;.</translatorcomment>
-        <translation>Thứ tự ABC</translation>
+        <translation type="obsolete">Thứ tự ABC</translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="59"/>
-        <location filename="../assets/AppSettings.qml" line="433"/>
+        <location filename="../assets/AppSettings.qml" line="458"/>
         <source>Saving</source>
         <comment>Title of a group of settings related to database editing/saving function</comment>
         <translatorcomment>Tiêu đề của một nhóm các cài đặt liên quan đến chức năng lưu/chỉnh sửa cơ sở dữ liệu</translatorcomment>
         <translation>Sao lưu</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="445"/>
+        <source>Last Modification Date</source>
+        <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Last Modification Date&apos;.</comment>
+        <translation type="obsolete">Ngày sửa đổi cuối cùng</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="470"/>
         <source>Backup Database on Save</source>
         <comment>An on/off setting to make backup copies of the database everytime it is saved.</comment>
         <translatorcomment>Một thiết lập bật/tắt để sao lưu cơ sở dữ liệu mỗi lần khi nó được lưu.</translatorcomment>
         <translation>Sao lưu cơ sở dữ liệu khi lưu</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="458"/>
+        <location filename="../assets/AppSettings.qml" line="483"/>
         <source>Backup the database file before saving any changes. Backup copies are timestamped and stored along with the original database.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translatorcomment>Mô tả của cài đặt &apos;Sao lưu cơ sở dữ lệu khi lưu&apos;.</translatorcomment>
         <translation>Sao lưu các tập tin cơ sở dữ liệu trước khi lưu bất kỳ thay đổi. Các bản sao lưu tạm thời đóng dấu và lưu trữ cùng với các cơ sở dữ liệu ban đầu.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="465"/>
+        <location filename="../assets/AppSettings.qml" line="490"/>
         <source>Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translatorcomment>Mô tả của cài đặt &apos;Sao lưu cơ sở dữ lệu khi lưu&apos;.</translatorcomment>
@@ -362,28 +388,52 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="70"/>
-        <location filename="../assets/AppSettings.qml" line="486"/>
+        <location filename="../assets/AppSettings.qml" line="511"/>
         <source>Search</source>
         <comment>Title of a group of settings related to search function</comment>
         <translatorcomment>Tựa để của một nhóm cài đặt để tìm kiếm tự động</translatorcomment>
         <translation>Tìm kiếm</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="498"/>
+        <location filename="../assets/AppSettings.qml" line="425"/>
+        <source>Creation Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="430"/>
+        <source>Creation Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="435"/>
+        <source>Last Modified Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="440"/>
+        <source>Last Modified Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="523"/>
         <source>Search at Start</source>
         <comment>An on/off setting which defines whether the Search function should be automatically activated when a database is opened/unlocked.</comment>
         <translatorcomment>Một thiết lập bật/tắt định nghĩa cho chức năng tìm kiếm được tự động kích hoạt khi cơ sở dữ liệu là mở/mở khóa</translatorcomment>
         <translation>Tìm kiếm để bắt đầu</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="514"/>
+        <location filename="../assets/AppSettings.qml" line="539"/>
         <source>This option will automatically activate Search whenever a database is unlocked.</source>
         <comment>Description of the &apos;Search at Start&apos; setting.</comment>
         <translatorcomment>Mô tả của thiết lập &apos;Tìm kiếm để bắt đầu&apos;</translatorcomment>
         <translation>Tùy chọn này sẽ tự động kích hoạt tìm bất cứ khi nào một cơ sở dữ liệu được mở khóa.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="526"/>
+        <location filename="../assets/AppSettings.qml" line="551"/>
         <source>Search in Deleted Entries</source>
         <comment>An on/off setting which defines whether the Search should look into entries marked as deleted.</comment>
         <translatorcomment>Một thiết lập bật/tắt định nghĩa cho tìm kiếm nên nhìn vào mục đánh dấu là bị xóa</translatorcomment>
@@ -391,49 +441,64 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="81"/>
-        <location filename="../assets/AppSettings.qml" line="545"/>
+        <location filename="../assets/AppSettings.qml" line="570"/>
         <source>Recent Files</source>
         <comment>Title of a group of settings related to handling of recently opened files.</comment>
         <translatorcomment>Tựa đề của một nhóm thiết lập  quan hệ để xử lý các tập tin mới.</translatorcomment>
         <translation>Các tập tin mới</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="555"/>
+        <source>Creation Date</source>
+        <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Creation Date&apos;.</comment>
+        <translation type="obsolete">Ngày tạo</translation>
+    </message>
+    <message>
+        <source>Last Access Date</source>
+        <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Last Access Date&apos;.</comment>
+        <translation type="obsolete">Ngày truy cập cuối cùng</translation>
+    </message>
+    <message>
+        <source>List Sorting</source>
+        <comment>A setting which defines sorting direction of entries in groups. Example: &apos;List Sorting    Ascending&apos;.</comment>
+        <translation type="obsolete">Phân loại danh sách</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="580"/>
         <source>Keep Track Of</source>
         <comment>A setting which defines which type of recently used files should be remembered. Example: &apos;Keep Track Of: Database and Key Files&apos;</comment>
         <translatorcomment>Một thiết lập mà xác định các tập tin mới sử dụng nên được ghi nhớ, ví dụ: &apos; Theo dõi: cơ sở dữ liệu và tập tin quan trọng&apos;</translatorcomment>
         <translation>Theo dõi</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="564"/>
+        <location filename="../assets/AppSettings.qml" line="589"/>
         <source>Nothing</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Nothing&apos;, meaning that no history of recently used files will be kept.</comment>
         <translatorcomment>Một trong các giá trị thiết lập để tiếp tục theo dõi. Sẽ được hiển thị như &apos;Không có gì để theo dõi&apos;, có nghĩa là không có lịch sử tập tin mới sử dụng được giữ.</translatorcomment>
         <translation>Không có gì</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="569"/>
+        <location filename="../assets/AppSettings.qml" line="594"/>
         <source>Databases</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases&apos;, meaning that history of recently used files will include only database files, and no key files.</comment>
         <translatorcomment>Một trong các giá trị thiết lập để tiếp tục theo dõi.Sẽ được hiển thị như &apos;Theo dõi các cơ sở dữ liệu&apos;, có nghĩa là rằng lịch sử các tập tin mới sử dụng sẽ bao gồm chỉ tập tin cơ sở dữ liệu và không có các tập tin quan trọng.</translatorcomment>
         <translation>Cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="574"/>
+        <location filename="../assets/AppSettings.qml" line="599"/>
         <source>Databases and Key Files</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases and Key Files&apos;, meaning that history of recently used files will include both database files and their associated key files.</comment>
         <translatorcomment>Một trong các giá trị thiết lập để tiếp tục theo dõi.Sẽ được hiển thị như &apos;Theo dõi các cơ sở dữ liệu và các tập tin chính&apos;, có nghĩa là rằng lịch sử các tập tin mới sử dụng sẽ bao gồm cả tập tin cơ sở dữ liệu và tập tin quan trọng liên quan của họ.</translatorcomment>
         <translation>Cơ sở dữ liệu và các tập tin chính</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="585"/>
+        <location filename="../assets/AppSettings.qml" line="610"/>
         <source>Clear History</source>
         <comment>Button/action which clears the history of recent files.</comment>
         <translatorcomment>Nút/hành động với việc xóa sạch lịch sử các tập tin hiện tại</translatorcomment>
         <translation>Xóa sạch lịch sử</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="586"/>
+        <location filename="../assets/AppSettings.qml" line="611"/>
         <source>Forget all recent files</source>
         <comment>Explanation/subtitle for the &apos;Clear History&apos; button.</comment>
         <translatorcomment>Giải thích/phụ đề cho nút &apos;Xóa sạch lịch sử&apos;</translatorcomment>
@@ -491,14 +556,14 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation>Mật mã thư viện lỗi</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="178"/>
+        <location filename="../src/applicationui.cpp" line="174"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translatorcomment>Một thông báo lỗi liên quan đến hành động mở tập tin (tài liệu tham khảo: INVOKE_ATTCHMENT)</translatorcomment>
         <translation>Không thể mở tập tin</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="189"/>
+        <location filename="../src/applicationui.cpp" line="185"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translatorcomment>Hiển thị thông báo khi cơ sở dữ liệu bị khóa (hoặc Khóa nhanh) sau một thời gian mà không cần người dùng tương tác.</translatorcomment>
@@ -1909,133 +1974,187 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewGroupPage</name>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="91"/>
+        <location filename="../assets/ViewGroupPage.qml" line="94"/>
         <source>Search</source>
         <comment>A button/action which opens a search dialog.</comment>
         <translatorcomment>Một nút/hành động mở một hộp thoại tìm kiếm</translatorcomment>
         <translation>Tìm kiếm</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="103"/>
+        <location filename="../assets/ViewGroupPage.qml" line="106"/>
         <source>Create Entry</source>
         <comment>A button/action to create a new entry</comment>
         <translatorcomment>Một nút/hành động tạo một mục nhập mới</translatorcomment>
         <translation>Tạo mục nhập</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="110"/>
+        <location filename="../assets/ViewGroupPage.qml" line="113"/>
         <source>Create Group</source>
         <comment>A button/action to create a new group</comment>
         <translatorcomment>Một nút/hành động tạo một nhóm mới</translatorcomment>
         <translation>Tạo nhóm</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="131"/>
+        <location filename="../assets/ViewGroupPage.qml" line="120"/>
+        <source>Sort Order</source>
+        <comment>A button/action to show settings which change list sorting order</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="143"/>
         <source>Lock</source>
         <comment>A button/action which locks/closes the database.</comment>
         <translatorcomment>Một nút/hành động khóa/đóng cơ sở dữ liệu</translatorcomment>
         <translation>Khoá</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="161"/>
+        <location filename="../assets/ViewGroupPage.qml" line="173"/>
         <source>Enter search query</source>
         <comment>Hint text for the search query input field, invites the user to type some text</comment>
         <translatorcomment>Gợi ý văn bản để tìm kiếm truy vấn trường đầu vào, mời người dùng nhập một số văn bản</translatorcomment>
         <translation>Nhập truy vấn tìm kiếm</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="182"/>
+        <location filename="../assets/ViewGroupPage.qml" line="194"/>
         <source>Cancel</source>
         <comment>Button/action to cancel/hide search query field</comment>
         <translatorcomment>Nút/hành động để hủy bỏ/ẩn trường truy vấn tìm kiếm</translatorcomment>
         <translation>Hủy bỏ</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="249"/>
+        <location filename="../assets/ViewGroupPage.qml" line="218"/>
+        <source>Sort Order</source>
+        <comment>A setting which defines sorting of entries in groups. Example: &apos;Sort order   Title (A..Z)&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="226"/>
+        <source>None</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order   None&apos;, meaning no sorting, or as-is item order.</comment>
+        <translation type="unfinished">Không</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="231"/>
+        <source>Title (A..Z)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="236"/>
+        <source>Title (Z..A)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="241"/>
+        <source>Creation Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="246"/>
+        <source>Creation Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="251"/>
+        <source>Last Modified Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="256"/>
+        <source>Last Modified Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="320"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translatorcomment>Một nút/hành động sao chép giá trị user_name vào bảng tạm. Ở đây &apos;tên người sử dụng&apos; đề cập đến thông tin đăng nhập thay vì tên của người đó</translatorcomment>
         <translation>Sao chép tên người dùng</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="256"/>
+        <location filename="../assets/ViewGroupPage.qml" line="327"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translatorcomment>Một nút/hành động sao chép giá trị mật khẩu vào bảng tạm</translatorcomment>
         <translation>Sao chép mật khẩu</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="263"/>
+        <location filename="../assets/ViewGroupPage.qml" line="334"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translatorcomment>Một nút/hành động chỉnh sửa mục đã chọn</translatorcomment>
         <translation>Chỉnh sửa trường</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="271"/>
+        <location filename="../assets/ViewGroupPage.qml" line="342"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translatorcomment>Một nút/hành động để xoá mục</translatorcomment>
         <translation>Xoá</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="293"/>
+        <location filename="../assets/ViewGroupPage.qml" line="364"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translatorcomment>Một nút/hành động chỉnh sửa nhóm đã chọn</translatorcomment>
         <translation>Chỉnh sửa nhóm</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="301"/>
+        <location filename="../assets/ViewGroupPage.qml" line="372"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translatorcomment>Một nút/hành động để xoá nhóm</translatorcomment>
         <translation>Xoá</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="330"/>
+        <location filename="../assets/ViewGroupPage.qml" line="401"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translatorcomment>Mô tả cho nhóm mà không có bất kỳ nhóm con hoặc mục</translatorcomment>
         <translation>Đây là nhóm trống</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="345"/>
+        <location filename="../assets/ViewGroupPage.qml" line="416"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translatorcomment>Tiêu đề của một hộp thoại xác nhận xóa</translatorcomment>
         <translation>Xoá mục nhập</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="346"/>
+        <location filename="../assets/ViewGroupPage.qml" line="417"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translatorcomment>Một hộp thoại xác nhận để xoá mục.</translatorcomment>
         <translation>Thực sự xoá mục này?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="347"/>
+        <location filename="../assets/ViewGroupPage.qml" line="418"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translatorcomment>Một nút/hành động để xác nhận việc xóa mục</translatorcomment>
         <translation>Xoá</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="359"/>
+        <location filename="../assets/ViewGroupPage.qml" line="430"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translatorcomment>Tiêu đề của một hộp thoại xác nhận xóa</translatorcomment>
         <translation>Xoá nhóm</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="360"/>
+        <location filename="../assets/ViewGroupPage.qml" line="431"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translatorcomment>Một hộp thoại xác nhận để xoá một nhóm?</translatorcomment>
         <translation>Thực sự xóa nhóm này, đó là nhóm con và mục?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="361"/>
+        <location filename="../assets/ViewGroupPage.qml" line="432"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translatorcomment>Một nút/hành độngt để xác nhận việc xóa một nhóm </translatorcomment>

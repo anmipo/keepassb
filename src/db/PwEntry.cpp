@@ -254,8 +254,23 @@ QString PwEntry::toString() const {
     return "PwEntry[" + getTitle() + "]";
 }
 
-bool PwEntry::lessThan(const PwEntry* e1, const PwEntry* e2) {
+bool PwEntry::lessThanByName(const PwEntry* e1, const PwEntry* e2) {
     return e1->getTitle().compare(e2->getTitle(), Qt::CaseInsensitive) < 0;
+}
+bool PwEntry::greaterThanByName(const PwEntry* e1, const PwEntry* e2) {
+    return !lessThanByName(e1, e2);
+}
+bool PwEntry::lessThanByCreationTime(const PwEntry* e1, const PwEntry* e2) {
+    return e1->getCreationTime() < e2->getCreationTime();
+}
+bool PwEntry::greaterThanByCreationTime(const PwEntry* e1, const PwEntry* e2) {
+    return !lessThanByCreationTime(e1, e2);
+}
+bool PwEntry::lessThanByLastModificationTime(const PwEntry* e1, const PwEntry* e2) {
+    return e1->getLastModificationTime() < e2->getLastModificationTime();
+}
+bool PwEntry::greaterThanByLastModificationTime(const PwEntry* e1, const PwEntry* e2) {
+    return !lessThanByLastModificationTime(e1, e2);
 }
 
 bool PwEntry::matchesQuery(const QString& query) const {

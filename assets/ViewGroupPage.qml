@@ -53,13 +53,16 @@ PageWithWatchdog {
         searchField.requestFocus();
     }
     function startSearch() {
+        cancelPanels(); // if any
         searchContainer.visible = true;
         performAutofocus();
     }
-    function cancelSearch() {
+    /** Hides any opened panels, like search or sort order config. */
+    function cancelPanels() {
         searchContainer.visible = false;
         searchField.searchQuery = searchField.text;
         searchField.text = "";
+        sortOrderContainer.visible = false;
     }
     function canCreateEntryHere() {
         // In V3, no entries are allowed in the root group. 
@@ -112,6 +115,15 @@ PageWithWatchdog {
             enabled: canCreateGroupHere()
             ActionBar.placement: (isEmptyGroup ? ActionBarPlacement.OnBar : ActionBarPlacement.Default)
             onTriggered: createGroup()
+        },
+        ActionItem {
+            title: qsTr("Sort Order", "A button/action to show settings which change list sorting order") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_sort.png"
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                cancelPanels(); // if any
+                sortOrderContainer.visible = true;
+            }
         }
     ]
     
@@ -188,6 +200,65 @@ PageWithWatchdog {
                     }
                 }
             }
+            Container {  // sort order settings
+                id: sortOrderContainer
+                visible: false
+                leftPadding: 10
+                rightPadding: 10
+                topPadding: 10
+                bottomPadding: 10
+                horizontalAlignment: HorizontalAlignment.Fill
+                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                onVisibleChanged: {
+                    if (visible)
+                        sortOrderDropDown.expanded = true;
+                }
+                DropDown {
+                    id: sortOrderDropDown
+                    title: qsTr("Sort Order", "A setting which defines sorting of entries in groups. Example: 'Sort order   Title (A..Z)'.") + Retranslate.onLocaleOrLanguageChanged
+                    onSelectedOptionChanged: {
+                        if (selectedOption) {
+                            appSettings.groupSortingType = selectedOption.value;
+                            sortOrderContainer.visible = false;
+                        }
+                    }
+                    Option {
+                        text: qsTr("None", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order   None', meaning no sorting, or as-is item order.") + Retranslate.onLocaleOrLanguageChanged
+                        value: Settings.GROUP_SORTING_NONE
+                        selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_NONE);
+                    }
+                    Option {
+                        text: qsTr("Title (A..Z)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Title'.") + Retranslate.onLocaleOrLanguageChanged
+                        value: Settings.GROUP_SORTING_NAME_ASC
+                        selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_NAME_ASC);
+                    }
+                    Option {
+                        text: qsTr("Title (Z..A)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Title'.") + Retranslate.onLocaleOrLanguageChanged
+                        value: Settings.GROUP_SORTING_NAME_DESC
+                        selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_NAME_DESC);
+                    }
+                    Option {
+                        text: qsTr("Creation Date (Recent First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Creation Date'.") + Retranslate.onLocaleOrLanguageChanged
+                        value: Settings.GROUP_SORTING_CREATION_TIME_DESC
+                        selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_CREATION_TIME_DESC);
+                    }
+                    Option {
+                        text: qsTr("Creation Date (Oldest First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Creation Date'.") + Retranslate.onLocaleOrLanguageChanged
+                        value: Settings.GROUP_SORTING_CREATION_TIME_ASC
+                        selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_CREATION_TIME_ASC);
+                    }
+                    Option {
+                        text: qsTr("Last Modified Date (Recent First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Last Modified Date'.") + Retranslate.onLocaleOrLanguageChanged
+                        value: Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_DESC
+                        selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_DESC);
+                    }
+                    Option {
+                        text: qsTr("Last Modified Date (Oldest First)", "One of the possible values of the 'Sort Order' setting. Will be displayed as 'Sort Order    Last Modified Date'.") + Retranslate.onLocaleOrLanguageChanged
+                        value: Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_ASC
+                        selected: (appSettings.groupSortingType == Settings.GROUP_SORTING_LAST_MODIFICATION_TIME_ASC);
+                    }
+                }
+            }
             ListView {
                 id: groupList
                 
@@ -231,7 +302,7 @@ PageWithWatchdog {
                     } else {
                         console.log("WARN: unknown item type");
                     }
-                    cancelSearch();
+                    cancelPanels();
                 }
                 listItemComponents: [
                     ListItemComponent {

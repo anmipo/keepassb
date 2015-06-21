@@ -33,7 +33,7 @@ PwGroup::PwGroup(QObject* parent) :
 	_deleted = false;
 	_parentGroup = NULL;
 
-	bool res = QObject::connect(Settings::instance(), SIGNAL(alphaSortingChanged(bool)), this, SLOT(sortChildren())); Q_ASSERT(res);
+	bool res = QObject::connect(Settings::instance(), SIGNAL(groupSortingTypeChanged(GroupSortingType)), this, SLOT(sortChildren())); Q_ASSERT(res);
 	res = QObject::connect(this, SIGNAL(itemsChanged(bb::cascades::DataModelChangeType::Type, QSharedPointer<bb::cascades::DataModel::IndexMapper>)),
 	        this, SLOT(itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type))); Q_ASSERT(res);
 	Q_UNUSED(res);
@@ -159,16 +159,60 @@ void PwGroup::moveEntry(PwEntry* entry) {
     }
 }
 
-bool PwGroup::lessThan(const PwGroup* g1, const PwGroup* g2) {
+bool PwGroup::lessThanByName(const PwGroup* g1, const PwGroup* g2) {
     return g1->getName().compare(g2->getName(), Qt::CaseInsensitive) < 0;
+}
+bool PwGroup::greaterThanByName(const PwGroup* g1, const PwGroup* g2) {
+    return !lessThanByName(g1, g2);
+}
+bool PwGroup::lessThanByCreationTime(const PwGroup* g1, const PwGroup* g2) {
+    return g1->getCreationTime() < g2->getCreationTime();
+}
+bool PwGroup::greaterThanByCreationTime(const PwGroup* g1, const PwGroup* g2) {
+    return !lessThanByCreationTime(g1, g2);
+}
+bool PwGroup::lessThanByLastModificationTime(const PwGroup* g1, const PwGroup* g2) {
+    return g1->getLastModificationTime() < g2->getLastModificationTime();
+}
+bool PwGroup::greaterThanByLastModificationTime(const PwGroup* g1, const PwGroup* g2) {
+    return !lessThanByLastModificationTime(g1, g2);
 }
 
 void PwGroup::sortChildren() {
     sortedEntries = _entries;
     sortedGroups = _subGroups;
-    if (Settings::instance()->isAlphaSorting()) {
-        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::lessThan);
-        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::lessThan);
+
+    Settings::GroupSortingType sortingType = Settings::instance()->getGroupSortingType();
+    switch (sortingType) {
+    case Settings::GROUP_SORTING_NAME_ASC:
+        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::lessThanByName);
+        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::lessThanByName);
+        break;
+    case Settings::GROUP_SORTING_NAME_DESC:
+        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::greaterThanByName);
+        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::greaterThanByName);
+        break;
+    case Settings::GROUP_SORTING_CREATION_TIME_ASC:
+        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::lessThanByCreationTime);
+        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::lessThanByCreationTime);
+        break;
+    case Settings::GROUP_SORTING_CREATION_TIME_DESC:
+        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::greaterThanByCreationTime);
+        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::greaterThanByCreationTime);
+        break;
+    case Settings::GROUP_SORTING_LAST_MODIFICATION_TIME_ASC:
+        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::lessThanByLastModificationTime);
+        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::lessThanByLastModificationTime);
+        break;
+    case Settings::GROUP_SORTING_LAST_MODIFICATION_TIME_DESC:
+        qStableSort(sortedGroups.begin(), sortedGroups.end(), PwGroup::greaterThanByLastModificationTime);
+        qStableSort(sortedEntries.begin(), sortedEntries.end(), PwEntry::greaterThanByLastModificationTime);
+        break;
+    case Settings::GROUP_SORTING_NONE:
+        // nothing to do
+        break;
+    default:
+        LOG("Warning: Unknown GroupSortingField value");
     }
     emit itemsChanged(bb::cascades::DataModelChangeType::Update);
     _isChildrenModified = false;

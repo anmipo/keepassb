@@ -21,6 +21,7 @@ const int  DEFAULT_CLIPBOARD_TIMEOUT = 30 * 1000;
 const int DEFAULT_TRACK_RECENT_FILES = Settings::TRACK_RECENT_FILES_DB_AND_KEY;
 const int  DEFAULT_AUTO_LOCK_TIMEOUT = 60 * 1000;
 const bool DEFAULT_ALPHA_SORTING = false;
+const int DEFAULT_GROUP_SORTING_TYPE = Settings::GROUP_SORTING_NONE;
 const int  DEFAULT_ENTRY_LIST_DETAIL = Settings::ENTRY_DETAIL_USER_NAME;
 const bool DEFAULT_QUICK_UNLOCK_ENABLED = false;
 const int DEFAULT_QUICK_UNLOCK_TYPE = Settings::QUICK_UNLOCK_FIRST_4;
@@ -43,6 +44,7 @@ const QString KEY_CLIPBOARD_TIMEOUT = "clipboardTimeout";
 const QString KEY_TRACK_RECENT_FILES = "trackRecentFiles";
 const QString KEY_AUTO_LOCK_TIMEOUT = "autoLockTimeout";
 const QString KEY_ALPHA_SORTING = "alphaSorting";
+const QString KEY_GROUP_SORTING_TYPE = "groupSortingType";
 const QString KEY_ENTRY_LIST_DETAIL = "entryListDetail";
 const QString KEY_QUICK_UNLOCK_ENABLED = "quickUnlockEnabled";
 const QString KEY_QUICK_UNLOCK_TYPE = "quickUnlockType";
@@ -89,8 +91,6 @@ Settings::Settings(QObject* parent) : QObject(parent) {
             KEY_TRACK_RECENT_FILES, DEFAULT_TRACK_RECENT_FILES).toInt();
     _autoLockTimeout = settings.value(
             KEY_AUTO_LOCK_TIMEOUT, DEFAULT_AUTO_LOCK_TIMEOUT).toInt();
-    _alphaSorting = settings.value(
-            KEY_ALPHA_SORTING, DEFAULT_ALPHA_SORTING).toBool();
     _entryListDetail = (EntryListDetail)settings.value(
             KEY_ENTRY_LIST_DETAIL, DEFAULT_ENTRY_LIST_DETAIL).toInt();
     _quickUnlockEnabled = settings.value(
@@ -107,6 +107,17 @@ Settings::Settings(QObject* parent) : QObject(parent) {
             KEY_BACKUP_DATABASE_ON_SAVE, DEFAULT_BACKUP_DATABASE_ON_SAVE).toBool();
     _minimizeAppOnCopy = settings.value(
             KEY_MINIMIZE_APP_ON_COPY, DEFAULT_MINIMIZE_APP_ON_COPY).toBool();
+
+    // group sorting type is introduced since v2.4.4, import previous setting
+    if (settings.contains(KEY_GROUP_SORTING_TYPE)) {
+        _groupSortingType = (GroupSortingType)settings.value(
+                KEY_GROUP_SORTING_TYPE, DEFAULT_GROUP_SORTING_TYPE).toInt();
+    } else {
+        bool alphaSorting = settings.value(
+                KEY_ALPHA_SORTING, DEFAULT_ALPHA_SORTING).toBool();
+        _groupSortingType = alphaSorting ? GROUP_SORTING_NAME_ASC : GROUP_SORTING_NONE;
+    }
+
     loadRecentFiles();
 }
 
@@ -233,11 +244,11 @@ void Settings::setAutoLockTimeout(int timeout) {
     }
 }
 
-void Settings::setAlphaSorting(bool alphaSorting) {
-    if (alphaSorting != _alphaSorting) {
-        QSettings().setValue(KEY_ALPHA_SORTING, alphaSorting);
-        _alphaSorting = alphaSorting;
-        emit alphaSortingChanged(alphaSorting);
+void Settings::setGroupSortingType(GroupSortingType sortingType) {
+    if (sortingType != _groupSortingType) {
+        QSettings().setValue(KEY_GROUP_SORTING_TYPE, sortingType);
+        _groupSortingType = sortingType;
+        emit groupSortingTypeChanged(sortingType);
     }
 }
 

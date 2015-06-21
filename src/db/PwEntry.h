@@ -235,11 +235,18 @@ public:
 
     /** Returns a string representation of the instance */
     virtual QString toString() const;
-    /** Comparator for sorting */
-    static bool lessThan(const PwEntry* e1, const PwEntry* e2);
 
     /** Search helper. Returns true if any of the fields contain the query string. */
     virtual bool matchesQuery(const QString& query) const;
+
+    /** Comparators for sorting */
+    static bool lessThanByName(const PwEntry* e1, const PwEntry* e2);
+    static bool greaterThanByName(const PwEntry* e1, const PwEntry* e2);
+    static bool lessThanByCreationTime(const PwEntry* e1, const PwEntry* e2);
+    static bool greaterThanByCreationTime(const PwEntry* e1, const PwEntry* e2);
+    static bool lessThanByLastModificationTime(const PwEntry* e1, const PwEntry* e2);
+    static bool greaterThanByLastModificationTime(const PwEntry* e1, const PwEntry* e2);
+
 signals:
     void uuidChanged(PwUuid);
     void titleChanged(QString);

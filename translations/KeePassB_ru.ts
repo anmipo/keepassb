@@ -10,49 +10,49 @@
         <translation>Написать Разработчику</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="50"/>
+        <location filename="../assets/AboutPage.qml" line="46"/>
         <source>Version %1</source>
         <comment>Application version in &apos;About&apos; screen</comment>
         <translation>Версия %1</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="55"/>
+        <location filename="../assets/AboutPage.qml" line="51"/>
         <source>©2014–2015 Andrei Popleteev</source>
         <comment>Developer name, do not translate</comment>
         <translation>©2014–2015 Андрей Поплетеев</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="64"/>
+        <location filename="../assets/AboutPage.qml" line="60"/>
         <source>Credits</source>
         <comment>Title of the help page with acknowledgements and licensing terms of used components.</comment>
         <translation>Благодарности</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="69"/>
+        <location filename="../assets/AboutPage.qml" line="65"/>
         <source>Thanks to Dominik Reichl for &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;, to Brian Pellin for &lt;a href=&apos;http://www.keepassdroid.com&apos;&gt;KeePassDroid&lt;/a&gt; and to Nam T. Nguyen for &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translation>Спасибо Доминику Райхлу (Dominik Reichl) за &lt;a href=&apos;http://keepass.info&apos;&gt;KeePass&lt;/a&gt;, Брайану Пеллину (Brian Pellin) за &lt;a href=&apos;http://www.keepassdroid.com&apos;&gt;KeePassDroid&lt;/a&gt; и Нам Т. Нгуену (Nam T. Nguyen) за &lt;a href=&apos;https://bitbucket.org/namn/browsepass/&apos;&gt;BrowsePass&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="77"/>
+        <location filename="../assets/AboutPage.qml" line="73"/>
         <source> </source>
         <comment>Placeholder for translation credits. Please insert your name, for example: &apos;Italian translation by Marco Rossi.&apos;</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="86"/>
+        <location filename="../assets/AboutPage.qml" line="82"/>
         <source>Some icons are based on free samples of &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; icon set by Lubos Volkov and the &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</source>
         <comment>Content of the &apos;Credits&apos; help section.</comment>
         <translation>Некоторые иконки основаны на открытых образцах из наборов &lt;a href=&apos;http://getothercircles.com&apos;&gt;The OtherCircles&lt;/a&gt; (автор Luboš Volkov) и &lt;a href=&apos;http://www.smashingmagazine.com/2013/02/02/freebie-user-interface-kit-icons/&apos;&gt;Linecons Icon Set&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="95"/>
+        <location filename="../assets/AboutPage.qml" line="91"/>
         <source>Privacy Policy</source>
         <comment>Title of a help page</comment>
         <translation>Политика Конфиденциальности</translation>
     </message>
     <message>
-        <location filename="../assets/AboutPage.qml" line="101"/>
+        <location filename="../assets/AboutPage.qml" line="97"/>
         <source>KeePassB does not collect any personal data nor share it with anyone.</source>
         <comment>Content of the &apos;Privacy Policy&apos; help page</comment>
         <translation>KeePassB не собирает никаких персональных данных, никуда ничего не отправляет, и вообще не имеет прямого доступа к сети.</translation>
@@ -164,6 +164,30 @@
         <translation>Никогда</translation>
     </message>
     <message>
+        <location filename="../assets/AppSettings.qml" line="403"/>
+        <source>Sort Order</source>
+        <comment>A setting which defines sorting of entries in groups. Example: &apos;Sort order   Title&apos;.</comment>
+        <translation>Сортировка</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="410"/>
+        <source>None</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order   None&apos;, meaning no sorting, or as-is item order.</comment>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="415"/>
+        <source>Title (A..Z)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation>Название (А..Я)</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="420"/>
+        <source>Title (Z..A)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation>Название (Я..А)</translation>
+    </message>
+    <message>
         <location filename="../assets/AppSettings.qml" line="26"/>
         <location filename="../assets/AppSettings.qml" line="249"/>
         <source>Smart Copy</source>
@@ -264,76 +288,102 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation>Время Изменения</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="403"/>
         <source>List Sorting</source>
         <comment>A setting which defines sorting of entries in groups. Example: &apos;List Sorting    Alphabetical&apos;.</comment>
-        <translation>Сортировка Списков</translation>
+        <translation type="obsolete">Сортировка Списков</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="410"/>
         <source>None</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    None&apos;, meaning no sorting, or as-is item order.</comment>
-        <translation>Нет</translation>
+        <translation type="obsolete">Нет</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="415"/>
         <source>Alphabetical</source>
         <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Alphabetical&apos;.</comment>
-        <translation>По Алфавиту</translation>
+        <translation type="obsolete">По Алфавиту</translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="59"/>
-        <location filename="../assets/AppSettings.qml" line="433"/>
+        <location filename="../assets/AppSettings.qml" line="458"/>
         <source>Saving</source>
         <comment>Title of a group of settings related to database editing/saving function</comment>
         <translation>Сохранение</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="445"/>
+        <source>Last Modification Date</source>
+        <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Last Modification Date&apos;.</comment>
+        <translation type="obsolete">Время Изменения</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="470"/>
         <source>Backup Database on Save</source>
         <comment>An on/off setting to make backup copies of the database everytime it is saved.</comment>
         <translation>Резервное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="458"/>
+        <location filename="../assets/AppSettings.qml" line="483"/>
         <source>Backup the database file before saving any changes. Backup copies are timestamped and stored along with the original database.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translation>Делать резервную копию базы паролей перед сохранением любых изменений. Резервные файлы содержат время сохранения и хранятся там же, где и исходная база.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="465"/>
+        <location filename="../assets/AppSettings.qml" line="490"/>
         <source>Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translation>Функция сохранения паролей пока экспериментальная. Во избежание потери данных, опцию резервного копирования рекомендуется держать включенной.</translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="70"/>
-        <location filename="../assets/AppSettings.qml" line="486"/>
+        <location filename="../assets/AppSettings.qml" line="511"/>
         <source>Search</source>
         <comment>Title of a group of settings related to search function</comment>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="498"/>
+        <location filename="../assets/AppSettings.qml" line="425"/>
+        <source>Creation Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation>Дата Создания (Сначала Новые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="430"/>
+        <source>Creation Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation>Дата Создания (Сначала Старые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="435"/>
+        <source>Last Modified Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation>Дата Изменения (Сначала Новые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="440"/>
+        <source>Last Modified Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation>Дата Изменения (Сначала Старые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="523"/>
         <source>Search at Start</source>
         <comment>An on/off setting which defines whether the Search function should be automatically activated when a database is opened/unlocked.</comment>
         <translation>Поиск при Открытии</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="514"/>
+        <location filename="../assets/AppSettings.qml" line="539"/>
         <source>This option will automatically activate Search whenever a database is unlocked.</source>
         <comment>Description of the &apos;Search at Start&apos; setting.</comment>
         <translation>Автоматически активировать функцию поиска сразу после открытия базы паролей.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="526"/>
+        <location filename="../assets/AppSettings.qml" line="551"/>
         <source>Search in Deleted Entries</source>
         <comment>An on/off setting which defines whether the Search should look into entries marked as deleted.</comment>
         <translation>Искать в Удалённых Записях</translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="81"/>
-        <location filename="../assets/AppSettings.qml" line="545"/>
+        <location filename="../assets/AppSettings.qml" line="570"/>
         <source>Recent Files</source>
         <comment>Title of a group of settings related to handling of recently opened files.</comment>
         <translation>Недавние Файлы</translation>
@@ -363,37 +413,52 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
 ВАЖНО: Кнопка замка в левом правом углу экрана всегда закрывает базу паролей полностью, даже в режиме Быстрого Доступа.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="555"/>
+        <source>Creation Date</source>
+        <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Creation Date&apos;.</comment>
+        <translation type="obsolete">Время Создания</translation>
+    </message>
+    <message>
+        <source>Last Access Date</source>
+        <comment>One of the possible values of the &apos;List Sorting&apos; setting. Will be displayed as &apos;List Sorting    Last Access Date&apos;.</comment>
+        <translation type="obsolete">Время Использования</translation>
+    </message>
+    <message>
+        <source>List Sorting</source>
+        <comment>A setting which defines sorting direction of entries in groups. Example: &apos;List Sorting    Ascending&apos;.</comment>
+        <translation type="obsolete">Сортировка Списков</translation>
+    </message>
+    <message>
+        <location filename="../assets/AppSettings.qml" line="580"/>
         <source>Keep Track Of</source>
         <comment>A setting which defines which type of recently used files should be remembered. Example: &apos;Keep Track Of: Database and Key Files&apos;</comment>
         <translation>Запоминать</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="564"/>
+        <location filename="../assets/AppSettings.qml" line="589"/>
         <source>Nothing</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Nothing&apos;, meaning that no history of recently used files will be kept.</comment>
         <translation>Ничего</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="569"/>
+        <location filename="../assets/AppSettings.qml" line="594"/>
         <source>Databases</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases&apos;, meaning that history of recently used files will include only database files, and no key files.</comment>
         <translation>Базы Паролей</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="574"/>
+        <location filename="../assets/AppSettings.qml" line="599"/>
         <source>Databases and Key Files</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases and Key Files&apos;, meaning that history of recently used files will include both database files and their associated key files.</comment>
         <translation>Базы Паролей и Ключевые Файлы</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="585"/>
+        <location filename="../assets/AppSettings.qml" line="610"/>
         <source>Clear History</source>
         <comment>Button/action which clears the history of recent files.</comment>
         <translation>Очистить Историю</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="586"/>
+        <location filename="../assets/AppSettings.qml" line="611"/>
         <source>Forget all recent files</source>
         <comment>Explanation/subtitle for the &apos;Clear History&apos; button.</comment>
         <translation>Забыть обо всех недавних файлах</translation>
@@ -444,13 +509,13 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation>Ошибка шифрования</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="178"/>
+        <location filename="../src/applicationui.cpp" line="174"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translation>Не удалось открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="189"/>
+        <location filename="../src/applicationui.cpp" line="185"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translation>Закрыто из-за долгого бездействия</translation>
@@ -1676,37 +1741,43 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewGroupPage</name>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="91"/>
+        <location filename="../assets/ViewGroupPage.qml" line="94"/>
         <source>Search</source>
         <comment>A button/action which opens a search dialog.</comment>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="103"/>
+        <location filename="../assets/ViewGroupPage.qml" line="106"/>
         <source>Create Entry</source>
         <comment>A button/action to create a new entry</comment>
         <translation>Добавить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="110"/>
+        <location filename="../assets/ViewGroupPage.qml" line="113"/>
         <source>Create Group</source>
         <comment>A button/action to create a new group</comment>
         <translation>Добавить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="131"/>
+        <location filename="../assets/ViewGroupPage.qml" line="120"/>
+        <source>Sort Order</source>
+        <comment>A button/action to show settings which change list sorting order</comment>
+        <translation>Сортировка</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="143"/>
         <source>Lock</source>
         <comment>A button/action which locks/closes the database.</comment>
         <translation>Закрыть Базу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="161"/>
+        <location filename="../assets/ViewGroupPage.qml" line="173"/>
         <source>Enter search query</source>
         <comment>Hint text for the search query input field, invites the user to type some text</comment>
         <translation>Введите текст для поиска</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="182"/>
+        <location filename="../assets/ViewGroupPage.qml" line="194"/>
         <source>Cancel</source>
         <comment>Button/action to cancel/hide search query field</comment>
         <translation>Отмена</translation>
@@ -1717,79 +1788,127 @@ To continue, tap the lock symbol below.</source>
         <translation type="obsolete">Улучшенное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="249"/>
+        <location filename="../assets/ViewGroupPage.qml" line="218"/>
+        <source>Sort Order</source>
+        <comment>A setting which defines sorting of entries in groups. Example: &apos;Sort order   Title (A..Z)&apos;.</comment>
+        <translation>Сортировка</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="226"/>
+        <source>None</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order   None&apos;, meaning no sorting, or as-is item order.</comment>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="231"/>
+        <source>Title (A..Z)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation>Название (А..Я)</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="236"/>
+        <source>Title (Z..A)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
+        <translation>Название (Я..А)</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="241"/>
+        <source>Creation Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation>Дата Создания (Сначала Новые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="246"/>
+        <source>Creation Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
+        <translation>Дата Создания (Сначала Старые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="251"/>
+        <source>Last Modified Date (Recent First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation>Дата Изменения (Сначала Новые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="256"/>
+        <source>Last Modified Date (Oldest First)</source>
+        <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
+        <translation>Дата Изменения (Сначала Старые)</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="320"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation>Копировать Имя</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="256"/>
+        <location filename="../assets/ViewGroupPage.qml" line="327"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation>Копировать Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="263"/>
+        <location filename="../assets/ViewGroupPage.qml" line="334"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translation>Изменить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="271"/>
+        <location filename="../assets/ViewGroupPage.qml" line="342"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="293"/>
+        <location filename="../assets/ViewGroupPage.qml" line="364"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation>Изменить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="301"/>
+        <location filename="../assets/ViewGroupPage.qml" line="372"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation>Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="330"/>
+        <location filename="../assets/ViewGroupPage.qml" line="401"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translation>В этой группе пока пусто</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="345"/>
+        <location filename="../assets/ViewGroupPage.qml" line="416"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="346"/>
+        <location filename="../assets/ViewGroupPage.qml" line="417"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation>Точно удалить эту запись?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="347"/>
+        <location filename="../assets/ViewGroupPage.qml" line="418"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="359"/>
+        <location filename="../assets/ViewGroupPage.qml" line="430"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="360"/>
+        <location filename="../assets/ViewGroupPage.qml" line="431"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translation>Точно удалить эту группу, ее подгруппы и записи в них?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="361"/>
+        <location filename="../assets/ViewGroupPage.qml" line="432"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translation>Удалить</translation>
