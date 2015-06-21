@@ -79,13 +79,23 @@ Container {
                         Container {
                             layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
                             Label {
-                                text: ListItemData.value
+                                text: (showValueCheck.checked ? ListItemData.value : "********")
                                 layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                                 textFormat: TextFormat.Plain
                                 textStyle.fontFamily: "\"DejaVu Sans Mono\", Monospace"
                                 horizontalAlignment: HorizontalAlignment.Fill
                                 verticalAlignment: VerticalAlignment.Center
                                 multiline: false
+                            }
+                            ImageToggleButton {
+                                id: showValueCheck
+                                property int padding: 30
+                                imageSourceDefault: "asset:///images/password_hidden.png"
+                                imageSourceChecked: "asset:///images/password_visible.png"
+                                visible: ListItemData.protected
+                                checked: !ListItemData.protected
+                                verticalAlignment: VerticalAlignment.Center
+                                rightMargin: padding
                             }
                             Button {
                                 id: button
