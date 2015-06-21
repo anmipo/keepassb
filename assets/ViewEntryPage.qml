@@ -23,6 +23,28 @@ PageWithWatchdog {
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     actions: [
         ActionItem {
+            id: addExtraField
+            title: qsTr("Add Extra Field", "A button/action to add an extra field to an entry") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_add_field.png"
+            enabled: isExtraFieldsSupported && editable && database.isEditable() && !entry.deleted
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                setCurrentView("extra");
+                viewEntryExtrasTab.onAddExtraField();
+            }
+        },
+        ActionItem {
+            id: attachFileAction
+            title: qsTr("Attach File", "A button/action to attach a file to an entry") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_add_attachment.png"
+            enabled: editable && database.isEditable() && !entry.deleted
+            ActionBar.placement: ActionBarPlacement.InOverflow
+            onTriggered: {
+                setCurrentView("extra");
+                viewEntryExtrasTab.onAddAttachment();
+            }
+        },
+        ActionItem {
             id: editEntryAction
             title: qsTr("Edit Entry", "A button/action to edit an entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_edit.png"
@@ -40,28 +62,6 @@ PageWithWatchdog {
                 var editEntryPage = editEntryPageComponent.createObject(viewEntryPage, {"entry": entry});
                 editEntryPage.open();
                 editEntryPage.autofocus();
-            }
-        },
-        ActionItem {
-            id: attachFileAction
-            title: qsTr("Attach File", "A button/action to attach a file to an entry") + Retranslate.onLocaleOrLanguageChanged
-            imageSource: "asset:///images/ic_add_attachment.png"
-            enabled: editable && database.isEditable() && !entry.deleted
-            ActionBar.placement: ActionBarPlacement.InOverflow
-            onTriggered: {
-                setCurrentView("extra");
-                viewEntryExtrasTab.onAddAttachment();
-            }
-        },
-        ActionItem {
-            id: addExtraField
-            title: qsTr("Add Extra Field", "A button/action to add an extra field to an entry") + Retranslate.onLocaleOrLanguageChanged
-            imageSource: "asset:///images/ic_add_field.png"
-            enabled: isExtraFieldsSupported && editable && database.isEditable() && !entry.deleted
-            ActionBar.placement: ActionBarPlacement.InOverflow
-            onTriggered: {
-                setCurrentView("extra");
-                viewEntryExtrasTab.onAddExtraField();
             }
         },
         DeleteActionItem {
