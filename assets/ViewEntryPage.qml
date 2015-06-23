@@ -18,6 +18,11 @@ PageWithWatchdog {
 
     onCreationCompleted: {
         entry.registerAccessEvent();
+        if (Common.isAllStandardFieldsEmpty(entry)) {
+            titleBar.selectedOption = extraTabOption;
+        } else { 
+            titleBar.selectedOption = generalTabOption;
+        }
     }
     
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
@@ -37,7 +42,7 @@ PageWithWatchdog {
             enabled: isExtraFieldsSupported && editable && database.isEditable() && !entry.deleted
             ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
-                setCurrentView("extra");
+                titleBar.selectedOption = extraTabOption;
                 viewEntryExtrasTab.onAddExtraField();
             }
         },
@@ -48,7 +53,7 @@ PageWithWatchdog {
             enabled: editable && database.isEditable() && !entry.deleted
             ActionBar.placement: ActionBarPlacement.InOverflow
             onTriggered: {
-                setCurrentView("extra");
+                titleBar.selectedOption = extraTabOption;
                 viewEntryExtrasTab.onAddAttachment();
             }
         },
@@ -111,14 +116,17 @@ PageWithWatchdog {
         }
         options: [
             Option {
+                id: generalTabOption
                 text: qsTr("General", "Title of a page which shows main/basic properties of an entry.") + Retranslate.onLocaleOrLanguageChanged
                 value: "general"
             },
             Option {
+                id: extraTabOption
                 text: qsTr("Extra", "Title of a page which shows additional/advanced properties of an entry.") + Retranslate.onLocaleOrLanguageChanged
                 value: "extra"
             },
             Option {
+                id: historyTabOption
                 text: qsTr("History", "Title of a page which lists the previous versions of an entry.") + Retranslate.onLocaleOrLanguageChanged
                 value: "history"
             }

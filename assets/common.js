@@ -142,3 +142,12 @@ function performMultiCopy(entry, suppressInfo) {
 		Qt.app.prepareMultiCopy(entry.userName, entry.password);		
 	}	
 }
+/**
+ * Checks if all the standard entry fields are empty strings.
+ */
+function isAllStandardFieldsEmpty(entry) {
+	return  (entry.userName.length == 0) && 
+			(entry.password.length == 0) && 
+			(entry.url.length == 0) && 
+			(entry.notes.length == 0); 
+}
