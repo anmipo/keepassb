@@ -28,25 +28,6 @@ PageWithWatchdog {
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.HideOnScroll
     actions: [
         ActionItem {
-            title: qsTr("Multi-Copy", "A button/action which copies the whole entry into clipboard (also see 'Multi-Copy' in thesaurus).") + Retranslate.onLocaleOrLanguageChanged
-            imageSource: "asset:///images/ic_multi_copy.png"
-            ActionBar.placement: ActionBarPlacement.OnBar
-            onTriggered: {
-                Common.performMultiCopy(entry);
-            }
-        },
-        ActionItem {
-            id: addExtraField
-            title: qsTr("Add Extra Field", "A button/action to add an extra field to an entry") + Retranslate.onLocaleOrLanguageChanged
-            imageSource: "asset:///images/ic_add_field.png"
-            enabled: isExtraFieldsSupported && editable && database.isEditable() && !entry.deleted
-            ActionBar.placement: ActionBarPlacement.InOverflow
-            onTriggered: {
-                titleBar.selectedOption = extraTabOption;
-                viewEntryExtrasTab.onAddExtraField();
-            }
-        },
-        ActionItem {
             id: attachFileAction
             title: qsTr("Attach File", "A button/action to attach a file to an entry") + Retranslate.onLocaleOrLanguageChanged
             imageSource: "asset:///images/ic_add_attachment.png"
@@ -55,6 +36,25 @@ PageWithWatchdog {
             onTriggered: {
                 titleBar.selectedOption = extraTabOption;
                 viewEntryExtrasTab.onAddAttachment();
+            }
+        },
+        ActionItem {
+            id: addExtraField
+            title: qsTr("Add Extra Field", "A button/action to add an extra field to an entry") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_add_field.png"
+            enabled: isExtraFieldsSupported && editable && database.isEditable() && !entry.deleted
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                titleBar.selectedOption = extraTabOption;
+                viewEntryExtrasTab.onAddExtraField();
+            }
+        },
+        ActionItem {
+            title: qsTr("Multi-Copy", "A button/action which copies the whole entry into clipboard (also see 'Multi-Copy' in thesaurus).") + Retranslate.onLocaleOrLanguageChanged
+            imageSource: "asset:///images/ic_multi_copy.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            onTriggered: {
+                Common.performMultiCopy(entry);
             }
         },
         ActionItem {
