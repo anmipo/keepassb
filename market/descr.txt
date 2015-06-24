@@ -46,6 +46,11 @@ keypass, keepassx, enpass, keeper, keepassb 2, keepassb2, vault, safe
 
 
 Changelog:
+v2.5.0
+Added Multi-Copy - a magic-like method to copy both login and password without returning to KeePassB (see https://youtu.be/QFukWQyvdZg)
+Improved list sorting (thanks Ellis)
+Minor interface improvements (thanks Martin and Karl)
+
 v2.4.3
 Added quick lock status to active cover
 Added Vietnamese translation

@@ -1691,67 +1691,67 @@ To continue, tap the lock symbol below.</source>
         <translation type="obsolete">Улучшенное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="57"/>
+        <location filename="../assets/ViewEntryPage.qml" line="62"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit an entry</comment>
         <translation>Изменить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="46"/>
+        <location filename="../assets/ViewEntryPage.qml" line="32"/>
         <source>Attach File</source>
         <comment>A button/action to attach a file to an entry</comment>
         <translation>Присоединить Файл</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="26"/>
+        <location filename="../assets/ViewEntryPage.qml" line="53"/>
         <source>Multi-Copy</source>
         <comment>A button/action which copies the whole entry into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
         <translation>Мульти-Копия</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="35"/>
+        <location filename="../assets/ViewEntryPage.qml" line="43"/>
         <source>Add Extra Field</source>
         <comment>A button/action to add an extra field to an entry</comment>
         <translation>Добавить Поле</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="76"/>
+        <location filename="../assets/ViewEntryPage.qml" line="81"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry.</comment>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="84"/>
+        <location filename="../assets/ViewEntryPage.qml" line="89"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="85"/>
+        <location filename="../assets/ViewEntryPage.qml" line="90"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation>Точно удалить эту запись?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="86"/>
+        <location filename="../assets/ViewEntryPage.qml" line="91"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="114"/>
+        <location filename="../assets/ViewEntryPage.qml" line="120"/>
         <source>General</source>
         <comment>Title of a page which shows main/basic properties of an entry.</comment>
         <translation>Основное</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="118"/>
+        <location filename="../assets/ViewEntryPage.qml" line="125"/>
         <source>Extra</source>
         <comment>Title of a page which shows additional/advanced properties of an entry.</comment>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryPage.qml" line="122"/>
+        <location filename="../assets/ViewEntryPage.qml" line="130"/>
         <source>History</source>
         <comment>Title of a page which lists the previous versions of an entry.</comment>
         <translation>История</translation>

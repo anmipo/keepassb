@@ -221,6 +221,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_add_field.png) \
         $$quote($$BASEDIR/assets/images/ic_add_group.png) \
         $$quote($$BASEDIR/assets/images/ic_attach.png) \
+        $$quote($$BASEDIR/assets/images/ic_copy_username.png) \
         $$quote($$BASEDIR/assets/images/ic_create_database.png) \
         $$quote($$BASEDIR/assets/images/ic_done.png) \
         $$quote($$BASEDIR/assets/images/ic_edit.png) \
@@ -233,6 +234,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_expired_item.png) \
         $$quote($$BASEDIR/assets/images/ic_history.png) \
         $$quote($$BASEDIR/assets/images/ic_lock.png) \
+        $$quote($$BASEDIR/assets/images/ic_multi_copy.png) \
         $$quote($$BASEDIR/assets/images/ic_new_password.png) \
         $$quote($$BASEDIR/assets/images/ic_notes.png) \
         $$quote($$BASEDIR/assets/images/ic_quicklock.png) \
