@@ -77,6 +77,7 @@ bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMi
 	if (result) {
         modified = true;
 		emit inserted();
+		selectedContentType = CONTENT_SIMPLE;
 		timer.stop();
 		if (timeoutMillis >= 0) {
 		    timer.start(timeoutMillis);

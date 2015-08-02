@@ -152,6 +152,7 @@ void ApplicationUI::onThumbnail() {
 
 void ApplicationUI::onAboutToQuit() {
     LOG("App quitting.");
+    clipboard.clear();
     stopMultiCopySensor();
 }
 
