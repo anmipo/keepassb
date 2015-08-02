@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="en_GB">
 <context>
     <name>AboutPage</name>
     <message>
@@ -449,13 +449,13 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="265"/>
+        <location filename="../src/applicationui.cpp" line="266"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="276"/>
+        <location filename="../src/applicationui.cpp" line="277"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translation type="unfinished"></translation>
@@ -1450,8 +1450,9 @@ To continue, tap the lock symbol below.</source>
         <location filename="../assets/ViewEntryExtrasTab.qml" line="205"/>
         <source>%n byte(s)</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n byte</numerusform>
+            <numerusform>%n bytes</numerusform>
         </translation>
     </message>
     <message>
