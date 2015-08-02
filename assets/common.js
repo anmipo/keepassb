@@ -151,3 +151,10 @@ function isAllStandardFieldsEmpty(entry) {
 			(entry.url.length == 0) && 
 			(entry.notes.length == 0); 
 }
+
+/**
+ * Checks if a V4 entry has only extra fields filled
+ */
+function hasOnlyExtraFields(entryV4) {
+	return (isAllStandardFieldsEmpty(entryV4) && (entryV4.extraSize > 0));
+}

@@ -18,7 +18,7 @@ PageWithWatchdog {
 
     onCreationCompleted: {
         entry.registerAccessEvent();
-        if (Common.isAllStandardFieldsEmpty(entry)) {
+        if (isExtraFieldsSupported && Common.hasOnlyExtraFields(/* v4 only */entry)) {
             titleBar.selectedOption = extraTabOption;
         } else { 
             titleBar.selectedOption = generalTabOption;
