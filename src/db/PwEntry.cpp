@@ -371,6 +371,7 @@ void PwEntry::setParentGroup(PwGroup* parentGroup) {
     if (parentGroup != _parentGroup) {
         _parentGroup = parentGroup;
         emit parentGroupChanged(parentGroup);
+        emit groupPathChanged(getGroupPath());
     }
 }
 
@@ -395,4 +396,15 @@ PwDatabase* PwEntry::getDatabase() const {
     } else {
         return NULL;
     }
+}
+
+/** Returns the names of the groups this entry is in, much like a file system path */
+QString PwEntry::getGroupPath() const {
+    QStringList groupNames;
+    PwGroup* parentGroup = getParentGroup();
+    while (parentGroup) {
+        groupNames.prepend(parentGroup->getName());
+        parentGroup = parentGroup->getParentGroup();
+    }
+    return groupNames.join("/");
 }

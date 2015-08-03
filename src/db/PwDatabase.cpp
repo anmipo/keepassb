@@ -142,9 +142,8 @@ bool PwDatabase::changeMasterKey(const QString& password, const QByteArray& keyF
 
 /*****************************************/
 PwSearchResultDataModel::PwSearchResultDataModel(QObject* parent) :
-        bb::cascades::QListDataModel<PwEntry*>() {
-    // QListDataModel does not take parent in constructor, so set it separately
-    setParent(parent);
+        bb::cascades::GroupDataModel(QStringList() << "groupPath", parent) {
+    setGrouping(ItemGrouping::ByFullValue);
 }
 /*****************************************/
 
@@ -336,11 +335,13 @@ Q_INVOKABLE  int PwDatabaseFacade::search(const QString& query) {
     params.query = query.trimmed();
     params.queryWords = params.query.split(" ", QString::SkipEmptyParts);
 
-    QList<PwEntry*> searchResult;
-
     _searchResultDataModel.clear();
+
+    QList<PwEntry*> searchResult;
     int resultSize = db->search(params, searchResult);
-    _searchResultDataModel.append(searchResult);
+    for (int i = 0; i < searchResult.size(); i++) {
+         _searchResultDataModel.insert(searchResult.at(i));
+    }
     LOG("Found %d entries", resultSize);
     return resultSize;
 }

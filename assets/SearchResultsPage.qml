@@ -26,21 +26,31 @@ PageWithWatchdog {
         verticalAlignment: VerticalAlignment.Fill
         ListView {
             id: listView
-            visible: searchResult.hasChildren([])
+            visible: !searchResult.isEmpty()
             dataModel: searchResult
             onTriggered: {
+                if (searchResult.itemType(indexPath) != "item")
+                    return;
+                    
                 var entry = searchResult.data(indexPath);
-                
                 var viewEntryPageComponent = Qt.createComponent("ViewEntryPage.qml");
                 var viewEntryPage = viewEntryPageComponent.createObject(null, {"entry": entry});
                 naviPane.push(viewEntryPage);
             }
             listItemComponents: [
                 ListItemComponent {
+                    type: "header"
+                    Header {
+                        title: ListItemData
+                        topMargin: 30
+                    }
+                },
+                ListItemComponent {
+                    type: "item"
                     GroupListItem {
                         itemType: "entry"
                         title: ListItemData.title
-                        description: qsTr("Group: %1", "Describes the group of the selected entry. Example: 'Group:  Internet'").arg(ListItemData.parentGroup.name)
+                        description: Common.getEntryDescription(ListItemData)
                         imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
                         contextActions: ActionSet {
                             title: ListItemData.title
@@ -74,7 +84,7 @@ PageWithWatchdog {
         }
         Container {
             layout: StackLayout { }
-            visible: !searchResult.hasChildren([])
+            visible: searchResult.isEmpty()
             horizontalAlignment: HorizontalAlignment.Center
             verticalAlignment: VerticalAlignment.Center
             ImageView {

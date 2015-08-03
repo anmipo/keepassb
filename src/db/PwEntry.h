@@ -125,6 +125,8 @@ class PwEntry: public QObject {
 	Q_PROPERTY(bool expired READ isExpired NOTIFY expiredChanged)
     // indicates whether the entry is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
+    // sequence of parent group names, much like a file system path
+    Q_PROPERTY(QString groupPath READ getGroupPath NOTIFY groupPathChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
 private:
 	PwUuid _uuid;
@@ -199,6 +201,9 @@ public:
     /** Updates modification (and last access) timestamps to current time */
     Q_INVOKABLE virtual void registerModificationEvent();
 
+    /** Returns the names of the groups this entry is in, much like a file system path */
+    Q_INVOKABLE QString getGroupPath() const;
+
 	// property getters/setters
 	PwUuid getUuid() const { return _uuid; }
 	void setUuid(const PwUuid& uuid);
@@ -262,6 +267,7 @@ signals:
     void expiresChanged(bool);
     void expiredChanged(bool);
     void deletedChanged(bool);
+    void groupPathChanged(QString);
     void parentGroupChanged(PwGroup*);
 };
 

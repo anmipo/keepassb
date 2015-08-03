@@ -9,7 +9,7 @@
 #define PWDATABASE_H_
 
 #include <QObject>
-#include <bb/cascades/QListDataModel>
+#include <bb/cascades/GroupDataModel>
 #include "db/PwGroup.h"
 #include "db/PwEntry.h"
 #include "db/PwIcon.h"
@@ -138,7 +138,7 @@ signals:
 /**
  * Data model for search results
  */
-class PwSearchResultDataModel: public bb::cascades::QListDataModel<PwEntry*> {
+class PwSearchResultDataModel: public bb::cascades::GroupDataModel {
     Q_OBJECT
 public:
     PwSearchResultDataModel(QObject* parent=0);
