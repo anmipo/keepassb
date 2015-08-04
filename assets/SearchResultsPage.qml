@@ -37,12 +37,14 @@ PageWithWatchdog {
                 var viewEntryPage = viewEntryPageComponent.createObject(null, {"entry": entry});
                 naviPane.push(viewEntryPage);
             }
+            layout: StackListLayout {
+                headerMode: ListHeaderMode.Sticky
+            }
             listItemComponents: [
                 ListItemComponent {
                     type: "header"
                     Header {
                         title: ListItemData
-                        topMargin: 30
                     }
                 },
                 ListItemComponent {
