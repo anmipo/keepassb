@@ -561,14 +561,14 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation>Mật mã thư viện lỗi</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="265"/>
+        <location filename="../src/applicationui.cpp" line="266"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translatorcomment>Một thông báo lỗi liên quan đến hành động mở tập tin (tài liệu tham khảo: INVOKE_ATTCHMENT)</translatorcomment>
         <translation>Không thể mở tập tin</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="276"/>
+        <location filename="../src/applicationui.cpp" line="277"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translatorcomment>Hiển thị thông báo khi cơ sở dữ liệu bị khóa (hoặc Khóa nhanh) sau một thời gian mà không cần người dùng tương tác.</translatorcomment>
@@ -1145,63 +1145,63 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="244"/>
+        <location filename="../src/db/PwDatabase.cpp" line="243"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi tập tin không có sẵn hoặc không thể mở</translatorcomment>
         <translation>Không thể mở tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="251"/>
+        <location filename="../src/db/PwDatabase.cpp" line="250"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi các tập tin không thể được nạp/đọc</translatorcomment>
         <translation>Lỗi tải tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="259"/>
+        <location filename="../src/db/PwDatabase.cpp" line="258"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translatorcomment>Một thông báo lỗi</translatorcomment>
         <translation>Tập tin cơ sở dữ liệu trống</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="271"/>
+        <location filename="../src/db/PwDatabase.cpp" line="270"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translatorcomment>Một thông báo lỗi cho cấu trúc tập tin không đượcnhận dạng/không hỗ trợ cơ sở dữ liệu</translatorcomment>
         <translation>Không xác định được dạng cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="310"/>
+        <location filename="../src/db/PwDatabase.cpp" line="309"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translatorcomment>Thông báo lỗi hiển thị khi tập tin là không có sẵn hoặc không thể đọc. Xem &apos;tập tin quan trọng&apos; trong từ điển cung cấp</translatorcomment>
         <translation>Không thể mở tập tin quan trọng</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="407"/>
+        <location filename="../src/db/PwDatabase.cpp" line="408"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi không thể lưu tệp cơ sở dữ liệu</translatorcomment>
         <translation>Không thể lưu tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="413"/>
+        <location filename="../src/db/PwDatabase.cpp" line="414"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi các tập tin cơ sở dữ liệu không thể được ghi vào</translatorcomment>
         <translation>Không thể ghi vào tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="418"/>
+        <location filename="../src/db/PwDatabase.cpp" line="419"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi các tập tin cơ sở dữ liệu không thể được ghi vào</translatorcomment>
         <translation>Lỗi ghi vào tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="398"/>
+        <location filename="../src/db/PwDatabase.cpp" line="399"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translatorcomment>Một thông báo lỗi: không thể tạo một bản sao của tập tin cơ sở dữ liệu</translatorcomment>
@@ -1521,11 +1521,10 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation>Kết quả tìm kiếm</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="43"/>
         <source>Group: %1</source>
         <comment>Describes the group of the selected entry. Example: &apos;Group:  Internet&apos;</comment>
         <translatorcomment>Mô tả nhóm mục đã chọn. Ví dụ: &apos; Nhóm: Internet&apos;</translatorcomment>
-        <translation>Nhóm: %1</translation>
+        <translation type="obsolete">Nhóm: %1</translation>
     </message>
     <message>
         <source>Smart Copy</source>
@@ -1533,25 +1532,25 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation type="obsolete">Sao chép thông minh</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="49"/>
+        <location filename="../assets/SearchResultsPage.qml" line="61"/>
         <source>Multi-Copy</source>
         <comment>A button/action which copies several values into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="56"/>
+        <location filename="../assets/SearchResultsPage.qml" line="68"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation type="unfinished">Sao chép tên người dùng</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="63"/>
+        <location filename="../assets/SearchResultsPage.qml" line="75"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation type="unfinished">Sao chép mật khẩu</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="85"/>
+        <location filename="../assets/SearchResultsPage.qml" line="97"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translatorcomment>Mô tả của một kết quả tìm kiếm sản phẩm</translatorcomment>

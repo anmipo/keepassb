@@ -505,13 +505,13 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation>Kryptographiebibliothek Fehler</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="265"/>
+        <location filename="../src/applicationui.cpp" line="266"/>
         <source>Cannot open the file</source>
         <comment>An error message related to the &apos;open file&apos; action (reference: INVOKE_ATTACHMENT)</comment>
         <translation>Datei kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/applicationui.cpp" line="276"/>
+        <location filename="../src/applicationui.cpp" line="277"/>
         <source>Locked due to inactivity timeout</source>
         <comment>Notification shown when the database is locked (or Quick Lock&apos;ed) after some time without user interaction.</comment>
         <translation>Datenbank aufgrund Inaktivität gesperrt</translation>
@@ -1009,55 +1009,55 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="244"/>
+        <location filename="../src/db/PwDatabase.cpp" line="243"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translation>Datenbankdatei kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="251"/>
+        <location filename="../src/db/PwDatabase.cpp" line="250"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translation>Fehler beim Laden der Datenbankdatei</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="259"/>
+        <location filename="../src/db/PwDatabase.cpp" line="258"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translation>Datenbankdatei ist leer</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="310"/>
+        <location filename="../src/db/PwDatabase.cpp" line="309"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translation>Schlüsseldatei kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="271"/>
+        <location filename="../src/db/PwDatabase.cpp" line="270"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translation>Unbekanntes Datenbankformat</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="407"/>
+        <location filename="../src/db/PwDatabase.cpp" line="408"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translation>Datenbankdatei kann nicht gespeichert werden</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="413"/>
+        <location filename="../src/db/PwDatabase.cpp" line="414"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation>Datenbankdatei kann nicht geschrieben werden</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="418"/>
+        <location filename="../src/db/PwDatabase.cpp" line="419"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translation>Fehler beim Schreiben der Datenbankdatei</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="398"/>
+        <location filename="../src/db/PwDatabase.cpp" line="399"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translation>Datenbankdatei Backup kann nicht erstellt werden. Speichern abgebrochen.</translation>
@@ -1318,10 +1318,9 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation>Suchergebnis</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="43"/>
         <source>Group: %1</source>
         <comment>Describes the group of the selected entry. Example: &apos;Group:  Internet&apos;</comment>
-        <translation>Gruppe: %1</translation>
+        <translation type="obsolete">Gruppe: %1</translation>
     </message>
     <message>
         <source>Smart Copy</source>
@@ -1329,25 +1328,25 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation type="obsolete">Smart-Copy</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="49"/>
+        <location filename="../assets/SearchResultsPage.qml" line="61"/>
         <source>Multi-Copy</source>
         <comment>A button/action which copies several values into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
         <translation>Multi Kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="56"/>
+        <location filename="../assets/SearchResultsPage.qml" line="68"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation>Benutzername Kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="63"/>
+        <location filename="../assets/SearchResultsPage.qml" line="75"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation>Passwort Kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="85"/>
+        <location filename="../assets/SearchResultsPage.qml" line="97"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translation>Suchbegriff nicht gefunden</translation>
