@@ -46,6 +46,14 @@ keypass, keepassx, enpass, keeper, keepassb 2, keepassb2, vault, safe
 
 
 Changelog:
+
+v2.5.1
+Improved search results list (thanks Petr)
+Fixed clipboard cleanup on exit (thanks Farhan)
+Minor interface improvements
+
+NEW RELEASE: A free KeePassB Try-and-Buy version is now available on BBW. This time-limited trial version is used for promoting the paid app, not to replace it. Also, companies can now easily purchase KeePassB licenses (activation codes) for their employees. 
+
 v2.5.0
 Added Multi-Copy - a magic-like method to copy both login and password without returning to KeePassB (see https://youtu.be/QFukWQyvdZg)
 Improved list sorting (thanks Ellis)
