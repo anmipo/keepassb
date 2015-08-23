@@ -63,12 +63,19 @@ Sheet {
                 inputMode: TextFieldInputMode.Password
                 input.onSubmitted: tryQuickUnlock()
                 input.submitKey: SubmitKey.EnterKey
+                onTextChanging: {
+                    // submit automatically once all the symbols have been entered
+                    if (text.length === maximumLength) {
+                        tryQuickUnlock();
+                    }
+                }
             }
             Button {
                 topMargin: 20
                 text: qsTr("Unlock") + Retranslate.onLocaleOrLanguageChanged
                 onClicked: tryQuickUnlock()
                 horizontalAlignment: HorizontalAlignment.Fill
+                visible: false
             }
         }
         attachedObjects: [
