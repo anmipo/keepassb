@@ -58,6 +58,10 @@ bool TimedClipboard::clear() {
     if (containsOurContent) {
         // remove our data from system's clipboard
         LOG("Clipboard cleared by timeout");
+        // Clipboard::clear() leaves the old data in /accounts/1000/clipboard/text.plain
+        // so we need to insert something else first (thanks CellNinja!)
+        // Inserting an empty string has no effect, though, therefore an arbitrary "0".
+        this->insert(DATA_TYPE, "0");
         bool result = bb::system::Clipboard::clear();
         emit cleared();
         return result;
