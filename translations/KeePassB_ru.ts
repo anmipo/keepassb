@@ -875,6 +875,54 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
     </message>
 </context>
 <context>
+    <name>EntryItem</name>
+    <message>
+        <location filename="../assets/EntryItem.qml" line="19"/>
+        <source>Multi-Copy</source>
+        <comment>A button/action which copies the whole entry into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
+        <translation>Мульти-Копия</translation>
+    </message>
+    <message>
+        <location filename="../assets/EntryItem.qml" line="26"/>
+        <source>Copy User Name</source>
+        <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
+        <translation>Копировать Имя</translation>
+    </message>
+    <message>
+        <location filename="../assets/EntryItem.qml" line="33"/>
+        <source>Copy Password</source>
+        <comment>A button/action which copies password password value to the clipborad.</comment>
+        <translation>Копировать Пароль</translation>
+    </message>
+    <message>
+        <location filename="../assets/EntryItem.qml" line="40"/>
+        <source>Edit Entry</source>
+        <comment>A button/action to edit the selected entry</comment>
+        <translation>Изменить Запись</translation>
+    </message>
+    <message>
+        <location filename="../assets/EntryItem.qml" line="46"/>
+        <source>Delete</source>
+        <comment>A button/action to delete an entry</comment>
+        <translation>Удалить Запись</translation>
+    </message>
+</context>
+<context>
+    <name>GroupItem</name>
+    <message>
+        <location filename="../assets/GroupItem.qml" line="18"/>
+        <source>Edit Group</source>
+        <comment>A button/action to edit the selected group</comment>
+        <translation>Изменить Группу</translation>
+    </message>
+    <message>
+        <location filename="../assets/GroupItem.qml" line="24"/>
+        <source>Delete</source>
+        <comment>A button/action to delete a group</comment>
+        <translation>Удалить Группу</translation>
+    </message>
+</context>
+<context>
     <name>IconPickerPage</name>
     <message>
         <location filename="../assets/IconPickerPage.qml" line="22"/>
@@ -1308,12 +1356,12 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation>Введите Быстрый Пароль:</translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="69"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="75"/>
         <source>Unlock</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../assets/QuickUnlockPage.qml" line="77"/>
+        <location filename="../assets/QuickUnlockPage.qml" line="84"/>
         <source>Wrong unlock code</source>
         <translation>Неправильный код доступа</translation>
     </message>
@@ -1321,7 +1369,7 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
 <context>
     <name>SearchResultsPage</name>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="21"/>
+        <location filename="../assets/SearchResultsPage.qml" line="42"/>
         <source>Search Results</source>
         <comment>Title of the page which lists search results</comment>
         <translation>Результаты Поиска</translation>
@@ -1337,28 +1385,55 @@ NOTE: For safety reasons, the bottom-left Lock button always closes the database
         <translation type="obsolete">Улучшенное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="61"/>
         <source>Multi-Copy</source>
         <comment>A button/action which copies several values into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
-        <translation>Мульти-Копия</translation>
+        <translation type="obsolete">Мульти-Копия</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="68"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
-        <translation>Копировать Имя</translation>
+        <translation type="obsolete">Копировать Имя</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="75"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
-        <translation>Копировать Пароль</translation>
+        <translation type="obsolete">Копировать Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="97"/>
+        <location filename="../assets/SearchResultsPage.qml" line="52"/>
+        <source>Enter search query</source>
+        <comment>Hint text for the search query input field, invites the user to type some text</comment>
+        <translation>Введите текст для поиска</translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="64"/>
+        <source>Cancel</source>
+        <comment>Button/action to cancel/hide search query field</comment>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="89"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translation>Ничего не найдено</translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="157"/>
+        <source>Delete Entry</source>
+        <comment>Title of a delete confirmation dialog</comment>
+        <translation>Удалить Запись</translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="158"/>
+        <source>Really delete this entry?</source>
+        <comment>A confirmation dialog for deleting entry</comment>
+        <translation>Точно удалить эту запись?</translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResultsPage.qml" line="159"/>
+        <source>Delete</source>
+        <comment>A button/action to confirm deletion of an entry</comment>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>
@@ -1759,46 +1834,44 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewGroupPage</name>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="94"/>
+        <location filename="../assets/ViewGroupPage.qml" line="117"/>
         <source>Search</source>
         <comment>A button/action which opens a search dialog.</comment>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="106"/>
+        <location filename="../assets/ViewGroupPage.qml" line="129"/>
         <source>Create Entry</source>
         <comment>A button/action to create a new entry</comment>
         <translation>Добавить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="113"/>
+        <location filename="../assets/ViewGroupPage.qml" line="136"/>
         <source>Create Group</source>
         <comment>A button/action to create a new group</comment>
         <translation>Добавить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="120"/>
+        <location filename="../assets/ViewGroupPage.qml" line="143"/>
         <source>Sort Order</source>
         <comment>A button/action to show settings which change list sorting order</comment>
         <translation>Сортировка</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="143"/>
+        <location filename="../assets/ViewGroupPage.qml" line="166"/>
         <source>Lock</source>
         <comment>A button/action which locks/closes the database.</comment>
         <translation>Закрыть Базу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="173"/>
         <source>Enter search query</source>
         <comment>Hint text for the search query input field, invites the user to type some text</comment>
-        <translation>Введите текст для поиска</translation>
+        <translation type="obsolete">Введите текст для поиска</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="194"/>
         <source>Cancel</source>
         <comment>Button/action to cancel/hide search query field</comment>
-        <translation>Отмена</translation>
+        <translation type="obsolete">Отмена</translation>
     </message>
     <message>
         <source>Smart Copy</source>
@@ -1806,133 +1879,141 @@ To continue, tap the lock symbol below.</source>
         <translation type="obsolete">Улучшенное Копирование</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="218"/>
+        <source>Search Results</source>
+        <comment>Title of the search results list</comment>
+        <translation type="obsolete">Результаты Поиска</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="193"/>
         <source>Sort Order</source>
         <comment>A setting which defines sorting of entries in groups. Example: &apos;Sort order   Title (A..Z)&apos;.</comment>
         <translation>Сортировка</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="226"/>
+        <location filename="../assets/ViewGroupPage.qml" line="201"/>
         <source>None</source>
         <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order   None&apos;, meaning no sorting, or as-is item order.</comment>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="231"/>
+        <location filename="../assets/ViewGroupPage.qml" line="206"/>
         <source>Title (A..Z)</source>
         <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
         <translation>Название (А..Я)</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="236"/>
+        <location filename="../assets/ViewGroupPage.qml" line="211"/>
         <source>Title (Z..A)</source>
         <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Title&apos;.</comment>
         <translation>Название (Я..А)</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="241"/>
+        <location filename="../assets/ViewGroupPage.qml" line="216"/>
         <source>Creation Date (Recent First)</source>
         <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
         <translation>Дата Создания (Сначала Новые)</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="246"/>
+        <location filename="../assets/ViewGroupPage.qml" line="221"/>
         <source>Creation Date (Oldest First)</source>
         <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Creation Date&apos;.</comment>
         <translation>Дата Создания (Сначала Старые)</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="251"/>
+        <location filename="../assets/ViewGroupPage.qml" line="226"/>
         <source>Last Modified Date (Recent First)</source>
         <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
         <translation>Дата Изменения (Сначала Новые)</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="256"/>
+        <location filename="../assets/ViewGroupPage.qml" line="231"/>
         <source>Last Modified Date (Oldest First)</source>
         <comment>One of the possible values of the &apos;Sort Order&apos; setting. Will be displayed as &apos;Sort Order    Last Modified Date&apos;.</comment>
         <translation>Дата Изменения (Сначала Старые)</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="320"/>
         <source>Multi-Copy</source>
         <comment>A button/action which copies the whole entry into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
-        <translation>Мульти-Копия</translation>
+        <translation type="obsolete">Мульти-Копия</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="327"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
-        <translation>Копировать Имя</translation>
+        <translation type="obsolete">Копировать Имя</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="334"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
-        <translation>Копировать Пароль</translation>
+        <translation type="obsolete">Копировать Пароль</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="341"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
-        <translation>Изменить Запись</translation>
+        <translation type="obsolete">Изменить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="349"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
-        <translation>Удалить Запись</translation>
+        <translation type="obsolete">Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="371"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
-        <translation>Изменить Группу</translation>
+        <translation type="obsolete">Изменить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="379"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
-        <translation>Удалить Группу</translation>
+        <translation type="obsolete">Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="408"/>
+        <location filename="../assets/ViewGroupPage.qml" line="306"/>
         <source>This group is empty</source>
         <comment>Description for groups without any subgroups or entries.</comment>
         <translation>В этой группе пока пусто</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="423"/>
+        <source>Multi-Copy</source>
+        <comment>A button/action which copies several values into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
+        <translation type="obsolete">Мульти-Копия</translation>
+    </message>
+    <message>
+        <source>Nothing found</source>
+        <comment>Description of an empty search result</comment>
+        <translation type="obsolete">Ничего не найдено</translation>
+    </message>
+    <message>
+        <location filename="../assets/ViewGroupPage.qml" line="321"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Запись</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="424"/>
+        <location filename="../assets/ViewGroupPage.qml" line="322"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation>Точно удалить эту запись?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="425"/>
+        <location filename="../assets/ViewGroupPage.qml" line="323"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="437"/>
+        <location filename="../assets/ViewGroupPage.qml" line="335"/>
         <source>Delete Group</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Удалить Группу</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="438"/>
+        <location filename="../assets/ViewGroupPage.qml" line="336"/>
         <source>Really delete this group, its subgroups and entries?</source>
         <comment>A confirmation dialog for deleting a group</comment>
         <translation>Точно удалить эту группу, ее подгруппы и записи в них?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewGroupPage.qml" line="439"/>
+        <location filename="../assets/ViewGroupPage.qml" line="337"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of a group</comment>
         <translation>Удалить</translation>
