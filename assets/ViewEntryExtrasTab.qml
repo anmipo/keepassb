@@ -9,6 +9,7 @@ import bb.cascades.pickers 1.0
 import org.keepassb 1.0
 
 Container {
+    property variant kpb: Qt.kpb // references to important globals (app, database, etc)
     property bool isExtraFieldsSupported: (database.getFormatVersion() == 4)
     property bool entryEditable: database.isEditable() && !entry.deleted && viewEntryPage.editable
     
@@ -105,7 +106,7 @@ Container {
                                 horizontalAlignment: HorizontalAlignment.Right
                                 enabled: (ListItemData.value.length > 0)
                                 onClicked: {
-                                    Qt.app.copyWithTimeout(ListItemData.value);
+                                    kpb.app.copyWithTimeout(ListItemData.value);
                                 }
                             }
                         }
@@ -162,9 +163,9 @@ Container {
                 onFinished: {
                     var button = buttonSelection();
                     if (button == copyFieldNameButton) 
-                        Qt.app.copyWithTimeout(title);
+                        kpb.app.copyWithTimeout(title);
                     else if (button == copyFieldValueButton) 
-                        Qt.app.copyWithTimeout(body );
+                        kpb.app.copyWithTimeout(body);
                     // ignore other options
                 }
             }

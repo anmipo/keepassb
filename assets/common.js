@@ -7,7 +7,7 @@
  * according to app settings.
  */
 function getEntryDescription(entry) {
-    switch (Qt.appSettings.entryListDetail) {
+    switch (Qt.kpb.appSettings.entryListDetail) {
         case 0: // None
             return "";
         case 1: // User name
@@ -93,9 +93,9 @@ function timestampToString(timestamp) {
  * @param entry
  */
 function deleteEntry(entry) {
-    Qt.app.restartWatchdog();
+    Qt.kpb.app.restartWatchdog();
     entry.moveToBackup(); // also updates timestamps 
-    Qt.database.save();
+    Qt.kpb.database.save();
 }
 
 /**
@@ -103,9 +103,9 @@ function deleteEntry(entry) {
  * @param group
  */
 function deleteGroup(group) {
-    Qt.app.restartWatchdog();
+    Qt.kpb.app.restartWatchdog();
     group.moveToBackup(); // also updates timestamps
-    Qt.database.save();
+    Qt.kpb.database.save();
 }
 
 /**
@@ -135,11 +135,11 @@ function createUniqueOption(fullPath, dropdown, newOptionComponent) {
  * Performs Multi-Copy function, optionally showing info dialog first.
  */
 function performMultiCopy(entry, suppressInfo) {
-	if (Qt.appSettings.multiCopyFirstUse && !suppressInfo) {
-		multiCopyInfoDialog.entry = entry;
-		multiCopyInfoDialog.show();
+	if (Qt.kpb.appSettings.multiCopyFirstUse && !suppressInfo) {
+		Qt.kpb.multiCopyInfoDialog.entry = entry;
+		Qt.kpb.multiCopyInfoDialog.show();
 	} else {
-		Qt.app.prepareMultiCopy(entry.userName, entry.password);		
+		Qt.kpb.app.prepareMultiCopy(entry.userName, entry.password);		
 	}	
 }
 /**

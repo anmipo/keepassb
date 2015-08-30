@@ -93,9 +93,12 @@ NavigationPane {
     }
 
     onCreationCompleted: {
-        Qt.app = app; // a hack to make 'app' available from ListItemComponent
-        Qt.database = database; // a hack to make 'database' available from ListItemComponent
-        Qt.appSettings = appSettings; // a hack to make 'appSettings' available from ListItemComponent
+        Qt.kpb = { // a hack to make some global vars available from ListItemComponent
+            app: app,
+            database: database,
+            appSettings: appSettings,
+            multiCopyInfoDialog: multiCopyInfoDialog
+        };
         
         app.clipboardUpdated.connect(function() {
                 showClipboardToast(qsTr("Copied to clipboard", "A notification which confirms successful copying of text.") + Retranslate.onLocaleOrLanguageChanged)

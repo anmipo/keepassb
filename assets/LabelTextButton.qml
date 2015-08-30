@@ -59,7 +59,7 @@ Container {
             horizontalAlignment: HorizontalAlignment.Right
             enabled: (valueText.length > 0)
             onClicked: {
-                Qt.app.copyWithTimeout(valueText);
+                Qt.kpb.app.copyWithTimeout(valueText);
             }
         }
     }
