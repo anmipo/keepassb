@@ -23,6 +23,11 @@ PageWithWatchdog {
             searchResultSize = -1;
         }
     }
+    function showEntry(entry) {
+        var viewEntryPageComponent = Qt.createComponent("ViewEntryPage.qml");
+        var viewEntryPage = viewEntryPageComponent.createObject(null, {"entry": entry});
+        naviPane.push(viewEntryPage);
+    }
     function showEditEntryDialog(selEntry) {
         var editEntryPageComponent = Qt.createComponent("EditEntryPage.qml");
         var editEntrySheet = editEntryPageComponent.createObject(viewGroupPage, {"entry": selEntry});
@@ -54,10 +59,25 @@ PageWithWatchdog {
                     layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                     clearButtonVisible: true 
                     inputMode: TextFieldInputMode.Text
-                    input.submitKey: SubmitKey.None
-                    onTextChanging: {
-                        app.restartWatchdog();
-                        searchQuery = searchField.text;
+                    input.submitKey: SubmitKey.Done
+                    input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
+                    input.onSubmitted: {
+                        if (searchResultSize == 1) {
+                            // one result - open immediately
+                            var entry = searchResult.data(searchResult.first());
+                            showEntry(entry);
+                        } else if (searchResultSize > 1) {
+                            // many results - proceed with selection 
+                            searchResultsList.requestFocus();
+                        }
+                    }
+                    validator: Validator {
+                        mode: ValidationMode.Delayed
+                        delay: 300
+                        onValidate: {
+                            app.restartWatchdog();
+                            searchQuery = searchField.text;                            
+                        }
                     }
                 }
                 Button {
@@ -113,11 +133,9 @@ PageWithWatchdog {
             onTriggered: {
                 if (searchResult.itemType(indexPath) != "item")
                     return;
-                    
+                
                 var entry = searchResult.data(indexPath);
-                var viewEntryPageComponent = Qt.createComponent("ViewEntryPage.qml");
-                var viewEntryPage = viewEntryPageComponent.createObject(null, {"entry": entry});
-                naviPane.push(viewEntryPage);
+                showEntry(entry);
             }
             layout: StackListLayout {
                 headerMode: ListHeaderMode.Sticky
