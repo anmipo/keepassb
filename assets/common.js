@@ -7,7 +7,7 @@
  * according to app settings.
  */
 function getEntryDescription(entry) {
-    switch (appSettings.entryListDetail) {
+    switch (Qt.appSettings.entryListDetail) {
         case 0: // None
             return "";
         case 1: // User name
@@ -135,7 +135,7 @@ function createUniqueOption(fullPath, dropdown, newOptionComponent) {
  * Performs Multi-Copy function, optionally showing info dialog first.
  */
 function performMultiCopy(entry, suppressInfo) {
-	if (appSettings.multiCopyFirstUse && !suppressInfo) {
+	if (Qt.appSettings.multiCopyFirstUse && !suppressInfo) {
 		multiCopyInfoDialog.entry = entry;
 		multiCopyInfoDialog.show();
 	} else {

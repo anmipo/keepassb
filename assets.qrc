@@ -9,6 +9,8 @@
         <file>assets/EditEntryPage.qml</file>
         <file>assets/EditFieldPage.qml</file>
         <file>assets/EditGroupPage.qml</file>
+        <file>assets/EntryItem.qml</file>
+        <file>assets/GroupItem.qml</file>
         <file>assets/GroupListItem.qml</file>
         <file>assets/IconPickerPage.qml</file>
         <file>assets/LabelTextButton.qml</file>

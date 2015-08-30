@@ -96,8 +96,8 @@ PageWithWatchdog {
                             // refresh the parent ListView, otherwise it crashes
                             parentGroup.itemsChanged(DataModelChangeType.AddRemove, 0);
                             // in case we viewed an entry from search results - refresh search
-                            if (!!searchResultsPage) {
-                                searchResultsPage.performSearch();
+                            if (!!searchPage) {
+                                searchPage.performSearch();
                             }
                             naviPane.pop();
                         }

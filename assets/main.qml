@@ -84,8 +84,7 @@ NavigationPane {
             });
 
             var viewGroupPage = Qt.createComponent("ViewGroupPage.qml");
-            var groupPage = viewGroupPage.createObject(null, 
-                    {"group": database.rootGroup, "autofocus": appSettings.searchAfterUnlock});
+            var groupPage = viewGroupPage.createObject(null, {"group": database.rootGroup});
             naviPane.push(groupPage);
             if (appSettings.searchAfterUnlock) {
                 groupPage.startSearch();
@@ -96,6 +95,7 @@ NavigationPane {
     onCreationCompleted: {
         Qt.app = app; // a hack to make 'app' available from ListItemComponent
         Qt.database = database; // a hack to make 'database' available from ListItemComponent
+        Qt.appSettings = appSettings; // a hack to make 'appSettings' available from ListItemComponent
         
         app.clipboardUpdated.connect(function() {
                 showClipboardToast(qsTr("Copied to clipboard", "A notification which confirms successful copying of text.") + Retranslate.onLocaleOrLanguageChanged)

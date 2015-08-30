@@ -10,7 +10,6 @@ import "common.js" as Common
 PageWithWatchdog {
     id: viewGroupPage
     property PwGroup group
-    property bool autofocus: false
     property bool isEmptyGroup: (group.itemsCount == 0)
 
     onCreationCompleted: {
@@ -32,7 +31,6 @@ PageWithWatchdog {
                     id: titleLabel
                     text: titleBar.title
                     textStyle.base: SystemDefaults.TextStyles.TitleText
-                    textStyle.color: Color.White
                     verticalAlignment: VerticalAlignment.Center
                     layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                 }
@@ -49,19 +47,14 @@ PageWithWatchdog {
         }
     }
     
-    function performAutofocus() {
-        searchField.requestFocus();
-    }
     function startSearch() {
         cancelPanels(); // if any
-        searchContainer.visible = true;
-        performAutofocus();
+        var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
+        var searchResultsPage = searchResultsPageComponent.createObject(null, {"searchQuery": ""});
+        naviPane.push(searchResultsPage);
     }
     /** Hides any opened panels, like search or sort order config. */
     function cancelPanels() {
-        searchContainer.visible = false;
-        searchField.searchQuery = searchField.text;
-        searchField.text = "";
         sortOrderContainer.visible = false;
     }
     function canCreateEntryHere() {
@@ -86,6 +79,36 @@ PageWithWatchdog {
         var editGroupPage = editGroupPageComponent.createObject(viewGroupPage, {"group": newGroup, "creationMode": true});
         editGroupPage.open();
         editGroupPage.autofocus();
+    }
+    function showGroup(group) {
+        var viewSubGroupPage = Qt.createComponent("ViewGroupPage.qml");
+        var subGroupPage = viewSubGroupPage.createObject(null, {"group": group});
+        naviPane.push(subGroupPage);
+    }
+    function showEntry(entry) {
+        var viewEntryPageComponent = Qt.createComponent("ViewEntryPage.qml");
+        var viewEntryPage = viewEntryPageComponent.createObject(null, {"entry": entry});
+        naviPane.push(viewEntryPage);
+    }
+    function showEditGroupDialog(selGroup) {
+        var editGroupPageComponent = Qt.createComponent("EditGroupPage.qml");
+        var editGroupSheet = editGroupPageComponent.createObject(viewGroupPage, {"group": selGroup});
+        editGroupSheet.open();
+        editGroupSheet.autofocus();
+    }
+    function showEditEntryDialog(selEntry) {
+        var editEntryPageComponent = Qt.createComponent("EditEntryPage.qml");
+        var editEntrySheet = editEntryPageComponent.createObject(viewGroupPage, {"entry": selEntry});
+        editEntrySheet.open();
+        editEntrySheet.autofocus()
+    }
+    function confirmDeleteGroup(selGroup) {
+        deleteGroupConfirmationDialog.targetGroup = selGroup;
+        deleteGroupConfirmationDialog.show();
+    }
+    function confirmDeleteEntry(selEntry) {
+        deleteEntryConfirmationDialog.targetEntry = selEntry;
+        deleteEntryConfirmationDialog.show();
     }
     
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Default
@@ -151,55 +174,7 @@ PageWithWatchdog {
         Container {
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
-            Container {  // search field
-                id: searchContainer
-                visible: false
-                leftPadding: 10
-                rightPadding: 10
-                topPadding: 10
-                bottomPadding: 10
-                horizontalAlignment: HorizontalAlignment.Fill
-                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
-                ImageView {
-                    imageSource: "asset:///images/ic_search.png"
-                    horizontalAlignment: HorizontalAlignment.Left
-                }
-                TextField {
-                    // Upon submit, TextField first gets onFocusChanged and then onSubmitted.
-                    // This property stores the query text between these events.
-                    property string searchQuery 
-                    
-                    id: searchField
-                    hintText: qsTr("Enter search query", "Hint text for the search query input field, invites the user to type some text") + Retranslate.onLocaleOrLanguageChanged
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    layoutProperties: StackLayoutProperties { spaceQuota: 1 }
-                    clearButtonVisible: true 
-                    inputMode: TextFieldInputMode.Text
-                    input.submitKey: SubmitKey.Search
-                    input.submitKeyFocusBehavior: SubmitKeyFocusBehavior.Lose
-                    onTextChanging: {
-                        app.restartWatchdog();
-                    }
-                    input.onSubmitted: {
-                        searchContainer.visible = false;
-                        searchQuery = searchField.text;
-                        searchField.text = "";
-                        var searchResultsPageComponent = Qt.createComponent("SearchResultsPage.qml");
-                        var searchResultsPage = searchResultsPageComponent.createObject(null, 
-                                {"searchQuery": searchQuery});
-                        naviPane.push(searchResultsPage);
-                    }
-                }
-                Button {
-                    text: qsTr("Cancel", "Button/action to cancel/hide search query field") + Retranslate.onLocaleOrLanguageChanged
-                    horizontalAlignment: HorizontalAlignment.Right
-                    preferredWidth: 50
-                    onClicked: {
-                        searchField.text = "";
-                        searchContainer.visible = false;
-                    }
-                }
-            }
+
             Container {  // sort order settings
                 id: sortOrderContainer
                 visible: false
@@ -261,44 +236,31 @@ PageWithWatchdog {
             }
             ListView {
                 id: groupList
+
+                function _showEditGroupDialog(selGroup) {
+                    return viewGroupPage.showEditGroupDialog(selGroup);
+                }
+                function _showEditEntryDialog(selEntry) {
+                    return viewGroupPage.showEditEntryDialog(selEntry);
+                }
+                function _confirmDeleteGroup(selGroup) {
+                    return viewGroupPage.confirmDeleteGroup(selGroup);
+                }
+                function _confirmDeleteEntry(selEntry) {
+                    return viewGroupPage.confirmDeleteEntry(selEntry);
+                }
                 
-                function showEditGroupDialog(selGroup) {
-                    var editGroupPageComponent = Qt.createComponent("EditGroupPage.qml");
-                    var editGroupSheet = editGroupPageComponent.createObject(viewGroupPage, {"group": selGroup});
-                    editGroupSheet.open();
-                    editGroupSheet.autofocus();
-                }
-                function showEditEntryDialog(selEntry) {
-                    var editEntryPageComponent = Qt.createComponent("EditEntryPage.qml");
-                    var editEntrySheet = editEntryPageComponent.createObject(viewGroupPage, {"entry": selEntry});
-                    editEntrySheet.open();
-                    editEntrySheet.autofocus()
-                }
-                function confirmDeleteGroup(selGroup) {
-                    deleteGroupConfirmationDialog.targetGroup = selGroup;
-                    deleteGroupConfirmationDialog.show();
-                }
-                function confirmDeleteEntry(selEntry) {
-                    deleteEntryConfirmationDialog.targetEntry = selEntry;
-                    deleteEntryConfirmationDialog.show();
-                }
-                objectName: "groupList"
                 dataModel: group
-                visible: group.itemsCount > 0
+                visible: !isEmptyGroup
                 horizontalAlignment: HorizontalAlignment.Right
                 scrollRole: ScrollRole.Main
                 onTriggered: {
                     var itemType = group.itemType(indexPath);
                     var item = group.data(indexPath);
                     if (itemType == "group") {
-                        var viewSubGroupPage = Qt.createComponent("ViewGroupPage.qml");
-                        var subGroupPage = viewSubGroupPage.createObject(null, {"group": item});
-                        naviPane.push(subGroupPage);
+                        showGroup(item);
                     } else if (itemType == "entry") {
-                        var formatVersion = database.getFormatVersion();
-                        var viewEntryPage = Qt.createComponent("ViewEntryPage.qml");
-                        var entryPage = viewEntryPage.createObject(null, {"entry": item});
-                        naviPane.push(entryPage);
+                        showEntry(item);
                     } else {
                         console.log("WARN: unknown item type");
                     }
@@ -307,82 +269,18 @@ PageWithWatchdog {
                 listItemComponents: [
                     ListItemComponent {
                         type: "entry"
-                        GroupListItem {
+                        EntryItem {
                             id: groupListEntryItem
-                            itemType: "entry"
-                            title: ListItemData.title
-                            description: Common.getEntryDescription(ListItemData)
-                            imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
-                            contextActions: ActionSet {
-                                title: ListItemData.title
-                                actions: [
-                                    ActionItem {
-                                        title: qsTr("Multi-Copy", "A button/action which copies the whole entry into clipboard (also see 'Multi-Copy' in thesaurus).") + Retranslate.onLocaleOrLanguageChanged
-                                        imageSource: "asset:///images/ic_multi_copy.png"
-                                        onTriggered: {
-                                            Common.performMultiCopy(ListItemData);
-                                        }
-                                    },
-                                    ActionItem {
-                                        title: qsTr("Copy User Name", "A button/action which copies user_name value to the clipboard. Here, 'User Name' refers to login information rather that person's own name.") + Retranslate.onLocaleOrLanguageChanged
-                                        imageSource: "asset:///images/ic_copy_username.png"
-                                        onTriggered: {
-                                            Qt.app.copyWithTimeout(ListItemData.userName);
-                                        }
-                                    },
-                                    ActionItem {
-                                        title: qsTr("Copy Password", "A button/action which copies password password value to the clipborad.") + Retranslate.onLocaleOrLanguageChanged
-                                        imageSource: "asset:///images/ic_copy_password.png"
-                                        onTriggered: {
-                                            Qt.app.copyWithTimeout(ListItemData.password);
-                                        }
-                                    },
-                                    ActionItem {
-                                        title: qsTr("Edit Entry", "A button/action to edit the selected entry") + Retranslate.onLocaleOrLanguageChanged
-                                        imageSource: "asset:///images/ic_edit.png"
-                                        enabled: Qt.database.isEditable() && !ListItemData.deleted 
-                                        onTriggered: {
-                                            groupListEntryItem.ListItem.view.showEditEntryDialog(ListItemData);
-                                        }
-                                    },
-                                    DeleteActionItem {
-                                        title: qsTr("Delete", "A button/action to delete an entry") + Retranslate.onLocaleOrLanguageChanged
-                                        enabled: Qt.database.isEditable() && !ListItemData.deleted
-                                        onTriggered: {
-                                            groupListEntryItem.ListItem.view.confirmDeleteEntry(ListItemData);
-                                        }
-                                    }
-                                ]
-                            }
+                            onEditRequested: groupListEntryItem.ListItem.view._showEditEntryDialog(selectedEntry)
+                            onDeleteRequested: groupListEntryItem.ListItem.view._confirmDeleteEntry(selectedEntry)
                         }
                     },
                     ListItemComponent {
                         type: "group"
-                        GroupListItem{
+                        GroupItem {
                             id: groupListGroupItem
-                            itemType: "group"
-                            title: ListItemData.name
-                            imageSource: ListItemData.expired ? "asset:///images/ic_expired_item.png" : "asset:///pwicons/" + ListItemData.iconId + ".png"
-                            counterText: "(" + ListItemData.itemsCount + ")"
-                            
-                            contextActions: ActionSet {
-                                title: ListItemData.name
-                                ActionItem {
-                                    title: qsTr("Edit Group", "A button/action to edit the selected group") + Retranslate.onLocaleOrLanguageChanged
-                                    imageSource: "asset:///images/ic_edit_group.png"
-                                    enabled: Qt.database.isEditable() && !ListItemData.deleted 
-                                    onTriggered: {
-                                        groupListGroupItem.ListItem.view.showEditGroupDialog(ListItemData);
-                                    }
-                                }
-                                DeleteActionItem {
-                                    title: qsTr("Delete", "A button/action to delete a group") + Retranslate.onLocaleOrLanguageChanged
-                                    enabled: Qt.database.isEditable() && !ListItemData.deleted
-                                    onTriggered: {
-                                        groupListGroupItem.ListItem.view.confirmDeleteGroup(ListItemData);
-                                    }
-                                }
-                            }
+                            onEditRequested: groupListGroupItem.ListItem.view._showEditGroupDialog(selectedGroup)
+                            onDeleteRequested: groupListGroupItem.ListItem.view._confirmDeleteGroup(selectedGroup)
                         }
                     },
                     ListItemComponent {
