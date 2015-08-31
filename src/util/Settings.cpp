@@ -32,7 +32,7 @@ const int DEFAULT_PWGEN_FLAGS =
         PasswordGenerator::PWGEN_INCLUDE_UPPER |
         PasswordGenerator::PWGEN_INCLUDE_DIGITS |
         PasswordGenerator::PWGEN_INCLUDE_SPECIALS;
-const bool DEFAULT_BACKUP_DATABASE_ON_SAVE = true;
+const bool DEFAULT_BACKUP_DATABASE_ON_SAVE = false;
 const bool DEFAULT_MINIMIZE_APP_ON_COPY = true;
 
 /**

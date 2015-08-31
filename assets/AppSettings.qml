@@ -486,6 +486,7 @@ PageWithWatchdog {
                         multiline: true
                     }
                     Label {
+                        visible: false // hide obsolete warning 
                         horizontalAlignment: HorizontalAlignment.Fill
                         text: qsTr("Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.", "Description of the 'Backup Database on Save' setting.")
                         textStyle.base: SystemDefaults.TextStyles.SubtitleText
