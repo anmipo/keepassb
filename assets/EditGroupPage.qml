@@ -95,12 +95,14 @@ Sheet {
             MonoTextField {
                 id: nameField
                 text: group.name
+                trimOnBlur: true
                 validator: Validator {
                     mode: ValidationMode.Delayed
                     delay: 500
                     errorMessage: qsTr("This group name is reserved", "An error message when a group is being given a name which is reserved for internal use only.") + Retranslate.onLocaleOrLanguageChanged
                     onValidate: {
-                        if (group.isNameReserved(nameField.text)) {
+                        var nameTrimmed = nameField.text.trim();
+                        if (group.isNameReserved(nameTrimmed)) {
                             state = ValidationState.Invalid;
                         } else {
                             state = ValidationState.Valid;

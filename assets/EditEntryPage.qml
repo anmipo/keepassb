@@ -126,6 +126,7 @@ Sheet {
                 MonoTextField {
                     id: titleField
                     text: entry.title
+                    trimOnBlur: true
                     input.flags: TextInputFlag.SpellCheck
                 }
                 Container {
@@ -158,6 +159,7 @@ Sheet {
                 MonoTextField {
                     id: usernameField
                     text: entry.userName
+                    trimOnBlur: true
                 }
                 Divider{}
                 Label {
@@ -191,7 +193,8 @@ Sheet {
                 MonoTextField {
                     id: urlField
                     text: entry.url
-                    input.flags: TextInputFlag.SpellCheckOff | TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff
+                    inputMode: TextFieldInputMode.Url
+                    trimOnBlur: true
                 }
                 Divider{}
                 Label {
