@@ -177,8 +177,11 @@ PageWithWatchdog {
             confirmButton.label: qsTr("Delete", "A button/action to confirm deletion of an entry") + Retranslate.onLocaleOrLanguageChanged
             onFinished: {
                 if (value == SystemUiResult.ConfirmButtonSelection) {
+                    var originalGroup = targetEntry.parentGroup;;
                     Common.deleteEntry(targetEntry);
-                    // refresh the ListView, otherwise it might crash
+                    // refresh the old parent group, otherwise it crashes
+                    originalGroup.itemsChanged(DataModelChangeType.AddRemove, 0);
+                    // refresh the search results ListView, too 
                     searchResult.itemsChanged(DataModelChangeType.AddRemove, 0);
                 }
             }
