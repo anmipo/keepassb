@@ -43,6 +43,8 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/EditEntryPage.qml) \
         $$quote($$BASEDIR/assets/EditFieldPage.qml) \
         $$quote($$BASEDIR/assets/EditGroupPage.qml) \
+        $$quote($$BASEDIR/assets/EntryItem.qml) \
+        $$quote($$BASEDIR/assets/GroupItem.qml) \
         $$quote($$BASEDIR/assets/GroupListItem.qml) \
         $$quote($$BASEDIR/assets/IconPickerPage.qml) \
         $$quote($$BASEDIR/assets/LabelTextButton.qml) \
@@ -247,6 +249,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/ic_timestamp.png) \
         $$quote($$BASEDIR/assets/images/ic_unlock.png) \
         $$quote($$BASEDIR/assets/images/ic_view_details.png) \
+        $$quote($$BASEDIR/assets/images/search_splash.png) \
         $$quote($$BASEDIR/assets/main.qml) \
         $$quote($$BASEDIR/assets/pwicons-dark/0.png) \
         $$quote($$BASEDIR/assets/pwicons-dark/1.png) \

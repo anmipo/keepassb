@@ -47,6 +47,12 @@ keypass, keepassx, enpass, keeper, keepassb 2, keepassb2, vault, safe
 
 Changelog:
 
+v2.5.2
+Added search-as-you-type
+Improved QuickUnlock: now quicker by one tap
+Fixed partial clipboard cleanup (thanks Roger)
+Minor interface improvements (thanks Martin)
+
 v2.5.1
 Improved search results list (thanks Petr)
 Fixed clipboard cleanup on exit (thanks Farhan)

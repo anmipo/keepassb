@@ -385,7 +385,7 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation>Sao lưu các tập tin cơ sở dữ liệu trước khi lưu bất kỳ thay đổi. Các bản sao lưu tạm thời đóng dấu và lưu trữ cùng với các cơ sở dữ liệu ban đầu.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="490"/>
+        <location filename="../assets/AppSettings.qml" line="491"/>
         <source>Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translatorcomment>Mô tả của cài đặt &apos;Sao lưu cơ sở dữ lệu khi lưu&apos;.</translatorcomment>
@@ -393,7 +393,7 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="70"/>
-        <location filename="../assets/AppSettings.qml" line="511"/>
+        <location filename="../assets/AppSettings.qml" line="512"/>
         <source>Search</source>
         <comment>Title of a group of settings related to search function</comment>
         <translatorcomment>Tựa để của một nhóm cài đặt để tìm kiếm tự động</translatorcomment>
@@ -424,21 +424,21 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="523"/>
+        <location filename="../assets/AppSettings.qml" line="524"/>
         <source>Search at Start</source>
         <comment>An on/off setting which defines whether the Search function should be automatically activated when a database is opened/unlocked.</comment>
         <translatorcomment>Một thiết lập bật/tắt định nghĩa cho chức năng tìm kiếm được tự động kích hoạt khi cơ sở dữ liệu là mở/mở khóa</translatorcomment>
         <translation>Tìm kiếm để bắt đầu</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="539"/>
+        <location filename="../assets/AppSettings.qml" line="540"/>
         <source>This option will automatically activate Search whenever a database is unlocked.</source>
         <comment>Description of the &apos;Search at Start&apos; setting.</comment>
         <translatorcomment>Mô tả của thiết lập &apos;Tìm kiếm để bắt đầu&apos;</translatorcomment>
         <translation>Tùy chọn này sẽ tự động kích hoạt tìm bất cứ khi nào một cơ sở dữ liệu được mở khóa.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="551"/>
+        <location filename="../assets/AppSettings.qml" line="552"/>
         <source>Search in Deleted Entries</source>
         <comment>An on/off setting which defines whether the Search should look into entries marked as deleted.</comment>
         <translatorcomment>Một thiết lập bật/tắt định nghĩa cho tìm kiếm nên nhìn vào mục đánh dấu là bị xóa</translatorcomment>
@@ -446,7 +446,7 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="81"/>
-        <location filename="../assets/AppSettings.qml" line="570"/>
+        <location filename="../assets/AppSettings.qml" line="571"/>
         <source>Recent Files</source>
         <comment>Title of a group of settings related to handling of recently opened files.</comment>
         <translatorcomment>Tựa đề của một nhóm thiết lập  quan hệ để xử lý các tập tin mới.</translatorcomment>
@@ -468,42 +468,42 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation type="obsolete">Phân loại danh sách</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="580"/>
+        <location filename="../assets/AppSettings.qml" line="581"/>
         <source>Keep Track Of</source>
         <comment>A setting which defines which type of recently used files should be remembered. Example: &apos;Keep Track Of: Database and Key Files&apos;</comment>
         <translatorcomment>Một thiết lập mà xác định các tập tin mới sử dụng nên được ghi nhớ, ví dụ: &apos; Theo dõi: cơ sở dữ liệu và tập tin quan trọng&apos;</translatorcomment>
         <translation>Theo dõi</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="589"/>
+        <location filename="../assets/AppSettings.qml" line="590"/>
         <source>Nothing</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Nothing&apos;, meaning that no history of recently used files will be kept.</comment>
         <translatorcomment>Một trong các giá trị thiết lập để tiếp tục theo dõi. Sẽ được hiển thị như &apos;Không có gì để theo dõi&apos;, có nghĩa là không có lịch sử tập tin mới sử dụng được giữ.</translatorcomment>
         <translation>Không có gì</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="594"/>
+        <location filename="../assets/AppSettings.qml" line="595"/>
         <source>Databases</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases&apos;, meaning that history of recently used files will include only database files, and no key files.</comment>
         <translatorcomment>Một trong các giá trị thiết lập để tiếp tục theo dõi.Sẽ được hiển thị như &apos;Theo dõi các cơ sở dữ liệu&apos;, có nghĩa là rằng lịch sử các tập tin mới sử dụng sẽ bao gồm chỉ tập tin cơ sở dữ liệu và không có các tập tin quan trọng.</translatorcomment>
         <translation>Cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="599"/>
+        <location filename="../assets/AppSettings.qml" line="600"/>
         <source>Databases and Key Files</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases and Key Files&apos;, meaning that history of recently used files will include both database files and their associated key files.</comment>
         <translatorcomment>Một trong các giá trị thiết lập để tiếp tục theo dõi.Sẽ được hiển thị như &apos;Theo dõi các cơ sở dữ liệu và các tập tin chính&apos;, có nghĩa là rằng lịch sử các tập tin mới sử dụng sẽ bao gồm cả tập tin cơ sở dữ liệu và tập tin quan trọng liên quan của họ.</translatorcomment>
         <translation>Cơ sở dữ liệu và các tập tin chính</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="610"/>
+        <location filename="../assets/AppSettings.qml" line="611"/>
         <source>Clear History</source>
         <comment>Button/action which clears the history of recent files.</comment>
         <translatorcomment>Nút/hành động với việc xóa sạch lịch sử các tập tin hiện tại</translatorcomment>
         <translation>Xóa sạch lịch sử</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="611"/>
+        <location filename="../assets/AppSettings.qml" line="612"/>
         <source>Forget all recent files</source>
         <comment>Explanation/subtitle for the &apos;Clear History&apos; button.</comment>
         <translatorcomment>Giải thích/phụ đề cho nút &apos;Xóa sạch lịch sử&apos;</translatorcomment>
@@ -728,77 +728,77 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation>Tiêu đề</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="141"/>
+        <location filename="../assets/EditEntryPage.qml" line="142"/>
         <source>Change Icon</source>
         <comment>A button/action to change entry&apos;s icon</comment>
         <translatorcomment>Một nút/hànhđộng để thay đổi biểu tượng mục nhập</translatorcomment>
         <translation>Thay đổi biểu tượng</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="156"/>
+        <location filename="../assets/EditEntryPage.qml" line="157"/>
         <source>User Name</source>
         <comment>Label of the username edit field</comment>
         <translatorcomment>Nhãn của trường chỉnh sửa tên người dùng</translatorcomment>
         <translation>Tên người dùng</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="164"/>
+        <location filename="../assets/EditEntryPage.qml" line="166"/>
         <source>Password</source>
         <comment>Label of the password edit field</comment>
         <translatorcomment>Nhãn của trường chỉnh sửa mật khẩu</translatorcomment>
         <translation>Mật khẩu</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="189"/>
+        <location filename="../assets/EditEntryPage.qml" line="191"/>
         <source>URL</source>
         <comment>Label of the link/internet address edit field</comment>
         <translatorcomment>Nhãn của trường chỉnh sửa lik/địa chỉ internet</translatorcomment>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="198"/>
+        <location filename="../assets/EditEntryPage.qml" line="201"/>
         <source>Notes</source>
         <comment>Label of the notes/comments edit field</comment>
         <translatorcomment>Nhãn của trường chỉnh sửa ghi chú/bình luận</translatorcomment>
         <translation>Ghi chú</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="218"/>
+        <location filename="../assets/EditEntryPage.qml" line="221"/>
         <source>Entry Expires</source>
         <comment>On/off option which enables entry expiration deadline</comment>
         <translatorcomment>Tùy chọn bật/tắt kích hoạt thời hạn hết hạn mục nhập</translatorcomment>
         <translation>Mục hết hạn</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="230"/>
+        <location filename="../assets/EditEntryPage.qml" line="233"/>
         <source>Expiry Date</source>
         <comment>Label of the entry expiration/best before date</comment>
         <translatorcomment>Nhãn của mục nhập hết hạn/ngày xấu nhất</translatorcomment>
         <translation>Ngày hết hạn</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="241"/>
+        <location filename="../assets/EditEntryPage.qml" line="244"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translatorcomment>Tiêu đề một hộp thoại hỏi liệu rằng người dùng muốn bỏ qua các thay đổi chưa được lưu</translatorcomment>
         <translation>Thay đổi chưa được lưu</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="242"/>
+        <location filename="../assets/EditEntryPage.qml" line="245"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translatorcomment>Một thông báo khi người dùng đóng bản chỉnh sửa với việc chưa lưu các thay đổi</translatorcomment>
         <translation>Có những thay đổi chưa được lưu.</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="243"/>
+        <location filename="../assets/EditEntryPage.qml" line="246"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translatorcomment>Một nút/hành động để từ chối và bỏ qua những thay đổi chưa được lưu bởi chính người dùng</translatorcomment>
         <translation>Bỏ qua</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="244"/>
+        <location filename="../assets/EditEntryPage.qml" line="247"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translatorcomment>Một nút/hành động để trở về chế độ chỉnh sửa</translatorcomment>
@@ -937,42 +937,42 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation>Tên</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="101"/>
+        <location filename="../assets/EditGroupPage.qml" line="102"/>
         <source>This group name is reserved</source>
         <comment>An error message when a group is being given a name which is reserved for internal use only.</comment>
         <translatorcomment>Thông báo lỗi khi một nhóm đang được trao một tên chỉ dành cho sử dụng nội bộ.</translatorcomment>
         <translation>Tên nhóm này được dành riêng</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="121"/>
+        <location filename="../assets/EditGroupPage.qml" line="123"/>
         <source>Change Icon</source>
         <comment>A button/action to change group&apos;s icon</comment>
         <translatorcomment>Một nút/hành động để thay đổi biểu tượng của nhóm</translatorcomment>
         <translation>Thay đổi biểu tượng</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="139"/>
+        <location filename="../assets/EditGroupPage.qml" line="141"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translatorcomment>Tiêu đề của một hộp thoại yêu cầu liệu người dùng muốn bỏ các thay đổi chưa được lưu.</translatorcomment>
         <translation>Chưa được lưu thay đổi</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="140"/>
+        <location filename="../assets/EditGroupPage.qml" line="142"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translatorcomment>Một thông báo khi người dùng đóng một chỉnh sửa với việc chưa lưu thay đổi.</translatorcomment>
         <translation>Có được lưu thay đổi.</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="141"/>
+        <location filename="../assets/EditGroupPage.qml" line="143"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translatorcomment>Một nút/hành động để bỏ qua và huỷ bất kỳ lưu thay đổi được thực hiện bởi người sử dụng.</translatorcomment>
         <translation>Loại bỏ</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="142"/>
+        <location filename="../assets/EditGroupPage.qml" line="144"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translatorcomment>Một nút/ hành động để trở về chế độ chỉnh sửa</translatorcomment>
@@ -982,31 +982,31 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>EntryItem</name>
     <message>
-        <location filename="../assets/EntryItem.qml" line="19"/>
+        <location filename="../assets/EntryItem.qml" line="21"/>
         <source>Multi-Copy</source>
         <comment>A button/action which copies the whole entry into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="26"/>
+        <location filename="../assets/EntryItem.qml" line="28"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation type="unfinished">Sao chép tên người dùng</translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="33"/>
+        <location filename="../assets/EntryItem.qml" line="35"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation type="unfinished">Sao chép mật khẩu</translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="40"/>
+        <location filename="../assets/EntryItem.qml" line="42"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="46"/>
+        <location filename="../assets/EntryItem.qml" line="48"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translation type="unfinished">Xoá</translation>
@@ -1015,13 +1015,13 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>GroupItem</name>
     <message>
-        <location filename="../assets/GroupItem.qml" line="18"/>
+        <location filename="../assets/GroupItem.qml" line="20"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation type="unfinished">Chỉnh sửa nhóm</translation>
     </message>
     <message>
-        <location filename="../assets/GroupItem.qml" line="24"/>
+        <location filename="../assets/GroupItem.qml" line="26"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation type="unfinished">Xoá</translation>
@@ -1562,7 +1562,7 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>SearchResultsPage</name>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="42"/>
+        <location filename="../assets/SearchResultsPage.qml" line="47"/>
         <source>Search Results</source>
         <comment>Title of the page which lists search results</comment>
         <translatorcomment>Tiêu đề của trang liệt kê kết quả tìm kiếm</translatorcomment>
@@ -1590,38 +1590,38 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
         <translation type="obsolete">Sao chép mật khẩu</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="52"/>
+        <location filename="../assets/SearchResultsPage.qml" line="57"/>
         <source>Enter search query</source>
         <comment>Hint text for the search query input field, invites the user to type some text</comment>
         <translation type="unfinished">Nhập truy vấn tìm kiếm</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="64"/>
+        <location filename="../assets/SearchResultsPage.qml" line="84"/>
         <source>Cancel</source>
         <comment>Button/action to cancel/hide search query field</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="89"/>
+        <location filename="../assets/SearchResultsPage.qml" line="109"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translatorcomment>Mô tả của một kết quả tìm kiếm sản phẩm</translatorcomment>
         <translation>Không tìm thấy</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="157"/>
+        <location filename="../assets/SearchResultsPage.qml" line="175"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="158"/>
+        <location filename="../assets/SearchResultsPage.qml" line="176"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation type="unfinished">Thực sự xoá mục này?</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="159"/>
+        <location filename="../assets/SearchResultsPage.qml" line="177"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation type="unfinished">Xoá</translation>
@@ -1770,56 +1770,56 @@ To continue, tap the lock symbol below.</source>
 <context>
     <name>ViewEntryExtrasTab</name>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="117"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="118"/>
         <source>Edit Field</source>
         <comment>A button/action to edit entry&apos;s field.</comment>
         <translatorcomment>Một nút/hành động chỉnh sửa của mục nhập tập tin</translatorcomment>
         <translation>Chỉnh sửa trường</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="125"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="126"/>
         <source>Delete Field</source>
         <comment>A button/action to delete entry&apos;s field.</comment>
         <translatorcomment>Một hành động/nút để xóa mục nhập tập tin</translatorcomment>
         <translation>Xoá trường</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="151"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="152"/>
         <source>Close</source>
         <comment>Action/button which closes a dialog box</comment>
         <translatorcomment>Hành động/nút đóng hộp thoại</translatorcomment>
         <translation>Đóng</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="155"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="156"/>
         <source>Copy Name</source>
         <comment>Action/button which copies field&apos;s name to clipboard</comment>
         <translatorcomment>Hành động/nút sao chép tên của trường vào bảng tạm</translatorcomment>
         <translation>Sao chép tên</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="159"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="160"/>
         <source>Copy Value</source>
         <comment>Action/button which copies field&apos;s value to clipboard</comment>
         <translatorcomment>Hành động/nút sao chép giá trị của trường vào bảng tạm</translatorcomment>
         <translation>Sao chép giá trị</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="177"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="178"/>
         <source>Attached Files</source>
         <comment>Title of a list with attached files</comment>
         <translatorcomment>Tiêu đề của một danh sách có đính kèm tập tin</translatorcomment>
         <translation>Đính kèm tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="180"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="181"/>
         <source>There are no attached files.</source>
         <comment>Explanation for the empty list of attached files.</comment>
         <translatorcomment>Giải thích cho danh sách các tập tin đính kèm trống.</translatorcomment>
         <translation>Không có các tệp đính kèm.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="205"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="206"/>
         <source>%n byte(s)</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
         <translatorcomment>Kích thước tập tin theo byte, xin vui lòng chỉ</translatorcomment>
@@ -1828,84 +1828,84 @@ To continue, tap the lock symbol below.</source>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="210"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="211"/>
         <source>Remove File</source>
         <comment>A button/action to remove/delete the selected file attachment from the database (not from the disk)</comment>
         <translatorcomment>Một nút/hành động để loại bỏ/Xóa tập tin đính kèm đã chọn tập tin từ cơ sở dữ liệu (không phải từ đĩa</translatorcomment>
         <translation>Loại bỏ tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="234"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="235"/>
         <source>Save File</source>
         <comment>Title of a file saving dialog.</comment>
         <translatorcomment>Tiêu đề của một hộp thoại các tập tin đang lưu</translatorcomment>
         <translation>Lưu tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="243"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="244"/>
         <source>File saved</source>
         <comment>A confirmation message once the file has been successfully saved</comment>
         <translatorcomment>Một thông báo xác nhận khi tập tin đã được lưu thành công</translatorcomment>
         <translation>Tập tin đã được lưu</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="246"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="247"/>
         <source>Could not save file</source>
         <comment>Error message</comment>
         <translatorcomment>Thông báo lỗi</translatorcomment>
         <translation>Không thể lưu tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="257"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="258"/>
         <source>Select File</source>
         <comment>Title of a file selection dialog.</comment>
         <translatorcomment>Tiêu đề của một hộp thoại lựa chọn tập tin</translatorcomment>
         <translation>Chọn tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="278"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="279"/>
         <source>Open</source>
         <comment>A button/action which opens/launches the selected file. It may produce an error message, please search for INVOKE_ATTACHMENT to ensure concordance.</comment>
         <translatorcomment>Một hành động/nút để mở/ra tập tin đã chọn. Nó có thể tạo ra một thông báo lỗi, xin vui lòng tìm  INVOKE_ATTACHMENT để đảm bảo phù hợp</translatorcomment>
         <translation>Mở</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="289"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="290"/>
         <source>File attached</source>
         <comment>A confirmation message once the file has been successfully attached to the entry</comment>
         <translatorcomment>Một thông báo xác nhận sau khi tập tin đã gắn thành công  vào mục</translatorcomment>
         <translation>Tập tin đính kèm</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="290"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="291"/>
         <source>Could not attach file</source>
         <comment>Error message</comment>
         <translatorcomment>Thông báo lỗi</translatorcomment>
         <translation>Không thể đính kèm tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="295"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="296"/>
         <source>Loading file</source>
         <comment>Status message about ongoing process</comment>
         <translatorcomment>Thông báo trạng thái liên tục về quá trình</translatorcomment>
         <translation>Tải tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="301"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="302"/>
         <source>Warning</source>
         <comment>Title of an window with an important notification</comment>
         <translatorcomment>Tiêu đề của một cửa sổ với một thông báo quan trọng</translatorcomment>
         <translation>Cảnh báo</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="302"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="303"/>
         <source>KDB format allows only one attachment per entry. Replace the current attachment?</source>
         <comment>KDB is a file format, do not translate</comment>
         <translatorcomment>KDB là một định dạng tập tin</translatorcomment>
         <translation>Định dạng KDB cho phép chỉ có một tập tin đính kèm cho mỗi mục. Thay thế tập tin đính kèm hiện tại?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="303"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="304"/>
         <source>Replace</source>
         <comment>A button/action to confirm that the old attachment should be replaced by the new one</comment>
         <translatorcomment>Một hành động/nút để xác nhận rằng tập tin đính kèm cũ nên được thay thế bằng tập tin đính kèm mới</translatorcomment>
@@ -2352,69 +2352,69 @@ To continue, tap the lock symbol below.</source>
         <translation>Thay đổi khóa chủ</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="101"/>
+        <location filename="../assets/main.qml" line="104"/>
         <source>Copied to clipboard</source>
         <comment>A notification which confirms successful copying of text.</comment>
         <translatorcomment> Một thông báo xác nhận sao chép thành công văn bản</translatorcomment>
         <translation>Sao chép tới bảng tạm</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="104"/>
+        <location filename="../assets/main.qml" line="107"/>
         <source>Clipboard cleared</source>
         <comment>A notification message</comment>
         <translatorcomment>Một tin nhắn thông báo</translatorcomment>
         <translation>Xoá sạch bảng tạm</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="143"/>
+        <location filename="../assets/main.qml" line="146"/>
         <source>Database saved</source>
         <comment>A short notification/confirmation message</comment>
         <translatorcomment>Một thông báo ngắn/thông báo xác nhận</translatorcomment>
         <translation>Cơ sở dữ liệu đã được lưu</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="147"/>
+        <location filename="../assets/main.qml" line="150"/>
         <source>Error</source>
         <comment>Title of an error notification popup</comment>
         <translatorcomment>Tiêu đề của một thông báo lỗi</translatorcomment>
         <translation>Lỗi</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="152"/>
+        <location filename="../assets/main.qml" line="155"/>
         <source>Saving...</source>
         <comment>Title of a progress indicator while a database is being encrypted/saved.</comment>
         <translatorcomment>Tiêu đề của một chỉ số tăng trong khi xác định mã hóa cơ sở dữ liệu/lưu</translatorcomment>
         <translation>Đang lưu...</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="164"/>
+        <location filename="../assets/main.qml" line="167"/>
         <source>File Access</source>
         <comment>Title of a message asking user&apos;s permission to access files in phone&apos;s memory.</comment>
         <translatorcomment>Tiêu đề của một thông báo yêu cầu sự cho phép của người dùng để truy nhập tập tin trong bộ nhớ điện thoại.</translatorcomment>
         <translation>Truy nhập tập tin</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="165"/>
+        <location filename="../assets/main.qml" line="168"/>
         <source>In order to work correctly, KeePassB needs your permission to access file storage of this device. Please change permission settings and restart the app.</source>
         <comment>Instructions shown when the user has not allowed the app to access files in phone&apos;s memory.</comment>
         <translatorcomment>Hiển thị hướng dẫn khi người dùng đã không cho phép ứng dụng truy cập tập tin trong bộ nhớ điện thoại</translatorcomment>
         <translation>Để làm việc một cách chính xác, KeePassB cần bạn cấp quyền truy cập tập tin lưu trữ trên thiết bị này. Xin vui lòng thay đổi thiết lập cấp phép và khởi động lại các ứng dụng.</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="167"/>
+        <location filename="../assets/main.qml" line="170"/>
         <source>Change Settings...</source>
         <comment>A button which will open system settings.</comment>
         <translatorcomment>Một nút sẽ mở thiết lập hệ thống </translatorcomment>
         <translation>Thay đổi thiết lập...</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="187"/>
+        <location filename="../assets/main.qml" line="190"/>
         <source>Multi-Copy</source>
         <comment>Title of a window describing how Multi-Copy function works</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="188"/>
+        <location filename="../assets/main.qml" line="191"/>
         <source>Multi-Copy makes it easier to copy and paste both user name and password.
 1) Switch to the target app.
 2) Paste the user name.
@@ -2429,7 +2429,7 @@ To continue, tap the lock symbol below.</source>
         <translation type="obsolete">Sao chép thông minh</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="206"/>
+        <location filename="../assets/main.qml" line="209"/>
         <source>%1
 (%2)</source>
         <comment>A template for &apos;Error message (Error description)&apos;; change only for right-to-left langugages</comment>

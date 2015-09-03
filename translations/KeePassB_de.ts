@@ -318,14 +318,14 @@
         <translation>Backup der Datenbankdatei bevor Änderungen gespeichert werden. Datenbankbackups werden mit einem Zeitstempel versehen und zusätzlich zur Originaldatei gespeichert.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="490"/>
+        <location filename="../assets/AppSettings.qml" line="491"/>
         <source>Database saving is currently an experimental function. It is STONGLY advised to keep this option enabled in order to avoid accidental data loss.</source>
         <comment>Description of the &apos;Backup Database on Save&apos; setting.</comment>
         <translation>Speichern von Datenbanken ist zur Zeit eine experimentelle Funktion. Es wird DRINGEND empfohlen diese option aktiv zu lassen um versehentlichen Datenverlust zu vermeiden.</translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="70"/>
-        <location filename="../assets/AppSettings.qml" line="511"/>
+        <location filename="../assets/AppSettings.qml" line="512"/>
         <source>Search</source>
         <comment>Title of a group of settings related to search function</comment>
         <translation>Suche</translation>
@@ -355,26 +355,26 @@
         <translation>Änderungsdatum (Aufsteigend)</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="523"/>
+        <location filename="../assets/AppSettings.qml" line="524"/>
         <source>Search at Start</source>
         <comment>An on/off setting which defines whether the Search function should be automatically activated when a database is opened/unlocked.</comment>
         <translation>Suche beim Start</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="539"/>
+        <location filename="../assets/AppSettings.qml" line="540"/>
         <source>This option will automatically activate Search whenever a database is unlocked.</source>
         <comment>Description of the &apos;Search at Start&apos; setting.</comment>
         <translation>Diese Option aktiviert automatisch die Suche sobald eine Datenbank entsperrt wurde.</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="551"/>
+        <location filename="../assets/AppSettings.qml" line="552"/>
         <source>Search in Deleted Entries</source>
         <comment>An on/off setting which defines whether the Search should look into entries marked as deleted.</comment>
         <translation>Suchen in gelöschten Einträgen</translation>
     </message>
     <message>
         <location filename="../assets/AppSettings.qml" line="81"/>
-        <location filename="../assets/AppSettings.qml" line="570"/>
+        <location filename="../assets/AppSettings.qml" line="571"/>
         <source>Recent Files</source>
         <comment>Title of a group of settings related to handling of recently opened files.</comment>
         <translation>Zuletzt geöffnete Dateien</translation>
@@ -419,37 +419,37 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation type="obsolete">Listensortierung</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="580"/>
+        <location filename="../assets/AppSettings.qml" line="581"/>
         <source>Keep Track Of</source>
         <comment>A setting which defines which type of recently used files should be remembered. Example: &apos;Keep Track Of: Database and Key Files&apos;</comment>
         <translation>Merken</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="589"/>
+        <location filename="../assets/AppSettings.qml" line="590"/>
         <source>Nothing</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Nothing&apos;, meaning that no history of recently used files will be kept.</comment>
         <translation>Nichts merken</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="594"/>
+        <location filename="../assets/AppSettings.qml" line="595"/>
         <source>Databases</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases&apos;, meaning that history of recently used files will include only database files, and no key files.</comment>
         <translation>Datenbanken</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="599"/>
+        <location filename="../assets/AppSettings.qml" line="600"/>
         <source>Databases and Key Files</source>
         <comment>One of the possible values of the &apos;Keep Track Of&apos; setting. Will be displayed as &apos;Keep Track Of: Databases and Key Files&apos;, meaning that history of recently used files will include both database files and their associated key files.</comment>
         <translation>Datenbanken und Schlüsseldateien</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="610"/>
+        <location filename="../assets/AppSettings.qml" line="611"/>
         <source>Clear History</source>
         <comment>Button/action which clears the history of recent files.</comment>
         <translation>Zuletzt geöffnete Dateien leeren</translation>
     </message>
     <message>
-        <location filename="../assets/AppSettings.qml" line="611"/>
+        <location filename="../assets/AppSettings.qml" line="612"/>
         <source>Forget all recent files</source>
         <comment>Explanation/subtitle for the &apos;Clear History&apos; button.</comment>
         <translation>Leert die Liste der zuletzt geöffneten Dateien</translation>
@@ -649,67 +649,67 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="141"/>
+        <location filename="../assets/EditEntryPage.qml" line="142"/>
         <source>Change Icon</source>
         <comment>A button/action to change entry&apos;s icon</comment>
         <translation>Symbol ändern</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="156"/>
+        <location filename="../assets/EditEntryPage.qml" line="157"/>
         <source>User Name</source>
         <comment>Label of the username edit field</comment>
         <translation>Benutzername</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="164"/>
+        <location filename="../assets/EditEntryPage.qml" line="166"/>
         <source>Password</source>
         <comment>Label of the password edit field</comment>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="189"/>
+        <location filename="../assets/EditEntryPage.qml" line="191"/>
         <source>URL</source>
         <comment>Label of the link/internet address edit field</comment>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="198"/>
+        <location filename="../assets/EditEntryPage.qml" line="201"/>
         <source>Notes</source>
         <comment>Label of the notes/comments edit field</comment>
         <translation>Notizen</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="218"/>
+        <location filename="../assets/EditEntryPage.qml" line="221"/>
         <source>Entry Expires</source>
         <comment>On/off option which enables entry expiration deadline</comment>
         <translation>Eintrag läuft ab</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="230"/>
+        <location filename="../assets/EditEntryPage.qml" line="233"/>
         <source>Expiry Date</source>
         <comment>Label of the entry expiration/best before date</comment>
         <translation>Ablaufdatum</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="241"/>
+        <location filename="../assets/EditEntryPage.qml" line="244"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation>Nicht gespeicherte Änderungen</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="242"/>
+        <location filename="../assets/EditEntryPage.qml" line="245"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation>Es sind nicht gespeicherte Änderungen vorhanden.</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="243"/>
+        <location filename="../assets/EditEntryPage.qml" line="246"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation>Verwerfen</translation>
     </message>
     <message>
-        <location filename="../assets/EditEntryPage.qml" line="244"/>
+        <location filename="../assets/EditEntryPage.qml" line="247"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation>Bearbeiten</translation>
@@ -829,37 +829,37 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="101"/>
+        <location filename="../assets/EditGroupPage.qml" line="102"/>
         <source>This group name is reserved</source>
         <comment>An error message when a group is being given a name which is reserved for internal use only.</comment>
         <translation>Dieser Gruppenname ist reserviert</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="121"/>
+        <location filename="../assets/EditGroupPage.qml" line="123"/>
         <source>Change Icon</source>
         <comment>A button/action to change group&apos;s icon</comment>
         <translation>Symbol ändern</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="139"/>
+        <location filename="../assets/EditGroupPage.qml" line="141"/>
         <source>Unsaved Changes</source>
         <comment>Title of a dialog asking whether the user wants to discard unsaved changes.</comment>
         <translation>Nicht gespeicherte Änderungen</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="140"/>
+        <location filename="../assets/EditGroupPage.qml" line="142"/>
         <source>There are unsaved changes.</source>
         <comment>A notification when the user closes an editor with unsaved changes.</comment>
         <translation>Es sind nicht gespeicherte Änderungen vorhanden.</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="141"/>
+        <location filename="../assets/EditGroupPage.qml" line="143"/>
         <source>Discard</source>
         <comment>A button/action to ignore and discard any unsaved changes made by the user.</comment>
         <translation>Verwerfen</translation>
     </message>
     <message>
-        <location filename="../assets/EditGroupPage.qml" line="142"/>
+        <location filename="../assets/EditGroupPage.qml" line="144"/>
         <source>Edit</source>
         <comment>A button/action to return to edit mode</comment>
         <translation>Bearbeiten</translation>
@@ -868,31 +868,31 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
 <context>
     <name>EntryItem</name>
     <message>
-        <location filename="../assets/EntryItem.qml" line="19"/>
+        <location filename="../assets/EntryItem.qml" line="21"/>
         <source>Multi-Copy</source>
         <comment>A button/action which copies the whole entry into clipboard (also see &apos;Multi-Copy&apos; in thesaurus).</comment>
         <translation>Multi Kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="26"/>
+        <location filename="../assets/EntryItem.qml" line="28"/>
         <source>Copy User Name</source>
         <comment>A button/action which copies user_name value to the clipboard. Here, &apos;User Name&apos; refers to login information rather that person&apos;s own name.</comment>
         <translation>Benutzername kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="33"/>
+        <location filename="../assets/EntryItem.qml" line="35"/>
         <source>Copy Password</source>
         <comment>A button/action which copies password password value to the clipborad.</comment>
         <translation>Passwort kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="40"/>
+        <location filename="../assets/EntryItem.qml" line="42"/>
         <source>Edit Entry</source>
         <comment>A button/action to edit the selected entry</comment>
         <translation>Eintrag bearbeiten</translation>
     </message>
     <message>
-        <location filename="../assets/EntryItem.qml" line="46"/>
+        <location filename="../assets/EntryItem.qml" line="48"/>
         <source>Delete</source>
         <comment>A button/action to delete an entry</comment>
         <translation>Eintrag löschen</translation>
@@ -901,13 +901,13 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
 <context>
     <name>GroupItem</name>
     <message>
-        <location filename="../assets/GroupItem.qml" line="18"/>
+        <location filename="../assets/GroupItem.qml" line="20"/>
         <source>Edit Group</source>
         <comment>A button/action to edit the selected group</comment>
         <translation>Gruppe bearbeiten</translation>
     </message>
     <message>
-        <location filename="../assets/GroupItem.qml" line="24"/>
+        <location filename="../assets/GroupItem.qml" line="26"/>
         <source>Delete</source>
         <comment>A button/action to delete a group</comment>
         <translation>Löschen</translation>
@@ -1360,7 +1360,7 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
 <context>
     <name>SearchResultsPage</name>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="42"/>
+        <location filename="../assets/SearchResultsPage.qml" line="47"/>
         <source>Search Results</source>
         <comment>Title of the page which lists search results</comment>
         <translation>Suchergebnis</translation>
@@ -1391,37 +1391,37 @@ HINWEIS: Aus Sicherheitsgründen sperrt  der unten links dargestellte Sperren Bu
         <translation type="obsolete">Passwort Kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="52"/>
+        <location filename="../assets/SearchResultsPage.qml" line="57"/>
         <source>Enter search query</source>
         <comment>Hint text for the search query input field, invites the user to type some text</comment>
         <translation>Suchbegriff eingeben</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="64"/>
+        <location filename="../assets/SearchResultsPage.qml" line="84"/>
         <source>Cancel</source>
         <comment>Button/action to cancel/hide search query field</comment>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="89"/>
+        <location filename="../assets/SearchResultsPage.qml" line="109"/>
         <source>Nothing found</source>
         <comment>Description of an empty search result</comment>
         <translation>Suchbegriff nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="157"/>
+        <location filename="../assets/SearchResultsPage.qml" line="175"/>
         <source>Delete Entry</source>
         <comment>Title of a delete confirmation dialog</comment>
         <translation>Eintrag löschen</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="158"/>
+        <location filename="../assets/SearchResultsPage.qml" line="176"/>
         <source>Really delete this entry?</source>
         <comment>A confirmation dialog for deleting entry</comment>
         <translation>Diesen Eintrag wirklich löschen?</translation>
     </message>
     <message>
-        <location filename="../assets/SearchResultsPage.qml" line="159"/>
+        <location filename="../assets/SearchResultsPage.qml" line="177"/>
         <source>Delete</source>
         <comment>A button/action to confirm deletion of an entry</comment>
         <translation>Löschen</translation>
@@ -1552,49 +1552,49 @@ Um fortzufahren tippen Sie das unten angezeige Symbol an.</translation>
 <context>
     <name>ViewEntryExtrasTab</name>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="117"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="118"/>
         <source>Edit Field</source>
         <comment>A button/action to edit entry&apos;s field.</comment>
         <translation>Feld bearbeiten</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="125"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="126"/>
         <source>Delete Field</source>
         <comment>A button/action to delete entry&apos;s field.</comment>
         <translation>Feld löschen</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="151"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="152"/>
         <source>Close</source>
         <comment>Action/button which closes a dialog box</comment>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="155"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="156"/>
         <source>Copy Name</source>
         <comment>Action/button which copies field&apos;s name to clipboard</comment>
         <translation>Name kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="159"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="160"/>
         <source>Copy Value</source>
         <comment>Action/button which copies field&apos;s value to clipboard</comment>
         <translation>Wert kopieren</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="177"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="178"/>
         <source>Attached Files</source>
         <comment>Title of a list with attached files</comment>
         <translation>Angehängte Dateien</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="180"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="181"/>
         <source>There are no attached files.</source>
         <comment>Explanation for the empty list of attached files.</comment>
         <translation>Keine Dateianhänge vorhanden.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="205"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="206"/>
         <source>%n byte(s)</source>
         <comment>File size in bytes; please specify the required plural forms.</comment>
         <translation>
@@ -1603,73 +1603,73 @@ Um fortzufahren tippen Sie das unten angezeige Symbol an.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="210"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="211"/>
         <source>Remove File</source>
         <comment>A button/action to remove/delete the selected file attachment from the database (not from the disk)</comment>
         <translation>Datei entfernen</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="234"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="235"/>
         <source>Save File</source>
         <comment>Title of a file saving dialog.</comment>
         <translation>Datei Speichern</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="243"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="244"/>
         <source>File saved</source>
         <comment>A confirmation message once the file has been successfully saved</comment>
         <translation>Datei gespeichert</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="246"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="247"/>
         <source>Could not save file</source>
         <comment>Error message</comment>
         <translation>Datei konnte nicht gespeichert werden</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="257"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="258"/>
         <source>Select File</source>
         <comment>Title of a file selection dialog.</comment>
         <translation>Datei wählen</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="278"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="279"/>
         <source>Open</source>
         <comment>A button/action which opens/launches the selected file. It may produce an error message, please search for INVOKE_ATTACHMENT to ensure concordance.</comment>
         <translation>Öffnen</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="289"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="290"/>
         <source>File attached</source>
         <comment>A confirmation message once the file has been successfully attached to the entry</comment>
         <translation>Datei angehängt</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="290"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="291"/>
         <source>Could not attach file</source>
         <comment>Error message</comment>
         <translation>Datei konnte nicht angehängt werden</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="295"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="296"/>
         <source>Loading file</source>
         <comment>Status message about ongoing process</comment>
         <translation>Lade Datei</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="301"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="302"/>
         <source>Warning</source>
         <comment>Title of an window with an important notification</comment>
         <translation>Achtung</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="302"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="303"/>
         <source>KDB format allows only one attachment per entry. Replace the current attachment?</source>
         <comment>KDB is a file format, do not translate</comment>
         <translation>Das KDB Format erlaubt nur einen Dateianhang pro Eintrag. Vorhandenen Eintrag ersetzen?</translation>
     </message>
     <message>
-        <location filename="../assets/ViewEntryExtrasTab.qml" line="303"/>
+        <location filename="../assets/ViewEntryExtrasTab.qml" line="304"/>
         <source>Replace</source>
         <comment>A button/action to confirm that the old attachment should be replaced by the new one</comment>
         <translation>Ersetzen</translation>
@@ -1874,6 +1874,11 @@ Um fortzufahren tippen Sie das unten angezeige Symbol an.</translation>
         <translation type="obsolete">Suchergebnis</translation>
     </message>
     <message>
+        <source>Cancel</source>
+        <comment>A button/action which cancels pending move of items to another group</comment>
+        <translation type="obsolete">Abbrechen</translation>
+    </message>
+    <message>
         <location filename="../assets/ViewGroupPage.qml" line="193"/>
         <source>Sort Order</source>
         <comment>A setting which defines sorting of entries in groups. Example: &apos;Sort order   Title (A..Z)&apos;.</comment>
@@ -2070,61 +2075,61 @@ Um fortzufahren tippen Sie das unten angezeige Symbol an.</translation>
         <translation>Masterpasswort ändern</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="101"/>
+        <location filename="../assets/main.qml" line="104"/>
         <source>Copied to clipboard</source>
         <comment>A notification which confirms successful copying of text.</comment>
         <translation>In Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="104"/>
+        <location filename="../assets/main.qml" line="107"/>
         <source>Clipboard cleared</source>
         <comment>A notification message</comment>
         <translation>Zwischenablage geleert</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="143"/>
+        <location filename="../assets/main.qml" line="146"/>
         <source>Database saved</source>
         <comment>A short notification/confirmation message</comment>
         <translation>Datenbank gespeichert</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="147"/>
+        <location filename="../assets/main.qml" line="150"/>
         <source>Error</source>
         <comment>Title of an error notification popup</comment>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="152"/>
+        <location filename="../assets/main.qml" line="155"/>
         <source>Saving...</source>
         <comment>Title of a progress indicator while a database is being encrypted/saved.</comment>
         <translation>Speichern...</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="164"/>
+        <location filename="../assets/main.qml" line="167"/>
         <source>File Access</source>
         <comment>Title of a message asking user&apos;s permission to access files in phone&apos;s memory.</comment>
         <translation>Dateizugriff</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="165"/>
+        <location filename="../assets/main.qml" line="168"/>
         <source>In order to work correctly, KeePassB needs your permission to access file storage of this device. Please change permission settings and restart the app.</source>
         <comment>Instructions shown when the user has not allowed the app to access files in phone&apos;s memory.</comment>
         <translation>Damit KeePassB korrekt funktioniert wird Zugriff auf das Dateisystem Ihres Geräts benötigt. Bitte ändern Sie die Zugriffseinstellungen und starten Sie die App erneut.</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="167"/>
+        <location filename="../assets/main.qml" line="170"/>
         <source>Change Settings...</source>
         <comment>A button which will open system settings.</comment>
         <translation>Einstellungen ändern...</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="187"/>
+        <location filename="../assets/main.qml" line="190"/>
         <source>Multi-Copy</source>
         <comment>Title of a window describing how Multi-Copy function works</comment>
         <translation>Multi-Kopier</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="188"/>
+        <location filename="../assets/main.qml" line="191"/>
         <source>Multi-Copy makes it easier to copy and paste both user name and password.
 1) Switch to the target app.
 2) Paste the user name.
@@ -2143,7 +2148,7 @@ Um fortzufahren tippen Sie das unten angezeige Symbol an.</translation>
         <translation type="obsolete">Smart-Copy</translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="206"/>
+        <location filename="../assets/main.qml" line="209"/>
         <source>%1
 (%2)</source>
         <comment>A template for &apos;Error message (Error description)&apos;; change only for right-to-left langugages</comment>
