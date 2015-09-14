@@ -17,7 +17,7 @@
 #include "util/Util.h"
 #include "db/v4/DefsV4.h"
 #include "db/v4/PwStreamUtilsV4.h"
-
+#include "crypto/Rijndael.h"
 
 // Cypher parameters and signatures
 const QByteArray SALSA_20_ID = QByteArray("\x02\x00\x00\x00", 4);
@@ -475,56 +475,59 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
 }
 
 // Helper function for multithreaded key transformation
-int PwDatabaseV4::performKeyTransformRounds(unsigned char* pSubKey, const quint64 nRounds, bool reportProgress) {
-    int ec;
-    CryptoManager* cm = CryptoManager::instance();
+ErrorCodesV4::ErrorCode PwDatabaseV4::performKeyTransformRounds(unsigned char* pTransKey, const quint64 nRounds, bool reportProgress) {
+    // make a local copy of the subkey and the key
+    unsigned char transKey[SUBKEY_SIZE];
+    unsigned char key[32];
+    memcpy(transKey, pTransKey, SUBKEY_SIZE);
+    memcpy(key, header.getTransformSeed().constData(), 32);
+
+    // prepare key transform
+    Rijndael aes;
+    int ec = (qint8)aes.init(Rijndael::ECB, Rijndael::Encrypt, key, Rijndael::Key32Bytes, 0);
+    if (ec != RIJNDAEL_SUCCESS) {
+        LOG("Rijndael init error %d", ec);
+        return ErrorCodesV4::KEY_TRANSFORM_INIT_ERROR;
+    }
+
     if (reportProgress) {
         for (quint64 round = 0; round < nRounds; round++) {
             setProgress(round);
-            ec = cm->performKeyTransform(pSubKey);
-            if (ec != SB_SUCCESS)
-                break;
+            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
+                return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
         }
     } else {
         for (quint64 round = 0; round < nRounds; round++) {
-            ec = cm->performKeyTransform(pSubKey);
-            if (ec != SB_SUCCESS)
-                break;
+            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
+                return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
         }
     }
-    return ec;
+    memcpy(pTransKey, transKey, SUBKEY_SIZE);
+    return ErrorCodesV4::SUCCESS;
 }
 
 ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey) {
 //    aesKey.clear();
-
-    long time1 = QDateTime::currentMSecsSinceEpoch(); // TODO remove this benchmark after debug
-    CryptoManager* cm = CryptoManager::instance();
 
     QByteArray key = header.getTransformSeed();
     quint64 transformRounds = header.getTransformRounds();
 
     setPhaseProgressRawTarget(transformRounds);
 
-    // prepare key transform
-    if (cm->beginKeyTransform(key, SB_AES_128_KEY_BYTES) != SB_SUCCESS)
-        return ErrorCodesV4::KEY_TRANSFORM_INIT_ERROR;
-
     QByteArray subKey1 = Util::deepCopy(combinedKey.left(SUBKEY_SIZE));
     QByteArray subKey2 = Util::deepCopy(combinedKey.right(SUBKEY_SIZE));
     unsigned char* pSubKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
     unsigned char* pSubKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
 
-    // The two subkeys are processed in separate threads; one of them reports progress to UI
-    QFuture<int> task1 = QtConcurrent::run(this, &PwDatabaseV4::performKeyTransformRounds, pSubKey1, transformRounds, true);
-    QFuture<int> task2 = QtConcurrent::run(this, &PwDatabaseV4::performKeyTransformRounds, pSubKey2, transformRounds, false);
-
-    if (task1.result() != SB_SUCCESS || task2.result() != SB_SUCCESS) {
-        return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
+    // One subkey is processed in a parallel thread,
+    // another one -- synchronously here (to update the UI progress)
+    QFuture<ErrorCodesV4::ErrorCode> anotherTask = QtConcurrent::run(this, &PwDatabaseV4::performKeyTransformRounds, pSubKey1, transformRounds, false);
+    ErrorCodesV4::ErrorCode errCode = performKeyTransformRounds(pSubKey2, transformRounds, true);
+    if (errCode != ErrorCodesV4::SUCCESS || anotherTask.result() != ErrorCodesV4::SUCCESS) {
+        return errCode;
     }
 
-    if (cm->endKeyTransform() != SB_SUCCESS)
-        return ErrorCodesV4::KEY_TRANSFORM_END_ERROR;
+    CryptoManager* cm = CryptoManager::instance();
 
     QByteArray step2key;
     step2key.append(subKey1);
@@ -545,8 +548,6 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     if (ec != SB_SUCCESS)
         return ErrorCodesV4::KEY_TRANSFORM_ERROR_3;
 
-    long msecsSpent = QDateTime::currentMSecsSinceEpoch() - time1;
-    LOG("Key transform time: %d ms", msecsSpent);
     return ErrorCodesV4::SUCCESS;
 }
 
