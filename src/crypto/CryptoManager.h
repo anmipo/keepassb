@@ -103,10 +103,11 @@ public:
 	int beginKeyTransform(const QByteArray& key, const int keySizeBytes);
 	/**
 	 * Performs a key transformation round.
-	 * both originalKey and transformedKey must be 16 bytes (SB_AES_128_BLOCK_BYTES) long.
+	 * Call beginKeyTransform() to prepare necessary resources first; call endKeyTransform() to free those resources.
+	 * transKey is both input and output, it must be of the size set in beginKeyTransform().
 	 * Returns an SB_* error code.
 	 */
-	int performKeyTransform(const unsigned char* originalKey, unsigned char* transformedKey) const;
+	int performKeyTransform(unsigned char* transKey) const;
 	/**
 	 * Frees resources allocated by beginKeyTransform().
 	 * Returns an SB_* error code.

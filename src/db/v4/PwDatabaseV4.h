@@ -145,6 +145,8 @@ private:
     // Calculates the AES encryption key based on the combined key (password + key data)
     // and current header seed values.
     ErrorCodesV4::ErrorCode transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey);
+    // Helper function for multithreaded key transformation
+    int performKeyTransformRounds(unsigned char* pSubKey, const quint64 nRounds, bool reportProgress);
 
     // Reads the encrypted DB; in case of errors emits appropriate signals and returns false.
     bool readDatabase(const QByteArray& dbBytes);

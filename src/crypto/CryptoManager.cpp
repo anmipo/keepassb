@@ -245,17 +245,16 @@ int CryptoManager::beginKeyTransform(const QByteArray& key, const int keySizeByt
 
 /**
  * Performs a key transformation round.
- * Call beginKeyTransform() to prepare necessary resources first.
- * Call endKeyTransform() to free those resources.
- * both originalKey and transformedKey must be the size set in beginKeyTransform().
+ * Call beginKeyTransform() to prepare necessary resources first; call endKeyTransform() to free those resources.
+ * transKey is both input and output, it must be of the size set in beginKeyTransform().
  * Returns an SB_* error code.
  */
-int CryptoManager::performKeyTransform(const unsigned char* originalKey, unsigned char* transformedKey) const {
+int CryptoManager::performKeyTransform(unsigned char* transKey) const {
     RETURN_IF_SB_ERROR(
             hu_AESEncryptMsg(keyTransformAesParams, keyTransformAesKey,
                     keyTransformLength, keyTransformIV,
-                    keyTransformLength, originalKey,
-                    transformedKey, sbCtx),
+                    keyTransformLength, transKey,
+                    transKey, sbCtx),
             "AESEncryptMsg failed");
     return SB_SUCCESS;
 }

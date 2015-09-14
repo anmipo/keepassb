@@ -27,6 +27,9 @@ const QByteArray SALSA_20_INIT_VECTOR = QByteArray("\xE8\x30\x09\x4B\x97\x20\x5D
 // Size of encryption initial vector in bytes
 const int INITIAL_VECTOR_SIZE = 16;
 
+// Size of key parts for key transformations
+const int SUBKEY_SIZE = 16;
+
 // Default number of transform rounds for new DBs
 const quint64 DEFAULT_TRANSFORM_ROUNDS = 123456; // ~2 seconds delay on BB Q10
 
@@ -471,19 +474,35 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
     return true;
 }
 
+// Helper function for multithreaded key transformation
+int PwDatabaseV4::performKeyTransformRounds(unsigned char* pSubKey, const quint64 nRounds, bool reportProgress) {
+    int ec;
+    CryptoManager* cm = CryptoManager::instance();
+    if (reportProgress) {
+        for (quint64 round = 0; round < nRounds; round++) {
+            setProgress(round);
+            ec = cm->performKeyTransform(pSubKey);
+            if (ec != SB_SUCCESS)
+                break;
+        }
+    } else {
+        for (quint64 round = 0; round < nRounds; round++) {
+            ec = cm->performKeyTransform(pSubKey);
+            if (ec != SB_SUCCESS)
+                break;
+        }
+    }
+    return ec;
+}
+
 ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey) {
 //    aesKey.clear();
 
+    long time1 = QDateTime::currentMSecsSinceEpoch(); // TODO remove this benchmark after debug
     CryptoManager* cm = CryptoManager::instance();
 
-    QByteArray subKey1 = combinedKey.left(16);
-    QByteArray subKey2 = combinedKey.right(16);
     QByteArray key = header.getTransformSeed();
     quint64 transformRounds = header.getTransformRounds();
-
-    // temporary arrays for storing intermediate keys
-    QByteArray subKey1bis(subKey1.length(), 0);
-    QByteArray subKey2bis(subKey2.length(), 0);
 
     setPhaseProgressRawTarget(transformRounds);
 
@@ -491,34 +510,27 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     if (cm->beginKeyTransform(key, SB_AES_128_KEY_BYTES) != SB_SUCCESS)
         return ErrorCodesV4::KEY_TRANSFORM_INIT_ERROR;
 
-    unsigned char* origKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
-    unsigned char* origKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
-    unsigned char* transKey1 = reinterpret_cast<unsigned char*>(subKey1bis.data());
-    unsigned char* transKey2 = reinterpret_cast<unsigned char*>(subKey2bis.data());
-    int ec;
-    for (quint64 round = 0; round < transformRounds; round++) {
-        ec = cm->performKeyTransform(origKey1, transKey1);
-        memcpy(origKey1, transKey1, SB_AES_128_BLOCK_BYTES);
-        if (ec != SB_SUCCESS) break;
+    QByteArray subKey1 = Util::deepCopy(combinedKey.left(SUBKEY_SIZE));
+    QByteArray subKey2 = Util::deepCopy(combinedKey.right(SUBKEY_SIZE));
+    unsigned char* pSubKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
+    unsigned char* pSubKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
 
-        ec = cm->performKeyTransform(origKey2, transKey2);
-        memcpy(origKey2, transKey2, SB_AES_128_BLOCK_BYTES);
-        if (ec != SB_SUCCESS) break;
+    // The two subkeys are processed in separate threads; one of them reports progress to UI
+    QFuture<int> task1 = QtConcurrent::run(this, &PwDatabaseV4::performKeyTransformRounds, pSubKey1, transformRounds, true);
+    QFuture<int> task2 = QtConcurrent::run(this, &PwDatabaseV4::performKeyTransformRounds, pSubKey2, transformRounds, false);
 
-        setProgress(round);
-    }
-    if (ec != SB_SUCCESS)
+    if (task1.result() != SB_SUCCESS || task2.result() != SB_SUCCESS) {
         return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
+    }
 
     if (cm->endKeyTransform() != SB_SUCCESS)
         return ErrorCodesV4::KEY_TRANSFORM_END_ERROR;
-
 
     QByteArray step2key;
     step2key.append(subKey1);
     step2key.append(subKey2);
     QByteArray transformedKey;
-    ec = cm->sha256(step2key, transformedKey);
+    int ec = cm->sha256(step2key, transformedKey);
     Util::safeClear(subKey1);
     Util::safeClear(subKey2);
     Util::safeClear(step2key);
@@ -533,6 +545,8 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, con
     if (ec != SB_SUCCESS)
         return ErrorCodesV4::KEY_TRANSFORM_ERROR_3;
 
+    long msecsSpent = QDateTime::currentMSecsSinceEpoch() - time1;
+    LOG("Key transform time: %d ms", msecsSpent);
     return ErrorCodesV4::SUCCESS;
 }
 

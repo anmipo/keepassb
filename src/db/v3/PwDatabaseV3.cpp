@@ -302,20 +302,16 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
 
     setPhaseProgressRawTarget(transformRounds);
 
-    QByteArray transformedKey(SB_AES_256_KEY_BYTES, 0);
-    QByteArray combinedKey2 = Util::deepCopy(combinedKey);
-    unsigned char* origKey = reinterpret_cast<unsigned char*>(combinedKey2.data());
-    unsigned char* transKey = reinterpret_cast<unsigned char*>(transformedKey.data());
+    QByteArray transKey = Util::deepCopy(combinedKey);
+    unsigned char* pTransKey = reinterpret_cast<unsigned char*>(transKey.data());
 
     int ec;
     for (quint64 round = 0; round < transformRounds; round++) {
-        ec = cm->performKeyTransform(origKey, transKey);
-        memcpy(origKey, transKey, SB_AES_256_KEY_BYTES);
+        ec = cm->performKeyTransform(pTransKey);
         if (ec != SB_SUCCESS) break;
 
         setProgress(round);
     }
-    Util::safeClear(combinedKey2); // ~ origKey
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_1;
 
@@ -324,8 +320,8 @@ PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey
         return KEY_TRANSFORM_END_ERROR;
 
     QByteArray prefinalKey;
-    ec = cm->sha256(transformedKey, prefinalKey);
-    Util::safeClear(transformedKey);
+    ec = cm->sha256(transKey, prefinalKey);
+    Util::safeClear(transKey);
     if (ec != SB_SUCCESS)
         return KEY_TRANSFORM_ERROR_2;
 
