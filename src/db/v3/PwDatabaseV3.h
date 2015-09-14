@@ -84,7 +84,7 @@ public:
 };
 
 
-class PwDatabaseV3: public PwDatabase, public ProgressObserver {
+class PwDatabaseV3: public PwDatabase {
     Q_OBJECT
 public:
     /**
@@ -93,11 +93,6 @@ public:
     enum ErrorCode {
         SUCCESS = PwDatabase::SUCCESS,
         HEADER_SIZE_ERROR       = 0x10,
-        KEY_TRANSFORM_INIT_ERROR = 0x20,
-        KEY_TRANSFORM_ERROR_1    = 0x21,
-        KEY_TRANSFORM_ERROR_2    = 0x22,
-        KEY_TRANSFORM_ERROR_3    = 0x23,
-        KEY_TRANSFORM_END_ERROR  = 0x24,
         CANNOT_DECRYPT_DB        = 0x30,
         DECRYPTED_PADDING_ERROR  = 0x31,
         CONTENT_HASHING_ERROR    = 0x32,  // == generic crypto lib error
@@ -118,11 +113,6 @@ private:
 
     /** Reads the encrypted DB; in case of errors emits appropriate signals and returns false. */
     bool readDatabase(const QByteArray& dbBytes);
-    /**
-     * Calculates the AES encryption key based on the combined key (password + key data)
-     * and current header seed values.
-     */
-    ErrorCode transformKey(const QByteArray& combinedKey, QByteArray& aesKey);
     /** Decrypts the DB's data using current keys. */
     ErrorCode decryptData(const QByteArray& encryptedData, QByteArray& decryptedData);
     /** Read groups and entries from the decrypted stream and builds their tree */
@@ -158,11 +148,6 @@ protected:
 
     /** Combines password and key data into one key */
     virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const;
-
-    /**
-     * Callback for progress updates of time-consuming processes.
-     */
-    void onProgress(quint8 progressPercent);
 
 public:
     PwDatabaseV3(QObject* parent=0);

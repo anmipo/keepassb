@@ -17,7 +17,6 @@
 #include "util/Util.h"
 #include "db/v4/DefsV4.h"
 #include "db/v4/PwStreamUtilsV4.h"
-#include "crypto/Rijndael.h"
 
 // Cypher parameters and signatures
 const QByteArray SALSA_20_ID = QByteArray("\x02\x00\x00\x00", 4);
@@ -26,9 +25,6 @@ const QByteArray SALSA_20_INIT_VECTOR = QByteArray("\xE8\x30\x09\x4B\x97\x20\x5D
 
 // Size of encryption initial vector in bytes
 const int INITIAL_VECTOR_SIZE = 16;
-
-// Size of key parts for key transformations
-const int SUBKEY_SIZE = 16;
 
 // Default number of transform rounds for new DBs
 const quint64 DEFAULT_TRANSFORM_ROUNDS = 123456; // ~2 seconds delay on BB Q10
@@ -378,13 +374,6 @@ void PwDatabaseV4::addDeletedObject(const PwUuid& uuid) {
     deletedObjects.append(deletedObject);
 }
 
-/**
- * Callback for progress updates of time-consuming processes.
- */
-void PwDatabaseV4::onProgress(quint8 progressPercent) {
-    emit progressChanged(progressPercent);
-}
-
 void PwDatabaseV4::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(getPasswordBytes(password), keyFileData, combinedKey)) {
         emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
@@ -474,83 +463,6 @@ bool PwDatabaseV4::buildCompositeKey(const QByteArray& passwordKey, const QByteA
     return true;
 }
 
-// Helper function for multithreaded key transformation
-ErrorCodesV4::ErrorCode PwDatabaseV4::performKeyTransformRounds(unsigned char* pTransKey, const quint64 nRounds, bool reportProgress) {
-    // make a local copy of the subkey and the key
-    unsigned char transKey[SUBKEY_SIZE];
-    unsigned char key[32];
-    memcpy(transKey, pTransKey, SUBKEY_SIZE);
-    memcpy(key, header.getTransformSeed().constData(), 32);
-
-    // prepare key transform
-    Rijndael aes;
-    int ec = (qint8)aes.init(Rijndael::ECB, Rijndael::Encrypt, key, Rijndael::Key32Bytes, 0);
-    if (ec != RIJNDAEL_SUCCESS) {
-        LOG("Rijndael init error %d", ec);
-        return ErrorCodesV4::KEY_TRANSFORM_INIT_ERROR;
-    }
-
-    if (reportProgress) {
-        for (quint64 round = 0; round < nRounds; round++) {
-            setProgress(round);
-            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
-                return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
-        }
-    } else {
-        for (quint64 round = 0; round < nRounds; round++) {
-            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
-                return ErrorCodesV4::KEY_TRANSFORM_ERROR_1;
-        }
-    }
-    memcpy(pTransKey, transKey, SUBKEY_SIZE);
-    return ErrorCodesV4::SUCCESS;
-}
-
-ErrorCodesV4::ErrorCode PwDatabaseV4::transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey) {
-//    aesKey.clear();
-
-    QByteArray key = header.getTransformSeed();
-    quint64 transformRounds = header.getTransformRounds();
-
-    setPhaseProgressRawTarget(transformRounds);
-
-    QByteArray subKey1 = Util::deepCopy(combinedKey.left(SUBKEY_SIZE));
-    QByteArray subKey2 = Util::deepCopy(combinedKey.right(SUBKEY_SIZE));
-    unsigned char* pSubKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
-    unsigned char* pSubKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
-
-    // One subkey is processed in a parallel thread,
-    // another one -- synchronously here (to update the UI progress)
-    QFuture<ErrorCodesV4::ErrorCode> anotherTask = QtConcurrent::run(this, &PwDatabaseV4::performKeyTransformRounds, pSubKey1, transformRounds, false);
-    ErrorCodesV4::ErrorCode errCode = performKeyTransformRounds(pSubKey2, transformRounds, true);
-    if (errCode != ErrorCodesV4::SUCCESS || anotherTask.result() != ErrorCodesV4::SUCCESS) {
-        return errCode;
-    }
-
-    CryptoManager* cm = CryptoManager::instance();
-
-    QByteArray step2key;
-    step2key.append(subKey1);
-    step2key.append(subKey2);
-    QByteArray transformedKey;
-    int ec = cm->sha256(step2key, transformedKey);
-    Util::safeClear(subKey1);
-    Util::safeClear(subKey2);
-    Util::safeClear(step2key);
-    if (ec != SB_SUCCESS)
-        return ErrorCodesV4::KEY_TRANSFORM_ERROR_2;
-
-    QByteArray step3key(header.getMasterSeed());
-    step3key.append(transformedKey);
-    ec = cm->sha256(step3key, aesKey);
-    Util::safeClear(transformedKey);
-    Util::safeClear(step3key);
-    if (ec != SB_SUCCESS)
-        return ErrorCodesV4::KEY_TRANSFORM_ERROR_3;
-
-    return ErrorCodesV4::SUCCESS;
-}
-
 bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     /* Read DB header */
     PwHeaderV4::ErrorCode headerErrCode = header.read(dbBytes);
@@ -562,10 +474,11 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
 
     /* Calculate the AES key */
     setPhaseProgressBounds(UNLOCK_PROGRESS_KEY_TRANSFORM);
-    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey);
-    if (err != ErrorCodesV4::SUCCESS) {
-        LOG("Cannot decrypt database - transformKey: %d", err);
-        emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
+    PwDatabase::ErrorCode dbErr = transformKey(header.getMasterSeed(), header.getTransformSeed(),
+            header.getTransformRounds(), combinedKey, aesKey);
+    if (dbErr != PwDatabase::SUCCESS) {
+        LOG("Cannot decrypt database - transformKey: %d", dbErr);
+        emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), dbErr);
         return false;
     }
 
@@ -575,7 +488,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     QByteArray decryptedData (dataSize, 0);
     // DB header not needed for decryption
     QByteArray dbBytesWithoutHeader = dbBytes.right(dataSize);
-    err = decryptData(dbBytesWithoutHeader, decryptedData);
+    ErrorCodesV4::ErrorCode err = decryptData(dbBytesWithoutHeader, decryptedData);
     if (err != ErrorCodesV4::SUCCESS) {
         LOG("Cannot decrypt database - decryptData: %d", err);
         emit dbLoadError(tr("Cannot decrypt database", "An error message"), err);
@@ -866,10 +779,11 @@ bool PwDatabaseV4::save(QByteArray& outData) {
     }
 
     setPhaseProgressBounds(SAVE_PROGRESS_KEY_TRANSFORM);
-    ErrorCodesV4::ErrorCode err = transformKey(header, combinedKey, aesKey);
-    if (err != ErrorCodesV4::SUCCESS) {
-        LOG("transformKey error while saving: %d", err);
-        emit dbSaveError(saveErrorMessage, err);
+    PwDatabase::ErrorCode dbErr = transformKey(header.getMasterSeed(), header.getTransformSeed(),
+            header.getTransformRounds(), combinedKey, aesKey);
+    if (dbErr != PwDatabase::SUCCESS) {
+        LOG("transformKey error while saving: %d", dbErr);
+        emit dbSaveError(saveErrorMessage, dbErr);
         return false;
     }
 
@@ -907,7 +821,7 @@ bool PwDatabaseV4::save(QByteArray& outData) {
 
     xml.writeStartDocument("1.0", true);
     xml.writeStartElement(XML_KEEPASS_FILE);
-    err = meta.writeToStream(xml, salsa20);
+    ErrorCodesV4::ErrorCode err = meta.writeToStream(xml, salsa20);
     if (err != ErrorCodesV4::SUCCESS) {
         LOG("failed to write Meta to XML: %d", err);
         emit dbSaveError(saveErrorMessage, err);

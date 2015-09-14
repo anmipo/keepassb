@@ -18,8 +18,23 @@ class PwDatabaseFacade;
 
 class SearchParams;
 
-class PwDatabase : public QObject {
+class PwDatabase : public QObject, public ProgressObserver {
     Q_OBJECT
+public:
+    enum ErrorCode {
+        SUCCESS             = 0,
+        UNKNOWN_DB_FORMAT   = 1,
+        COMPOSITE_KEY_ERROR = 2,
+        DB_FILE_EMPTY       = 3,
+        KEY_COMPOSING_ERROR = 4,
+        KEY_TRANSFORM_INIT_ERROR = 0x05,
+        KEY_TRANSFORM_ERROR_1    = 0x06,
+        KEY_TRANSFORM_ERROR_2    = 0x07,
+        KEY_TRANSFORM_ERROR_3    = 0x08,
+
+        // child classes' specific codes start from 0x10
+    };
+
 protected:
 	PwGroup* _rootGroup;
 	QString _dbFilePath;
@@ -44,15 +59,21 @@ protected:
 
     /** Setter for the combinedKey field (in child classes) */
 	virtual void setCombinedKey(const QByteArray& newKey) = 0;
+
+    // Calculates the AES encryption key based on the combined key (password + key data)
+    // and current header seed values.
+	ErrorCode transformKey(const QByteArray& masterSeed, const QByteArray& transformSeed,
+	        quint64 transformRounds, const QByteArray& combinedKey, QByteArray& aesKey);
+    // Helper function for multithreaded key transformation
+    ErrorCode performKeyTransformRounds(const unsigned char* pTransformSeed,
+            unsigned char* pTransKey, const quint64 nRounds, bool reportProgress);
+
+    /**
+     * Callback for progress updates of time-consuming processes.
+     */
+    void onProgress(quint8 progressPercent);
+
 public:
-    enum Error {
-        SUCCESS             = 0,
-        UNKNOWN_DB_FORMAT   = 1,
-        COMPOSITE_KEY_ERROR = 2,
-        DB_FILE_EMPTY       = 3,
-        KEY_COMPOSING_ERROR = 4,
-        // child classes' specific codes start from 0x10
-    };
 	PwDatabase(QObject* parent=0);
 	virtual ~PwDatabase();
 

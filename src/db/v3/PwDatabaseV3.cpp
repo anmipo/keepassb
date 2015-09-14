@@ -163,13 +163,6 @@ bool PwDatabaseV3::isSignatureMatch(const QByteArray& rawDbData) {
     return (sign1 ==  PwHeaderV3::SIGNATURE_1) && (sign2 == PwHeaderV3::SIGNATURE_2);
 }
 
-/**
- * Callback for progress updates of time-consuming processes.
- */
-void PwDatabaseV3::onProgress(quint8 progressPercent) {
-    emit progressChanged(progressPercent);
-}
-
 void PwDatabaseV3::load(const QByteArray& dbFileData, const QString& password, const QByteArray& keyFileData) {
     if (!buildCompositeKey(getPasswordBytes(password), keyFileData, combinedKey)) {
         emit dbLoadError(tr("Cryptographic library error", "Generic error message from a cryptographic library"), COMPOSITE_KEY_ERROR);
@@ -247,10 +240,11 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
 
     /* Calculate the AES key */
     setPhaseProgressBounds(UNLOCK_PROGRESS_KEY_TRANSFORM);
-    ErrorCode err = transformKey(combinedKey, aesKey);
-    if (err != SUCCESS) {
-        LOG("Cannot decrypt database - transformKey: %d", err);
-        emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), err);
+    PwDatabase::ErrorCode dbErr = transformKey(header.getMasterSeed(), header.getTransformSeed(),
+            header.getTransformRounds(), combinedKey, aesKey);
+    if (dbErr != PwDatabase::SUCCESS) {
+        LOG("Cannot decrypt database - transformKey: %d", dbErr);
+        emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), dbErr);
         return false;
     }
 
@@ -261,7 +255,7 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     // DB header not needed for decryption
     QByteArray dbBytesWithoutHeader = dbBytes.right(dataSize);
     QByteArray decryptedData(dataSize, 0);
-    err = decryptData(dbBytesWithoutHeader, decryptedData);
+    ErrorCode err = decryptData(dbBytesWithoutHeader, decryptedData);
     Util::safeClear(dbBytesWithoutHeader);
     if (err != SUCCESS) {
         if (err == DECRYPTED_PADDING_ERROR || err == DECRYPTED_CHECKSUM_MISMATCH) {
@@ -289,49 +283,6 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
     }
 
     return true;
-}
-
-PwDatabaseV3::ErrorCode PwDatabaseV3::transformKey(const QByteArray& combinedKey, QByteArray& aesKey) {
-    CryptoManager* cm = CryptoManager::instance();
-
-    // prepare key transform
-    if (cm->beginKeyTransform(header.getTransformSeed(), SB_AES_256_KEY_BYTES) != SB_SUCCESS)
-        return KEY_TRANSFORM_INIT_ERROR;
-
-    quint32 transformRounds = header.getTransformRounds();
-
-    setPhaseProgressRawTarget(transformRounds);
-
-    QByteArray transKey = Util::deepCopy(combinedKey);
-    unsigned char* pTransKey = reinterpret_cast<unsigned char*>(transKey.data());
-
-    int ec;
-    for (quint64 round = 0; round < transformRounds; round++) {
-        ec = cm->performKeyTransform(pTransKey);
-        if (ec != SB_SUCCESS) break;
-
-        setProgress(round);
-    }
-    if (ec != SB_SUCCESS)
-        return KEY_TRANSFORM_ERROR_1;
-
-    // clean up
-    if (cm->endKeyTransform() != SB_SUCCESS)
-        return KEY_TRANSFORM_END_ERROR;
-
-    QByteArray prefinalKey;
-    ec = cm->sha256(transKey, prefinalKey);
-    Util::safeClear(transKey);
-    if (ec != SB_SUCCESS)
-        return KEY_TRANSFORM_ERROR_2;
-
-    prefinalKey.prepend(header.getMasterSeed());
-    ec = cm->sha256(prefinalKey, aesKey);
-    Util::safeClear(prefinalKey);
-    if (ec != SB_SUCCESS)
-        return KEY_TRANSFORM_ERROR_3;
-
-    return SUCCESS;
 }
 
 // Decrypts the DB's data using current keys.
@@ -495,10 +446,11 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     // update encryption seeds and transform the keys
     header.randomizeInitialVectors();
     setPhaseProgressBounds(SAVE_PROGRESS_KEY_TRANSFORM);
-    err = transformKey(combinedKey, aesKey);
-    if (err != SUCCESS) {
-        LOG("transformKey error while saving: %d", err);
-        emit dbSaveError(saveErrorMessage, err);
+    PwDatabase::ErrorCode dbErr = transformKey(header.getMasterSeed(), header.getTransformSeed(),
+            header.getTransformRounds(), combinedKey, aesKey);
+    if (dbErr != PwDatabase::SUCCESS) {
+        LOG("transformKey error while saving: %d", dbErr);
+        emit dbSaveError(saveErrorMessage, dbErr);
         return false;
     }
 

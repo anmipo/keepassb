@@ -106,7 +106,7 @@ public slots:
 signals:
     void clipboardUpdated();
     void clipboardCleared();
-    void dbOpenError(const QString& message, const PwDatabase::Error errorCode);
+    void dbOpenError(const QString& message, const PwDatabase::ErrorCode errorCode);
     // emitted when the app enters the quick-lock state
     void appLocked();
     // emitted when the app lock (quick lock) state changes

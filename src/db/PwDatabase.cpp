@@ -8,6 +8,7 @@
 #include "PwDatabase.h"
 #include <QtXml/QXmlStreamReader>
 #include "crypto/CryptoManager.h"
+#include "crypto/Rijndael.h"
 #include "db/v3/PwDatabaseV3.h"
 #include "db/v4/PwDatabaseV4.h"
 #include "db/PwGroup.h"
@@ -21,6 +22,8 @@ const QString TMP_SAVE_FILE_NAME_SUFFIX = ".tmp";
 
 const QString DEMO_DATABASE_FILE_PATH = "app/native/assets/demo.kdbx";
 
+// Size of key parts for key transformations
+const int SUBKEY_SIZE = 16;
 
 PwDatabase::PwDatabase(QObject* parent) : QObject(parent), _dbFilePath("") {
 	_rootGroup = NULL;
@@ -91,6 +94,89 @@ bool PwDatabase::processKeyFile(const QByteArray& keyFileData, QByteArray& key) 
         return false;
     }
     return true;
+}
+
+// Helper function for multithreaded key transformation
+PwDatabase::ErrorCode PwDatabase::performKeyTransformRounds(const unsigned char* pTransformSeed,
+        unsigned char* pTransKey, const quint64 nRounds, bool reportProgress) {
+    // make a local copy of the subkey and the key
+    unsigned char transKey[SUBKEY_SIZE];
+    unsigned char key[32];
+    memcpy(transKey, pTransKey, SUBKEY_SIZE);
+    memcpy(key, pTransformSeed, 32);
+
+    // prepare key transform
+    Rijndael aes;
+    int ec = (qint8)aes.init(Rijndael::ECB, Rijndael::Encrypt, key, Rijndael::Key32Bytes, 0);
+    if (ec != RIJNDAEL_SUCCESS) {
+        LOG("Rijndael init error %d", ec);
+        return KEY_TRANSFORM_INIT_ERROR;
+    }
+
+    if (reportProgress) {
+        for (quint64 round = 0; round < nRounds; round++) {
+            setProgress(round);
+            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
+                return KEY_TRANSFORM_ERROR_1;
+        }
+    } else {
+        for (quint64 round = 0; round < nRounds; round++) {
+            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
+                return KEY_TRANSFORM_ERROR_1;
+        }
+    }
+    memcpy(pTransKey, transKey, SUBKEY_SIZE);
+    return SUCCESS;
+}
+
+PwDatabase::ErrorCode PwDatabase::transformKey(const QByteArray& masterSeed, const QByteArray& transformSeed,
+        quint64 transformRounds, const QByteArray& combinedKey, QByteArray& aesKey) {
+    setPhaseProgressRawTarget(transformRounds);
+
+    QByteArray subKey1 = Util::deepCopy(combinedKey.left(SUBKEY_SIZE));
+    QByteArray subKey2 = Util::deepCopy(combinedKey.right(SUBKEY_SIZE));
+    unsigned char* pSubKey1 = reinterpret_cast<unsigned char*>(subKey1.data());
+    unsigned char* pSubKey2 = reinterpret_cast<unsigned char*>(subKey2.data());
+    const unsigned char* pTransformSeed = reinterpret_cast<const unsigned char*>(transformSeed.constData());
+
+    // One subkey is processed in a parallel thread,
+    // another one -- synchronously here (to update the UI progress)
+    QFuture<PwDatabase::ErrorCode> anotherTask = QtConcurrent::run(this, &PwDatabase::performKeyTransformRounds,
+            pTransformSeed, pSubKey1, transformRounds, false);
+    ErrorCode errCode = performKeyTransformRounds(pTransformSeed, pSubKey2, transformRounds, true);
+    if (errCode != SUCCESS || anotherTask.result() != SUCCESS) {
+        return errCode;
+    }
+
+    CryptoManager* cm = CryptoManager::instance();
+
+    QByteArray step2key;
+    step2key.append(subKey1);
+    step2key.append(subKey2);
+    QByteArray transformedKey;
+    int ec = cm->sha256(step2key, transformedKey);
+    Util::safeClear(subKey1);
+    Util::safeClear(subKey2);
+    Util::safeClear(step2key);
+    if (ec != SB_SUCCESS)
+        return KEY_TRANSFORM_ERROR_2;
+
+    QByteArray step3key(masterSeed);
+    step3key.append(transformedKey);
+    ec = cm->sha256(step3key, aesKey);
+    Util::safeClear(transformedKey);
+    Util::safeClear(step3key);
+    if (ec != SB_SUCCESS)
+        return KEY_TRANSFORM_ERROR_3;
+
+    return SUCCESS;
+}
+
+/**
+ * Callback for progress updates of time-consuming processes.
+ */
+void PwDatabase::onProgress(quint8 progressPercent) {
+    emit progressChanged(progressPercent);
 }
 
 PwGroup* PwDatabase::getRootGroup() const {

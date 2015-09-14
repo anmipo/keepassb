@@ -126,7 +126,7 @@ public:
 /**
  * Class for handling KeePass 2 databases.
  */
-class PwDatabaseV4: public PwDatabase, public ProgressObserver {
+class PwDatabaseV4: public PwDatabase {
     Q_OBJECT
 private:
     friend class PwGroupV4;
@@ -141,12 +141,6 @@ private:
 
     // helper var, remembers XML stream size between calls to onXmlParsingProgress
     qint64 xmlSize;
-
-    // Calculates the AES encryption key based on the combined key (password + key data)
-    // and current header seed values.
-    ErrorCodesV4::ErrorCode transformKey(const PwHeaderV4& header, const QByteArray& combinedKey, QByteArray& aesKey);
-    // Helper function for multithreaded key transformation
-    ErrorCodesV4::ErrorCode performKeyTransformRounds(unsigned char* pTransKey, const quint64 nRounds, bool reportProgress);
 
     // Reads the encrypted DB; in case of errors emits appropriate signals and returns false.
     bool readDatabase(const QByteArray& dbBytes);
@@ -199,11 +193,6 @@ protected:
 
     /** Adds an item to the DeletedObjects list. */
     void addDeletedObject(const PwUuid& uuid);
-
-    /**
-     * Callback for progress updates of time-consuming processes.
-     */
-    void onProgress(quint8 progressPercent);
 
 public:
     PwDatabaseV4(QObject* parent=0);
