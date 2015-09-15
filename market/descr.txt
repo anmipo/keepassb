@@ -47,6 +47,10 @@ keypass, keepassx, enpass, keeper, keepassb 2, keepassb2, vault, safe
 
 Changelog:
 
+v2.5.3
+Major performance improvement: much faster loading/saving (thanks Christoph)
+Added Twofish support for v1 (.kdb) databases (thanks Glenn)
+
 v2.5.2
 Added search-as-you-type
 Improved QuickUnlock: now quicker by one tap

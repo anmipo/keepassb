@@ -326,6 +326,8 @@ config_pri_source_group1 {
     SOURCES += \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/crypto/CryptoManager.cpp) \
+        $$quote($$BASEDIR/src/crypto/Rijndael.cpp) \
+        $$quote($$BASEDIR/src/crypto/Twofish.cpp) \
         $$quote($$BASEDIR/src/db/PwDatabase.cpp) \
         $$quote($$BASEDIR/src/db/PwEntry.cpp) \
         $$quote($$BASEDIR/src/db/PwGroup.cpp) \
@@ -351,6 +353,8 @@ config_pri_source_group1 {
     HEADERS += \
         $$quote($$BASEDIR/src/applicationui.hpp) \
         $$quote($$BASEDIR/src/crypto/CryptoManager.h) \
+        $$quote($$BASEDIR/src/crypto/Rijndael.h) \
+        $$quote($$BASEDIR/src/crypto/Twofish.h) \
         $$quote($$BASEDIR/src/db/PwDatabase.h) \
         $$quote($$BASEDIR/src/db/PwEntry.h) \
         $$quote($$BASEDIR/src/db/PwGroup.h) \
