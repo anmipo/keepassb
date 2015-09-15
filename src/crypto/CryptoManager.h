@@ -75,7 +75,7 @@ public:
 	/**
 	 * Decrypts data with AES in CBC mode.
 	 * plainText must be preallocated to fit the result
-	 * N.B.: does no padding, assumes cypherText size is a multiple of 16.
+	 * Assumes cypherText size is a multiple of 16.
 	 * Returns an SB_* error code.
 	 */
 	int decryptAES(const QByteArray& key, const QByteArray& initVector,

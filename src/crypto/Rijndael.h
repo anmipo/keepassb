@@ -147,11 +147,12 @@ public:
 	// outBuffer must be at least inputLen bytes long
 	// Returns the decrypted buffer length in BYTES and an error code < 0 in case of error
 	int padDecrypt(const quint8 *input, int inputOctets, quint8 *outBuffer);
+
+    void encrypt(const quint8 a[16], quint8 b[16]);
+    void decrypt(const quint8 a[16], quint8 b[16]);
 protected:
 	void keySched(quint8 key[_MAX_KEY_COLUMNS][4]);
 	void keyEncToDec();
-	void encrypt(const quint8 a[16], quint8 b[16]);
-	void decrypt(const quint8 a[16], quint8 b[16]);
 };
 
 #endif // _RIJNDAEL_H_

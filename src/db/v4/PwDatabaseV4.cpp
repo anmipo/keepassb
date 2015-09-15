@@ -585,6 +585,10 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::decryptData(const QByteArray& encryptedDat
         LOG("decryptAES error: %d", err);
         return ErrorCodesV4::CANNOT_DECRYPT_DB;
     }
+
+    if (!CryptoManager::removePadding16(decryptedData))
+        return ErrorCodesV4::CANNOT_REMOVE_PADDING;
+
     return ErrorCodesV4::SUCCESS;
 }
 

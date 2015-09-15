@@ -134,7 +134,8 @@ public:
         WRONG_BLOCK_ID           = 0x32,
         BLOCK_HASH_NON_ZERO      = 0x33,
         BLOCK_HASH_MISMATCH      = 0x34,
-        // 0x35..0x3F are reserved for future use
+        CANNOT_REMOVE_PADDING    = 0x35,
+        // 0x36..0x3F are reserved for future use
 
         // xml parsing errors
         XML_PARSING_ERROR_GENERIC                       = 0x40,

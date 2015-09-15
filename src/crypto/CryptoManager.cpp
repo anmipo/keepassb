@@ -136,7 +136,7 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
         ProgressObserver* progressObserver) {
 
     if (progressObserver)
-        progressObserver->setPhaseProgressRawTarget(1); // TODO make finer-grained progress reporting
+        progressObserver->setPhaseProgressRawTarget(1);
 
 	sb_Params aesParams;
 	RETURN_IF_SB_ERROR(
@@ -281,16 +281,17 @@ int CryptoManager::endKeyTransform() {
 
 /**
  * Decrypts data with AES in CBC mode.
- * plainText must be preallocated to fit the result
- * N.B.: does no padding, assumes cypherText size is a multiple of 16.
+ * plainText must be preallocated to fit the result.
+ * Assumes cypherText size is a multiple of 16.
  * Returns an SB_* error code.
  */
 int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVector,
         const QByteArray& cypherText, QByteArray& plainText,
         ProgressObserver* progressObserver) {
 
+    // Decryption normally takes up to 100 ms, so no need for fine-grained progress.
     if (progressObserver)
-        progressObserver->setPhaseProgressRawTarget(1); // TODO make finer-grained progress reporting
+        progressObserver->setPhaseProgressRawTarget(1);
 
 	sb_Params aesParams;
 	RETURN_IF_SB_ERROR(

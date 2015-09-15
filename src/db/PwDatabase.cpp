@@ -116,13 +116,11 @@ PwDatabase::ErrorCode PwDatabase::performKeyTransformRounds(const unsigned char*
     if (reportProgress) {
         for (quint64 round = 0; round < nRounds; round++) {
             setProgress(round);
-            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
-                return KEY_TRANSFORM_ERROR_1;
+            aes.encrypt(transKey, transKey); // only works with 16-byte buffers
         }
     } else {
         for (quint64 round = 0; round < nRounds; round++) {
-            if (aes.blockEncrypt(transKey, SUBKEY_SIZE * 8, transKey) < 0)
-                return KEY_TRANSFORM_ERROR_1;
+            aes.encrypt(transKey, transKey); // only works with 16-byte buffers
         }
     }
     memcpy(pTransKey, transKey, SUBKEY_SIZE);
