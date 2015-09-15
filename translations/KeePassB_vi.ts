@@ -1183,7 +1183,7 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>PwDatabase</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="133"/>
+        <location filename="../src/db/PwDatabase.cpp" line="217"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translatorcomment>Thông báo lỗi chung từ thư viện mã hóa</translatorcomment>
@@ -1193,63 +1193,63 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>PwDatabaseFacade</name>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="243"/>
+        <location filename="../src/db/PwDatabase.cpp" line="327"/>
         <source>Cannot open database file</source>
         <comment>An error message shown when the file is not available or cannot be opened.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi tập tin không có sẵn hoặc không thể mở</translatorcomment>
         <translation>Không thể mở tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="250"/>
+        <location filename="../src/db/PwDatabase.cpp" line="334"/>
         <source>Error loading database file</source>
         <comment>An error message shown when the file cannot be loaded/read.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi các tập tin không thể được nạp/đọc</translatorcomment>
         <translation>Lỗi tải tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="258"/>
+        <location filename="../src/db/PwDatabase.cpp" line="342"/>
         <source>Database file is empty</source>
         <comment>An error message</comment>
         <translatorcomment>Một thông báo lỗi</translatorcomment>
         <translation>Tập tin cơ sở dữ liệu trống</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="270"/>
+        <location filename="../src/db/PwDatabase.cpp" line="354"/>
         <source>Unknown database format</source>
         <comment>An error message for unrecognized/unsupported database file structure.</comment>
         <translatorcomment>Một thông báo lỗi cho cấu trúc tập tin không đượcnhận dạng/không hỗ trợ cơ sở dữ liệu</translatorcomment>
         <translation>Không xác định được dạng cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="309"/>
+        <location filename="../src/db/PwDatabase.cpp" line="393"/>
         <source>Cannot open key file</source>
         <comment>An error message shown when the file is not available or cannot be read. See &apos;key file&apos; in the supplied thesaurus.</comment>
         <translatorcomment>Thông báo lỗi hiển thị khi tập tin là không có sẵn hoặc không thể đọc. Xem &apos;tập tin quan trọng&apos; trong từ điển cung cấp</translatorcomment>
         <translation>Không thể mở tập tin quan trọng</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="408"/>
+        <location filename="../src/db/PwDatabase.cpp" line="492"/>
         <source>Cannot save database file</source>
         <comment>An error message shown when the database file cannot be saved.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi không thể lưu tệp cơ sở dữ liệu</translatorcomment>
         <translation>Không thể lưu tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="414"/>
+        <location filename="../src/db/PwDatabase.cpp" line="498"/>
         <source>Cannot write to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi các tập tin cơ sở dữ liệu không thể được ghi vào</translatorcomment>
         <translation>Không thể ghi vào tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="419"/>
+        <location filename="../src/db/PwDatabase.cpp" line="503"/>
         <source>Error writing to database file</source>
         <comment>An error message shown when the database file cannot be written to.</comment>
         <translatorcomment>Một thông báo lỗi hiển thị khi các tập tin cơ sở dữ liệu không thể được ghi vào</translatorcomment>
         <translation>Lỗi ghi vào tập tin cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/PwDatabase.cpp" line="399"/>
+        <location filename="../src/db/PwDatabase.cpp" line="483"/>
         <source>Cannot backup database file. Saving cancelled.</source>
         <comment>An error message: failed to make a backup copy of the database file.</comment>
         <translatorcomment>Một thông báo lỗi: không thể tạo một bản sao của tập tin cơ sở dữ liệu</translatorcomment>
@@ -1271,35 +1271,35 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>PwDatabaseV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="175"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="171"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translatorcomment>Thông báo lỗi chung từ thư viện mã hóa</translatorcomment>
         <translation>Mật mã thư viện lỗi</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="253"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="250"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translatorcomment>Một thông báo lỗi chung</translatorcomment>
         <translation>Không thể giải mã cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="275"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="272"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translatorcomment>Một thông báo mỗi</translatorcomment>
         <translation>Không thể giải mã cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="287"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="284"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translatorcomment>Một thông báo lỗi: phân tích cú pháp đề cập đến sự phân tích/hiểu biết về tập tin nội dung (không nhầm lẫn với đọc nó)</translatorcomment>
         <translation>Không thể phân tích cú pháp cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="472"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="437"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translatorcomment>Một thông báo lỗi</translatorcomment>
@@ -1309,151 +1309,156 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>PwDatabaseV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="338"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="337"/>
         <source>Recycle Bin</source>
         <comment>Name of a group which contains deleted entries</comment>
         <translatorcomment>Tên của một nhóm có chứa mục đã xoá</translatorcomment>
         <translation>Thùng rác</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="387"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="379"/>
         <source>Cryptographic library error</source>
         <comment>Generic error message from a cryptographic library</comment>
         <translatorcomment>Thông báo lỗi chung từ một thư viện mã hóa</translatorcomment>
         <translation>Mật mã thư viện lỗi</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="553"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="481"/>
         <source>Cannot decrypt database</source>
         <comment>A generic error message</comment>
         <translatorcomment>Một thông báo lỗi chung</translatorcomment>
-        <translation>Không thể giải mã cơ sở dữ liệu</translation>
+        <translation type="unfinished">Không thể giải mã cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="566"/>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="616"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="494"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="544"/>
         <source>Cannot decrypt database</source>
         <comment>An error message</comment>
         <translatorcomment>Một thông báo lỗi</translatorcomment>
-        <translation>Không thể giải mã cơ sở dữ liệu</translation>
+        <translation type="unfinished">Không thể giải mã cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="591"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="519"/>
         <source>Error reading database</source>
         <comment>An error message</comment>
         <translatorcomment>Một thông báo mỗi</translatorcomment>
-        <translation>Lỗi đọc cơ sở dữ liệu</translation>
+        <translation type="unfinished">Lỗi đọc cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="604"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="532"/>
         <source>Error inflating database</source>
         <comment>An error message. Inflating means decompression of compressed data.</comment>
         <translatorcomment>Một thông báo lỗi. Lạm phát phương tiện giải nén dữ liệu</translatorcomment>
-        <translation>Lỗi lạm phát cơ sở dữ liệu</translation>
+        <translation type="unfinished">Lỗi lạm phát cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="628"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="556"/>
         <source>Cannot parse database</source>
         <comment>An error message. Parsing refers to the analysis/understanding of file content (do not confuse with reading it).</comment>
         <translatorcomment>Một thông báo lỗi. Phân tích cú pháp đề cập đến sự phân tích/hiểu biết về tập tin nội dung (không nhầm lẫn với đọc nó)</translatorcomment>
-        <translation>Không thể phân tích cú pháp cơ sở dữ liệu</translation>
+        <translation type="unfinished">Không thể phân tích cú pháp cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="843"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="775"/>
         <source>Cannot save database</source>
         <comment>An error message</comment>
         <translatorcomment>Một thông báo lỗi</translatorcomment>
-        <translation>Không thể lưu cơ sở dữ liệu</translation>
+        <translation type="unfinished">Không thể lưu cơ sở dữ liệu</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1081"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1014"/>
         <source>General</source>
         <comment>Name of a sample group intended for various/miscellaneous entries</comment>
         <translatorcomment>Tên của một nhóm mẫu thiết kế cho các mục khác nhau/linh tinh</translatorcomment>
-        <translation>Tổng quát</translation>
+        <translation type="unfinished">Tổng quát</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1085"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1018"/>
         <source>System</source>
         <comment>Name of a sample group intended for operating system related entries</comment>
         <translatorcomment>Tên của một nhóm mẫu dành cho hệ điều hành quan hệ với mục</translatorcomment>
-        <translation>Hệ thống</translation>
+        <translation type="unfinished">Hệ thống</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1089"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1022"/>
         <source>Network</source>
         <comment>Name of a sample group intended for computer network related entries (servers, routers, etc)</comment>
         <translatorcomment>Tên của một nhóm mẫu dành cho mạng máy tính liên quan đến mục (máy chủ, router, vv)</translatorcomment>
-        <translation>Mạng</translation>
+        <translation type="unfinished">Mạng</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1093"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1026"/>
         <source>Internet</source>
         <comment>Name of a sample group intended for general Internet-related entries (websites, forums, social networks, etc)</comment>
         <translatorcomment>Tên của một nhóm mẫu dành chung cho Internet liên quan đến mục (trang web, diễn đàn, mạng xã hội, vv)</translatorcomment>
-        <translation>Internet</translation>
+        <translation type="unfinished">Internet</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1097"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1030"/>
         <source>eMail</source>
         <comment>Name of a sample group intended for e-mail related entries (email accounts)</comment>
         <translatorcomment>Tên của một nhóm mẫu dành cho thư điện tử liên quan đến mục (tài khoản email)</translatorcomment>
-        <translation>eMail</translation>
+        <translation type="unfinished">eMail</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1101"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1034"/>
         <source>Homebanking</source>
         <comment>Name of a sample group intended for banking/finance related entries (Internet banking, credit cards, payment gateways)</comment>
         <translatorcomment>Tên của một nhóm mẫu dành cho ngân hàng/tài chính liên quan đến mục (Internet ngân hàng, thẻ tín dụng, cổng thanh toán)</translatorcomment>
-        <translation>Trang chủ ngân hàng</translation>
+        <translation type="unfinished">Trang chủ ngân hàng</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1104"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1037"/>
         <source>Sample Entry</source>
         <comment>Title of a sample entry</comment>
         <translatorcomment>Tiêu đề của mẫu mục</translatorcomment>
-        <translation>Mục nhập mẫu</translation>
+        <translation type="unfinished">Mục nhập mẫu</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1105"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1038"/>
         <source>john.smith</source>
         <comment>Sample user name of a sample entry. Set to a typical person name for your language.</comment>
         <translatorcomment>Mẫu tên người dùng của một mục mẫu. Đặt tên người tiêu biểu cho ngôn ngữ của bạn</translatorcomment>
-        <translation>nguyen.van.a</translation>
+        <translation type="unfinished">nguyen.van.a</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1106"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="1039"/>
         <source>pa$$word</source>
         <comment>Sample password of a sample entry. Translation is optional.</comment>
         <translatorcomment>Mẫu các mật khẩu của một mục mẫu. Dịch thuật là tùy chọn</translatorcomment>
-        <translation>Mật khẩu</translation>
+        <translation type="unfinished">Mật khẩu</translation>
     </message>
 </context>
 <context>
     <name>PwHeaderV3</name>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="126"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="129"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu</translatorcomment>
         <translation>Chữ ký cơ sở dữ liệu sai</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="128"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="131"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu</translatorcomment>
         <translation>Phiên bản cơ sở dữ liệu không được hỗ trợ</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="130"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="133"/>
+        <source>Unsupported cypher type</source>
+        <comment>Error message when opening a database.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu.</translatorcomment>
-        <translation>Thuật toán Twofish không được hỗ trợ</translation>
+        <translation type="obsolete">Thuật toán Twofish không được hỗ trợ</translation>
     </message>
     <message>
-        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="132"/>
+        <location filename="../src/db/v3/PwDatabaseV3.cpp" line="135"/>
         <source>Header error %1</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu. &apos;Tiêu đề&apos; đề cập đến dữ liệu bổ sung được đặt ở đầu của một tập tin</translatorcomment>
@@ -1463,35 +1468,35 @@ Lưu ý: Vì lý do an toàn, nút dưới cùng bên trái khóa luôn luôn đ
 <context>
     <name>PwHeaderV4</name>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="191"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="190"/>
         <source>Wrong database signature</source>
         <comment>Error message when opening a database.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu</translatorcomment>
         <translation>Chữ ký cơ sở dữ liệu sai</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="193"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="192"/>
         <source>Unsupported database version</source>
         <comment>Error message when opening a database.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu</translatorcomment>
         <translation>Phiên bản cơ sở dữ liệu không được hỗ trợ</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="195"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="194"/>
         <source>Unknown compression algorithm</source>
         <comment>Error message when opening a database.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu</translatorcomment>
         <translation>Thuật toán giải nén không rõ</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="197"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="196"/>
         <source>Twofish cypher is not supported</source>
         <comment>Error message when opening a database. &apos;Twofish&apos; is an algorithm name, do not translate it.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu. </translatorcomment>
         <translation>Thuật toán Twofish không được hỗ trợ</translation>
     </message>
     <message>
-        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="199"/>
+        <location filename="../src/db/v4/PwDatabaseV4.cpp" line="198"/>
         <source>Header error</source>
         <comment>Error message when opening a database. &apos;Header&apos; refers to supplemental data placed at the beginning of a file.</comment>
         <translatorcomment>Thông báo lỗi khi mở một cơ sở dữ liệu. &apos;Tiêu đề&apos; đề cập đến dữ liệu bổ sung được đặt ở đầu của một tập tin</translatorcomment>
