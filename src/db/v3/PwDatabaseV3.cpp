@@ -35,10 +35,7 @@ const QDateTime PwDatabaseV3::EXPIRY_DATE_NEVER = QDateTime(QDate(2999, 12, 28),
 
 PwHeaderV3::PwHeaderV3(QObject* parent) : QObject(parent),
         masterSeed(), initialVector(), contentHash(), transformSeed() {
-    flags = 0;
-    transformRounds = 0;
-    groupCount = 0;
-    entryCount = 0;
+    clear();
 }
 
 PwHeaderV3::~PwHeaderV3() {
@@ -47,6 +44,7 @@ PwHeaderV3::~PwHeaderV3() {
 
 void PwHeaderV3::clear() {
     flags = 0;
+    cypherAlgorithm = ALGORITHM_AES;
     Util::safeClear(masterSeed);
     Util::safeClear(initialVector);
     Util::safeClear(contentHash);
@@ -66,10 +64,15 @@ PwHeaderV3::ErrorCode PwHeaderV3::read(QDataStream& stream) {
         return SIGNATURE_1_MISMATCH;
     if (sign2 != SIGNATURE_2)
         return SIGNATURE_2_MISMATCH;
-    if ((flags & FLAG_TWOFISH) || !(flags & FLAG_RIJNDAEL))
-        return NOT_AES;
     if ((fileVersion & 0xFFFFFF00) != (DB_VERSION & 0xFFFFFF00))
         return UNSUPPORTED_FILE_VERSION;
+
+    if ((flags & FLAG_RIJNDAEL) || !(flags & FLAG_TWOFISH)) {
+        cypherAlgorithm = ALGORITHM_AES;
+    } else if ((flags & FLAG_TWOFISH) || !(flags & FLAG_RIJNDAEL)) {
+        cypherAlgorithm = ALGORITHM_TWOFISH;
+    } else
+        return UNSUPPORTED_CYPHER;
 
     LOG("Signatures match");
 
@@ -126,8 +129,8 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
         return tr("Wrong database signature", "Error message when opening a database.");
     case UNSUPPORTED_FILE_VERSION:
         return tr("Unsupported database version", "Error message when opening a database.");
-    case NOT_AES:
-        return tr("Twofish cypher is not supported", "Error message when opening a database. 'Twofish' is an algorithm name, do not translate it.");
+    case UNSUPPORTED_CYPHER:
+        return tr("Unsupported cypher type", "Error message when opening a database.");
     default:
         return tr("Header error %1", "Error message when opening a database. 'Header' refers to supplemental data placed at the beginning of a file.").arg(errCode);
     }
@@ -135,7 +138,7 @@ QString PwHeaderV3::getErrorMessage(ErrorCode errCode) {
 
 
 PwDatabaseV3::PwDatabaseV3(QObject* parent) : PwDatabase(parent),
-        header(), combinedKey(), aesKey(), metaStreamEntries(), backupGroup(NULL) {
+        header(), combinedKey(), masterKey(), metaStreamEntries(), backupGroup(NULL) {
     header.setParent(this);
 }
 
@@ -148,7 +151,7 @@ void PwDatabaseV3::clear() {
     metaStreamEntries.clear();
     header.clear();
     Util::safeClear(combinedKey);
-    Util::safeClear(aesKey);
+    Util::safeClear(masterKey);
     backupGroup = NULL; // this is just a pointer, the actual group will be cleared by the base class
     PwDatabase::clear();
 }
@@ -238,10 +241,10 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
         return false;
     }
 
-    /* Calculate the AES key */
+    /* Calculate the encryption key */
     setPhaseProgressBounds(UNLOCK_PROGRESS_KEY_TRANSFORM);
     PwDatabase::ErrorCode dbErr = transformKey(header.getMasterSeed(), header.getTransformSeed(),
-            header.getTransformRounds(), combinedKey, aesKey);
+            header.getTransformRounds(), combinedKey, masterKey);
     if (dbErr != PwDatabase::SUCCESS) {
         LOG("Cannot decrypt database - transformKey: %d", dbErr);
         emit dbLoadError(tr("Cannot decrypt database", "A generic error message"), dbErr);
@@ -288,9 +291,24 @@ bool PwDatabaseV3::readDatabase(const QByteArray& dbBytes) {
 // Decrypts the DB's data using current keys.
 PwDatabaseV3::ErrorCode PwDatabaseV3::decryptData(const QByteArray& encryptedData, QByteArray& decryptedData) {
     CryptoManager* cm = CryptoManager::instance();
-    int err = cm->decryptAES(aesKey, header.getInitialVector(), encryptedData, decryptedData, this);
-    if (err != SB_SUCCESS) {
-        LOG("decryptAES error: %d", err);
+    int err;
+    switch (header.getCypherAlgorithm()) {
+    case PwHeaderV3::ALGORITHM_AES:
+        err = cm->decryptAES(masterKey, header.getInitialVector(), encryptedData, decryptedData, this);
+        if (err != SB_SUCCESS) {
+            LOG("decryptAES error: %d", err);
+            return CANNOT_DECRYPT_DB_AES;
+        }
+        break;
+    case PwHeaderV3::ALGORITHM_TWOFISH:
+        err = cm->decryptTwofish(masterKey, header.getInitialVector(), encryptedData, decryptedData, this);
+        if (err != SB_SUCCESS) {
+            LOG("decryptTwofish error: %d", err);
+            return CANNOT_DECRYPT_DB_TWOFISH;
+        }
+        break;
+    default:
+        LOG("This should not happen: Unexpected cypher algorithm");
         return CANNOT_DECRYPT_DB;
     }
 
@@ -447,7 +465,7 @@ bool PwDatabaseV3::save(QByteArray& outData) {
     header.randomizeInitialVectors();
     setPhaseProgressBounds(SAVE_PROGRESS_KEY_TRANSFORM);
     PwDatabase::ErrorCode dbErr = transformKey(header.getMasterSeed(), header.getTransformSeed(),
-            header.getTransformRounds(), combinedKey, aesKey);
+            header.getTransformRounds(), combinedKey, masterKey);
     if (dbErr != PwDatabase::SUCCESS) {
         LOG("transformKey error while saving: %d", dbErr);
         emit dbSaveError(saveErrorMessage, dbErr);
@@ -480,9 +498,25 @@ bool PwDatabaseV3::save(QByteArray& outData) {
 PwDatabaseV3::ErrorCode PwDatabaseV3::encryptContent(QByteArray& contentData, QByteArray& encryptedContentData) {
     CryptoManager* cm = CryptoManager::instance();
     cm->addPadding16(contentData);
-    int err = cm->encryptAES(SB_AES_CBC, aesKey, header.getInitialVector(), contentData, encryptedContentData, this);
-    if (err != SB_SUCCESS) {
-        LOG("encryptAES error while saving: %d", err);
+
+    int err;
+    switch (header.getCypherAlgorithm()) {
+    case PwHeaderV3::ALGORITHM_AES:
+        err = cm->encryptAES(SB_AES_CBC, masterKey, header.getInitialVector(), contentData, encryptedContentData, this);
+        if (err != SB_SUCCESS) {
+            LOG("encryptAES error while saving: %d", err);
+            return CANNOT_ENCRYPT_DB_AES;
+        }
+        break;
+    case PwHeaderV3::ALGORITHM_TWOFISH:
+        err = cm->encryptTwofish(masterKey, header.getInitialVector(), contentData, encryptedContentData, this);
+        if (err != SB_SUCCESS) {
+            LOG("encryptTwofish error while saving: %d", err);
+            return CANNOT_ENCRYPT_DB_TWOFISH;
+        }
+        break;
+    default:
+        LOG("This should not happen: Unexpected cypher algorithm");
         return CANNOT_ENCRYPT_DB;
     }
     return SUCCESS;

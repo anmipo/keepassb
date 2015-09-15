@@ -83,6 +83,26 @@ public:
 	        ProgressObserver* progressObserver = 0);
 
 	/**
+	 * Encrypts data with Twofish.
+	 * plainText size must be a multiple of 16.
+	 * cipherText will be resized to fit the result
+	 * Returns either SB_SUCCESS or an error code.
+	 */
+    int encryptTwofish(const QByteArray& key, const QByteArray& initVector,
+            const QByteArray& plainText, QByteArray& cipherText,
+            ProgressObserver* progressObserver = 0);
+
+    /**
+     * Decrypts data with Twofish.
+     * plainText must be preallocated to fit the result
+     * Assumes cypherText size is a multiple of 16.
+     * Returns either SB_SUCCES or an error code.
+     */
+    int decryptTwofish(const QByteArray& key, const QByteArray& initVector,
+            const QByteArray& cypherText, QByteArray& plainText,
+            ProgressObserver* progressObserver = 0);
+
+	/**
 	 * Adds PKCS#7 padding to the array to ensure (mod 16) length.
 	 */
 	static void addPadding16(QByteArray& data);

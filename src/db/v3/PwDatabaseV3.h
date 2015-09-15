@@ -19,6 +19,22 @@
  */
 class PwHeaderV3: public QObject {
     Q_OBJECT
+public:
+    const static int HEADER_SIZE = 124;
+    const static quint32 SIGNATURE_1 = 0x9AA2D903;
+    const static quint32 SIGNATURE_2 = 0xB54BFB65;
+    const static quint32 DB_VERSION  = 0x00030003;
+    enum Flag {
+        FLAG_SHA2     = 1,
+        FLAG_RIJNDAEL = 2,
+        FLAG_ARCFOUR  = 4,
+        FLAG_TWOFISH  = 8
+    };
+    enum CypherAlgorithm {
+        ALGORITHM_AES     = 0,
+        ALGORITHM_TWOFISH = 1
+    };
+
 private:
     quint32 flags; // used internally by KeePass
     QByteArray masterSeed;
@@ -28,29 +44,15 @@ private:
     quint32 transformRounds;
     quint32 groupCount;
     quint32 entryCount;
+    CypherAlgorithm cypherAlgorithm;
 public:
-    const static int HEADER_SIZE = 124;
-    const static quint32 SIGNATURE_1 = 0x9AA2D903;
-    const static quint32 SIGNATURE_2 = 0xB54BFB65;
-    const static quint32 DB_VERSION  = 0x00030003;
-    enum Flags {
-        FLAG_SHA2     = 1,
-        FLAG_RIJNDAEL = 2,
-        FLAG_ARCFOUR  = 4,
-        FLAG_TWOFISH  = 8
-    };
-    enum Algorithms {
-        ALGORITHM_AES     = 0,
-        ALGORITHM_TWOFISH = 1
-    };
-
     /** Error codes returned by header's methods */
     enum ErrorCode {
         SUCCESS               = 0,
         SIGNATURE_1_MISMATCH  = 1,
         SIGNATURE_2_MISMATCH  = 2,
         UNSUPPORTED_FILE_VERSION = 3,
-        NOT_AES                  = 4, // only AES/Rijndael is supported
+        UNSUPPORTED_CYPHER       = 4, // only AES/Twofish are supported
         ERROR_RANDOMIZING_IVS    = 5,
     };
     /**
@@ -71,6 +73,7 @@ public:
     /** Erases loaded data from memory */
     void clear();
 
+    CypherAlgorithm getCypherAlgorithm() const { return cypherAlgorithm; }
     quint32 getTransformRounds() const { return transformRounds; }
     QByteArray getMasterSeed() const { return masterSeed; }
     QByteArray getTransformSeed() const { return transformSeed; }
@@ -93,21 +96,25 @@ public:
     enum ErrorCode {
         SUCCESS = PwDatabase::SUCCESS,
         HEADER_SIZE_ERROR       = 0x10,
-        CANNOT_DECRYPT_DB        = 0x30,
-        DECRYPTED_PADDING_ERROR  = 0x31,
-        CONTENT_HASHING_ERROR    = 0x32,  // == generic crypto lib error
-        DECRYPTED_CHECKSUM_MISMATCH = 0x33,
+        CANNOT_DECRYPT_DB        = 0x30, // generic error
+        CANNOT_DECRYPT_DB_AES    = 0x31,
+        CANNOT_DECRYPT_DB_TWOFISH= 0x32,
+        DECRYPTED_PADDING_ERROR  = 0x33,
+        CONTENT_HASHING_ERROR    = 0x34,  // == generic crypto lib error
+        DECRYPTED_CHECKSUM_MISMATCH = 0x35,
         NOT_ENOUGH_GROUPS        = 0x40,
         NOT_ENOUGH_ENTRIES       = 0x45,
         ORPHANED_ENTRY_ERROR     = 0x50,
         // write-related error start from 0x80
-        CANNOT_ENCRYPT_DB        = 0x80,
+        CANNOT_ENCRYPT_DB        = 0x80, // generic error
+        CANNOT_ENCRYPT_DB_AES    = 0x81,
+        CANNOT_ENCRYPT_DB_TWOFISH= 0x82,
     };
 
 private:
     PwHeaderV3 header;
     QByteArray combinedKey;
-    QByteArray aesKey;
+    QByteArray masterKey;
     QList<PwEntryV3*> metaStreamEntries;
     PwGroupV3* backupGroup;
 

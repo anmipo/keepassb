@@ -15,11 +15,15 @@
 #include "huaes.h"
 #include "huseed.h"
 #include "hurandom.h"
+#include "crypto/Twofish.h"
 
 CryptoManager* CryptoManager::_instance;
 
 // convenience macro: if func returns an SB_ error, log it and return its code
 #define RETURN_IF_SB_ERROR(func, msg) {int errCode = (func); if (errCode != SB_SUCCESS) { LOG("%s. ErrCode: %d", msg, errCode); return errCode; }}
+
+// TwoFish block size in bytes
+const int TWOFISH_BLOCK_SIZE = 16;
 
 CryptoManager::CryptoManager(QObject* parent): QObject(parent),
         keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
@@ -195,7 +199,7 @@ void CryptoManager::addPadding16(QByteArray& data) {
  */
 bool CryptoManager::removePadding16(QByteArray& data) {
     int length = data.length();
-    if (length >= 0) {
+    if (length > 0) {
 		// check if padding length is correct
         int padLength = data.at(length - 1);
         if ((padLength < 1) || (padLength > 16)) {
@@ -333,6 +337,95 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
 	return SB_SUCCESS;
 }
 
+/**
+ * Encrypts data with Twofish.
+ * plainText size must be a multiple of 16.
+ * cipherText will be resized to fit the result
+ * Returns either SB_SUCCESS or an error code.
+ */
+int CryptoManager::encryptTwofish(const QByteArray& key, const QByteArray& initVector,
+        const QByteArray& plainText, QByteArray& cipherText,
+        ProgressObserver* progressObserver) {
+    Q_ASSERT((plainText.size() % TWOFISH_BLOCK_SIZE) == 0);
+    Q_ASSERT(initVector.size() == TWOFISH_BLOCK_SIZE);
+
+    cipherText.fill(0, plainText.size());
+
+    int nBlocks = plainText.size() / TWOFISH_BLOCK_SIZE;
+    if (progressObserver)
+        progressObserver->setPhaseProgressRawTarget(nBlocks);
+
+    const quint8* iv = reinterpret_cast<const quint8*>(initVector.constData());
+    const quint8* pInBuf = reinterpret_cast<const quint8*>(plainText.constData());
+    quint8* pOutBuf = reinterpret_cast<quint8*>(cipherText.data());
+    quint8 block[TWOFISH_BLOCK_SIZE];
+
+    TwofishKey twofishKey;
+    Twofish twofish;
+    twofish.PrepareKey(reinterpret_cast<const quint8*>(key.constData()), key.size(), &twofishKey);
+
+    for (int i = 0; i < nBlocks; i++) {
+        ((quint32*)block)[0] = ((quint32*)pInBuf)[0] ^ ((quint32*)iv)[0];
+        ((quint32*)block)[1] = ((quint32*)pInBuf)[1] ^ ((quint32*)iv)[1];
+        ((quint32*)block)[2] = ((quint32*)pInBuf)[2] ^ ((quint32*)iv)[2];
+        ((quint32*)block)[3] = ((quint32*)pInBuf)[3] ^ ((quint32*)iv)[3];
+        twofish.Encrypt(&twofishKey, block, pOutBuf);
+        iv = pOutBuf;
+        pOutBuf += TWOFISH_BLOCK_SIZE;
+        pInBuf += TWOFISH_BLOCK_SIZE;
+        if (progressObserver)
+            progressObserver->setProgress(i);
+    }
+
+    twofishKey.Clear();
+    return SB_SUCCESS;
+}
+
+/**
+ * Decrypts data with Twofish.
+ * plainText must be preallocated to fit the result
+ * Assumes cypherText size is a multiple of 16.
+ * Returns either SB_SUCCES or an error code.
+ */
+int CryptoManager::decryptTwofish(const QByteArray& key, const QByteArray& initVector,
+        const QByteArray& cypherText, QByteArray& plainText,
+        ProgressObserver* progressObserver) {
+    Q_ASSERT(initVector.size() == TWOFISH_BLOCK_SIZE);
+    Q_ASSERT((cypherText.size() % TWOFISH_BLOCK_SIZE) == 0);
+
+    int nBlocks = cypherText.size() / TWOFISH_BLOCK_SIZE;
+
+    if (progressObserver)
+        progressObserver->setPhaseProgressRawTarget(nBlocks);
+
+    TwofishKey twofishKey;
+    Twofish twofish;
+    twofish.PrepareKey(reinterpret_cast<const quint8*>(key.constData()), key.size(), &twofishKey);
+
+    quint32 iv[4];
+    memcpy(iv, reinterpret_cast<const quint8*>(initVector.constData()), TWOFISH_BLOCK_SIZE);
+    const quint8* pInBuf = reinterpret_cast<const quint8*>(cypherText.constData());
+    quint8* pOutBuf = reinterpret_cast<quint8*>(plainText.data());
+
+    quint8 block[TWOFISH_BLOCK_SIZE];
+    for (int i = 0; i < nBlocks; i++) {
+        twofish.Decrypt(&twofishKey, pInBuf, block);
+        ((quint32*)block)[0] ^= iv[0];
+        ((quint32*)block)[1] ^= iv[1];
+        ((quint32*)block)[2] ^= iv[2];
+        ((quint32*)block)[3] ^= iv[3];
+        memcpy(iv, pInBuf, TWOFISH_BLOCK_SIZE);
+        memcpy(pOutBuf, block, TWOFISH_BLOCK_SIZE);
+        pInBuf += TWOFISH_BLOCK_SIZE;
+        pOutBuf += TWOFISH_BLOCK_SIZE;
+
+        if (progressObserver)
+            progressObserver->setProgress(i);
+    }
+    twofishKey.Clear();
+    // de-padding is performed elsewhere
+    return SB_SUCCESS;
+}
 
 /**
  * Salsa 20 reference implementation by D. J. Bernstein (version 20080912)
