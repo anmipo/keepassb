@@ -1,8 +1,8 @@
 /*
  * PwDatabaseV4.cpp
  *
- *  Created on: 1 Jun 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include "PwDatabaseV4.h"

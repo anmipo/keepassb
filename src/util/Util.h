@@ -3,8 +3,8 @@
  *
  * Application-wide utility methods.
  *
- *  Created on: 7 Jul 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef UTIL_H_

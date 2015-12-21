@@ -1,8 +1,8 @@
 /*
  * CryptoManager.h
  *
- *  Created on: 1 May 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  *
  *  Based on BlackBerry's PasswordSample example distributed under Apache License, Version 2.0.
  *  https://github.com/blackberry/Cascades-Community-Samples/blob/master/PasswordSample/src/SecurityManager.hpp

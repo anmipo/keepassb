@@ -1,5 +1,8 @@
-/**
+/*
  * Common functions used by different QML files
+ * 
+ * Copyright (c) 2014-2016 Andrei Popleteev. 
+ * Licensed under the MIT license.
  */
 
 /**

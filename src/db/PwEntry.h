@@ -1,8 +1,8 @@
 /*
  * PwEntry.h
  *
- *  Created on: 27 May 2014
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PWENTRY_H_

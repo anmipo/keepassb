@@ -1,8 +1,8 @@
 /*
  * PwEntryV3.h
  *
- *  Created on: 21 Aug 2014
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PWENTRYV3_H_

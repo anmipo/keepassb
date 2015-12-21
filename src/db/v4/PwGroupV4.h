@@ -1,8 +1,8 @@
 /*
  * PwGroupV4.h
  *
- *  Created on: 3 Jun 2014
- *      Author: andrei.popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PWGROUPV4_H_

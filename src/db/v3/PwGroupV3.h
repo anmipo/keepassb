@@ -1,8 +1,8 @@
 /*
  * PwGroupV3.h
  *
- *  Created on: 19 Aug 2014
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PWGROUPV3_H_

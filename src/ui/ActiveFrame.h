@@ -3,8 +3,8 @@
  *
  * Active frame for the minimized state of the app.
  *
- *  Created on: 21 Jun 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef ACTIVEFRAME_H_

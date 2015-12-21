@@ -3,8 +3,8 @@
  *
  * Represents UUID of KeePass database entries/groups.
  *
- *  Created on: 25 Jun 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PWUUID_H_

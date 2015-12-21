@@ -1,8 +1,8 @@
 /*
  * ApplicationUI.cpp
  *
- *  Created on: 8 May 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include "applicationui.hpp"

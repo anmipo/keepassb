@@ -1,8 +1,8 @@
 /*
  * PwStreamUtilsV3.cpp
  *
- *  Created on: 11 Sep 2014
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include <PwStreamUtilsV3.h>

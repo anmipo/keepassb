@@ -1,8 +1,8 @@
 /*
  * ProgressObserver.cpp
  *
- *  Created on: 28 Mar 2015
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include "util/ProgressObserver.h"

@@ -1,8 +1,8 @@
 /*
  * PasswordGenerator.cpp
  *
- *  Created on: 21 Sep 2014
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include <PasswordGenerator.h>

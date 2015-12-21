@@ -1,8 +1,8 @@
 /*
  * DefsV4.h
  *
- *  Created on: 11 Dec 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef DEFSV4_H_

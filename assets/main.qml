@@ -1,4 +1,9 @@
 /*
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
+ *
+ * Based on BlackBerry's template with the following notice:
+ *
  * Copyright (c) 2011-2013 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

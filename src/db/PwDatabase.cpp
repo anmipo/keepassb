@@ -1,8 +1,8 @@
 /*
  * PwDatabase.cpp
  *
- *  Created on: 26 May 2014
- *      Author: andrei.popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include "PwDatabase.h"

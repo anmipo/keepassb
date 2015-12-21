@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2014 Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev. 
+ * Licensed under the MIT license.
  */
 
 import bb.cascades 1.4

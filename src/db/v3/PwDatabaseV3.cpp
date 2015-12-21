@@ -1,8 +1,8 @@
 /*
  * PwDatabaseV3.cpp
  *
- *  Created on: 16 Aug 2014
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include "PwDatabaseV3.h"

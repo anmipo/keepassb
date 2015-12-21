@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014-2016 Andrei Popleteev. 
+ * Licensed under the MIT license.
+ */
+
 import bb.cascades 1.2
 
 PageWithWatchdog {
@@ -48,7 +53,7 @@ PageWithWatchdog {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 Label{
-                    text: qsTr("\u00A92014\u20132015 Andrei Popleteev", "Developer name, do not translate") + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr("\u00A92014\u20132016 Andrei Popleteev", "Developer name, do not translate") + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.PrimaryText
                     horizontalAlignment: HorizontalAlignment.Center
                 }

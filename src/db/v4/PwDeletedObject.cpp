@@ -1,8 +1,8 @@
 /*
  * PwDeletedObject.cpp
  *
- *  Created on: 27 Mar 2015
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include <PwDeletedObject.h>

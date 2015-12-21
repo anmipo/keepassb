@@ -1,8 +1,8 @@
 /*
  * PwDeletedObject.h
  *
- *  Created on: 27 Mar 2015
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PWDELETEDOBJECT_H_

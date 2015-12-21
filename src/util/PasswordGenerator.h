@@ -1,8 +1,8 @@
 /*
  * PasswordGenerator.h
  *
- *  Created on: 21 Sep 2014
- *      Author: Andrei Popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PASSWORDGENERATOR_H_

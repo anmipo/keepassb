@@ -1,8 +1,8 @@
 /*
  * PwEntryV4.h
  *
- *  Created on: 3 Jun 2014
- *      Author: andrei.popleteev
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #ifndef PWENTRYV4_H_

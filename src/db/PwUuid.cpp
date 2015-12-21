@@ -1,8 +1,8 @@
 /*
  * PwUuid.cpp
  *
- *  Created on: 25 Jun 2014
- *      Author: Andrei
+ * Copyright (c) 2014-2016 Andrei Popleteev.
+ * Licensed under the MIT license.
  */
 
 #include <PwUuid.h>
