@@ -12,7 +12,7 @@
 #include <QTimer>
 
 class TimedClipboard : public bb::system::Clipboard {
-	Q_OBJECT
+    Q_OBJECT
 public:
     enum SelectedContentType {
         CONTENT_NONE   = 0x00, // there is no content in app's clipboard
@@ -24,27 +24,27 @@ public:
 private:
     SelectedContentType selectedContentType;
 
-	static const QString DATA_TYPE; // MIME type of clipboard data we work with
-	QTimer timer;
-	QByteArray simpleContent;
-	QByteArray firstContent;
-	QByteArray secondContent;
+    static const QString DATA_TYPE; // MIME type of clipboard data we work with
+    QTimer timer;
+    QByteArray simpleContent;
+    QByteArray firstContent;
+    QByteArray secondContent;
 
-	bool modified; // did we insert anything to system's clipboard?
+    bool modified; // did we insert anything to system's clipboard?
 private slots:
-	void timeout();
+    void timeout();
 public:
-	TimedClipboard(QObject* parent);
-	virtual ~TimedClipboard();
-	// negative timeout means no timeout
-	bool insertWithTimeout(const QString& text, const long timeoutMillis);
+    TimedClipboard(QObject* parent);
+    virtual ~TimedClipboard();
+    // negative timeout means no timeout
+    bool insertWithTimeout(const QString& text, const long timeoutMillis);
 
-	void insertPair(const QString& first, const QString& second, const long timeoutMillis);
-	void activateFirst();
-	void activateSecond();
-	void activateAlternative();
+    void insertPair(const QString& first, const QString& second, const long timeoutMillis);
+    void activateFirst();
+    void activateSecond();
+    void activateAlternative();
 
-	bool isPairActive();
+    bool isPairActive();
 
 public slots:
     /**

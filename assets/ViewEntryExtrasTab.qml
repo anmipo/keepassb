@@ -186,7 +186,7 @@ Container {
         
         function removeAttachmentAt(index) {
             // Delete without confirmation, as the attachment will remain in the entry backup/history
-			entry.registerModificationEvent();
+            entry.registerModificationEvent();
             entry.backupState();
             dataModel.removeAt(index);
             

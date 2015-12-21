@@ -34,7 +34,7 @@ Sheet {
         if (!creationMode) {
             entry.backupState();
         }
-		
+
         entry.iconId = iconId;
         entry.title = titleField.text;
         entry.userName = usernameField.text;
@@ -77,7 +77,7 @@ Sheet {
     onCreationCompleted: {
         // close without saving when DB is being locked
         database.dbLocked.connect(_close);
-		entry.registerAccessEvent();
+        entry.registerAccessEvent();
     }
     onClosed: {
         database.dbLocked.disconnect(_close);

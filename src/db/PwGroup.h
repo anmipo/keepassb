@@ -30,11 +30,11 @@ struct SearchParams {
 };
 
 class PwGroup : public bb::cascades::DataModel {
-	Q_OBJECT
-	Q_PROPERTY(int iconId READ getIconId WRITE setIconId NOTIFY iconIdChanged)
-	Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
-	Q_PROPERTY(QString notes READ getNotes WRITE setNotes NOTIFY notesChanged)
-	Q_PROPERTY(int itemsCount READ immediateChildCount NOTIFY itemsCountChanged)
+    Q_OBJECT
+    Q_PROPERTY(int iconId READ getIconId WRITE setIconId NOTIFY iconIdChanged)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString notes READ getNotes WRITE setNotes NOTIFY notesChanged)
+    Q_PROPERTY(int itemsCount READ immediateChildCount NOTIFY itemsCountChanged)
     Q_PROPERTY(QDateTime creationTime READ getCreationTime WRITE setCreationTime NOTIFY creationTimeChanged)
     Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
     Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
@@ -48,10 +48,10 @@ class PwGroup : public bb::cascades::DataModel {
 
 private:
     PwDatabase* _database;
-	PwUuid _uuid;
-	int _iconId;
-	QString _name;
-	QString _notes;
+    PwUuid _uuid;
+    int _iconId;
+    QString _name;
+    QString _notes;
     QDateTime _creationTime;
     QDateTime _lastModificationTime;
     QDateTime _lastAccessTime;
@@ -59,26 +59,26 @@ private:
     bool _expires;
     bool _deleted;
 
-	bool _isChildrenModified;
-	QList<PwGroup*> _subGroups, sortedGroups;
-	QList<PwEntry*> _entries, sortedEntries;
-	PwGroup* _parentGroup;
+    bool _isChildrenModified;
+    QList<PwGroup*> _subGroups, sortedGroups;
+    QList<PwEntry*> _entries, sortedEntries;
+    PwGroup* _parentGroup;
 private slots:
-	// Relays itemsChanged to itemsCountChanged; needed to match signatures of the two signals.
-	void itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type changeType);
+    // Relays itemsChanged to itemsCountChanged; needed to match signatures of the two signals.
+    void itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type changeType);
 protected slots:
-	/**
-	 * Sorts subgroups and entries according to the settings
-	 */
-	virtual void sortChildren();
+    /**
+     * Sorts subgroups and entries according to the settings
+     */
+    virtual void sortChildren();
 public:
     static const int DEFAULT_ICON_ID;
     static const int DEFAULT_OPEN_ICON_ID;
 
-	PwGroup(QObject* parent=0);
-	virtual ~PwGroup();
+    PwGroup(QObject* parent=0);
+    virtual ~PwGroup();
 
-	virtual void clear();
+    virtual void clear();
 
     /**
      * Recursively iterates through all the children groups and entries of this group
@@ -96,21 +96,21 @@ public:
      */
     Q_INVOKABLE virtual bool moveToBackup() { /* stub to avoid pure abstract PwGroup */ return false; }
 
-	virtual void addSubGroup(PwGroup* subGroup);
-	virtual void removeSubGroup(PwGroup* subGroup);
-	QList<PwGroup*> getSubGroups() const { return _subGroups; }
+    virtual void addSubGroup(PwGroup* subGroup);
+    virtual void removeSubGroup(PwGroup* subGroup);
+    QList<PwGroup*> getSubGroups() const { return _subGroups; }
 
-	virtual void addEntry(PwEntry* entry);
-	virtual void removeEntry(PwEntry* entry);
-	/** Moves entry from its current group to this one. */
-	virtual void moveEntry(PwEntry* entry);
+    virtual void addEntry(PwEntry* entry);
+    virtual void removeEntry(PwEntry* entry);
+    /** Moves entry from its current group to this one. */
+    virtual void moveEntry(PwEntry* entry);
 
-	QList<PwEntry*> getEntries() const { return _entries; }
+    QList<PwEntry*> getEntries() const { return _entries; }
 
-	/**
-	 * Checks if a group name is reserved for internal use and cannot be assigned by the user.
-	 */
-	Q_INVOKABLE virtual bool isNameReserved(const QString& name) { Q_UNUSED(name); return false; }
+    /**
+     * Checks if a group name is reserved for internal use and cannot be assigned by the user.
+     */
+    Q_INVOKABLE virtual bool isNameReserved(const QString& name) { Q_UNUSED(name); return false; }
 
     /**
      * Creates an entry in the group and returns a reference to it.

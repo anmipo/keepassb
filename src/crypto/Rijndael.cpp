@@ -42,22 +42,22 @@
 
 static quint8 S[256]=
 {
-	 99, 124, 119, 123, 242, 107, 111, 197,  48,   1, 103,  43, 254, 215, 171, 118,
-	202, 130, 201, 125, 250,  89,  71, 240, 173, 212, 162, 175, 156, 164, 114, 192,
-	183, 253, 147,  38,  54,  63, 247, 204,  52, 165, 229, 241, 113, 216,  49,  21,
-	  4, 199,  35, 195,  24, 150,   5, 154,   7,  18, 128, 226, 235,  39, 178, 117,
-	  9, 131,  44,  26,  27, 110,  90, 160,  82,  59, 214, 179,  41, 227,  47, 132,
-	 83, 209,   0, 237,  32, 252, 177,  91, 106, 203, 190,  57,  74,  76,  88, 207,
-	208, 239, 170, 251,  67,  77,  51, 133,  69, 249,   2, 127,  80,  60, 159, 168,
-	 81, 163,  64, 143, 146, 157,  56, 245, 188, 182, 218,  33,  16, 255, 243, 210,
-	205,  12,  19, 236,  95, 151,  68,  23, 196, 167, 126,  61, 100,  93,  25, 115,
-	 96, 129,  79, 220,  34,  42, 144, 136,  70, 238, 184,  20, 222,  94,  11, 219,
-	224,  50,  58,  10,  73,   6,  36,  92, 194, 211, 172,  98, 145, 149, 228, 121,
-	231, 200,  55, 109, 141, 213,  78, 169, 108,  86, 244, 234, 101, 122, 174,   8,
-	186, 120,  37,  46,  28, 166, 180, 198, 232, 221, 116,  31,  75, 189, 139, 138,
-	112,  62, 181, 102,  72,   3, 246,  14,  97,  53,  87, 185, 134, 193,  29, 158,
-	225, 248, 152,  17, 105, 217, 142, 148, 155,  30, 135, 233, 206,  85,  40, 223,
-	140, 161, 137,  13, 191, 230,  66, 104,  65, 153,  45,  15, 176,  84, 187,  22
+     99, 124, 119, 123, 242, 107, 111, 197,  48,   1, 103,  43, 254, 215, 171, 118,
+    202, 130, 201, 125, 250,  89,  71, 240, 173, 212, 162, 175, 156, 164, 114, 192,
+    183, 253, 147,  38,  54,  63, 247, 204,  52, 165, 229, 241, 113, 216,  49,  21,
+      4, 199,  35, 195,  24, 150,   5, 154,   7,  18, 128, 226, 235,  39, 178, 117,
+      9, 131,  44,  26,  27, 110,  90, 160,  82,  59, 214, 179,  41, 227,  47, 132,
+     83, 209,   0, 237,  32, 252, 177,  91, 106, 203, 190,  57,  74,  76,  88, 207,
+    208, 239, 170, 251,  67,  77,  51, 133,  69, 249,   2, 127,  80,  60, 159, 168,
+     81, 163,  64, 143, 146, 157,  56, 245, 188, 182, 218,  33,  16, 255, 243, 210,
+    205,  12,  19, 236,  95, 151,  68,  23, 196, 167, 126,  61, 100,  93,  25, 115,
+     96, 129,  79, 220,  34,  42, 144, 136,  70, 238, 184,  20, 222,  94,  11, 219,
+    224,  50,  58,  10,  73,   6,  36,  92, 194, 211, 172,  98, 145, 149, 228, 121,
+    231, 200,  55, 109, 141, 213,  78, 169, 108,  86, 244, 234, 101, 122, 174,   8,
+    186, 120,  37,  46,  28, 166, 180, 198, 232, 221, 116,  31,  75, 189, 139, 138,
+    112,  62, 181, 102,  72,   3, 246,  14,  97,  53,  87, 185, 134, 193,  29, 158,
+    225, 248, 152,  17, 105, 217, 142, 148, 155,  30, 135, 233, 206,  85,  40, 223,
+    140, 161, 137,  13, 191, 230,  66, 104,  65, 153,  45,  15, 176,  84, 187,  22
 };
 
 
@@ -607,70 +607,70 @@ static quint8 T8[256][4]=
 
 static quint8 S5[256]=
 {
-	0x52,0x09,0x6a,0xd5,
-	0x30,0x36,0xa5,0x38,
-	0xbf,0x40,0xa3,0x9e,
-	0x81,0xf3,0xd7,0xfb,
-	0x7c,0xe3,0x39,0x82,
-	0x9b,0x2f,0xff,0x87,
-	0x34,0x8e,0x43,0x44,
-	0xc4,0xde,0xe9,0xcb,
-	0x54,0x7b,0x94,0x32,
-	0xa6,0xc2,0x23,0x3d,
-	0xee,0x4c,0x95,0x0b,
-	0x42,0xfa,0xc3,0x4e,
-	0x08,0x2e,0xa1,0x66,
-	0x28,0xd9,0x24,0xb2,
-	0x76,0x5b,0xa2,0x49,
-	0x6d,0x8b,0xd1,0x25,
-	0x72,0xf8,0xf6,0x64,
-	0x86,0x68,0x98,0x16,
-	0xd4,0xa4,0x5c,0xcc,
-	0x5d,0x65,0xb6,0x92,
-	0x6c,0x70,0x48,0x50,
-	0xfd,0xed,0xb9,0xda,
-	0x5e,0x15,0x46,0x57,
-	0xa7,0x8d,0x9d,0x84,
-	0x90,0xd8,0xab,0x00,
-	0x8c,0xbc,0xd3,0x0a,
-	0xf7,0xe4,0x58,0x05,
-	0xb8,0xb3,0x45,0x06,
-	0xd0,0x2c,0x1e,0x8f,
-	0xca,0x3f,0x0f,0x02,
-	0xc1,0xaf,0xbd,0x03,
-	0x01,0x13,0x8a,0x6b,
-	0x3a,0x91,0x11,0x41,
-	0x4f,0x67,0xdc,0xea,
-	0x97,0xf2,0xcf,0xce,
-	0xf0,0xb4,0xe6,0x73,
-	0x96,0xac,0x74,0x22,
-	0xe7,0xad,0x35,0x85,
-	0xe2,0xf9,0x37,0xe8,
-	0x1c,0x75,0xdf,0x6e,
-	0x47,0xf1,0x1a,0x71,
-	0x1d,0x29,0xc5,0x89,
-	0x6f,0xb7,0x62,0x0e,
-	0xaa,0x18,0xbe,0x1b,
-	0xfc,0x56,0x3e,0x4b,
-	0xc6,0xd2,0x79,0x20,
-	0x9a,0xdb,0xc0,0xfe,
-	0x78,0xcd,0x5a,0xf4,
-	0x1f,0xdd,0xa8,0x33,
-	0x88,0x07,0xc7,0x31,
-	0xb1,0x12,0x10,0x59,
-	0x27,0x80,0xec,0x5f,
-	0x60,0x51,0x7f,0xa9,
-	0x19,0xb5,0x4a,0x0d,
-	0x2d,0xe5,0x7a,0x9f,
-	0x93,0xc9,0x9c,0xef,
-	0xa0,0xe0,0x3b,0x4d,
-	0xae,0x2a,0xf5,0xb0,
-	0xc8,0xeb,0xbb,0x3c,
-	0x83,0x53,0x99,0x61,
-	0x17,0x2b,0x04,0x7e,
-	0xba,0x77,0xd6,0x26,
-	0xe1,0x69,0x14,0x63,
-	0x55,0x21,0x0c,0x7d
+    0x52,0x09,0x6a,0xd5,
+    0x30,0x36,0xa5,0x38,
+    0xbf,0x40,0xa3,0x9e,
+    0x81,0xf3,0xd7,0xfb,
+    0x7c,0xe3,0x39,0x82,
+    0x9b,0x2f,0xff,0x87,
+    0x34,0x8e,0x43,0x44,
+    0xc4,0xde,0xe9,0xcb,
+    0x54,0x7b,0x94,0x32,
+    0xa6,0xc2,0x23,0x3d,
+    0xee,0x4c,0x95,0x0b,
+    0x42,0xfa,0xc3,0x4e,
+    0x08,0x2e,0xa1,0x66,
+    0x28,0xd9,0x24,0xb2,
+    0x76,0x5b,0xa2,0x49,
+    0x6d,0x8b,0xd1,0x25,
+    0x72,0xf8,0xf6,0x64,
+    0x86,0x68,0x98,0x16,
+    0xd4,0xa4,0x5c,0xcc,
+    0x5d,0x65,0xb6,0x92,
+    0x6c,0x70,0x48,0x50,
+    0xfd,0xed,0xb9,0xda,
+    0x5e,0x15,0x46,0x57,
+    0xa7,0x8d,0x9d,0x84,
+    0x90,0xd8,0xab,0x00,
+    0x8c,0xbc,0xd3,0x0a,
+    0xf7,0xe4,0x58,0x05,
+    0xb8,0xb3,0x45,0x06,
+    0xd0,0x2c,0x1e,0x8f,
+    0xca,0x3f,0x0f,0x02,
+    0xc1,0xaf,0xbd,0x03,
+    0x01,0x13,0x8a,0x6b,
+    0x3a,0x91,0x11,0x41,
+    0x4f,0x67,0xdc,0xea,
+    0x97,0xf2,0xcf,0xce,
+    0xf0,0xb4,0xe6,0x73,
+    0x96,0xac,0x74,0x22,
+    0xe7,0xad,0x35,0x85,
+    0xe2,0xf9,0x37,0xe8,
+    0x1c,0x75,0xdf,0x6e,
+    0x47,0xf1,0x1a,0x71,
+    0x1d,0x29,0xc5,0x89,
+    0x6f,0xb7,0x62,0x0e,
+    0xaa,0x18,0xbe,0x1b,
+    0xfc,0x56,0x3e,0x4b,
+    0xc6,0xd2,0x79,0x20,
+    0x9a,0xdb,0xc0,0xfe,
+    0x78,0xcd,0x5a,0xf4,
+    0x1f,0xdd,0xa8,0x33,
+    0x88,0x07,0xc7,0x31,
+    0xb1,0x12,0x10,0x59,
+    0x27,0x80,0xec,0x5f,
+    0x60,0x51,0x7f,0xa9,
+    0x19,0xb5,0x4a,0x0d,
+    0x2d,0xe5,0x7a,0x9f,
+    0x93,0xc9,0x9c,0xef,
+    0xa0,0xe0,0x3b,0x4d,
+    0xae,0x2a,0xf5,0xb0,
+    0xc8,0xeb,0xbb,0x3c,
+    0x83,0x53,0x99,0x61,
+    0x17,0x2b,0x04,0x7e,
+    0xba,0x77,0xd6,0x26,
+    0xe1,0x69,0x14,0x63,
+    0x55,0x21,0x0c,0x7d
 };
 
 static quint8 U1[256][4]=
@@ -947,11 +947,11 @@ static quint8 U4[256][4]=
 
 static quint32 rcon[30]=
 {
-	0x01, 0x02, 0x04, 0x08, 0x10, 0x20,
-	0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8,
-	0xab, 0x4d, 0x9a, 0x2f, 0x5e, 0xbc,
-	0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4,
-	0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20,
+    0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8,
+    0xab, 0x4d, 0x9a, 0x2f, 0x5e, 0xbc,
+    0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4,
+    0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91
 };
 
 
@@ -962,391 +962,391 @@ static quint32 rcon[30]=
 
 Rijndael::Rijndael()
 {
-	 m_state = Invalid;
+     m_state = Invalid;
 }
 
 Rijndael::~Rijndael()
 {
-	// nothing here
+    // nothing here
 }
 
 int Rijndael::init(Mode mode,Direction dir,const quint8 * key,KeyLength keyLen,quint8 * initVector)
 {
-	// Not initialized yet
-	m_state = Invalid;
+    // Not initialized yet
+    m_state = Invalid;
 
-	// Check the mode
-	if((mode != CBC) && (mode != ECB) && (mode != CFB1))return RIJNDAEL_UNSUPPORTED_MODE;
-	m_mode = mode;
+    // Check the mode
+    if((mode != CBC) && (mode != ECB) && (mode != CFB1))return RIJNDAEL_UNSUPPORTED_MODE;
+    m_mode = mode;
 
-	// And the direction
-	if((dir != Encrypt) && (dir != Decrypt))return RIJNDAEL_UNSUPPORTED_DIRECTION;
-	m_direction = dir;
+    // And the direction
+    if((dir != Encrypt) && (dir != Decrypt))return RIJNDAEL_UNSUPPORTED_DIRECTION;
+    m_direction = dir;
 
-	// Allow to set an init vector
-	if(initVector)
-	{
-		// specified init vector
-		for(int i = 0;i < MAX_IV_SIZE;i++)
-		{
-			m_initVector[i] = initVector[i];
-		}
-	} else {
-		// zero init vector
-		for(int i = 0;i < MAX_IV_SIZE;i++)
-		{
-			m_initVector[i] = 0;
-		}
-	}
+    // Allow to set an init vector
+    if(initVector)
+    {
+        // specified init vector
+        for(int i = 0;i < MAX_IV_SIZE;i++)
+        {
+            m_initVector[i] = initVector[i];
+        }
+    } else {
+        // zero init vector
+        for(int i = 0;i < MAX_IV_SIZE;i++)
+        {
+            m_initVector[i] = 0;
+        }
+    }
 
-	quint32 uKeyLenInBytes;
+    quint32 uKeyLenInBytes;
 
-	// And check the key length
-	switch(keyLen)
-	{
-		case Key16Bytes:
-			uKeyLenInBytes = 16;
-			m_uRounds = 10;
-		break;
-		case Key24Bytes:
-			uKeyLenInBytes = 24;
-			m_uRounds = 12;
-		break;
-		case Key32Bytes:
-			uKeyLenInBytes = 32;
-			m_uRounds = 14;
-		break;
-		default:
-			return RIJNDAEL_UNSUPPORTED_KEY_LENGTH;
-		break;
-	}
-	// The number of rounds is calculated as
-	// m_uRounds = (m_uKeyLenInBits / 32) + 6;
+    // And check the key length
+    switch(keyLen)
+    {
+        case Key16Bytes:
+            uKeyLenInBytes = 16;
+            m_uRounds = 10;
+        break;
+        case Key24Bytes:
+            uKeyLenInBytes = 24;
+            m_uRounds = 12;
+        break;
+        case Key32Bytes:
+            uKeyLenInBytes = 32;
+            m_uRounds = 14;
+        break;
+        default:
+            return RIJNDAEL_UNSUPPORTED_KEY_LENGTH;
+        break;
+    }
+    // The number of rounds is calculated as
+    // m_uRounds = (m_uKeyLenInBits / 32) + 6;
 
-	if(!key)return RIJNDAEL_BAD_KEY;
+    if(!key)return RIJNDAEL_BAD_KEY;
 
-	quint8 keyMatrix[_MAX_KEY_COLUMNS][4];
+    quint8 keyMatrix[_MAX_KEY_COLUMNS][4];
 
-	for(quint32 i = 0;i < uKeyLenInBytes;i++)keyMatrix[i >> 2][i & 3] = key[i];
+    for(quint32 i = 0;i < uKeyLenInBytes;i++)keyMatrix[i >> 2][i & 3] = key[i];
 
-	keySched(keyMatrix);
+    keySched(keyMatrix);
 
-	if(m_direction == Decrypt)keyEncToDec();
+    if(m_direction == Decrypt)keyEncToDec();
 
-	m_state = Valid;
+    m_state = Valid;
 
-	return RIJNDAEL_SUCCESS;
+    return RIJNDAEL_SUCCESS;
 }
 
 int Rijndael::blockEncrypt(const quint8 *input,int inputLen,quint8 *outBuffer)
 {
-	int i, k, numBlocks;
-	quint8 block[16], iv[4][4];
+    int i, k, numBlocks;
+    quint8 block[16], iv[4][4];
 
-	if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
-	if(m_direction != Encrypt)return RIJNDAEL_BAD_DIRECTION;
+    if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
+    if(m_direction != Encrypt)return RIJNDAEL_BAD_DIRECTION;
 
-	if(input == 0 || inputLen <= 0)return 0;
+    if(input == 0 || inputLen <= 0)return 0;
 
-	numBlocks = inputLen/128;
+    numBlocks = inputLen/128;
 
-	switch(m_mode){
-		case ECB:
-			for(i = numBlocks;i > 0;i--)
-			{
-				encrypt(input,outBuffer);
-				input += 16;
-				outBuffer += 16;
-			}
-		break;
-		case CBC:
-			((quint32*)block)[0] = ((quint32*)m_initVector)[0] ^ ((quint32*)input)[0];
-			((quint32*)block)[1] = ((quint32*)m_initVector)[1] ^ ((quint32*)input)[1];
-			((quint32*)block)[2] = ((quint32*)m_initVector)[2] ^ ((quint32*)input)[2];
-			((quint32*)block)[3] = ((quint32*)m_initVector)[3] ^ ((quint32*)input)[3];
-			encrypt(block,outBuffer);
-			input += 16;
-			for(i = numBlocks - 1;i > 0;i--)
-			{
-				((quint32*)block)[0] = ((quint32*)outBuffer)[0] ^ ((quint32*)input)[0];
-				((quint32*)block)[1] = ((quint32*)outBuffer)[1] ^ ((quint32*)input)[1];
-				((quint32*)block)[2] = ((quint32*)outBuffer)[2] ^ ((quint32*)input)[2];
-				((quint32*)block)[3] = ((quint32*)outBuffer)[3] ^ ((quint32*)input)[3];
-				outBuffer += 16;
-				encrypt(block,outBuffer);
-				input += 16;
-			}
-		break;
-		case CFB1:
+    switch(m_mode){
+        case ECB:
+            for(i = numBlocks;i > 0;i--)
+            {
+                encrypt(input,outBuffer);
+                input += 16;
+                outBuffer += 16;
+            }
+        break;
+        case CBC:
+            ((quint32*)block)[0] = ((quint32*)m_initVector)[0] ^ ((quint32*)input)[0];
+            ((quint32*)block)[1] = ((quint32*)m_initVector)[1] ^ ((quint32*)input)[1];
+            ((quint32*)block)[2] = ((quint32*)m_initVector)[2] ^ ((quint32*)input)[2];
+            ((quint32*)block)[3] = ((quint32*)m_initVector)[3] ^ ((quint32*)input)[3];
+            encrypt(block,outBuffer);
+            input += 16;
+            for(i = numBlocks - 1;i > 0;i--)
+            {
+                ((quint32*)block)[0] = ((quint32*)outBuffer)[0] ^ ((quint32*)input)[0];
+                ((quint32*)block)[1] = ((quint32*)outBuffer)[1] ^ ((quint32*)input)[1];
+                ((quint32*)block)[2] = ((quint32*)outBuffer)[2] ^ ((quint32*)input)[2];
+                ((quint32*)block)[3] = ((quint32*)outBuffer)[3] ^ ((quint32*)input)[3];
+                outBuffer += 16;
+                encrypt(block,outBuffer);
+                input += 16;
+            }
+        break;
+        case CFB1:
 #if STRICT_ALIGN
-			memcpy(iv,m_initVector,16);
+            memcpy(iv,m_initVector,16);
 #else  /* !STRICT_ALIGN */
-			*((quint32*)iv[0]) = *((quint32*)(m_initVector   ));
-			*((quint32*)iv[1]) = *((quint32*)(m_initVector + 4));
-			*((quint32*)iv[2]) = *((quint32*)(m_initVector + 8));
-			*((quint32*)iv[3]) = *((quint32*)(m_initVector +12));
+            *((quint32*)iv[0]) = *((quint32*)(m_initVector   ));
+            *((quint32*)iv[1]) = *((quint32*)(m_initVector + 4));
+            *((quint32*)iv[2]) = *((quint32*)(m_initVector + 8));
+            *((quint32*)iv[3]) = *((quint32*)(m_initVector +12));
 #endif /* ?STRICT_ALIGN */
-			for(i = numBlocks; i > 0; i--)
-			{
-				for(k = 0; k < 128; k++)
-				{
-					*((quint32*) block    ) = *((quint32*)iv[0]);
-					*((quint32*)(block+ 4)) = *((quint32*)iv[1]);
-					*((quint32*)(block+ 8)) = *((quint32*)iv[2]);
-					*((quint32*)(block+12)) = *((quint32*)iv[3]);
-					encrypt(block,block);
-					outBuffer[k/8] ^= (block[0] & 0x80) >> (k & 7);
-					iv[0][0] = (iv[0][0] << 1) | (iv[0][1] >> 7);
-					iv[0][1] = (iv[0][1] << 1) | (iv[0][2] >> 7);
-					iv[0][2] = (iv[0][2] << 1) | (iv[0][3] >> 7);
-					iv[0][3] = (iv[0][3] << 1) | (iv[1][0] >> 7);
-					iv[1][0] = (iv[1][0] << 1) | (iv[1][1] >> 7);
-					iv[1][1] = (iv[1][1] << 1) | (iv[1][2] >> 7);
-					iv[1][2] = (iv[1][2] << 1) | (iv[1][3] >> 7);
-					iv[1][3] = (iv[1][3] << 1) | (iv[2][0] >> 7);
-					iv[2][0] = (iv[2][0] << 1) | (iv[2][1] >> 7);
-					iv[2][1] = (iv[2][1] << 1) | (iv[2][2] >> 7);
-					iv[2][2] = (iv[2][2] << 1) | (iv[2][3] >> 7);
-					iv[2][3] = (iv[2][3] << 1) | (iv[3][0] >> 7);
-					iv[3][0] = (iv[3][0] << 1) | (iv[3][1] >> 7);
-					iv[3][1] = (iv[3][1] << 1) | (iv[3][2] >> 7);
-					iv[3][2] = (iv[3][2] << 1) | (iv[3][3] >> 7);
-					iv[3][3] = (iv[3][3] << 1) | (outBuffer[k/8] >> (7-(k&7))) & 1;
-				}
-			}
-		break;
-		default:
-			return -1;
-		break;
-	}
+            for(i = numBlocks; i > 0; i--)
+            {
+                for(k = 0; k < 128; k++)
+                {
+                    *((quint32*) block    ) = *((quint32*)iv[0]);
+                    *((quint32*)(block+ 4)) = *((quint32*)iv[1]);
+                    *((quint32*)(block+ 8)) = *((quint32*)iv[2]);
+                    *((quint32*)(block+12)) = *((quint32*)iv[3]);
+                    encrypt(block,block);
+                    outBuffer[k/8] ^= (block[0] & 0x80) >> (k & 7);
+                    iv[0][0] = (iv[0][0] << 1) | (iv[0][1] >> 7);
+                    iv[0][1] = (iv[0][1] << 1) | (iv[0][2] >> 7);
+                    iv[0][2] = (iv[0][2] << 1) | (iv[0][3] >> 7);
+                    iv[0][3] = (iv[0][3] << 1) | (iv[1][0] >> 7);
+                    iv[1][0] = (iv[1][0] << 1) | (iv[1][1] >> 7);
+                    iv[1][1] = (iv[1][1] << 1) | (iv[1][2] >> 7);
+                    iv[1][2] = (iv[1][2] << 1) | (iv[1][3] >> 7);
+                    iv[1][3] = (iv[1][3] << 1) | (iv[2][0] >> 7);
+                    iv[2][0] = (iv[2][0] << 1) | (iv[2][1] >> 7);
+                    iv[2][1] = (iv[2][1] << 1) | (iv[2][2] >> 7);
+                    iv[2][2] = (iv[2][2] << 1) | (iv[2][3] >> 7);
+                    iv[2][3] = (iv[2][3] << 1) | (iv[3][0] >> 7);
+                    iv[3][0] = (iv[3][0] << 1) | (iv[3][1] >> 7);
+                    iv[3][1] = (iv[3][1] << 1) | (iv[3][2] >> 7);
+                    iv[3][2] = (iv[3][2] << 1) | (iv[3][3] >> 7);
+                    iv[3][3] = (iv[3][3] << 1) | (outBuffer[k/8] >> (7-(k&7))) & 1;
+                }
+            }
+        break;
+        default:
+            return -1;
+        break;
+    }
 
-	return 128 * numBlocks;
+    return 128 * numBlocks;
 }
 
 int Rijndael::padEncrypt(const quint8 *input, int inputOctets, quint8 *outBuffer)
 {
-	int i, numBlocks, padLen;
-	quint8 block[16], *iv;
+    int i, numBlocks, padLen;
+    quint8 block[16], *iv;
 
-	if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
-	if(m_direction != Encrypt)return RIJNDAEL_NOT_INITIALIZED;
+    if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
+    if(m_direction != Encrypt)return RIJNDAEL_NOT_INITIALIZED;
 
-	if(input == 0 || inputOctets <= 0)return 0;
+    if(input == 0 || inputOctets <= 0)return 0;
 
-	numBlocks = inputOctets/16;
+    numBlocks = inputOctets/16;
 
-	switch(m_mode)
-	{
-		case ECB:
-			for(i = numBlocks; i > 0; i--)
-			{
-				encrypt(input, outBuffer);
-				input += 16;
-				outBuffer += 16;
-			}
-			padLen = 16 - (inputOctets - 16*numBlocks);
-//			assert(padLen > 0 && padLen <= 16);
-			memcpy(block, input, 16 - padLen);
-			memset(block + 16 - padLen, padLen, padLen);
-			encrypt(block,outBuffer);
-		break;
-		case CBC:
-			iv = m_initVector;
-			for(i = numBlocks; i > 0; i--)
-			{
-				((quint32*)block)[0] = ((quint32*)input)[0] ^ ((quint32*)iv)[0];
-				((quint32*)block)[1] = ((quint32*)input)[1] ^ ((quint32*)iv)[1];
-				((quint32*)block)[2] = ((quint32*)input)[2] ^ ((quint32*)iv)[2];
-				((quint32*)block)[3] = ((quint32*)input)[3] ^ ((quint32*)iv)[3];
-				encrypt(block, outBuffer);
-				iv = outBuffer;
-				input += 16;
-				outBuffer += 16;
-			}
-			padLen = 16 - (inputOctets - 16*numBlocks);
-//			assert(padLen > 0 && padLen <= 16); // DO SOMETHING HERE ?
-			for (i = 0; i < 16 - padLen; i++) {
-				block[i] = input[i] ^ iv[i];
-			}
-			for (i = 16 - padLen; i < 16; i++) {
-				block[i] = (quint8)padLen ^ iv[i];
-			}
-			encrypt(block,outBuffer);
-		break;
-		default:
-			return -1;
-		break;
-	}
+    switch(m_mode)
+    {
+        case ECB:
+            for(i = numBlocks; i > 0; i--)
+            {
+                encrypt(input, outBuffer);
+                input += 16;
+                outBuffer += 16;
+            }
+            padLen = 16 - (inputOctets - 16*numBlocks);
+//            assert(padLen > 0 && padLen <= 16);
+            memcpy(block, input, 16 - padLen);
+            memset(block + 16 - padLen, padLen, padLen);
+            encrypt(block,outBuffer);
+        break;
+        case CBC:
+            iv = m_initVector;
+            for(i = numBlocks; i > 0; i--)
+            {
+                ((quint32*)block)[0] = ((quint32*)input)[0] ^ ((quint32*)iv)[0];
+                ((quint32*)block)[1] = ((quint32*)input)[1] ^ ((quint32*)iv)[1];
+                ((quint32*)block)[2] = ((quint32*)input)[2] ^ ((quint32*)iv)[2];
+                ((quint32*)block)[3] = ((quint32*)input)[3] ^ ((quint32*)iv)[3];
+                encrypt(block, outBuffer);
+                iv = outBuffer;
+                input += 16;
+                outBuffer += 16;
+            }
+            padLen = 16 - (inputOctets - 16*numBlocks);
+//            assert(padLen > 0 && padLen <= 16); // DO SOMETHING HERE ?
+            for (i = 0; i < 16 - padLen; i++) {
+                block[i] = input[i] ^ iv[i];
+            }
+            for (i = 16 - padLen; i < 16; i++) {
+                block[i] = (quint8)padLen ^ iv[i];
+            }
+            encrypt(block,outBuffer);
+        break;
+        default:
+            return -1;
+        break;
+    }
 
-	return 16*(numBlocks + 1);
+    return 16*(numBlocks + 1);
 }
 
 int Rijndael::blockDecrypt(const quint8 *input, int inputLen, quint8 *outBuffer)
 {
-	int i, k, numBlocks;
-	quint8 block[16], iv[4][4];
+    int i, k, numBlocks;
+    quint8 block[16], iv[4][4];
 
-	if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
-	if((m_mode != CFB1) && (m_direction == Encrypt))return RIJNDAEL_BAD_DIRECTION;
+    if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
+    if((m_mode != CFB1) && (m_direction == Encrypt))return RIJNDAEL_BAD_DIRECTION;
 
-	if (input == 0 || inputLen <= 0)return 0;
+    if (input == 0 || inputLen <= 0)return 0;
 
-	numBlocks = inputLen/128;
+    numBlocks = inputLen/128;
 
-	switch(m_mode)
-	{
-		case ECB:
-			for (i = numBlocks; i > 0; i--)
-			{
-				decrypt(input,outBuffer);
-				input += 16;
-				outBuffer += 16;
-			}
-		break;
-		case CBC:
+    switch(m_mode)
+    {
+        case ECB:
+            for (i = numBlocks; i > 0; i--)
+            {
+                decrypt(input,outBuffer);
+                input += 16;
+                outBuffer += 16;
+            }
+        break;
+        case CBC:
 #if STRICT_ALIGN
-			memcpy(iv,m_initVector,16);
+            memcpy(iv,m_initVector,16);
 #else
-			*((quint32*)iv[0]) = *((quint32*)(m_initVector  ));
-			*((quint32*)iv[1]) = *((quint32*)(m_initVector+ 4));
-			*((quint32*)iv[2]) = *((quint32*)(m_initVector+ 8));
-			*((quint32*)iv[3]) = *((quint32*)(m_initVector+12));
+            *((quint32*)iv[0]) = *((quint32*)(m_initVector  ));
+            *((quint32*)iv[1]) = *((quint32*)(m_initVector+ 4));
+            *((quint32*)iv[2]) = *((quint32*)(m_initVector+ 8));
+            *((quint32*)iv[3]) = *((quint32*)(m_initVector+12));
 #endif
-			for (i = numBlocks; i > 0; i--)
-			{
-				decrypt(input, block);
-				((quint32*)block)[0] ^= *((quint32*)iv[0]);
-				((quint32*)block)[1] ^= *((quint32*)iv[1]);
-				((quint32*)block)[2] ^= *((quint32*)iv[2]);
-				((quint32*)block)[3] ^= *((quint32*)iv[3]);
+            for (i = numBlocks; i > 0; i--)
+            {
+                decrypt(input, block);
+                ((quint32*)block)[0] ^= *((quint32*)iv[0]);
+                ((quint32*)block)[1] ^= *((quint32*)iv[1]);
+                ((quint32*)block)[2] ^= *((quint32*)iv[2]);
+                ((quint32*)block)[3] ^= *((quint32*)iv[3]);
 #if STRICT_ALIGN
-				memcpy(iv, input, 16);
-				memcpy(outBuf, block, 16);
+                memcpy(iv, input, 16);
+                memcpy(outBuf, block, 16);
 #else
-				*((quint32*)iv[0]) = ((quint32*)input)[0]; ((quint32*)outBuffer)[0] = ((quint32*)block)[0];
-				*((quint32*)iv[1]) = ((quint32*)input)[1]; ((quint32*)outBuffer)[1] = ((quint32*)block)[1];
-				*((quint32*)iv[2]) = ((quint32*)input)[2]; ((quint32*)outBuffer)[2] = ((quint32*)block)[2];
-				*((quint32*)iv[3]) = ((quint32*)input)[3]; ((quint32*)outBuffer)[3] = ((quint32*)block)[3];
+                *((quint32*)iv[0]) = ((quint32*)input)[0]; ((quint32*)outBuffer)[0] = ((quint32*)block)[0];
+                *((quint32*)iv[1]) = ((quint32*)input)[1]; ((quint32*)outBuffer)[1] = ((quint32*)block)[1];
+                *((quint32*)iv[2]) = ((quint32*)input)[2]; ((quint32*)outBuffer)[2] = ((quint32*)block)[2];
+                *((quint32*)iv[3]) = ((quint32*)input)[3]; ((quint32*)outBuffer)[3] = ((quint32*)block)[3];
 #endif
-				input += 16;
-				outBuffer += 16;
-			}
-			break;
-		case CFB1:
+                input += 16;
+                outBuffer += 16;
+            }
+            break;
+        case CFB1:
 #if STRICT_ALIGN
-			memcpy(iv, m_initVector, 16);
+            memcpy(iv, m_initVector, 16);
 #else
-			*((quint32*)iv[0]) = *((quint32*)(m_initVector));
-			*((quint32*)iv[1]) = *((quint32*)(m_initVector+ 4));
-			*((quint32*)iv[2]) = *((quint32*)(m_initVector+ 8));
-			*((quint32*)iv[3]) = *((quint32*)(m_initVector+12));
+            *((quint32*)iv[0]) = *((quint32*)(m_initVector));
+            *((quint32*)iv[1]) = *((quint32*)(m_initVector+ 4));
+            *((quint32*)iv[2]) = *((quint32*)(m_initVector+ 8));
+            *((quint32*)iv[3]) = *((quint32*)(m_initVector+12));
 #endif
-			for(i = numBlocks; i > 0; i--)
-			{
-				for(k = 0; k < 128; k++)
-				{
-					*((quint32*) block    ) = *((quint32*)iv[0]);
-					*((quint32*)(block+ 4)) = *((quint32*)iv[1]);
-					*((quint32*)(block+ 8)) = *((quint32*)iv[2]);
-					*((quint32*)(block+12)) = *((quint32*)iv[3]);
-					encrypt(block, block);
-					iv[0][0] = (iv[0][0] << 1) | (iv[0][1] >> 7);
-					iv[0][1] = (iv[0][1] << 1) | (iv[0][2] >> 7);
-					iv[0][2] = (iv[0][2] << 1) | (iv[0][3] >> 7);
-					iv[0][3] = (iv[0][3] << 1) | (iv[1][0] >> 7);
-					iv[1][0] = (iv[1][0] << 1) | (iv[1][1] >> 7);
-					iv[1][1] = (iv[1][1] << 1) | (iv[1][2] >> 7);
-					iv[1][2] = (iv[1][2] << 1) | (iv[1][3] >> 7);
-					iv[1][3] = (iv[1][3] << 1) | (iv[2][0] >> 7);
-					iv[2][0] = (iv[2][0] << 1) | (iv[2][1] >> 7);
-					iv[2][1] = (iv[2][1] << 1) | (iv[2][2] >> 7);
-					iv[2][2] = (iv[2][2] << 1) | (iv[2][3] >> 7);
-					iv[2][3] = (iv[2][3] << 1) | (iv[3][0] >> 7);
-					iv[3][0] = (iv[3][0] << 1) | (iv[3][1] >> 7);
-					iv[3][1] = (iv[3][1] << 1) | (iv[3][2] >> 7);
-					iv[3][2] = (iv[3][2] << 1) | (iv[3][3] >> 7);
-					iv[3][3] = (iv[3][3] << 1) | (input[k/8] >> (7-(k&7))) & 1;
-					outBuffer[k/8] ^= (block[0] & 0x80) >> (k & 7);
-				}
-			}
-		break;
-		default:
-			return -1;
-		break;
-	}
+            for(i = numBlocks; i > 0; i--)
+            {
+                for(k = 0; k < 128; k++)
+                {
+                    *((quint32*) block    ) = *((quint32*)iv[0]);
+                    *((quint32*)(block+ 4)) = *((quint32*)iv[1]);
+                    *((quint32*)(block+ 8)) = *((quint32*)iv[2]);
+                    *((quint32*)(block+12)) = *((quint32*)iv[3]);
+                    encrypt(block, block);
+                    iv[0][0] = (iv[0][0] << 1) | (iv[0][1] >> 7);
+                    iv[0][1] = (iv[0][1] << 1) | (iv[0][2] >> 7);
+                    iv[0][2] = (iv[0][2] << 1) | (iv[0][3] >> 7);
+                    iv[0][3] = (iv[0][3] << 1) | (iv[1][0] >> 7);
+                    iv[1][0] = (iv[1][0] << 1) | (iv[1][1] >> 7);
+                    iv[1][1] = (iv[1][1] << 1) | (iv[1][2] >> 7);
+                    iv[1][2] = (iv[1][2] << 1) | (iv[1][3] >> 7);
+                    iv[1][3] = (iv[1][3] << 1) | (iv[2][0] >> 7);
+                    iv[2][0] = (iv[2][0] << 1) | (iv[2][1] >> 7);
+                    iv[2][1] = (iv[2][1] << 1) | (iv[2][2] >> 7);
+                    iv[2][2] = (iv[2][2] << 1) | (iv[2][3] >> 7);
+                    iv[2][3] = (iv[2][3] << 1) | (iv[3][0] >> 7);
+                    iv[3][0] = (iv[3][0] << 1) | (iv[3][1] >> 7);
+                    iv[3][1] = (iv[3][1] << 1) | (iv[3][2] >> 7);
+                    iv[3][2] = (iv[3][2] << 1) | (iv[3][3] >> 7);
+                    iv[3][3] = (iv[3][3] << 1) | (input[k/8] >> (7-(k&7))) & 1;
+                    outBuffer[k/8] ^= (block[0] & 0x80) >> (k & 7);
+                }
+            }
+        break;
+        default:
+            return -1;
+        break;
+    }
 
-	return 128*numBlocks;
+    return 128*numBlocks;
 }
 
 int Rijndael::padDecrypt(const quint8 *input, int inputOctets, quint8 *outBuffer)
 {
-	int i, numBlocks, padLen;
-	quint8 block[16];
-	quint32 iv[4];
+    int i, numBlocks, padLen;
+    quint8 block[16];
+    quint32 iv[4];
 
-	if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
-	if(m_direction != Decrypt)return RIJNDAEL_BAD_DIRECTION;
+    if(m_state != Valid)return RIJNDAEL_NOT_INITIALIZED;
+    if(m_direction != Decrypt)return RIJNDAEL_BAD_DIRECTION;
 
-	if(input == 0 || inputOctets <= 0)return 0;
+    if(input == 0 || inputOctets <= 0)return 0;
 
-	if((inputOctets % 16) != 0)return RIJNDAEL_CORRUPTED_DATA;
+    if((inputOctets % 16) != 0)return RIJNDAEL_CORRUPTED_DATA;
 
-	numBlocks = inputOctets/16;
+    numBlocks = inputOctets/16;
 
-	switch(m_mode){
-		case ECB:
-			for (i = numBlocks - 1; i > 0; i--)
-			{
-				decrypt(input, outBuffer);
-				input += 16;
-				outBuffer += 16;
-			}
+    switch(m_mode){
+        case ECB:
+            for (i = numBlocks - 1; i > 0; i--)
+            {
+                decrypt(input, outBuffer);
+                input += 16;
+                outBuffer += 16;
+            }
 
-			decrypt(input, block);
-			padLen = block[15];
-			if (padLen >= 16)return RIJNDAEL_CORRUPTED_DATA;
-			for(i = 16 - padLen; i < 16; i++)
-			{
-				if(block[i] != padLen)return RIJNDAEL_CORRUPTED_DATA;
-			}
-			memcpy(outBuffer, block, 16 - padLen);
-		break;
-		case CBC:
-			memcpy(iv, m_initVector, 16);
-			/* all blocks but last */
-			for (i = numBlocks - 1; i > 0; i--)
-			{
-				decrypt(input, block);
-				((quint32*)block)[0] ^= iv[0];
-				((quint32*)block)[1] ^= iv[1];
-				((quint32*)block)[2] ^= iv[2];
-				((quint32*)block)[3] ^= iv[3];
-				memcpy(iv, input, 16);
-				memcpy(outBuffer, block, 16);
-				input += 16;
-				outBuffer += 16;
-			}
-			/* last block */
-			decrypt(input, block);
-			((quint32*)block)[0] ^= iv[0];
-			((quint32*)block)[1] ^= iv[1];
-			((quint32*)block)[2] ^= iv[2];
-			((quint32*)block)[3] ^= iv[3];
-			padLen = block[15];
-			if(padLen <= 0 || padLen > 16)return RIJNDAEL_CORRUPTED_DATA;
-			for(i = 16 - padLen; i < 16; i++)
-			{
-				if(block[i] != padLen)return RIJNDAEL_CORRUPTED_DATA;
-			}
-			memcpy(outBuffer, block, 16 - padLen);
-			break;
+            decrypt(input, block);
+            padLen = block[15];
+            if (padLen >= 16)return RIJNDAEL_CORRUPTED_DATA;
+            for(i = 16 - padLen; i < 16; i++)
+            {
+                if(block[i] != padLen)return RIJNDAEL_CORRUPTED_DATA;
+            }
+            memcpy(outBuffer, block, 16 - padLen);
+        break;
+        case CBC:
+            memcpy(iv, m_initVector, 16);
+            /* all blocks but last */
+            for (i = numBlocks - 1; i > 0; i--)
+            {
+                decrypt(input, block);
+                ((quint32*)block)[0] ^= iv[0];
+                ((quint32*)block)[1] ^= iv[1];
+                ((quint32*)block)[2] ^= iv[2];
+                ((quint32*)block)[3] ^= iv[3];
+                memcpy(iv, input, 16);
+                memcpy(outBuffer, block, 16);
+                input += 16;
+                outBuffer += 16;
+            }
+            /* last block */
+            decrypt(input, block);
+            ((quint32*)block)[0] ^= iv[0];
+            ((quint32*)block)[1] ^= iv[1];
+            ((quint32*)block)[2] ^= iv[2];
+            ((quint32*)block)[3] ^= iv[3];
+            padLen = block[15];
+            if(padLen <= 0 || padLen > 16)return RIJNDAEL_CORRUPTED_DATA;
+            for(i = 16 - padLen; i < 16; i++)
+            {
+                if(block[i] != padLen)return RIJNDAEL_CORRUPTED_DATA;
+            }
+            memcpy(outBuffer, block, 16 - padLen);
+            break;
 
-		default:
-			return -1;
-		break;
-	}
+        default:
+            return -1;
+        break;
+    }
 
-	return 16*numBlocks - padLen;
+    return 16*numBlocks - padLen;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1356,180 +1356,180 @@ int Rijndael::padDecrypt(const quint8 *input, int inputOctets, quint8 *outBuffer
 
 void Rijndael::keySched(quint8 key[_MAX_KEY_COLUMNS][4])
 {
-	unsigned j,rconpointer = 0;
+    unsigned j,rconpointer = 0;
 
-	// Calculate the necessary round keys
-	// The number of calculations depends on keyBits and blockBits
-	unsigned uKeyColumns = m_uRounds - 6;
+    // Calculate the necessary round keys
+    // The number of calculations depends on keyBits and blockBits
+    unsigned uKeyColumns = m_uRounds - 6;
 
-	quint8 tempKey[_MAX_KEY_COLUMNS][4];
+    quint8 tempKey[_MAX_KEY_COLUMNS][4];
 
-	// Copy the input key to the temporary key matrix
+    // Copy the input key to the temporary key matrix
 
-	for(j = 0;j < uKeyColumns;j++)
-	{
-		*((quint32*)(tempKey[j])) = *((quint32*)(key[j]));
-	}
+    for(j = 0;j < uKeyColumns;j++)
+    {
+        *((quint32*)(tempKey[j])) = *((quint32*)(key[j]));
+    }
 
-	unsigned r = 0;
-	unsigned t = 0;
+    unsigned r = 0;
+    unsigned t = 0;
 
-	// copy values into round key array
-	for(j = 0;(j < uKeyColumns) && (r <= m_uRounds); )
-	{
-		for(;(j < uKeyColumns) && (t < 4); j++, t++)
-		{
-			*((quint32*)m_expandedKey[r][t]) = *((quint32*)tempKey[j]);
-		}
+    // copy values into round key array
+    for(j = 0;(j < uKeyColumns) && (r <= m_uRounds); )
+    {
+        for(;(j < uKeyColumns) && (t < 4); j++, t++)
+        {
+            *((quint32*)m_expandedKey[r][t]) = *((quint32*)tempKey[j]);
+        }
 
 
-		if(t == 4)
-		{
-			r++;
-			t = 0;
-		}
-	}
+        if(t == 4)
+        {
+            r++;
+            t = 0;
+        }
+    }
 
-	while(r <= m_uRounds)
-	{
-		tempKey[0][0] ^= S[tempKey[uKeyColumns-1][1]];
-		tempKey[0][1] ^= S[tempKey[uKeyColumns-1][2]];
-		tempKey[0][2] ^= S[tempKey[uKeyColumns-1][3]];
-		tempKey[0][3] ^= S[tempKey[uKeyColumns-1][0]];
-		tempKey[0][0] ^= rcon[rconpointer++];
+    while(r <= m_uRounds)
+    {
+        tempKey[0][0] ^= S[tempKey[uKeyColumns-1][1]];
+        tempKey[0][1] ^= S[tempKey[uKeyColumns-1][2]];
+        tempKey[0][2] ^= S[tempKey[uKeyColumns-1][3]];
+        tempKey[0][3] ^= S[tempKey[uKeyColumns-1][0]];
+        tempKey[0][0] ^= rcon[rconpointer++];
 
-		if (uKeyColumns != 8)
-		{
-			for(j = 1; j < uKeyColumns; j++)
-			{
-				*((quint32*)tempKey[j]) ^= *((quint32*)tempKey[j-1]);
-			}
-		} else {
-			for(j = 1; j < uKeyColumns/2; j++)
-			{
-				*((quint32*)tempKey[j]) ^= *((quint32*)tempKey[j-1]);
-			}
-			tempKey[uKeyColumns/2][0] ^= S[tempKey[uKeyColumns/2 - 1][0]];
-			tempKey[uKeyColumns/2][1] ^= S[tempKey[uKeyColumns/2 - 1][1]];
-			tempKey[uKeyColumns/2][2] ^= S[tempKey[uKeyColumns/2 - 1][2]];
-			tempKey[uKeyColumns/2][3] ^= S[tempKey[uKeyColumns/2 - 1][3]];
-			for(j = uKeyColumns/2 + 1; j < uKeyColumns; j++)
-			{
-				*((quint32*)tempKey[j]) ^= *((quint32*)tempKey[j-1]);
-			}
-		}
-		for(j = 0; (j < uKeyColumns) && (r <= m_uRounds); )
-		{
-			for(; (j < uKeyColumns) && (t < 4); j++, t++)
-			{
-				*((quint32*)m_expandedKey[r][t]) = *((quint32*)tempKey[j]);
-			}
-			if(t == 4)
-			{
-				r++;
-				t = 0;
-			}
-		}
-	}
+        if (uKeyColumns != 8)
+        {
+            for(j = 1; j < uKeyColumns; j++)
+            {
+                *((quint32*)tempKey[j]) ^= *((quint32*)tempKey[j-1]);
+            }
+        } else {
+            for(j = 1; j < uKeyColumns/2; j++)
+            {
+                *((quint32*)tempKey[j]) ^= *((quint32*)tempKey[j-1]);
+            }
+            tempKey[uKeyColumns/2][0] ^= S[tempKey[uKeyColumns/2 - 1][0]];
+            tempKey[uKeyColumns/2][1] ^= S[tempKey[uKeyColumns/2 - 1][1]];
+            tempKey[uKeyColumns/2][2] ^= S[tempKey[uKeyColumns/2 - 1][2]];
+            tempKey[uKeyColumns/2][3] ^= S[tempKey[uKeyColumns/2 - 1][3]];
+            for(j = uKeyColumns/2 + 1; j < uKeyColumns; j++)
+            {
+                *((quint32*)tempKey[j]) ^= *((quint32*)tempKey[j-1]);
+            }
+        }
+        for(j = 0; (j < uKeyColumns) && (r <= m_uRounds); )
+        {
+            for(; (j < uKeyColumns) && (t < 4); j++, t++)
+            {
+                *((quint32*)m_expandedKey[r][t]) = *((quint32*)tempKey[j]);
+            }
+            if(t == 4)
+            {
+                r++;
+                t = 0;
+            }
+        }
+    }
 }
 
 void Rijndael::keyEncToDec()
 {
-	unsigned r;
-	quint8 *w;
+    unsigned r;
+    quint8 *w;
 
-	for(r = 1; r < m_uRounds; r++)
-	{
-		w = m_expandedKey[r][0];
-		*((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
-		w = m_expandedKey[r][1];
-		*((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
-		w = m_expandedKey[r][2];
-		*((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
-		w = m_expandedKey[r][3];
-		*((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
-	}
+    for(r = 1; r < m_uRounds; r++)
+    {
+        w = m_expandedKey[r][0];
+        *((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
+        w = m_expandedKey[r][1];
+        *((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
+        w = m_expandedKey[r][2];
+        *((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
+        w = m_expandedKey[r][3];
+        *((quint32*)w) = *((quint32*)U1[w[0]]) ^ *((quint32*)U2[w[1]]) ^ *((quint32*)U3[w[2]]) ^ *((quint32*)U4[w[3]]);
+    }
 }
 
 void Rijndael::encrypt(const quint8 a[16], quint8 b[16])
 {
-	unsigned r;
-	quint8 temp[4][4];
+    unsigned r;
+    quint8 temp[4][4];
 
     *((quint32*)temp[0]) = *((quint32*)(a   )) ^ *((quint32*)m_expandedKey[0][0]);
     *((quint32*)temp[1]) = *((quint32*)(a+ 4)) ^ *((quint32*)m_expandedKey[0][1]);
     *((quint32*)temp[2]) = *((quint32*)(a+ 8)) ^ *((quint32*)m_expandedKey[0][2]);
     *((quint32*)temp[3]) = *((quint32*)(a+12)) ^ *((quint32*)m_expandedKey[0][3]);
     *((quint32*)(b    )) = *((quint32*)T1[temp[0][0]])
-						^ *((quint32*)T2[temp[1][1]])
-						^ *((quint32*)T3[temp[2][2]])
-						^ *((quint32*)T4[temp[3][3]]);
+                        ^ *((quint32*)T2[temp[1][1]])
+                        ^ *((quint32*)T3[temp[2][2]])
+                        ^ *((quint32*)T4[temp[3][3]]);
     *((quint32*)(b + 4)) = *((quint32*)T1[temp[1][0]])
-						^ *((quint32*)T2[temp[2][1]])
-						^ *((quint32*)T3[temp[3][2]])
-						^ *((quint32*)T4[temp[0][3]]);
+                        ^ *((quint32*)T2[temp[2][1]])
+                        ^ *((quint32*)T3[temp[3][2]])
+                        ^ *((quint32*)T4[temp[0][3]]);
     *((quint32*)(b + 8)) = *((quint32*)T1[temp[2][0]])
-						^ *((quint32*)T2[temp[3][1]])
-						^ *((quint32*)T3[temp[0][2]])
-						^ *((quint32*)T4[temp[1][3]]);
+                        ^ *((quint32*)T2[temp[3][1]])
+                        ^ *((quint32*)T3[temp[0][2]])
+                        ^ *((quint32*)T4[temp[1][3]]);
     *((quint32*)(b +12)) = *((quint32*)T1[temp[3][0]])
-						^ *((quint32*)T2[temp[0][1]])
-						^ *((quint32*)T3[temp[1][2]])
-						^ *((quint32*)T4[temp[2][3]]);
-	for(r = 1; r < m_uRounds-1; r++)
-	{
-		*((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[r][0]);
-		*((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[r][1]);
-		*((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[r][2]);
-		*((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[r][3]);
+                        ^ *((quint32*)T2[temp[0][1]])
+                        ^ *((quint32*)T3[temp[1][2]])
+                        ^ *((quint32*)T4[temp[2][3]]);
+    for(r = 1; r < m_uRounds-1; r++)
+    {
+        *((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[r][0]);
+        *((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[r][1]);
+        *((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[r][2]);
+        *((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[r][3]);
 
-		*((quint32*)(b    )) = *((quint32*)T1[temp[0][0]])
-							^ *((quint32*)T2[temp[1][1]])
-							^ *((quint32*)T3[temp[2][2]])
-							^ *((quint32*)T4[temp[3][3]]);
-		*((quint32*)(b + 4)) = *((quint32*)T1[temp[1][0]])
-							^ *((quint32*)T2[temp[2][1]])
-							^ *((quint32*)T3[temp[3][2]])
-							^ *((quint32*)T4[temp[0][3]]);
-		*((quint32*)(b + 8)) = *((quint32*)T1[temp[2][0]])
-							^ *((quint32*)T2[temp[3][1]])
-							^ *((quint32*)T3[temp[0][2]])
-							^ *((quint32*)T4[temp[1][3]]);
-		*((quint32*)(b +12)) = *((quint32*)T1[temp[3][0]])
-							^ *((quint32*)T2[temp[0][1]])
-							^ *((quint32*)T3[temp[1][2]])
-							^ *((quint32*)T4[temp[2][3]]);
-	}
-	*((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[m_uRounds-1][0]);
-	*((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[m_uRounds-1][1]);
-	*((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[m_uRounds-1][2]);
-	*((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[m_uRounds-1][3]);
-	b[ 0] = T1[temp[0][0]][1];
-	b[ 1] = T1[temp[1][1]][1];
-	b[ 2] = T1[temp[2][2]][1];
-	b[ 3] = T1[temp[3][3]][1];
-	b[ 4] = T1[temp[1][0]][1];
-	b[ 5] = T1[temp[2][1]][1];
-	b[ 6] = T1[temp[3][2]][1];
-	b[ 7] = T1[temp[0][3]][1];
-	b[ 8] = T1[temp[2][0]][1];
-	b[ 9] = T1[temp[3][1]][1];
-	b[10] = T1[temp[0][2]][1];
-	b[11] = T1[temp[1][3]][1];
-	b[12] = T1[temp[3][0]][1];
-	b[13] = T1[temp[0][1]][1];
-	b[14] = T1[temp[1][2]][1];
-	b[15] = T1[temp[2][3]][1];
-	*((quint32*)(b   )) ^= *((quint32*)m_expandedKey[m_uRounds][0]);
-	*((quint32*)(b+ 4)) ^= *((quint32*)m_expandedKey[m_uRounds][1]);
-	*((quint32*)(b+ 8)) ^= *((quint32*)m_expandedKey[m_uRounds][2]);
-	*((quint32*)(b+12)) ^= *((quint32*)m_expandedKey[m_uRounds][3]);
+        *((quint32*)(b    )) = *((quint32*)T1[temp[0][0]])
+                            ^ *((quint32*)T2[temp[1][1]])
+                            ^ *((quint32*)T3[temp[2][2]])
+                            ^ *((quint32*)T4[temp[3][3]]);
+        *((quint32*)(b + 4)) = *((quint32*)T1[temp[1][0]])
+                            ^ *((quint32*)T2[temp[2][1]])
+                            ^ *((quint32*)T3[temp[3][2]])
+                            ^ *((quint32*)T4[temp[0][3]]);
+        *((quint32*)(b + 8)) = *((quint32*)T1[temp[2][0]])
+                            ^ *((quint32*)T2[temp[3][1]])
+                            ^ *((quint32*)T3[temp[0][2]])
+                            ^ *((quint32*)T4[temp[1][3]]);
+        *((quint32*)(b +12)) = *((quint32*)T1[temp[3][0]])
+                            ^ *((quint32*)T2[temp[0][1]])
+                            ^ *((quint32*)T3[temp[1][2]])
+                            ^ *((quint32*)T4[temp[2][3]]);
+    }
+    *((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[m_uRounds-1][0]);
+    *((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[m_uRounds-1][1]);
+    *((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[m_uRounds-1][2]);
+    *((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[m_uRounds-1][3]);
+    b[ 0] = T1[temp[0][0]][1];
+    b[ 1] = T1[temp[1][1]][1];
+    b[ 2] = T1[temp[2][2]][1];
+    b[ 3] = T1[temp[3][3]][1];
+    b[ 4] = T1[temp[1][0]][1];
+    b[ 5] = T1[temp[2][1]][1];
+    b[ 6] = T1[temp[3][2]][1];
+    b[ 7] = T1[temp[0][3]][1];
+    b[ 8] = T1[temp[2][0]][1];
+    b[ 9] = T1[temp[3][1]][1];
+    b[10] = T1[temp[0][2]][1];
+    b[11] = T1[temp[1][3]][1];
+    b[12] = T1[temp[3][0]][1];
+    b[13] = T1[temp[0][1]][1];
+    b[14] = T1[temp[1][2]][1];
+    b[15] = T1[temp[2][3]][1];
+    *((quint32*)(b   )) ^= *((quint32*)m_expandedKey[m_uRounds][0]);
+    *((quint32*)(b+ 4)) ^= *((quint32*)m_expandedKey[m_uRounds][1]);
+    *((quint32*)(b+ 8)) ^= *((quint32*)m_expandedKey[m_uRounds][2]);
+    *((quint32*)(b+12)) ^= *((quint32*)m_expandedKey[m_uRounds][3]);
 }
 
 void Rijndael::decrypt(const quint8 a[16], quint8 b[16])
 {
-	int r;
-	quint8 temp[4][4];
+    int r;
+    quint8 temp[4][4];
 
     *((quint32*)temp[0]) = *((quint32*)(a   )) ^ *((quint32*)m_expandedKey[m_uRounds][0]);
     *((quint32*)temp[1]) = *((quint32*)(a+ 4)) ^ *((quint32*)m_expandedKey[m_uRounds][1]);
@@ -1540,64 +1540,64 @@ void Rijndael::decrypt(const quint8 a[16], quint8 b[16])
            ^ *((quint32*)T6[temp[3][1]])
            ^ *((quint32*)T7[temp[2][2]])
            ^ *((quint32*)T8[temp[1][3]]);
-	*((quint32*)(b+ 4)) = *((quint32*)T5[temp[1][0]])
+    *((quint32*)(b+ 4)) = *((quint32*)T5[temp[1][0]])
            ^ *((quint32*)T6[temp[0][1]])
            ^ *((quint32*)T7[temp[3][2]])
            ^ *((quint32*)T8[temp[2][3]]);
-	*((quint32*)(b+ 8)) = *((quint32*)T5[temp[2][0]])
+    *((quint32*)(b+ 8)) = *((quint32*)T5[temp[2][0]])
            ^ *((quint32*)T6[temp[1][1]])
            ^ *((quint32*)T7[temp[0][2]])
            ^ *((quint32*)T8[temp[3][3]]);
-	*((quint32*)(b+12)) = *((quint32*)T5[temp[3][0]])
+    *((quint32*)(b+12)) = *((quint32*)T5[temp[3][0]])
            ^ *((quint32*)T6[temp[2][1]])
            ^ *((quint32*)T7[temp[1][2]])
            ^ *((quint32*)T8[temp[0][3]]);
-	for(r = m_uRounds-1; r > 1; r--)
-	{
-		*((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[r][0]);
-		*((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[r][1]);
-		*((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[r][2]);
-		*((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[r][3]);
-		*((quint32*)(b   )) = *((quint32*)T5[temp[0][0]])
+    for(r = m_uRounds-1; r > 1; r--)
+    {
+        *((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[r][0]);
+        *((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[r][1]);
+        *((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[r][2]);
+        *((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[r][3]);
+        *((quint32*)(b   )) = *((quint32*)T5[temp[0][0]])
            ^ *((quint32*)T6[temp[3][1]])
            ^ *((quint32*)T7[temp[2][2]])
            ^ *((quint32*)T8[temp[1][3]]);
-		*((quint32*)(b+ 4)) = *((quint32*)T5[temp[1][0]])
+        *((quint32*)(b+ 4)) = *((quint32*)T5[temp[1][0]])
            ^ *((quint32*)T6[temp[0][1]])
            ^ *((quint32*)T7[temp[3][2]])
            ^ *((quint32*)T8[temp[2][3]]);
-		*((quint32*)(b+ 8)) = *((quint32*)T5[temp[2][0]])
+        *((quint32*)(b+ 8)) = *((quint32*)T5[temp[2][0]])
            ^ *((quint32*)T6[temp[1][1]])
            ^ *((quint32*)T7[temp[0][2]])
            ^ *((quint32*)T8[temp[3][3]]);
-		*((quint32*)(b+12)) = *((quint32*)T5[temp[3][0]])
+        *((quint32*)(b+12)) = *((quint32*)T5[temp[3][0]])
            ^ *((quint32*)T6[temp[2][1]])
            ^ *((quint32*)T7[temp[1][2]])
            ^ *((quint32*)T8[temp[0][3]]);
-	}
+    }
 
-	*((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[1][0]);
-	*((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[1][1]);
-	*((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[1][2]);
-	*((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[1][3]);
-	b[ 0] = S5[temp[0][0]];
-	b[ 1] = S5[temp[3][1]];
-	b[ 2] = S5[temp[2][2]];
-	b[ 3] = S5[temp[1][3]];
-	b[ 4] = S5[temp[1][0]];
-	b[ 5] = S5[temp[0][1]];
-	b[ 6] = S5[temp[3][2]];
-	b[ 7] = S5[temp[2][3]];
-	b[ 8] = S5[temp[2][0]];
-	b[ 9] = S5[temp[1][1]];
-	b[10] = S5[temp[0][2]];
-	b[11] = S5[temp[3][3]];
-	b[12] = S5[temp[3][0]];
-	b[13] = S5[temp[2][1]];
-	b[14] = S5[temp[1][2]];
-	b[15] = S5[temp[0][3]];
-	*((quint32*)(b   )) ^= *((quint32*)m_expandedKey[0][0]);
-	*((quint32*)(b+ 4)) ^= *((quint32*)m_expandedKey[0][1]);
-	*((quint32*)(b+ 8)) ^= *((quint32*)m_expandedKey[0][2]);
-	*((quint32*)(b+12)) ^= *((quint32*)m_expandedKey[0][3]);
+    *((quint32*)temp[0]) = *((quint32*)(b   )) ^ *((quint32*)m_expandedKey[1][0]);
+    *((quint32*)temp[1]) = *((quint32*)(b+ 4)) ^ *((quint32*)m_expandedKey[1][1]);
+    *((quint32*)temp[2]) = *((quint32*)(b+ 8)) ^ *((quint32*)m_expandedKey[1][2]);
+    *((quint32*)temp[3]) = *((quint32*)(b+12)) ^ *((quint32*)m_expandedKey[1][3]);
+    b[ 0] = S5[temp[0][0]];
+    b[ 1] = S5[temp[3][1]];
+    b[ 2] = S5[temp[2][2]];
+    b[ 3] = S5[temp[1][3]];
+    b[ 4] = S5[temp[1][0]];
+    b[ 5] = S5[temp[0][1]];
+    b[ 6] = S5[temp[3][2]];
+    b[ 7] = S5[temp[2][3]];
+    b[ 8] = S5[temp[2][0]];
+    b[ 9] = S5[temp[1][1]];
+    b[10] = S5[temp[0][2]];
+    b[11] = S5[temp[3][3]];
+    b[12] = S5[temp[3][0]];
+    b[13] = S5[temp[2][1]];
+    b[14] = S5[temp[1][2]];
+    b[15] = S5[temp[0][3]];
+    *((quint32*)(b   )) ^= *((quint32*)m_expandedKey[0][0]);
+    *((quint32*)(b+ 4)) ^= *((quint32*)m_expandedKey[0][1]);
+    *((quint32*)(b+ 8)) ^= *((quint32*)m_expandedKey[0][2]);
+    *((quint32*)(b+12)) ^= *((quint32*)m_expandedKey[0][3]);
 }

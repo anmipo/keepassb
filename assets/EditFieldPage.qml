@@ -54,7 +54,7 @@ Sheet {
     onCreationCompleted: {
         // close without saving when DB is being locked
         database.dbLocked.connect(_close);
-		entry.registerAccessEvent();
+        entry.registerAccessEvent();
     }
     onClosed: {
         database.dbLocked.disconnect(_close);

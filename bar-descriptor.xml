@@ -1,42 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
-	Copyright (c) 2014-2015 Andrei Popleteev.
+    Copyright (c) 2014-2016 Andrei Popleteev.
 -->
 
 <qnx xmlns="http://www.qnx.com/schemas/application/1.0">
 
     <id>org.KeePassB</id>
-
-    <!-- The name that is displayed in the BlackBerry 10 application installer.
-         May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>
-       KeePassB
-    </name>
-
-    <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
-         Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
-         An updated version of application must have a versionNumber value higher than the previous version. Required. -->
+    <name>KeePassB</name>
     <versionNumber>2.5.3</versionNumber>
-
-    <!-- Fourth digit segment of the package version. First three segments are taken from the
-         <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
     <buildId>0</buildId>
-    <packageLocale>ru,de,vi</packageLocale>
-
-    <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
     <versionLabel>2.5.3</versionLabel>
-
-    <!-- Description, displayed in the BlackBerry 10 application installer.
-         May have multiple values for each language. See samples or xsd schema file. Optional. -->
     <description>
        KeePassB is a native Built for BlackBerry implementation of the KeePass password manager.
     </description>
 
-    <!-- Copyright information. Optional. -->
-    <copyright>©2014-2015 Andrei Popleteev</copyright>
+    <packageLocale>ru,de,vi</packageLocale>
 
-    <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
+    <copyright>©2014-2015 Andrei Popleteev</copyright>
     <author>Andrei Popleteev</author>
+    <authorId>gYAAgE2X4TfqzKRifriMxvfT2wc</authorId>
 
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
@@ -56,10 +38,6 @@
        <asset path="arm/o.le-v7-g/KeePassB" entry="true" type="Qnx/Elf">KeePassB</asset>
     </configuration>
 
-    <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
-    <authorId>gYAAgE2X4TfqzKRifriMxvfT2wc</authorId>
-    
-    <!--  App icons for different screen resolutions. -->
     <icon>
        <image>appicon.png</image>
        <image>appicon90.png</image>
@@ -71,16 +49,14 @@
         <autoOrients>true</autoOrients>
         <systemChrome>none</systemChrome>
     </initialWindow>
-    
-    <!-- Locale support -->
+
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
-    
-    <!-- App assets -->
+
     <asset path="assets" dest="assets">
-    	<exclude name="**/*.qml"/>
-    	<exclude name="**/*.js"/>
+        <exclude name="**/*.qml"/>
+        <exclude name="**/*.js"/>
     </asset>
     <asset path="appicon.png">appicon.png</asset>
     <asset path="appicon90.png">appicon90.png</asset>
@@ -88,30 +64,32 @@
     <asset path="appicon110.png">appicon110.png</asset>
     <asset path="appicon144.png">appicon144.png</asset>
 
-    <!-- Request permission to execute native code.  Required for native applications. -->
+    <!-- Required for native applications -->
     <permission system="true">run_native</permission>
+    <!-- Required to access database files -->
     <permission>access_shared</permission>
+    <!-- Required for QSensor::alwaysOn (used by multi-copy feature) -->
     <permission>run_when_backgrounded</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
     <env var="CASCADES_THEME" value="dark"/>
 
-	<!-- Invocation -->
-	<invoke-target id="org.keepassb.database.open">
-		<invoke-target-type>application</invoke-target-type>
-		<invoke-target-name>KeePassB</invoke-target-name>
-		<icon>
-			<image>appicon.png</image>
-			<image>appicon90.png</image>
-			<image>appicon96.png</image>
-			<image>appicon110.png</image>
-			<image>appicon144.png</image>
-		</icon>
-		<filter>
-			<action>bb.action.VIEW</action>
-			<action>bb.action.OPEN</action>
-			<mime-type>*</mime-type>
-			<property var="uris" value="file://"/>
-			<property var="exts" value="kdb,kdbx"/>
-		</filter>
-	</invoke-target>
+    <!-- Invocation -->
+    <invoke-target id="org.keepassb.database.open">
+        <invoke-target-type>application</invoke-target-type>
+        <invoke-target-name>KeePassB</invoke-target-name>
+        <icon>
+            <image>appicon.png</image>
+            <image>appicon90.png</image>
+            <image>appicon96.png</image>
+            <image>appicon110.png</image>
+            <image>appicon144.png</image>
+        </icon>
+        <filter>
+            <action>bb.action.VIEW</action>
+            <action>bb.action.OPEN</action>
+            <mime-type>*</mime-type>
+            <property var="uris" value="file://"/>
+            <property var="exts" value="kdb,kdbx"/>
+        </filter>
+    </invoke-target>
 </qnx>

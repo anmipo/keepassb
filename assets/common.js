@@ -38,13 +38,13 @@ function getQuickUnlockTypeDescription(quickUnlockType) {
     case Settings.QUICK_UNLOCK_FIRST_4:
         return qsTr("First 4 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    First 4 symbols of the password'");
     case Settings.QUICK_UNLOCK_FIRST_5:
-    	return qsTr("First 5 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    First 5 symbols of the password'");
+        return qsTr("First 5 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    First 5 symbols of the password'");
     case Settings.QUICK_UNLOCK_LAST_3:
-    	return qsTr("Last 3 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    Last 3 symbols of the password'");
+        return qsTr("Last 3 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    Last 3 symbols of the password'");
     case Settings.QUICK_UNLOCK_LAST_4:
-    	return qsTr("Last 4 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    Last 4 symbols of the password'");
+        return qsTr("Last 4 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    Last 4 symbols of the password'");
     case Settings.QUICK_UNLOCK_LAST_5:
-    	return qsTr("Last 5 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    Last 5 symbols of the password'");
+        return qsTr("Last 5 symbols of the password", "One of the possible values of the Quick Password setting. Will be displayed as 'Quick Password    Last 5 symbols of the password'");
     }
 }
 /**
@@ -55,15 +55,15 @@ function getQuickPasswordLength(quickUnlockType) {
     switch (quickUnlockType) {
     case Settings.QUICK_UNLOCK_FIRST_3: // fallthrough
     case Settings.QUICK_UNLOCK_LAST_3:
-    	return 3;
+        return 3;
     case Settings.QUICK_UNLOCK_LAST_4:  // fallthrough
     case Settings.QUICK_UNLOCK_FIRST_4:
-    	return 4;
+        return 4;
     case Settings.QUICK_UNLOCK_FIRST_5:  // fallthrough
     case Settings.QUICK_UNLOCK_LAST_5:
-    	return 5;
+        return 5;
     default:
-    	return 1000; // an arbitrary but long enough value, just in case
+        return 1000; // an arbitrary but long enough value, just in case
     }
 }
 
@@ -85,7 +85,7 @@ function prettifyFilePath(path) {
  * @param timestamp
  */
 function timestampToString(timestamp) {
-	return Qt.formatDateTime(timestamp, Qt.SystemLocaleLongDate);
+    return Qt.formatDateTime(timestamp, Qt.SystemLocaleLongDate);
 }
 
 /**
@@ -135,26 +135,26 @@ function createUniqueOption(fullPath, dropdown, newOptionComponent) {
  * Performs Multi-Copy function, optionally showing info dialog first.
  */
 function performMultiCopy(entry, suppressInfo) {
-	if (Qt.kpb.appSettings.multiCopyFirstUse && !suppressInfo) {
-		Qt.kpb.multiCopyInfoDialog.entry = entry;
-		Qt.kpb.multiCopyInfoDialog.show();
-	} else {
-		Qt.kpb.app.prepareMultiCopy(entry.userName, entry.password);		
-	}	
+    if (Qt.kpb.appSettings.multiCopyFirstUse && !suppressInfo) {
+        Qt.kpb.multiCopyInfoDialog.entry = entry;
+        Qt.kpb.multiCopyInfoDialog.show();
+    } else {
+        Qt.kpb.app.prepareMultiCopy(entry.userName, entry.password);        
+    }    
 }
 /**
  * Checks if all the standard entry fields are empty strings.
  */
 function isAllStandardFieldsEmpty(entry) {
-	return  (entry.userName.length == 0) && 
-			(entry.password.length == 0) && 
-			(entry.url.length == 0) && 
-			(entry.notes.length == 0); 
+    return  (entry.userName.length == 0) && 
+            (entry.password.length == 0) && 
+            (entry.url.length == 0) && 
+            (entry.notes.length == 0); 
 }
 
 /**
  * Checks if a V4 entry has only extra fields filled
  */
 function hasOnlyExtraFields(entryV4) {
-	return (isAllStandardFieldsEmpty(entryV4) && (entryV4.extraSize > 0));
+    return (isAllStandardFieldsEmpty(entryV4) && (entryV4.extraSize > 0));
 }

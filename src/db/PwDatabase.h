@@ -36,11 +36,11 @@ public:
     };
 
 protected:
-	PwGroup* _rootGroup;
-	QString _dbFilePath;
+    PwGroup* _rootGroup;
+    QString _dbFilePath;
 
-	// returns true if successful. If data is invalid/empty, returns an empty key
-	virtual bool processKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
+    // returns true if successful. If data is invalid/empty, returns an empty key
+    virtual bool processKeyFile(const QByteArray& keyFileData, QByteArray& key) const;
 
     /**
      * Extracts the key from a correctly-formed XML file.
@@ -49,21 +49,21 @@ protected:
     virtual bool processXmlKeyFile(const QByteArray& keyFileData, QByteArray& key) const = 0;
 
     /** Combines password and key data into one key */
-	virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const = 0;
+    virtual bool buildCompositeKey(const QByteArray& passwordKey, const QByteArray& keyFileData, QByteArray& combinedKey) const = 0;
 
-	/** Returns the number of all groups and entries combined */
-	int countAllChildren() const;
+    /** Returns the number of all groups and entries combined */
+    int countAllChildren() const;
 
-	/** Converts the password string to its raw representation, as of format version's rules */
-	virtual QByteArray getPasswordBytes(const QString& password) const = 0;
+    /** Converts the password string to its raw representation, as of format version's rules */
+    virtual QByteArray getPasswordBytes(const QString& password) const = 0;
 
     /** Setter for the combinedKey field (in child classes) */
-	virtual void setCombinedKey(const QByteArray& newKey) = 0;
+    virtual void setCombinedKey(const QByteArray& newKey) = 0;
 
     // Calculates the AES encryption key based on the combined key (password + key data)
     // and current header seed values.
-	ErrorCode transformKey(const QByteArray& masterSeed, const QByteArray& transformSeed,
-	        quint64 transformRounds, const QByteArray& combinedKey, QByteArray& aesKey);
+    ErrorCode transformKey(const QByteArray& masterSeed, const QByteArray& transformSeed,
+            quint64 transformRounds, const QByteArray& combinedKey, QByteArray& aesKey);
     // Helper function for multithreaded key transformation
     ErrorCode performKeyTransformRounds(const unsigned char* pTransformSeed,
             unsigned char* pTransKey, const quint64 nRounds, bool reportProgress);
@@ -74,8 +74,8 @@ protected:
     void onProgress(quint8 progressPercent);
 
 public:
-	PwDatabase(QObject* parent=0);
-	virtual ~PwDatabase();
+    PwDatabase(QObject* parent=0);
+    virtual ~PwDatabase();
 
     /**
      * Tries to decrypt and load the given DB data with given password/key.

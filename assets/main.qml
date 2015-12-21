@@ -52,7 +52,7 @@ NavigationPane {
             },
             ActionItem {
                 title: qsTr("Change Master Key", "A button/action to change the master key (main password) of the database") + Retranslate.onLocaleOrLanguageChanged
-				imageSource: "asset:///images/ic_edit_key.png"
+                imageSource: "asset:///images/ic_edit_key.png"
                 enabled: !database.locked && database.isEditable();
                 onTriggered: {
                     var changeMasterKeySheet = changeMasterKeySheetComponent.createObject(naviPane.top, {creationMode: false});

@@ -159,7 +159,7 @@ PageWithWatchdog {
         } 
     }
     
-	onGroupChanged: {
+    onGroupChanged: {
         titleBar.title = group.name;
         if (!group.parentGroup) {
             backButton.imageSource = "asset:///images/ic_lock.png";

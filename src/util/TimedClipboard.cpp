@@ -14,15 +14,15 @@
 const QString TimedClipboard::DATA_TYPE = "text/plain";
 
 TimedClipboard::TimedClipboard(QObject* parent) :
-		bb::system::Clipboard(parent), selectedContentType(CONTENT_NONE),
-		timer(parent), simpleContent(), firstContent(), secondContent(), modified(false) {
-	timer.setSingleShot(true);
-	QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(timeout()));
+        bb::system::Clipboard(parent), selectedContentType(CONTENT_NONE),
+        timer(parent), simpleContent(), firstContent(), secondContent(), modified(false) {
+    timer.setSingleShot(true);
+    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(timeout()));
 }
 
 TimedClipboard::~TimedClipboard() {
-	timer.stop();
-	clear();
+    timer.stop();
+    clear();
 }
 
 void TimedClipboard::timeout() {
@@ -77,17 +77,17 @@ bool TimedClipboard::insertWithTimeout(const QString& text, const long timeoutMi
     // different texts in various formats: text/plain, text/rtf, text/html...
     bb::system::Clipboard::clear();
 
-	bool result = this->insert(DATA_TYPE, simpleContent);
-	if (result) {
+    bool result = this->insert(DATA_TYPE, simpleContent);
+    if (result) {
         modified = true;
-		emit inserted();
-		selectedContentType = CONTENT_SIMPLE;
-		timer.stop();
-		if (timeoutMillis >= 0) {
-		    timer.start(timeoutMillis);
-		}
-	}
-	return result;
+        emit inserted();
+        selectedContentType = CONTENT_SIMPLE;
+        timer.stop();
+        if (timeoutMillis >= 0) {
+            timer.start(timeoutMillis);
+        }
+    }
+    return result;
 }
 
 void TimedClipboard::insertPair(const QString& first, const QString& second, const long timeoutMillis) {

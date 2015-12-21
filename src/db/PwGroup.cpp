@@ -25,22 +25,22 @@ PwGroup::PwGroup(QObject* parent) :
         _lastAccessTime(), _expiryTime(),
         _subGroups(), sortedGroups(),
         _entries(), sortedEntries() {
-	_name = QString::null;
-	_notes = QString::null;
-	_iconId = 0;
-	_isChildrenModified = false;
-	_expires = false;
-	_deleted = false;
-	_parentGroup = NULL;
+    _name = QString::null;
+    _notes = QString::null;
+    _iconId = 0;
+    _isChildrenModified = false;
+    _expires = false;
+    _deleted = false;
+    _parentGroup = NULL;
 
-	bool res = QObject::connect(Settings::instance(), SIGNAL(groupSortingTypeChanged(GroupSortingType)), this, SLOT(sortChildren())); Q_ASSERT(res);
-	res = QObject::connect(this, SIGNAL(itemsChanged(bb::cascades::DataModelChangeType::Type, QSharedPointer<bb::cascades::DataModel::IndexMapper>)),
-	        this, SLOT(itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type))); Q_ASSERT(res);
-	Q_UNUSED(res);
+    bool res = QObject::connect(Settings::instance(), SIGNAL(groupSortingTypeChanged(GroupSortingType)), this, SLOT(sortChildren())); Q_ASSERT(res);
+    res = QObject::connect(this, SIGNAL(itemsChanged(bb::cascades::DataModelChangeType::Type, QSharedPointer<bb::cascades::DataModel::IndexMapper>)),
+            this, SLOT(itemsCountChangedAdapter(bb::cascades::DataModelChangeType::Type))); Q_ASSERT(res);
+    Q_UNUSED(res);
 }
 
 PwGroup::~PwGroup() {
-	clear();
+    clear();
 }
 
 void PwGroup::clear() {
@@ -50,13 +50,13 @@ void PwGroup::clear() {
     Util::safeClear(_notes);
     sortedGroups.clear();
     qDeleteAll(_subGroups);
-	_subGroups.clear();
-	sortedEntries.clear();
-	qDeleteAll(_entries);
-	_entries.clear();
-	emit itemsChanged(bb::cascades::DataModelChangeType::Init);
+    _subGroups.clear();
+    sortedEntries.clear();
+    qDeleteAll(_entries);
+    _entries.clear();
+    emit itemsChanged(bb::cascades::DataModelChangeType::Init);
 
-	QDateTime now = QDateTime::currentDateTime();
+    QDateTime now = QDateTime::currentDateTime();
     _creationTime = now;
     _lastModificationTime = now;
     _lastAccessTime = now;
@@ -79,16 +79,16 @@ void PwGroup::deleteWithoutBackup() {
 void PwGroup::addSubGroup(PwGroup* subGroup) {
     Q_ASSERT(subGroup);
 
-	if (!subGroup->parent()) {
-		subGroup->setParent(this);
-	}
-	subGroup->setParentGroup(this);
+    if (!subGroup->parent()) {
+        subGroup->setParent(this);
+    }
+    subGroup->setParentGroup(this);
 
-	// re-sort children when subgroup name changed
-	bool res = QObject::connect(subGroup, SIGNAL(nameChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res); Q_UNUSED(res);
-	_subGroups.append(subGroup);
-	emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
-	_isChildrenModified = true;
+    // re-sort children when subgroup name changed
+    bool res = QObject::connect(subGroup, SIGNAL(nameChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res); Q_UNUSED(res);
+    _subGroups.append(subGroup);
+    emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
+    _isChildrenModified = true;
 }
 
 void PwGroup::removeSubGroup(PwGroup* subGroup) {
@@ -116,8 +116,8 @@ void PwGroup::addEntry(PwEntry* entry) {
     bool res = QObject::connect(entry, SIGNAL(titleChanged(QString)), this, SLOT(sortChildren())); Q_ASSERT(res); Q_UNUSED(res);
 
     _entries.append(entry);
-	emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
-	_isChildrenModified = true;
+    emit itemsChanged(bb::cascades::DataModelChangeType::AddRemove);
+    _isChildrenModified = true;
 }
 
 void PwGroup::removeEntry(PwEntry* entry) {

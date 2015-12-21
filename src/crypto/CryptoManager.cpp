@@ -27,20 +27,20 @@ const int TWOFISH_BLOCK_SIZE = 16;
 
 CryptoManager::CryptoManager(QObject* parent): QObject(parent),
         keyTransformInitVectorArray(SB_AES_128_BLOCK_BYTES, 0) {
-	sbCtx = NULL;
-	rngCtx = NULL;
+    sbCtx = NULL;
+    rngCtx = NULL;
     keyTransformInitialized = false;
 }
 
 CryptoManager::~CryptoManager() {
     this->cleanup();
-	_instance = NULL;
+    _instance = NULL;
 }
 
 CryptoManager* CryptoManager::instance() {
-	if (!_instance)
-		_instance = new CryptoManager(bb::cascades::Application::instance());
-	return _instance;
+    if (!_instance)
+        _instance = new CryptoManager(bb::cascades::Application::instance());
+    return _instance;
 }
 
 
@@ -48,37 +48,37 @@ CryptoManager* CryptoManager::instance() {
  * Initialises security contexts; returns an SB_* error code
  */
 int CryptoManager::init() {
-	LOG("CryptoManager::init");
+    LOG("CryptoManager::init");
 
-	// Create SB Contexts
-	RETURN_IF_SB_ERROR(hu_GlobalCtxCreateDefault(&sbCtx), "CryptoManager error creating SB contexts");
+    // Create SB Contexts
+    RETURN_IF_SB_ERROR(hu_GlobalCtxCreateDefault(&sbCtx), "CryptoManager error creating SB contexts");
 
-	// Register global context with GSE-C 5.6 Provider
-	// GSE = Government Security Edition (SB GSE-C)
-	// SB GSE-C is also known as BlackBerry OS Cryptographic Kernel
-	RETURN_IF_SB_ERROR(hu_RegisterSbg56(sbCtx), "CryptoManager error calling hu_RegisterSbg56");
+    // Register global context with GSE-C 5.6 Provider
+    // GSE = Government Security Edition (SB GSE-C)
+    // SB GSE-C is also known as BlackBerry OS Cryptographic Kernel
+    RETURN_IF_SB_ERROR(hu_RegisterSbg56(sbCtx), "CryptoManager error calling hu_RegisterSbg56");
 
-	RETURN_IF_SB_ERROR(hu_InitSbg56(sbCtx), "CryptoManager error calling hu_InitSbg56");
+    RETURN_IF_SB_ERROR(hu_InitSbg56(sbCtx), "CryptoManager error calling hu_InitSbg56");
 
-	// Init RNG seed using hardware-based randomness
-	RETURN_IF_SB_ERROR(hu_RegisterSystemSeed(sbCtx), "CryptoManager error calling hu_RegisterSystemSeed");
-	RETURN_IF_SB_ERROR(
-	        hu_RngDrbgCreate(HU_DRBG_HASH, 256, false, 0, NULL, NULL, &rngCtx, sbCtx),
-	        "CryptoManager error creating RNG");
-	RETURN_IF_SB_ERROR(initRngSeed(), "CryptoManager error initializing RNG seed");
+    // Init RNG seed using hardware-based randomness
+    RETURN_IF_SB_ERROR(hu_RegisterSystemSeed(sbCtx), "CryptoManager error calling hu_RegisterSystemSeed");
+    RETURN_IF_SB_ERROR(
+            hu_RngDrbgCreate(HU_DRBG_HASH, 256, false, 0, NULL, NULL, &rngCtx, sbCtx),
+            "CryptoManager error creating RNG");
+    RETURN_IF_SB_ERROR(initRngSeed(), "CryptoManager error initializing RNG seed");
 
-	return SB_SUCCESS;
+    return SB_SUCCESS;
 }
 
 void CryptoManager::cleanup() {
-	LOG("CryptoManager::cleanup");
-	if (keyTransformInitialized) {
-	    endKeyTransform();
-	    keyTransformInitialized = false;
-	}
-	hu_RngDrbgDestroy(&rngCtx, sbCtx);
-	hu_UninitSbg56(sbCtx);
-	hu_GlobalCtxDestroy(&sbCtx);
+    LOG("CryptoManager::cleanup");
+    if (keyTransformInitialized) {
+        endKeyTransform();
+        keyTransformInitialized = false;
+    }
+    hu_RngDrbgDestroy(&rngCtx, sbCtx);
+    hu_UninitSbg56(sbCtx);
+    hu_GlobalCtxDestroy(&sbCtx);
 }
 
 int CryptoManager::initRngSeed() {
@@ -97,26 +97,26 @@ int CryptoManager::initRngSeed() {
  * Returns an SB_* error code.
  */
 int CryptoManager::sha256(const QByteArray& inputData, QByteArray& outputData) {
-	// Initialize parameters
-	const unsigned char* hashInput = reinterpret_cast<const unsigned char*>(inputData.constData());
-	outputData.fill(0, SB_SHA256_DIGEST_LEN);
+    // Initialize parameters
+    const unsigned char* hashInput = reinterpret_cast<const unsigned char*>(inputData.constData());
+    outputData.fill(0, SB_SHA256_DIGEST_LEN);
 
-	sb_Context sha256Context;
-	RETURN_IF_SB_ERROR(
-	        hu_SHA256Begin((size_t) SB_SHA256_DIGEST_LEN, NULL, &sha256Context, sbCtx),
-	        "CryptoManager error initialising SHA-256 context");
+    sb_Context sha256Context;
+    RETURN_IF_SB_ERROR(
+            hu_SHA256Begin((size_t) SB_SHA256_DIGEST_LEN, NULL, &sha256Context, sbCtx),
+            "CryptoManager error initialising SHA-256 context");
 
-	// Hash Message
-	RETURN_IF_SB_ERROR(
-	        hu_SHA256Hash(sha256Context, (size_t) inputData.length(), hashInput, sbCtx),
-	        "CryptoManager error creating hash");
+    // Hash Message
+    RETURN_IF_SB_ERROR(
+            hu_SHA256Hash(sha256Context, (size_t) inputData.length(), hashInput, sbCtx),
+            "CryptoManager error creating hash");
 
-	// Complete SHA-256 Hashing
-	RETURN_IF_SB_ERROR(
-	        hu_SHA256End(&sha256Context, reinterpret_cast<unsigned char*>(outputData.data()), sbCtx),
-	        "CryptoManager error completing hashing");
+    // Complete SHA-256 Hashing
+    RETURN_IF_SB_ERROR(
+            hu_SHA256End(&sha256Context, reinterpret_cast<unsigned char*>(outputData.data()), sbCtx),
+            "CryptoManager error completing hashing");
 
-	return SB_SUCCESS;
+    return SB_SUCCESS;
 }
 
 /**
@@ -142,31 +142,31 @@ int CryptoManager::encryptAES(const int mode, const QByteArray& key, const QByte
     if (progressObserver)
         progressObserver->setPhaseProgressRawTarget(1);
 
-	sb_Params aesParams;
-	RETURN_IF_SB_ERROR(
-	        hu_AESParamsCreate(mode, SB_AES_128_BLOCK_BITS, NULL, NULL, &aesParams, sbCtx),
-	        "AESParamsCreate failed");
+    sb_Params aesParams;
+    RETURN_IF_SB_ERROR(
+            hu_AESParamsCreate(mode, SB_AES_128_BLOCK_BITS, NULL, NULL, &aesParams, sbCtx),
+            "AESParamsCreate failed");
 
-	sb_Key aesKey;
-	RETURN_IF_SB_ERROR(
-	        hu_AESKeySet(aesParams, SB_AES_256_KEY_BITS,
-	                reinterpret_cast<const unsigned char*>(key.constData()), &aesKey, sbCtx),
-	         "AESKeySet failed");
+    sb_Key aesKey;
+    RETURN_IF_SB_ERROR(
+            hu_AESKeySet(aesParams, SB_AES_256_KEY_BITS,
+                    reinterpret_cast<const unsigned char*>(key.constData()), &aesKey, sbCtx),
+             "AESKeySet failed");
 
-	sb_Context aesContext;
-	RETURN_IF_SB_ERROR(
-	        hu_AESBegin(aesParams, aesKey, SB_AES_128_BLOCK_BYTES,
-	                reinterpret_cast<const unsigned char*>(initVector.constData()), &aesContext, sbCtx),
-	        "AESBegin failed");
+    sb_Context aesContext;
+    RETURN_IF_SB_ERROR(
+            hu_AESBegin(aesParams, aesKey, SB_AES_128_BLOCK_BYTES,
+                    reinterpret_cast<const unsigned char*>(initVector.constData()), &aesContext, sbCtx),
+            "AESBegin failed");
 
     cipherText.fill(0, plainText.size());
 
-	RETURN_IF_SB_ERROR(
-	        hu_AESEncryptMsg(aesParams, aesKey,
-	                initVector.length(), reinterpret_cast<const unsigned char*>(initVector.constData()),
-	                plainText.length(), reinterpret_cast<const unsigned char*>(plainText.constData()),
-	                reinterpret_cast<unsigned char*>(cipherText.data()), sbCtx),
-	        "AESEncryptMsg failed");
+    RETURN_IF_SB_ERROR(
+            hu_AESEncryptMsg(aesParams, aesKey,
+                    initVector.length(), reinterpret_cast<const unsigned char*>(initVector.constData()),
+                    plainText.length(), reinterpret_cast<const unsigned char*>(plainText.constData()),
+                    reinterpret_cast<unsigned char*>(cipherText.data()), sbCtx),
+            "AESEncryptMsg failed");
 
     RETURN_IF_SB_ERROR(
             hu_AESEnd(&aesContext, sbCtx),
@@ -200,7 +200,7 @@ void CryptoManager::addPadding16(QByteArray& data) {
 bool CryptoManager::removePadding16(QByteArray& data) {
     int length = data.length();
     if (length > 0) {
-		// check if padding length is correct
+        // check if padding length is correct
         int padLength = data.at(length - 1);
         if ((padLength < 1) || (padLength > 16)) {
             LOG("Wrong padding length: %d", padLength);
@@ -297,29 +297,29 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
     if (progressObserver)
         progressObserver->setPhaseProgressRawTarget(1);
 
-	sb_Params aesParams;
-	RETURN_IF_SB_ERROR(
-	        hu_AESParamsCreate(SB_AES_CBC, SB_AES_128_BLOCK_BITS, NULL, NULL, &aesParams, sbCtx),
-	        "AESParamsCreate failed");
+    sb_Params aesParams;
+    RETURN_IF_SB_ERROR(
+            hu_AESParamsCreate(SB_AES_CBC, SB_AES_128_BLOCK_BITS, NULL, NULL, &aesParams, sbCtx),
+            "AESParamsCreate failed");
 
-	sb_Key aesKey;
-	RETURN_IF_SB_ERROR(
-	        hu_AESKeySet(aesParams, SB_AES_256_KEY_BITS,
-	                reinterpret_cast<const unsigned char*>(key.constData()), &aesKey, sbCtx),
-	        "AESKeySet failed");
+    sb_Key aesKey;
+    RETURN_IF_SB_ERROR(
+            hu_AESKeySet(aesParams, SB_AES_256_KEY_BITS,
+                    reinterpret_cast<const unsigned char*>(key.constData()), &aesKey, sbCtx),
+            "AESKeySet failed");
 
-	sb_Context aesContext;
-	RETURN_IF_SB_ERROR(
-	        hu_AESBegin(aesParams, aesKey, SB_AES_128_BLOCK_BYTES,
-	                reinterpret_cast<const unsigned char*>(initVector.constData()), &aesContext, sbCtx),
-	        "AESBegin failed");
+    sb_Context aesContext;
+    RETURN_IF_SB_ERROR(
+            hu_AESBegin(aesParams, aesKey, SB_AES_128_BLOCK_BYTES,
+                    reinterpret_cast<const unsigned char*>(initVector.constData()), &aesContext, sbCtx),
+            "AESBegin failed");
 
-	RETURN_IF_SB_ERROR(
-	        hu_AESDecryptMsg(aesParams, aesKey,
-	                initVector.length(), reinterpret_cast<const unsigned char*>(initVector.constData()),
-	                cypherText.length(), reinterpret_cast<const unsigned char*>(cypherText.constData()),
-	                reinterpret_cast<unsigned char*>(plainText.data()), sbCtx),
-	        "AESDecrypttMsg failed");
+    RETURN_IF_SB_ERROR(
+            hu_AESDecryptMsg(aesParams, aesKey,
+                    initVector.length(), reinterpret_cast<const unsigned char*>(initVector.constData()),
+                    cypherText.length(), reinterpret_cast<const unsigned char*>(cypherText.constData()),
+                    reinterpret_cast<unsigned char*>(plainText.data()), sbCtx),
+            "AESDecrypttMsg failed");
 
     RETURN_IF_SB_ERROR(
             hu_AESEnd(&aesContext, sbCtx),
@@ -334,7 +334,7 @@ int CryptoManager::decryptAES(const QByteArray& key, const QByteArray& initVecto
     if (progressObserver)
         progressObserver->setProgress(1);
 
-	return SB_SUCCESS;
+    return SB_SUCCESS;
 }
 
 /**
@@ -451,99 +451,99 @@ static void store_littleendian(unsigned char *x, quint32 u) {
 }
 
 int coreSalsa20(unsigned char *out, const unsigned char *in, const unsigned char *k, const unsigned char *c) {
-	quint32 x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
-	quint32 j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
-	int i;
+    quint32 x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
+    quint32 j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
+    int i;
 
-	const int ROUNDS = 20;
+    const int ROUNDS = 20;
 
-	j0 = x0 = load_littleendian(c + 0); // 1634760805
-	j1 = x1 = load_littleendian(k + 0);
-	j2 = x2 = load_littleendian(k + 4);
-	j3 = x3 = load_littleendian(k + 8);
-	j4 = x4 = load_littleendian(k + 12);
-	j5 = x5 = load_littleendian(c + 4); // 857760878
-	j6 = x6 = load_littleendian(in + 0);
-	j7 = x7 = load_littleendian(in + 4);
-	j8 = x8 = load_littleendian(in + 8);
-	j9 = x9 = load_littleendian(in + 12);
-	j10 = x10 = load_littleendian(c + 8); // 2036477234
-	j11 = x11 = load_littleendian(k + 16);
-	j12 = x12 = load_littleendian(k + 20);
-	j13 = x13 = load_littleendian(k + 24);
-	j14 = x14 = load_littleendian(k + 28);
-	j15 = x15 = load_littleendian(c + 12); // 1797285236
+    j0 = x0 = load_littleendian(c + 0); // 1634760805
+    j1 = x1 = load_littleendian(k + 0);
+    j2 = x2 = load_littleendian(k + 4);
+    j3 = x3 = load_littleendian(k + 8);
+    j4 = x4 = load_littleendian(k + 12);
+    j5 = x5 = load_littleendian(c + 4); // 857760878
+    j6 = x6 = load_littleendian(in + 0);
+    j7 = x7 = load_littleendian(in + 4);
+    j8 = x8 = load_littleendian(in + 8);
+    j9 = x9 = load_littleendian(in + 12);
+    j10 = x10 = load_littleendian(c + 8); // 2036477234
+    j11 = x11 = load_littleendian(k + 16);
+    j12 = x12 = load_littleendian(k + 20);
+    j13 = x13 = load_littleendian(k + 24);
+    j14 = x14 = load_littleendian(k + 28);
+    j15 = x15 = load_littleendian(c + 12); // 1797285236
 
-	for (i = ROUNDS;i > 0;i -= 2) {
-		 x4 ^= rotate( x0+x12, 7);
-		 x8 ^= rotate( x4+ x0, 9);
-		x12 ^= rotate( x8+ x4,13);
-		 x0 ^= rotate(x12+ x8,18);
-		 x9 ^= rotate( x5+ x1, 7);
-		x13 ^= rotate( x9+ x5, 9);
-		 x1 ^= rotate(x13+ x9,13);
-		 x5 ^= rotate( x1+x13,18);
-		x14 ^= rotate(x10+ x6, 7);
-		 x2 ^= rotate(x14+x10, 9);
-		 x6 ^= rotate( x2+x14,13);
-		x10 ^= rotate( x6+ x2,18);
-		 x3 ^= rotate(x15+x11, 7);
-		 x7 ^= rotate( x3+x15, 9);
-		x11 ^= rotate( x7+ x3,13);
-		x15 ^= rotate(x11+ x7,18);
-		 x1 ^= rotate( x0+ x3, 7);
-		 x2 ^= rotate( x1+ x0, 9);
-		 x3 ^= rotate( x2+ x1,13);
-		 x0 ^= rotate( x3+ x2,18);
-		 x6 ^= rotate( x5+ x4, 7);
-		 x7 ^= rotate( x6+ x5, 9);
-		 x4 ^= rotate( x7+ x6,13);
-		 x5 ^= rotate( x4+ x7,18);
-		x11 ^= rotate(x10+ x9, 7);
-		 x8 ^= rotate(x11+x10, 9);
-		 x9 ^= rotate( x8+x11,13);
-		x10 ^= rotate( x9+ x8,18);
-		x12 ^= rotate(x15+x14, 7);
-		x13 ^= rotate(x12+x15, 9);
-		x14 ^= rotate(x13+x12,13);
-		x15 ^= rotate(x14+x13,18);
-	}
+    for (i = ROUNDS;i > 0;i -= 2) {
+         x4 ^= rotate( x0+x12, 7);
+         x8 ^= rotate( x4+ x0, 9);
+        x12 ^= rotate( x8+ x4,13);
+         x0 ^= rotate(x12+ x8,18);
+         x9 ^= rotate( x5+ x1, 7);
+        x13 ^= rotate( x9+ x5, 9);
+         x1 ^= rotate(x13+ x9,13);
+         x5 ^= rotate( x1+x13,18);
+        x14 ^= rotate(x10+ x6, 7);
+         x2 ^= rotate(x14+x10, 9);
+         x6 ^= rotate( x2+x14,13);
+        x10 ^= rotate( x6+ x2,18);
+         x3 ^= rotate(x15+x11, 7);
+         x7 ^= rotate( x3+x15, 9);
+        x11 ^= rotate( x7+ x3,13);
+        x15 ^= rotate(x11+ x7,18);
+         x1 ^= rotate( x0+ x3, 7);
+         x2 ^= rotate( x1+ x0, 9);
+         x3 ^= rotate( x2+ x1,13);
+         x0 ^= rotate( x3+ x2,18);
+         x6 ^= rotate( x5+ x4, 7);
+         x7 ^= rotate( x6+ x5, 9);
+         x4 ^= rotate( x7+ x6,13);
+         x5 ^= rotate( x4+ x7,18);
+        x11 ^= rotate(x10+ x9, 7);
+         x8 ^= rotate(x11+x10, 9);
+         x9 ^= rotate( x8+x11,13);
+        x10 ^= rotate( x9+ x8,18);
+        x12 ^= rotate(x15+x14, 7);
+        x13 ^= rotate(x12+x15, 9);
+        x14 ^= rotate(x13+x12,13);
+        x15 ^= rotate(x14+x13,18);
+    }
 
-	x0 += j0;
-	x1 += j1;
-	x2 += j2;
-	x3 += j3;
-	x4 += j4;
-	x5 += j5;
-	x6 += j6;
-	x7 += j7;
-	x8 += j8;
-	x9 += j9;
-	x10 += j10;
-	x11 += j11;
-	x12 += j12;
-	x13 += j13;
-	x14 += j14;
-	x15 += j15;
+    x0 += j0;
+    x1 += j1;
+    x2 += j2;
+    x3 += j3;
+    x4 += j4;
+    x5 += j5;
+    x6 += j6;
+    x7 += j7;
+    x8 += j8;
+    x9 += j9;
+    x10 += j10;
+    x11 += j11;
+    x12 += j12;
+    x13 += j13;
+    x14 += j14;
+    x15 += j15;
 
-	store_littleendian(out + 0,x0);
-	store_littleendian(out + 4,x1);
-	store_littleendian(out + 8,x2);
-	store_littleendian(out + 12,x3);
-	store_littleendian(out + 16,x4);
-	store_littleendian(out + 20,x5);
-	store_littleendian(out + 24,x6);
-	store_littleendian(out + 28,x7);
-	store_littleendian(out + 32,x8);
-	store_littleendian(out + 36,x9);
-	store_littleendian(out + 40,x10);
-	store_littleendian(out + 44,x11);
-	store_littleendian(out + 48,x12);
-	store_littleendian(out + 52,x13);
-	store_littleendian(out + 56,x14);
-	store_littleendian(out + 60,x15);
+    store_littleendian(out + 0,x0);
+    store_littleendian(out + 4,x1);
+    store_littleendian(out + 8,x2);
+    store_littleendian(out + 12,x3);
+    store_littleendian(out + 16,x4);
+    store_littleendian(out + 20,x5);
+    store_littleendian(out + 24,x6);
+    store_littleendian(out + 28,x7);
+    store_littleendian(out + 32,x8);
+    store_littleendian(out + 36,x9);
+    store_littleendian(out + 40,x10);
+    store_littleendian(out + 44,x11);
+    store_littleendian(out + 48,x12);
+    store_littleendian(out + 52,x13);
+    store_littleendian(out + 56,x14);
+    store_littleendian(out + 60,x15);
 
-	return 0;
+    return 0;
 }
 
 const QByteArray Salsa20::SIGMA = QByteArray("\x65\x78\x70\x61\x6e\x64\x20\x33\x32\x2d\x62\x79\x74\x65\x20\x6b");

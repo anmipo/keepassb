@@ -44,50 +44,50 @@ public:
     /**
      * Returns the singleton instance of the class.
      */
-	static CryptoManager* instance();
+    static CryptoManager* instance();
 
-	/**
-	 * Initialises security contexts; returns an SB_* error code
-	 */
-	int init();
+    /**
+     * Initialises security contexts; returns an SB_* error code
+     */
+    int init();
 
-	/**
-	 * Computes a SHA-256 hash of inputData and puts the result to outputData.
-	 * outputData should be preallocated.
-	 * Returns an SB_* error code.
-	 */
-	int sha256(const QByteArray& inputData, QByteArray& outputData);
+    /**
+     * Computes a SHA-256 hash of inputData and puts the result to outputData.
+     * outputData should be preallocated.
+     * Returns an SB_* error code.
+     */
+    int sha256(const QByteArray& inputData, QByteArray& outputData);
 
-	/**
-	 * Fills 'bytes' with 'size' bytes from a hardware-seeded DRNG.
-	 */
-	int getRandomBytes(QByteArray& bytes, const int size);
+    /**
+     * Fills 'bytes' with 'size' bytes from a hardware-seeded DRNG.
+     */
+    int getRandomBytes(QByteArray& bytes, const int size);
 
-	/**
-	 * Encrypts data with AES with the specified mode.
-	 * cipherText will be resized to fit the result
-	 * Returns an SB_* error code.
-	 */
-	int encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector,
-	        const QByteArray& plainText, QByteArray& cipherText,
-	        ProgressObserver* progressObserver = 0);
+    /**
+     * Encrypts data with AES with the specified mode.
+     * cipherText will be resized to fit the result
+     * Returns an SB_* error code.
+     */
+    int encryptAES(const int mode, const QByteArray& key, const QByteArray& initVector,
+            const QByteArray& plainText, QByteArray& cipherText,
+            ProgressObserver* progressObserver = 0);
 
-	/**
-	 * Decrypts data with AES in CBC mode.
-	 * plainText must be preallocated to fit the result
-	 * Assumes cypherText size is a multiple of 16.
-	 * Returns an SB_* error code.
-	 */
-	int decryptAES(const QByteArray& key, const QByteArray& initVector,
-	        const QByteArray& cypherText, QByteArray& plainText,
-	        ProgressObserver* progressObserver = 0);
+    /**
+     * Decrypts data with AES in CBC mode.
+     * plainText must be preallocated to fit the result
+     * Assumes cypherText size is a multiple of 16.
+     * Returns an SB_* error code.
+     */
+    int decryptAES(const QByteArray& key, const QByteArray& initVector,
+            const QByteArray& cypherText, QByteArray& plainText,
+            ProgressObserver* progressObserver = 0);
 
-	/**
-	 * Encrypts data with Twofish.
-	 * plainText size must be a multiple of 16.
-	 * cipherText will be resized to fit the result
-	 * Returns either SB_SUCCESS or an error code.
-	 */
+    /**
+     * Encrypts data with Twofish.
+     * plainText size must be a multiple of 16.
+     * cipherText will be resized to fit the result
+     * Returns either SB_SUCCESS or an error code.
+     */
     int encryptTwofish(const QByteArray& key, const QByteArray& initVector,
             const QByteArray& plainText, QByteArray& cipherText,
             ProgressObserver* progressObserver = 0);
@@ -102,37 +102,37 @@ public:
             const QByteArray& cypherText, QByteArray& plainText,
             ProgressObserver* progressObserver = 0);
 
-	/**
-	 * Adds PKCS#7 padding to the array to ensure (mod 16) length.
-	 */
-	static void addPadding16(QByteArray& data);
+    /**
+     * Adds PKCS#7 padding to the array to ensure (mod 16) length.
+     */
+    static void addPadding16(QByteArray& data);
 
-	/**
-	 * Removes PKCS#7 padding to (mod 16) length. Returns false in case of any error.
-	 */
-	static bool removePadding16(QByteArray& data);
+    /**
+     * Removes PKCS#7 padding to (mod 16) length. Returns false in case of any error.
+     */
+    static bool removePadding16(QByteArray& data);
 
-	// Three methods for key transformation
+    // Three methods for key transformation
 
-	/**
-	 * Prepares key transformation routine (performKeyTransform).
-	 * endKeyTransform() must be called after transformation to free allocated resources.
-	 * keySizeBytes specifies the size of keys to transform (SB_AES_128_KEY_BYTES or SB_AES_256_KEY_BYTES)
-	 * Returns an SB_* error code.
-	 */
-	int beginKeyTransform(const QByteArray& key, const int keySizeBytes);
-	/**
-	 * Performs a key transformation round.
-	 * Call beginKeyTransform() to prepare necessary resources first; call endKeyTransform() to free those resources.
-	 * transKey is both input and output, it must be of the size set in beginKeyTransform().
-	 * Returns an SB_* error code.
-	 */
-	int performKeyTransform(unsigned char* transKey) const;
-	/**
-	 * Frees resources allocated by beginKeyTransform().
-	 * Returns an SB_* error code.
-	 */
-	int endKeyTransform();
+    /**
+     * Prepares key transformation routine (performKeyTransform).
+     * endKeyTransform() must be called after transformation to free allocated resources.
+     * keySizeBytes specifies the size of keys to transform (SB_AES_128_KEY_BYTES or SB_AES_256_KEY_BYTES)
+     * Returns an SB_* error code.
+     */
+    int beginKeyTransform(const QByteArray& key, const int keySizeBytes);
+    /**
+     * Performs a key transformation round.
+     * Call beginKeyTransform() to prepare necessary resources first; call endKeyTransform() to free those resources.
+     * transKey is both input and output, it must be of the size set in beginKeyTransform().
+     * Returns an SB_* error code.
+     */
+    int performKeyTransform(unsigned char* transKey) const;
+    /**
+     * Frees resources allocated by beginKeyTransform().
+     * Returns an SB_* error code.
+     */
+    int endKeyTransform();
 };
 
 class Salsa20 {

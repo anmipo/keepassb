@@ -235,9 +235,9 @@ void ApplicationUI::stopWatchdog() {
 
 // copy given text to the clipboard, clear it after some time
 void ApplicationUI::copyWithTimeout(const QString& text) {
-	clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
-	if (settings->isMinimizeAppOnCopy())
-	    Application::instance()->minimize();
+    clipboard.insertWithTimeout(text, settings->getClipboardTimeout());
+    if (settings->isMinimizeAppOnCopy())
+        Application::instance()->minimize();
 }
 
 // stores entry fields for consequent multi-copying

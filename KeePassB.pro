@@ -12,9 +12,9 @@ RESOURCES += assets.qrc
 DEPENDPATH += assets
 
 device {
-	CONFIG(release, debug|release) {
-		DEFINES += QT_NO_WARNING_OUTPUT QT_NO_DEBUG_OUTPUT
-	}
+    CONFIG(release, debug|release) {
+        DEFINES += QT_NO_WARNING_OUTPUT QT_NO_DEBUG_OUTPUT
+    }
 }
 
 include(config.pri)

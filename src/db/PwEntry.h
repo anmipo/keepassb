@@ -108,29 +108,29 @@ signals:
 /*****************************/
 
 class PwEntry: public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString title READ getTitle WRITE setTitle NOTIFY titleChanged)
-	Q_PROPERTY(int iconId READ getIconId WRITE setIconId NOTIFY iconIdChanged)
-	Q_PROPERTY(QString userName READ getUserName WRITE setUserName NOTIFY userNameChanged)
-	Q_PROPERTY(QString password READ getPassword WRITE setPassword NOTIFY passwordChanged)
-	Q_PROPERTY(QString url READ getUrl WRITE setUrl NOTIFY urlChanged)
-	Q_PROPERTY(QString notes READ getNotes WRITE setNotes NOTIFY notesChanged)
-	Q_PROPERTY(QDateTime creationTime READ getCreationTime WRITE setCreationTime NOTIFY creationTimeChanged)
-	Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
-	Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
-	Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
-	// defines whether the entry can expire
-	Q_PROPERTY(bool expires READ isExpires WRITE setExpires NOTIFY expiresChanged)
-	// indicates whether the entry has already expired (change signal is linked with expiryTime changes)
-	Q_PROPERTY(bool expired READ isExpired NOTIFY expiredChanged)
+    Q_OBJECT
+    Q_PROPERTY(QString title READ getTitle WRITE setTitle NOTIFY titleChanged)
+    Q_PROPERTY(int iconId READ getIconId WRITE setIconId NOTIFY iconIdChanged)
+    Q_PROPERTY(QString userName READ getUserName WRITE setUserName NOTIFY userNameChanged)
+    Q_PROPERTY(QString password READ getPassword WRITE setPassword NOTIFY passwordChanged)
+    Q_PROPERTY(QString url READ getUrl WRITE setUrl NOTIFY urlChanged)
+    Q_PROPERTY(QString notes READ getNotes WRITE setNotes NOTIFY notesChanged)
+    Q_PROPERTY(QDateTime creationTime READ getCreationTime WRITE setCreationTime NOTIFY creationTimeChanged)
+    Q_PROPERTY(QDateTime lastModificationTime READ getLastModificationTime WRITE setLastModificationTime NOTIFY lastModificationTimeChanged)
+    Q_PROPERTY(QDateTime lastAccessTime READ getLastAccessTime WRITE setLastAccessTime NOTIFY lastAccessTimeChanged)
+    Q_PROPERTY(QDateTime expiryTime READ getExpiryTime WRITE setExpiryTime NOTIFY expiryTimeChanged)
+    // defines whether the entry can expire
+    Q_PROPERTY(bool expires READ isExpires WRITE setExpires NOTIFY expiresChanged)
+    // indicates whether the entry has already expired (change signal is linked with expiryTime changes)
+    Q_PROPERTY(bool expired READ isExpired NOTIFY expiredChanged)
     // indicates whether the entry is in Recycle Bin
     Q_PROPERTY(bool deleted READ isDeleted NOTIFY deletedChanged)
     // sequence of parent group names, much like a file system path
     Q_PROPERTY(QString groupPath READ getGroupPath NOTIFY groupPathChanged)
     Q_PROPERTY(PwGroup* parentGroup READ getParentGroup WRITE setParentGroup NOTIFY parentGroupChanged)
 private:
-	PwUuid _uuid;
-	int _iconId;
+    PwUuid _uuid;
+    int _iconId;
     QDateTime _creationTime;
     QDateTime _lastModificationTime;
     QDateTime _lastAccessTime;
@@ -150,25 +150,25 @@ protected:
 public:
     static const int DEFAULT_ICON_ID;
 
-	PwEntry(QObject* parent=0);
-	virtual ~PwEntry();
+    PwEntry(QObject* parent=0);
+    virtual ~PwEntry();
 
-	virtual void clear();
+    virtual void clear();
 
     /** Removes the entry from the parent group. Does NOT make a copy in Backup/Recycle bin. */
     Q_INVOKABLE void deleteWithoutBackup();
 
     /** Adds an attachment, if possible. Returns true if successful. */
-	virtual bool addAttachment(PwAttachment* attachment);
+    virtual bool addAttachment(PwAttachment* attachment);
 
-	/**
-	 * Loads the given file and attaches it to the entry.
+    /**
+     * Loads the given file and attaches it to the entry.
      * Makes a backup of the initial entry state.
-	 * Returns true if successful, false in case of any error.
-	 *
-	 * (This method should be pure virtual, but abstract PwEntry causes problems in QML)
-	 */
-	Q_INVOKABLE virtual bool attachFile(const QString& filePath) { Q_UNUSED(filePath); return false; };
+     * Returns true if successful, false in case of any error.
+     *
+     * (This method should be pure virtual, but abstract PwEntry causes problems in QML)
+     */
+    Q_INVOKABLE virtual bool attachFile(const QString& filePath) { Q_UNUSED(filePath); return false; };
 
     Q_INVOKABLE PwAttachmentDataModel* getAttachmentsDataModel() { return &_attachmentsDataModel; }
 
@@ -204,11 +204,11 @@ public:
     /** Returns the names of the groups this entry is in, much like a file system path */
     Q_INVOKABLE QString getGroupPath() const;
 
-	// property getters/setters
-	PwUuid getUuid() const { return _uuid; }
-	void setUuid(const PwUuid& uuid);
-	virtual int getIconId() const { return _iconId; }
-	virtual void setIconId(int iconId);
+    // property getters/setters
+    PwUuid getUuid() const { return _uuid; }
+    void setUuid(const PwUuid& uuid);
+    virtual int getIconId() const { return _iconId; }
+    virtual void setIconId(int iconId);
     QDateTime getCreationTime() const { return _creationTime; }
     void setCreationTime(const QDateTime& time);
     QDateTime getLastModificationTime() const { return _lastModificationTime; }
@@ -225,7 +225,7 @@ public:
     PwGroup* getParentGroup() const { return _parentGroup; }
     void setParentGroup(PwGroup* parentGroup);
 
-	// Virtual property accessors.
+    // Virtual property accessors.
     // (These should be pure virtual, but abstract PwEntry would have complicated the QML quite a bit.)
     virtual QString getTitle() const { /* stub */ return NULL; };
     virtual void setTitle(const QString& title) { /* stub */ Q_UNUSED(title); };

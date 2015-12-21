@@ -26,18 +26,18 @@ const QString DEMO_DATABASE_FILE_PATH = "app/native/assets/demo.kdbx";
 const int SUBKEY_SIZE = 16;
 
 PwDatabase::PwDatabase(QObject* parent) : QObject(parent), _dbFilePath("") {
-	_rootGroup = NULL;
+    _rootGroup = NULL;
 }
 
 PwDatabase::~PwDatabase() {
-	LOG("deleting PwDatabase");
+    LOG("deleting PwDatabase");
     clear();
 }
 
 void PwDatabase::lock() {
     this->clear();
     emit dbLocked();
-	LOG("DB locked");
+    LOG("DB locked");
 }
 
 void PwDatabase::clear() {
@@ -47,7 +47,7 @@ void PwDatabase::clear() {
         _rootGroup = NULL;
     }
     Util::safeClear(_dbFilePath);
-	LOG("DB cleared");
+    LOG("DB cleared");
 }
 
 /** Returns the number of all groups and entries combined */
@@ -264,7 +264,7 @@ void PwDatabaseFacade::setLocked(bool locked) {
 }
 
 void PwDatabaseFacade::lock() {
-	clear();
+    clear();
 }
 
 void PwDatabaseFacade::clear() {

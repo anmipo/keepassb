@@ -1,6 +1,6 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-	<qresource>
+    <qresource>
         <file>assets/common.js</file>
         <file>assets/AboutPage.qml</file>
         <file>assets/ActiveFrameCover.qml</file>
@@ -27,5 +27,5 @@
         <file>assets/ViewEntryHistoryTab.qml</file>
         <file>assets/ViewEntryPage.qml</file>
         <file>assets/ViewGroupPage.qml</file>
-	</qresource>
+    </qresource>
 </RCC>
