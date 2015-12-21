@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+    Copyright (c) 2014-2016 Andrei Popleteev.
+-->
+
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+
+    <id>org.KeePassB</id>
+    <name>KeePassB</name>
+    <versionNumber>2.5.3</versionNumber>
+    <buildId>0</buildId>
+    <versionLabel>2.5.3</versionLabel>
+    <description>
+       KeePassB is a native Built for BlackBerry implementation of the KeePass password manager.
+    </description>
+
+    <packageLocale>ru,de,vi</packageLocale>
+
+    <copyright>©2014-2016 Andrei Popleteev</copyright>
+    <author>Andrei Popleteev</author>
+    <authorId>gYAAgE2X4TfqzKRifriMxvfT2wc</authorId>
+
+    <configuration name="Device-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7-g/KeePassB" entry="true" type="Qnx/Elf">KeePassB</asset>
+    </configuration>
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7/KeePassB.so" entry="true" type="Qnx/Elf">KeePassB.so</asset>
+    </configuration>
+    <configuration name="Device-Profile">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm-p/o.le-v7-g/KeePassB" entry="true" type="Qnx/Elf">KeePassB</asset>
+    </configuration>
+    <configuration name="Simulator-Debug">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="arm/o.le-v7-g/KeePassB" entry="true" type="Qnx/Elf">KeePassB</asset>
+    </configuration>
+
+    <icon>
+       <image>appicon.png</image>
+       <image>appicon90.png</image>
+       <image>appicon96.png</image>
+       <image>appicon110.png</image>
+       <image>appicon144.png</image>
+    </icon>
+    <initialWindow>
+        <autoOrients>true</autoOrients>
+        <systemChrome>none</systemChrome>
+    </initialWindow>
+
+    <asset path="translations" dest="qm">
+        <include name="*.qm"/>
+    </asset>
+
+    <asset path="assets" dest="assets">
+        <exclude name="**/*.qml"/>
+        <exclude name="**/*.js"/>
+    </asset>
+    <asset path="appicon.png">appicon.png</asset>
+    <asset path="appicon90.png">appicon90.png</asset>
+    <asset path="appicon96.png">appicon96.png</asset>
+    <asset path="appicon110.png">appicon110.png</asset>
+    <asset path="appicon144.png">appicon144.png</asset>
+
+    <!-- Required for native applications -->
+    <permission system="true">run_native</permission>
+    <!-- Required to access database files -->
+    <permission>access_shared</permission>
+    <!-- Required for QSensor::alwaysOn (used by multi-copy feature) -->
+    <permission>run_when_backgrounded</permission>
+    <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+    <env var="CASCADES_THEME" value="dark"/>
+
+    <!-- Invocation -->
+    <invoke-target id="org.keepassb.database.open">
+        <invoke-target-type>application</invoke-target-type>
+        <invoke-target-name>KeePassB</invoke-target-name>
+        <icon>
+            <image>appicon.png</image>
+            <image>appicon90.png</image>
+            <image>appicon96.png</image>
+            <image>appicon110.png</image>
+            <image>appicon144.png</image>
+        </icon>
+        <filter>
+            <action>bb.action.VIEW</action>
+            <action>bb.action.OPEN</action>
+            <mime-type>*</mime-type>
+            <property var="uris" value="file://"/>
+            <property var="exts" value="kdb,kdbx"/>
+        </filter>
+    </invoke-target>
+</qnx>
