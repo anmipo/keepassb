@@ -107,7 +107,7 @@ Container {
                                 horizontalAlignment: HorizontalAlignment.Right
                                 enabled: (ListItemData.value.length > 0)
                                 onClicked: {
-                                    kpb.app.copyWithTimeout(ListItemData.value);
+                                    Qt.kpb.app.copyWithTimeout(ListItemData.value);
                                 }
                             }
                         }
