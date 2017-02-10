@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
-    Copyright (c) 2014-2016 Andrei Popleteev.
+    Copyright (c) 2014-2017 Andrei Popleteev.
 -->
 
 <qnx xmlns="http://www.qnx.com/schemas/application/1.0">
 
     <id>org.KeePassB</id>
     <name>KeePassB</name>
-    <versionNumber>2.5.3</versionNumber>
+    <versionNumber>2.5.4</versionNumber>
     <buildId>0</buildId>
-    <versionLabel>2.5.3</versionLabel>
+    <versionLabel>2.5.4</versionLabel>
     <description>
        KeePassB is a native Built for BlackBerry implementation of the KeePass password manager.
     </description>
 
     <packageLocale>ru,de,vi</packageLocale>
 
-    <copyright>©2014-2016 Andrei Popleteev</copyright>
+    <copyright>©2014-2017 Andrei Popleteev</copyright>
     <author>Andrei Popleteev</author>
     <authorId>gYAAgE2X4TfqzKRifriMxvfT2wc</authorId>
 
