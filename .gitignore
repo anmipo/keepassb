@@ -8,4 +8,5 @@
 /_sources
 /plan.txt
 /history.txt
-/market
+/_market
+/test-db
