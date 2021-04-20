@@ -503,7 +503,7 @@ bool PwDatabaseV4::readDatabase(const QByteArray& dbBytes) {
     QByteArray startBytes(VERIFICATION_LENGTH, 0);
     decryptedStream.readRawData(startBytes.data(), VERIFICATION_LENGTH);
     if (startBytes != header.getStreamStartBytes()) {
-        LOG("First bytes do not match: %d", err);
+        LOG("First bytes do not match");
         emit invalidPasswordOrKey();
         return false;
     }
