@@ -752,6 +752,7 @@ ErrorCodesV4::ErrorCode PwDatabaseV4::parseDeletedObjects(QXmlStreamReader& xml)
                 err = deletedObject->readFromStream(xml);
                 if (err != ErrorCodesV4::SUCCESS)
                     return err;
+                deletedObjects.append(deletedObject);
             } else {
                 LOG("unknown tag within DeletedObjects: %s", tagName.toUtf8().constData());
                 PwStreamUtilsV4::readUnknown(xml);
