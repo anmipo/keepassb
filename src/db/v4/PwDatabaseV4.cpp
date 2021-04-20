@@ -104,7 +104,7 @@ PwHeaderV4::ErrorCode PwHeaderV4::read(const QByteArray& dbBytes) {
             break;
         case HEADER_MASTER_SEED:
             if (fieldSize != SB_SHA256_DIGEST_LEN)
-                return TRANSFORM_SEED_SIZE_MISMATCH; // Master seed size is not 32 bytes
+                return MASTER_SEED_SIZE_MISMATCH; // Master seed size is not 32 bytes
             break;
         case HEADER_TRANSFORM_SEED:
             if (fieldSize != SB_SHA256_DIGEST_LEN)
