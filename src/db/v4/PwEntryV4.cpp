@@ -561,7 +561,7 @@ PwEntry* PwEntryV4::clone() {
         entryCopy->addAttachment(attCopy);
     }
 
-    entryCopy->_autoType = _autoType;
+    entryCopy->_autoType = _autoType; //TODO: .clone()
 
     entryCopy->setLastModificationTime(getLastModificationTime());
     entryCopy->setCreationTime(getCreationTime());

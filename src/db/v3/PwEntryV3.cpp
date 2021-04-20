@@ -191,6 +191,7 @@ bool PwEntryV3::readFromStream(QDataStream& stream) {
         case FIELD_END:
             // group fields finished
             stream.skipRawData(fieldSize);
+            //TODO: binaryData might be empty for zero-size attachments, so check only binaryDesc
             bool hasAttachment = (!binaryData.isEmpty() || !binaryDesc.isEmpty());
             if (hasAttachment) {
                 // make the binary data available via the common 'attachment' interface
