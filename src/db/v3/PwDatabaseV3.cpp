@@ -450,7 +450,7 @@ bool PwDatabaseV3::save(QByteArray& outData) {
 
     // now update the header (hash and counts)
     header.setGroupCount(groupCount);
-    header.setEntryCount(entryCount);
+    header.setEntryCount(entryCount + metaStreamEntries.size());
     LOG("Saving %d groups and %d entries", groupCount, entryCount);
 
     QByteArray contentHash;
